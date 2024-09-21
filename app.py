@@ -85,7 +85,9 @@ def home():
 @app.route('/about')
 def about():
     content = """
-    <p>Hello! My name is Sam! I'm a 25yo digital artist based in Toronto. I love to paint! Art has actually been a passion of mine for most of my life! I stopped learning art after high school, kept it as a side hobby but I didn't make any real attempts to improve and get better. But early 2020 I decided to take it seriously and here we are!</p>
+    <p>
+I’m Raichuu, an artist passionate about blending vibrant visuals with deep emotional narratives. My work draws inspiration from nature, urban landscapes, and personal experiences, creating a vivid world where colors and forms come alive. I love experimenting with different mediums, whether it’s painting, digital art, or installations, to engage my audience and encourage them to explore their own interpretations. Through my art, I aim to ignite curiosity and spark conversation, inviting viewers to journey alongside me in the creative process.
+    </p>
     """
     return render_template_string(html_template, title="About", content=content)
 
