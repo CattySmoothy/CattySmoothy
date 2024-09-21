@@ -46,3 +46,11 @@ nav a {
     height: 30px;
     margin-right: 10px;
 }
+
+.header-background {
+    background-color: #f0f0f0; /* Light gray background */
+    background-image: url('/static/images/CAR.jpg'); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+}
