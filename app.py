@@ -1,8 +1,7 @@
 from flask import Flask
+from routes import *
 
 app = Flask(__name__)
 
-from routes import *
-
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=False, host="127.0.0.1", port=5001)
