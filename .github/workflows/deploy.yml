@@ -1,0 +1,24 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/rachel/eclipsogate.org/CattySmoothy
+          git pull origin main
+          /home/rachel/eclipsogate.org/CattySmoothy/.venv/bin/pip install -r requirements.txt
+          sudo systemctl restart raichuu
+          echo "Deployment completed successfully!"

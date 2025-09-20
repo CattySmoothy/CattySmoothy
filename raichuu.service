@@ -1,0 +1,16 @@
+[Unit]
+Description=Raichuu Flask Web Application
+After=network.target
+
+[Service]
+Type=simple
+User=rachel
+Group=rachel
+WorkingDirectory=/home/rachel/eclipsogate.org/CattySmoothy
+Environment=PATH=/home/rachel/eclipsogate.org/CattySmoothy/.venv/bin
+ExecStart=/home/rachel/eclipsogate.org/CattySmoothy/.venv/bin/python3 /home/rachel/eclipsogate.org/CattySmoothy/app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
