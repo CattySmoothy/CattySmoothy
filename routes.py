@@ -13,5 +13,9 @@ def about():
 def collections():
     return render_template('collections.html', title="Collections")
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html', title="Profile")
+
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
