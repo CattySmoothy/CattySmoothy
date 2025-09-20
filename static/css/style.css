@@ -47,6 +47,19 @@ nav a {
     margin-right: 10px;
 }
 
+/* Social media icon colors */
+ion-icon[name="logo-youtube"] {
+    color: #FF0000 !important;
+}
+
+ion-icon[name="logo-instagram"] {
+    color: #E4405F !important;
+}
+
+ion-icon[name="logo-discord"] {
+    color: #5865F2 !important;
+}
+
 .header-background {
     background-color: #f0f0f0; /* Light gray background */
     background-size: cover;
