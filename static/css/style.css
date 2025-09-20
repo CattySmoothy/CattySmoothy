@@ -61,10 +61,11 @@ ion-icon[name="logo-discord"] {
 }
 
 .header-background {
-    background-color: #f0f0f0; /* Light gray background */
-    background-size: cover;
-    background-position: center;
-    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    padding: 40px 20px;
+    text-align: center;
 }
 
 /* Profile page styles */
