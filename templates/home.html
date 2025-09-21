@@ -1,14 +1,55 @@
 {% extends "base.html" %}
 
 {% block content %}
+<section class="hero-section slide-up">
+    <div class="hero-content">
+        <h2 class="hero-title">Welcome to my personal art platform!</h2>
+        <p class="hero-subtitle">Join our creative community and explore digital art, tutorials, and more</p>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Members</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Posts</span>
+            </div>
+        </div>
+        
+        <div class="hero-actions">
+            <a href="#" class="btn btn-primary">Join for free</a>
+            <a href="{{ url_for('collections') }}" class="btn btn-secondary">Explore Collections</a>
+        </div>
+    </div>
+</section>
 
-<p>Welcome to my personal art platform!</p>
-<p>0 members • 0 Posts</p>
-<a href="#" class="btn">Join for free</a>
-<div>
-	<a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><ion-icon size="large" name="logo-instagram"></ion-icon></a>
-	<a href="https://www.youtube.com/@cattysmoothy"><ion-icon size=large name="logo-youtube"></ion-icon></a>
-	<a href="#"><ion-icon size=large name="logo-discord"></ion-icon></a>
-</div>
-
+<section class="features-section">
+    <div class="grid grid-cols-1 grid-cols-2">
+        <div class="card">
+            <div class="card-body">
+                <h3>Digital Art</h3>
+                <p>Discover amazing digital artwork and creative process videos.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3>Tutorials</h3>
+                <p>Learn from step-by-step tutorials and improve your skills.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3>Wallpapers</h3>
+                <p>Download high-quality wallpapers for your devices.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h3>Community</h3>
+                <p>Connect with fellow artists and share your creations.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

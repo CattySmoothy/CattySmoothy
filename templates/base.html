@@ -3,26 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Raichuu - Creating digital art, process videos, tutorials, wallpapers and more">
+    <meta name="author" content="Raichuu">
+    
+    <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
     <title>{{ title }} - Raichuu</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body>
     <header class="header-background">
-        <h1>Raichuu</h1>
-        <p>Creating digital art, process videos, tutorials, wallpapers and more</p>
+        <div class="container">
+            <h1 class="fade-in">Raichuu</h1>
+            <p class="fade-in">Creating digital art, process videos, tutorials, wallpapers and more</p>
+        </div>
     </header>
+    
     <nav>
-		<a href="{{ url_for('home') }}">Home</a>
-		<a href="{{ url_for('about') }}">About</a>
-		<a href="{{ url_for('collections') }}">Collections</a>
-		<a href="{{ url_for('profile') }}">Profile</a>
+        <div class="container">
+            <div class="nav-brand">
+                <a href="{{ url_for('home') }}" class="nav-logo">Raichuu</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+                <li><a href="{{ url_for('collections') }}" class="{% if request.endpoint == 'collections' %}active{% endif %}">Collections</a></li>
+                <li><a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">Profile</a></li>
+            </ul>
+        </div>
     </nav>
-    <div class="container">
-        <h2>{{ title }}</h2>
-		{% block content %}{% endblock %}
-    </div>
+    
+    <main>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Raichuu. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" target="_blank" rel="noopener">
+                        <ion-icon name="logo-instagram"></ion-icon>
+                    </a>
+                    <a href="https://www.youtube.com/@cattysmoothy" class="social-link" target="_blank" rel="noopener">
+                        <ion-icon name="logo-youtube"></ion-icon>
+                    </a>
+                    <a href="#" class="social-link" target="_blank" rel="noopener">
+                        <ion-icon name="logo-discord"></ion-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,14 +1,80 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>My Art Collections</h3>
-<ul>
-	<li>Digital Paintings</li>
-	<li>Process Videos</li>
-	<li>Tutorials</li>
-	<li>Wallpapers</li>
-	<li>Sketches</li>
-</ul>
-
-<a href="/portfolio" class="portfolio-btn">View My Portfolio</a>
+<section class="collections-section slide-up">
+    <div class="collections-hero">
+        <h1 class="collections-title">My Art Collections</h1>
+        <p class="collections-subtitle">Explore my digital art, tutorials, and creative content</p>
+    </div>
+    
+    <div class="collections-grid">
+        <div class="grid grid-cols-1 grid-cols-2 grid-cols-3">
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="color-palette-outline"></ion-icon>
+                    </div>
+                    <h3>Digital Paintings</h3>
+                    <p>Original digital artwork created with passion and creativity.</p>
+                    <a href="#" class="btn btn-primary">View Gallery</a>
+                </div>
+            </div>
+            
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="videocam-outline"></ion-icon>
+                    </div>
+                    <h3>Process Videos</h3>
+                    <p>Watch the creative process behind my digital art pieces.</p>
+                    <a href="#" class="btn btn-primary">Watch Videos</a>
+                </div>
+            </div>
+            
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="school-outline"></ion-icon>
+                    </div>
+                    <h3>Tutorials</h3>
+                    <p>Step-by-step guides to help you improve your digital art skills.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="desktop-outline"></ion-icon>
+                    </div>
+                    <h3>Wallpapers</h3>
+                    <p>High-quality wallpapers for your desktop and mobile devices.</p>
+                    <a href="#" class="btn btn-primary">Download</a>
+                </div>
+            </div>
+            
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="pencil-outline"></ion-icon>
+                    </div>
+                    <h3>Sketches</h3>
+                    <p>Quick sketches and studies that showcase my artistic process.</p>
+                    <a href="#" class="btn btn-primary">Browse</a>
+                </div>
+            </div>
+            
+            <div class="collection-card card">
+                <div class="card-body">
+                    <div class="collection-icon">
+                        <ion-icon name="library-outline"></ion-icon>
+                    </div>
+                    <h3>Portfolio</h3>
+                    <p>Complete collection of my best work in one place.</p>
+                    <a href="#" class="btn btn-primary">View Portfolio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

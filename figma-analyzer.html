@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma Design Analyzer - CattySmoothy</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .color-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .color-box {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .font-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+        }
+        .spacing-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .spacing-visual {
+            height: 20px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+        .export-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .export-btn:hover {
+            background: #5a6fd8;
+        }
+        .output {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Figma Design Analyzer</h1>
+        <p>Use this tool to analyze your Figma design and generate CSS variables for your Flask app.</p>
+        
+        <div class="section">
+            <h2>🎨 Colors</h2>
+            <p>Extract the main colors from your Figma design:</p>
+            <div class="color-picker">
+                <div class="color-item">
+                    <div class="color-box" style="background: #667eea;"></div>
+                    <input type="text" id="primary-color" value="#667eea" placeholder="Primary Color">
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #764ba2;"></div>
+                    <input type="text" id="secondary-color" value="#764ba2" placeholder="Secondary Color">
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #f093fb;"></div>
+                    <input type="text" id="accent-color" value="#f093fb" placeholder="Accent Color">
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #ffffff;"></div>
+                    <input type="text" id="white-color" value="#ffffff" placeholder="White">
+                </div>
+                <div class="color-item">
+                    <div class="color-box" style="background: #000000;"></div>
+                    <input type="text" id="black-color" value="#000000" placeholder="Black">
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔤 Typography</h2>
+            <p>Specify the fonts and sizes from your Figma design:</p>
+            <div class="font-item">
+                <label>Primary Font Family:</label>
+                <input type="text" id="primary-font" value="Inter" placeholder="e.g., Inter, Roboto, etc.">
+            </div>
+            <div class="font-item">
+                <label>Secondary Font Family:</label>
+                <input type="text" id="secondary-font" value="Poppins" placeholder="e.g., Poppins, Montserrat, etc.">
+            </div>
+            <div class="font-item">
+                <label>Base Font Size:</label>
+                <input type="text" id="base-font-size" value="16px" placeholder="e.g., 16px, 18px, etc.">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📏 Spacing</h2>
+            <p>Define the spacing scale from your Figma design:</p>
+            <div class="spacing-item">
+                <span>Small (4px):</span>
+                <div class="spacing-visual" style="width: 4px;"></div>
+                <input type="text" id="space-small" value="0.25rem" placeholder="0.25rem">
+            </div>
+            <div class="spacing-item">
+                <span>Medium (16px):</span>
+                <div class="spacing-visual" style="width: 16px;"></div>
+                <input type="text" id="space-medium" value="1rem" placeholder="1rem">
+            </div>
+            <div class="spacing-item">
+                <span>Large (32px):</span>
+                <div class="spacing-visual" style="width: 32px;"></div>
+                <input type="text" id="space-large" value="2rem" placeholder="2rem">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎭 Visual Effects</h2>
+            <p>Specify shadows and border radius from your Figma design:</p>
+            <div class="font-item">
+                <label>Card Shadow:</label>
+                <input type="text" id="card-shadow" value="0 4px 6px -1px rgba(0, 0, 0, 0.1)" placeholder="Shadow value">
+            </div>
+            <div class="font-item">
+                <label>Border Radius:</label>
+                <input type="text" id="border-radius" value="0.5rem" placeholder="e.g., 0.5rem, 8px, etc.">
+            </div>
+        </div>
+
+        <button class="export-btn" onclick="generateCSS()">🚀 Generate CSS Variables</button>
+        
+        <div class="output" id="css-output">
+            Click "Generate CSS Variables" to see your custom CSS code here.
+        </div>
+    </div>
+
+    <script>
+        function generateCSS() {
+            const primaryColor = document.getElementById('primary-color').value;
+            const secondaryColor = document.getElementById('secondary-color').value;
+            const accentColor = document.getElementById('accent-color').value;
+            const whiteColor = document.getElementById('white-color').value;
+            const blackColor = document.getElementById('black-color').value;
+            const primaryFont = document.getElementById('primary-font').value;
+            const secondaryFont = document.getElementById('secondary-font').value;
+            const baseFontSize = document.getElementById('base-font-size').value;
+            const spaceSmall = document.getElementById('space-small').value;
+            const spaceMedium = document.getElementById('space-medium').value;
+            const spaceLarge = document.getElementById('space-large').value;
+            const cardShadow = document.getElementById('card-shadow').value;
+            const borderRadius = document.getElementById('border-radius').value;
+
+            const css = `/* Generated Figma Variables - Copy this to figma-variables.css */
+
+:root {
+  /* ===== FIGMA COLORS ===== */
+  --figma-primary: ${primaryColor};
+  --figma-secondary: ${secondaryColor};
+  --figma-accent: ${accentColor};
+  --figma-white: ${whiteColor};
+  --figma-black: ${blackColor};
+  
+  /* ===== FIGMA TYPOGRAPHY ===== */
+  --figma-font-primary: '${primaryFont}', sans-serif;
+  --figma-font-secondary: '${secondaryFont}', sans-serif;
+  --figma-text-base: ${baseFontSize};
+  
+  /* ===== FIGMA SPACING ===== */
+  --figma-space-small: ${spaceSmall};
+  --figma-space-medium: ${spaceMedium};
+  --figma-space-large: ${spaceLarge};
+  
+  /* ===== FIGMA VISUAL EFFECTS ===== */
+  --figma-shadow-card: ${cardShadow};
+  --figma-radius-default: ${borderRadius};
+  
+  /* ===== FIGMA GRADIENTS ===== */
+  --figma-gradient-primary: linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%);
+}
+
+/* ===== FIGMA COMPONENT OVERRIDES ===== */
+.header-background {
+  background: var(--figma-gradient-primary);
+}
+
+.btn-primary {
+  background: var(--figma-primary);
+  border-radius: var(--figma-radius-default);
+}
+
+.card {
+  box-shadow: var(--figma-shadow-card);
+  border-radius: var(--figma-radius-default);
+}`;
+
+            document.getElementById('css-output').textContent = css;
+        }
+
+        // Update color boxes when input changes
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.id.includes('color')) {
+                    const colorBox = this.previousElementSibling;
+                    colorBox.style.background = this.value;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

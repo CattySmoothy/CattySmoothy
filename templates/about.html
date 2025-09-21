@@ -1,6 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>About</h1>
-<p>Hi, I'm Raichuu. A self-taught artist who created digital art, process videos, tutorials, wallpapers and more.</p>
+<section class="about-section slide-up">
+    <div class="about-hero">
+        <h1 class="about-title">About Raichuu</h1>
+        <p class="about-subtitle">A self-taught artist creating digital art, process videos, tutorials, wallpapers and more</p>
+    </div>
+    
+    <div class="about-content">
+        <div class="grid grid-cols-1 grid-cols-2">
+            <div class="card">
+                <div class="card-body">
+                    <h3>My Story</h3>
+                    <p>Hi, I'm Raichuu! I'm a passionate self-taught digital artist who loves creating beautiful artwork and sharing my creative process with others.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h3>What I Create</h3>
+                    <ul class="feature-list">
+                        <li>Digital Paintings</li>
+                        <li>Process Videos</li>
+                        <li>Step-by-step Tutorials</li>
+                        <li>High-quality Wallpapers</li>
+                        <li>Art Sketches & Studies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="about-cta">
+            <h3>Let's Connect!</h3>
+            <p>Follow me on social media to see my latest artwork and behind-the-scenes content.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" target="_blank" rel="noopener">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.youtube.com/@cattysmoothy" class="social-link" target="_blank" rel="noopener">
+                    <ion-icon name="logo-youtube"></ion-icon>
+                    <span>YouTube</span>
+                </a>
+                <a href="#" class="social-link" target="_blank" rel="noopener">
+                    <ion-icon name="logo-discord"></ion-icon>
+                    <span>Discord</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

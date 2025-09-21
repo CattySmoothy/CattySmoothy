@@ -1,0 +1,159 @@
+/* Figma Design Variables - Customize these to match your exact Figma design */
+
+:root {
+  /* ===== FIGMA COLORS ===== */
+  /* Update these with your exact Figma color values */
+  --figma-primary: #667eea;        /* Main brand color */
+  --figma-secondary: #764ba2;      /* Secondary brand color */
+  --figma-accent: #f093fb;         /* Accent color */
+  --figma-success: #10b981;        /* Success state */
+  --figma-warning: #f59e0b;        /* Warning state */
+  --figma-error: #ef4444;          /* Error state */
+  
+  /* Figma Neutral Colors */
+  --figma-white: #ffffff;
+  --figma-black: #000000;
+  --figma-gray-50: #f9fafb;
+  --figma-gray-100: #f3f4f6;
+  --figma-gray-200: #e5e7eb;
+  --figma-gray-300: #d1d5db;
+  --figma-gray-400: #9ca3af;
+  --figma-gray-500: #6b7280;
+  --figma-gray-600: #4b5563;
+  --figma-gray-700: #374151;
+  --figma-gray-800: #1f2937;
+  --figma-gray-900: #111827;
+  
+  /* ===== FIGMA TYPOGRAPHY ===== */
+  /* Update with your exact Figma font choices */
+  --figma-font-primary: 'Inter', sans-serif;
+  --figma-font-secondary: 'Poppins', sans-serif;
+  --figma-font-display: 'Poppins', sans-serif;
+  
+  /* Figma Font Sizes */
+  --figma-text-xs: 0.75rem;      /* 12px */
+  --figma-text-sm: 0.875rem;     /* 14px */
+  --figma-text-base: 1rem;       /* 16px */
+  --figma-text-lg: 1.125rem;     /* 18px */
+  --figma-text-xl: 1.25rem;      /* 20px */
+  --figma-text-2xl: 1.5rem;      /* 24px */
+  --figma-text-3xl: 1.875rem;    /* 30px */
+  --figma-text-4xl: 2.25rem;     /* 36px */
+  --figma-text-5xl: 3rem;        /* 48px */
+  --figma-text-6xl: 3.75rem;     /* 60px */
+  
+  /* Figma Font Weights */
+  --figma-font-light: 300;
+  --figma-font-normal: 400;
+  --figma-font-medium: 500;
+  --figma-font-semibold: 600;
+  --figma-font-bold: 700;
+  --figma-font-extrabold: 800;
+  
+  /* ===== FIGMA SPACING ===== */
+  /* Update with your exact Figma spacing values */
+  --figma-space-0: 0;
+  --figma-space-1: 0.25rem;      /* 4px */
+  --figma-space-2: 0.5rem;       /* 8px */
+  --figma-space-3: 0.75rem;      /* 12px */
+  --figma-space-4: 1rem;         /* 16px */
+  --figma-space-5: 1.25rem;      /* 20px */
+  --figma-space-6: 1.5rem;       /* 24px */
+  --figma-space-8: 2rem;         /* 32px */
+  --figma-space-10: 2.5rem;      /* 40px */
+  --figma-space-12: 3rem;        /* 48px */
+  --figma-space-16: 4rem;        /* 64px */
+  --figma-space-20: 5rem;        /* 80px */
+  --figma-space-24: 6rem;        /* 96px */
+  --figma-space-32: 8rem;        /* 128px */
+  
+  /* ===== FIGMA BORDER RADIUS ===== */
+  --figma-radius-none: 0;
+  --figma-radius-sm: 0.25rem;    /* 4px */
+  --figma-radius-md: 0.5rem;     /* 8px */
+  --figma-radius-lg: 0.75rem;    /* 12px */
+  --figma-radius-xl: 1rem;       /* 16px */
+  --figma-radius-2xl: 1.5rem;    /* 24px */
+  --figma-radius-3xl: 2rem;      /* 32px */
+  --figma-radius-full: 9999px;
+  
+  /* ===== FIGMA SHADOWS ===== */
+  --figma-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --figma-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --figma-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --figma-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --figma-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* ===== FIGMA BREAKPOINTS ===== */
+  --figma-breakpoint-sm: 640px;
+  --figma-breakpoint-md: 768px;
+  --figma-breakpoint-lg: 1024px;
+  --figma-breakpoint-xl: 1280px;
+  --figma-breakpoint-2xl: 1536px;
+  
+  /* ===== FIGMA GRADIENTS ===== */
+  /* Update with your exact Figma gradient values */
+  --figma-gradient-primary: linear-gradient(135deg, var(--figma-primary) 0%, var(--figma-secondary) 100%);
+  --figma-gradient-secondary: linear-gradient(135deg, var(--figma-accent) 0%, var(--figma-primary) 100%);
+  --figma-gradient-hero: linear-gradient(135deg, var(--figma-primary) 0%, var(--figma-secondary) 100%);
+  
+  /* ===== FIGMA ANIMATIONS ===== */
+  --figma-transition-fast: 150ms ease-in-out;
+  --figma-transition-normal: 300ms ease-in-out;
+  --figma-transition-slow: 500ms ease-in-out;
+  
+  /* ===== FIGMA Z-INDEX ===== */
+  --figma-z-dropdown: 1000;
+  --figma-z-sticky: 1020;
+  --figma-z-fixed: 1030;
+  --figma-z-modal-backdrop: 1040;
+  --figma-z-modal: 1050;
+  --figma-z-popover: 1060;
+  --figma-z-tooltip: 1070;
+}
+
+/* ===== FIGMA COMPONENT OVERRIDES ===== */
+/* These will override the design system with Figma-specific values */
+
+/* Header Override */
+.figma-header {
+  background: var(--figma-gradient-hero);
+  /* Add specific Figma header styles here */
+}
+
+/* Navigation Override */
+.figma-nav {
+  /* Add specific Figma navigation styles here */
+}
+
+/* Button Override */
+.figma-btn {
+  /* Add specific Figma button styles here */
+}
+
+/* Card Override */
+.figma-card {
+  /* Add specific Figma card styles here */
+}
+
+/* ===== FIGMA LAYOUT OVERRIDES ===== */
+.figma-container {
+  /* Add specific Figma container styles here */
+}
+
+.figma-grid {
+  /* Add specific Figma grid styles here */
+}
+
+/* ===== FIGMA RESPONSIVE OVERRIDES ===== */
+@media (max-width: 768px) {
+  /* Add specific Figma mobile styles here */
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Add specific Figma tablet styles here */
+}
+
+@media (min-width: 1025px) {
+  /* Add specific Figma desktop styles here */
+}
