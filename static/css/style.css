@@ -109,8 +109,8 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: var(--radius-full);
     background: var(--white);
     box-shadow: var(--shadow-md);
@@ -158,37 +158,11 @@ main {
     color: var(--gray-400);
 }
 
-/* Social media icon colors */
-ion-icon[name="logo-youtube"] {
-    color: #FF0000 !important;
-    font-size: 24px;
+/* Footer social media icon colors - Grayscale */
+.footer .social-link svg {
+    color: #6b7280; /* Gray-500 */
 }
 
-ion-icon[name="logo-instagram"] {
-    color: #E4405F !important;
-    font-size: 24px;
-}
-
-ion-icon[name="logo-discord"] {
-    color: #5865F2 !important;
-    font-size: 24px;
-}
-
-/* About page social media icon colors */
-.about-cta ion-icon[name="logo-youtube"] {
-    color: #FF0000 !important;
-    font-size: 20px;
-}
-
-.about-cta ion-icon[name="logo-instagram"] {
-    color: #E4405F !important;
-    font-size: 20px;
-}
-
-.about-cta ion-icon[name="logo-discord"] {
-    color: #5865F2 !important;
-    font-size: 20px;
-}
 
 /* Hero Section */
 .hero-section {
@@ -408,28 +382,37 @@ ion-icon[name="logo-discord"] {
 .about-cta .social-link {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-4);
+    justify-content: center;
+    width: 80px;
+    height: 80px;
     background: var(--white);
     color: var(--gray-700);
     text-decoration: none;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     border: 2px solid var(--gray-200);
     transition: all var(--transition-fast);
     font-weight: 500;
 }
 
 .about-cta .social-link:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
     border-color: var(--primary-color);
-    color: var(--primary-color);
 }
 
-.about-cta .social-link ion-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+.about-cta .social-link svg {
+    width: 48px;
+    height: 48px;
+    transition: all var(--transition-fast);
+}
+
+/* About page social media icon colors - Grayscale */
+.about-cta .social-link svg {
+    color: #6b7280; /* Gray-500 */
+}
+
+.about-cta .social-link:hover svg {
+    transform: scale(1.1);
 }
 
 /* Collections Page Styles */
