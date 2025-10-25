@@ -1,0 +1,356 @@
+/* Figma Exact Design Replica - Based on PNG exports */
+
+/* ===== FIGMA EXACT COLORS ===== */
+/* These will be updated based on your Figma PNG analysis */
+:root {
+  /* Primary Colors from Figma */
+  --figma-exact-primary: #667eea;
+  --figma-exact-secondary: #764ba2;
+  --figma-exact-accent: #f093fb;
+  
+  /* Background Colors */
+  --figma-exact-bg-primary: #ffffff;
+  --figma-exact-bg-secondary: #f8fafc;
+  --figma-exact-bg-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
+  /* Text Colors */
+  --figma-exact-text-primary: #1a202c;
+  --figma-exact-text-secondary: #4a5568;
+  --figma-exact-text-muted: #718096;
+  --figma-exact-text-white: #ffffff;
+  
+  /* Border Colors */
+  --figma-exact-border: #e2e8f0;
+  --figma-exact-border-light: #f1f5f9;
+  
+  /* Shadow Colors */
+  --figma-exact-shadow: rgba(0, 0, 0, 0.1);
+  --figma-exact-shadow-lg: rgba(0, 0, 0, 0.15);
+}
+
+/* ===== FIGMA EXACT LAYOUT ===== */
+.figma-exact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.figma-exact-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.figma-exact-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.figma-exact-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.figma-exact-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ===== FIGMA EXACT HEADER ===== */
+.figma-exact-header {
+  background: var(--figma-exact-bg-hero);
+  color: var(--figma-exact-text-white);
+  padding: 80px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.figma-exact-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/static/images/figma/Desktop.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.figma-exact-header-content {
+  position: relative;
+  z-index: 2;
+}
+
+.figma-exact-header h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.figma-exact-header p {
+  font-size: 1.25rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== FIGMA EXACT NAVIGATION ===== */
+.figma-exact-nav {
+  background: var(--figma-exact-bg-primary);
+  box-shadow: 0 1px 3px var(--figma-exact-shadow);
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.figma-exact-nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.figma-exact-nav-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--figma-exact-primary);
+  text-decoration: none;
+}
+
+.figma-exact-nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.figma-exact-nav-links a {
+  color: var(--figma-exact-text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.figma-exact-nav-links a:hover,
+.figma-exact-nav-links a.active {
+  color: var(--figma-exact-primary);
+  background: var(--figma-exact-bg-secondary);
+}
+
+/* ===== FIGMA EXACT BUTTONS ===== */
+.figma-exact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 8px;
+}
+
+.figma-exact-btn-primary {
+  background: var(--figma-exact-bg-hero);
+  color: var(--figma-exact-text-white);
+  box-shadow: 0 4px 6px var(--figma-exact-shadow);
+}
+
+.figma-exact-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--figma-exact-shadow-lg);
+}
+
+.figma-exact-btn-secondary {
+  background: var(--figma-exact-bg-primary);
+  color: var(--figma-exact-text-primary);
+  border: 2px solid var(--figma-exact-border);
+}
+
+.figma-exact-btn-secondary:hover {
+  border-color: var(--figma-exact-primary);
+  color: var(--figma-exact-primary);
+}
+
+/* ===== FIGMA EXACT CARDS ===== */
+.figma-exact-card {
+  background: var(--figma-exact-bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px var(--figma-exact-shadow);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.figma-exact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px var(--figma-exact-shadow-lg);
+}
+
+.figma-exact-card-header {
+  padding: 24px 24px 0;
+}
+
+.figma-exact-card-body {
+  padding: 24px;
+}
+
+.figma-exact-card-footer {
+  padding: 0 24px 24px;
+}
+
+/* ===== FIGMA EXACT SECTIONS ===== */
+.figma-exact-section {
+  padding: 80px 0;
+}
+
+.figma-exact-section-hero {
+  background: var(--figma-exact-bg-secondary);
+  text-align: center;
+}
+
+.figma-exact-section-content {
+  background: var(--figma-exact-bg-primary);
+}
+
+/* ===== FIGMA EXACT TYPOGRAPHY ===== */
+.figma-exact-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--figma-exact-text-primary);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.figma-exact-subtitle {
+  font-size: 1.25rem;
+  color: var(--figma-exact-text-secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.figma-exact-text {
+  color: var(--figma-exact-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* ===== FIGMA EXACT RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .figma-exact-container {
+    padding: 0 16px;
+  }
+  
+  .figma-exact-header {
+    padding: 60px 0;
+  }
+  
+  .figma-exact-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .figma-exact-nav-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .figma-exact-nav-links {
+    gap: 16px;
+  }
+  
+  .figma-exact-grid-2,
+  .figma-exact-grid-3,
+  .figma-exact-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .figma-exact-section {
+    padding: 60px 0;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .figma-exact-grid-3,
+  .figma-exact-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== FIGMA EXACT ANIMATIONS ===== */
+@keyframes figma-exact-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes figma-exact-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.figma-exact-fade-in {
+  animation: figma-exact-fadeIn 0.6s ease-out;
+}
+
+.figma-exact-slide-up {
+  animation: figma-exact-slideUp 0.8s ease-out;
+}
+
+/* ===== FIGMA EXACT UTILITIES ===== */
+.figma-exact-text-center {
+  text-align: center;
+}
+
+.figma-exact-mb-4 {
+  margin-bottom: 16px;
+}
+
+.figma-exact-mb-8 {
+  margin-bottom: 32px;
+}
+
+.figma-exact-mb-12 {
+  margin-bottom: 48px;
+}
+
+.figma-exact-p-4 {
+  padding: 16px;
+}
+
+.figma-exact-p-8 {
+  padding: 32px;
+}
+
+.figma-exact-rounded {
+  border-radius: 8px;
+}
+
+.figma-exact-rounded-lg {
+  border-radius: 12px;
+}
+
+.figma-exact-shadow {
+  box-shadow: 0 1px 3px var(--figma-exact-shadow);
+}
+
+.figma-exact-shadow-lg {
+  box-shadow: 0 8px 25px var(--figma-exact-shadow-lg);
+}
+
