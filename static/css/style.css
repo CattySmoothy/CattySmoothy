@@ -494,6 +494,20 @@ main {
     background: var(--gray-100);
 }
 
+.pricing-info {
+    text-align: center;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--gray-200);
+}
+
+.pricing-message {
+    margin-top: var(--space-4);
+    color: var(--gray-600);
+    font-size: var(--text-sm);
+    font-style: italic;
+}
+
 /* Responsive Pricing */
 @media (max-width: 768px) {
     .pricing-table {
