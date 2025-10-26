@@ -502,6 +502,21 @@ main {
         max-width: 200px;
         justify-content: center;
     }
+    
+    .email-display {
+        flex-direction: column;
+        gap: var(--space-3);
+        text-align: center;
+    }
+    
+    .email-address {
+        font-size: var(--text-base);
+    }
+    
+    .copy-btn {
+        width: 44px;
+        height: 44px;
+    }
 }
 
 /* About Page Styles */
@@ -612,6 +627,105 @@ main {
 
 .about-cta .social-link:hover svg {
     transform: scale(1.1);
+}
+
+/* Email Contact Section */
+.email-contact {
+    margin-top: var(--space-12);
+    text-align: center;
+    padding: var(--space-8);
+    background: var(--gray-50);
+    border-radius: var(--radius-xl);
+}
+
+.email-contact h3 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: var(--space-3);
+}
+
+.email-contact p {
+    color: var(--gray-600);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-base);
+}
+
+.email-section {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.email-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
+}
+
+.email-display:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-md);
+}
+
+.email-address {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--gray-800);
+    letter-spacing: 0.5px;
+}
+
+.copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.copy-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.copy-feedback {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    opacity: 0;
+    transition: all var(--transition-normal);
+}
+
+.copy-feedback.success {
+    color: var(--success-color);
+    opacity: 1;
+}
+
+.copy-feedback.error {
+    color: var(--error-color);
+    opacity: 1;
 }
 
 /* Collections Page Styles */
