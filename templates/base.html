@@ -32,7 +32,22 @@
             <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
                 <li><a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
-                <li><a href="{{ url_for('collections') }}" class="{% if request.endpoint == 'collections' %}active{% endif %}">Collections</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle {% if request.endpoint == 'collections' %}active{% endif %}">
+                        Collections
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="dropdown-arrow">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('collections') }}">All Collections</a></li>
+                        <li><a href="{{ url_for('collections') }}?category=digital-art">Digital Art</a></li>
+                        <li><a href="{{ url_for('collections') }}?category=tutorials">Tutorials</a></li>
+                        <li><a href="{{ url_for('collections') }}?category=wallpapers">Wallpapers</a></li>
+                        <li><a href="{{ url_for('collections') }}?category=sketches">Sketches</a></li>
+                        <li><a href="{{ url_for('collections') }}?category=process-videos">Process Videos</a></li>
+                    </ul>
+                </li>
                 <li><a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">Profile</a></li>
             </ul>
         </div>

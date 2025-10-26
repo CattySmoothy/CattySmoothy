@@ -79,11 +79,82 @@ nav .container {
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-links a:hover {
     color: var(--primary-color);
     background: var(--gray-50);
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    gap: var(--space-1);
+}
+
+.dropdown-arrow {
+    transition: transform var(--transition-normal);
+    margin-top: 1px;
+}
+
+.dropdown:hover .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--transition-normal);
+    z-index: 1000;
+    list-style: none;
+    padding: var(--space-2) 0;
+    margin: 0;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: all var(--transition-fast);
+    border-radius: 0;
+}
+
+.dropdown-menu a:hover {
+    background: var(--gray-50);
+    color: var(--primary-color);
+    transform: none;
+}
+
+.dropdown-menu a.active {
+    background: var(--primary-color);
+    color: var(--white);
 }
 
 .nav-links a.active {
@@ -501,6 +572,27 @@ main {
         width: 100%;
         max-width: 200px;
         justify-content: center;
+    }
+    
+    /* Mobile Dropdown Styles */
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: var(--gray-50);
+        margin-top: var(--space-2);
+        border-radius: var(--radius-md);
+    }
+    
+    .dropdown:hover .dropdown-menu {
+        transform: none;
+    }
+    
+    .dropdown-arrow {
+        display: none;
     }
     
     .email-display {
