@@ -39,8 +39,33 @@
         
         <div class="content-block">
             <h2>Get in Touch</h2>
-            <p class="email-link">raichuuxxofficial@gmail.com</p>
+            <div class="email-display">
+                <span class="email-address">raichuuxxofficial@gmail.com</span>
+                <button class="copy-btn" onclick="copyEmail()" title="Copy email">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="copy-feedback" id="copyFeedback"></div>
         </div>
     </div>
 </section>
+
+<script>
+function copyEmail() {
+    const email = 'raichuuxxofficial@gmail.com';
+    const feedback = document.getElementById('copyFeedback');
+    
+    navigator.clipboard.writeText(email).then(function() {
+        feedback.textContent = 'Copied!';
+        feedback.className = 'copy-feedback show';
+        
+        setTimeout(function() {
+            feedback.textContent = '';
+            feedback.className = 'copy-feedback';
+        }, 2000);
+    });
+}
+</script>
 {% endblock %}
