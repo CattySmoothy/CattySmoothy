@@ -36,7 +36,7 @@ body {
 
 /* Header */
 .site-header {
-    padding: 48px 0;
+    padding: 64px 0 48px;
     background: linear-gradient(180deg, #8690A2 0%, #B8BCC8 100%);
 }
 
@@ -45,21 +45,21 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 .artist-name {
     font-family: var(--font-display);
-    font-size: 56px;
+    font-size: 64px;
     font-weight: 500;
     color: #E0DECD;
     letter-spacing: -1px;
 }
 
 .tagline {
-    font-size: 13px;
+    font-size: 14px;
     color: #E0DECD;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
 }
 
