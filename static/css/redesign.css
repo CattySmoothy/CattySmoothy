@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
 
 :root {
-    --color-bg: #FAFAFA;
+    --color-bg: #FAF8F5;
     --color-surface: #FFFFFF;
-    --color-text-primary: #1A1A1A;
-    --color-text-secondary: #6B6B6B;
-    --color-text-muted: #9B9B9B;
-    --color-accent: #1A1A1A;
+    --color-text-primary: #2D2A26;
+    --color-text-secondary: #6B6560;
+    --color-text-muted: #9B9590;
+    --color-accent: #2D2A26;
     
     --font-display: 'Playfair Display', serif;
     --font-body: 'DM Sans', sans-serif;
@@ -669,7 +669,7 @@ body {
 .cta-block {
     text-align: center;
     padding: 40px 32px;
-    background: #FAFAFA;
+    background: var(--color-bg);
     border-radius: 4px;
 }
 
