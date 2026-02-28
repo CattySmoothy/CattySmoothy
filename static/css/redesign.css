@@ -527,6 +527,7 @@ body {
 
 .content-block {
     margin-bottom: 40px;
+    text-align: center;
 }
 
 .content-block h2 {
@@ -537,6 +538,7 @@ body {
     text-transform: uppercase;
     color: var(--color-text-muted);
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .intro-text {
@@ -589,17 +591,28 @@ body {
 }
 
 .email-display {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    margin-top: 8px;
+    justify-content: space-between;
+    padding: 16px 20px;
+    margin-top: 12px;
+    background: #FFFFFF;
+    border: 1px solid #E8E5E0;
+    border-radius: 4px;
+    max-width: 400px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.email-display:hover {
+    border-color: #D2C296;
+    box-shadow: 0 0 0 1px #D2C296;
 }
 
 .email-address {
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: 14px;
     color: #864E3E;
+    letter-spacing: 0.5px;
 }
 
 .copy-btn {
@@ -607,7 +620,7 @@ body {
     border: none;
     cursor: pointer;
     color: #864E3E;
-    padding: 4px 8px;
+    padding: 4px 12px;
     display: flex;
     align-items: center;
     transition: opacity 0.2s ease;
@@ -615,6 +628,7 @@ body {
     font-size: 11px;
     letter-spacing: 1px;
     text-transform: uppercase;
+    flex-shrink: 0;
 }
 
 .copy-btn:hover {
