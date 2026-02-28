@@ -1,38 +1,34 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="profile-section slide-up">
-    <div class="profile-hero">
-        <h1 class="profile-title">About Raichuu</h1>
-        <p class="profile-subtitle">Welcome to my digital art journey! I'm passionate about creating beautiful digital artwork, sharing process videos, and helping others learn through tutorials.</p>
-    </div>
-    
-    <div class="profile-stats">
-        <div class="stat-item card">
-            <div class="card-body">
-                <h4>Artworks Created</h4>
-                <p class="stat-number">50+</p>
+<section class="page-content">
+    <div class="content-container">
+        <h1 class="page-title">Portfolio</h1>
+        <p class="page-subtitle">My creative journey</p>
+        
+        <div class="content-block">
+            <p class="intro-text">Welcome to my digital art journey! I'm passionate about creating beautiful digital artwork, sharing process videos, and helping others learn through tutorials.</p>
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-box">
+                <span class="stat-value">50+</span>
+                <span class="stat-label">Artworks</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">25+</span>
+                <span class="stat-label">Tutorials</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-value">1,200+</span>
+                <span class="stat-label">Community</span>
             </div>
         </div>
-        <div class="stat-item card">
-            <div class="card-body">
-                <h4>Tutorials Made</h4>
-                <p class="stat-number">25+</p>
-            </div>
-        </div>
-        <div class="stat-item card">
-            <div class="card-body">
-                <h4>Community Members</h4>
-                <p class="stat-number">1,200+</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="profile-message card">
-        <div class="card-body">
-            <h4>Let's Create Together!</h4>
-            <p>Join our community of digital artists and creators. Share your work, learn new techniques, and be part of an inspiring creative journey.</p>
-            <a href="#" class="btn btn-primary">Join Community</a>
+        
+        <div class="content-block cta-block">
+            <h2>Let's Create Together</h2>
+            <p>Join our community of digital artists and creators.</p>
+            <a href="{{ url_for('join') }}" class="cta-link">Join Community</a>
         </div>
     </div>
 </section>
