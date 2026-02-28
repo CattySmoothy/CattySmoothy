@@ -48,6 +48,14 @@ body {
     gap: 8px;
 }
 
+.tagline {
+    font-size: 14px;
+    color: #F5F3EE;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-left: 32px;
+}
+
 .artist-name {
     font-family: var(--font-display);
     font-size: 64px;
