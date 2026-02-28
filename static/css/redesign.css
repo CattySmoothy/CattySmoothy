@@ -599,7 +599,7 @@ body {
 .email-address {
     font-family: var(--font-body);
     font-size: 15px;
-    color: var(--color-text-primary);
+    color: #864E3E;
 }
 
 .copy-btn {
