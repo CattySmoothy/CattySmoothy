@@ -53,7 +53,10 @@ body {
     color: #FFFFFF;
     letter-spacing: 4px;
     text-transform: uppercase;
-    margin-left: 32px;
+    margin-left: 80px;
+    display: block;
+    width: 100%;
+    text-align: left;
 }
 
 .artist-name {
@@ -77,13 +80,6 @@ body {
     font-weight: 500;
     color: #E0DECD;
     letter-spacing: -1px;
-}
-
-.tagline {
-    font-size: 14px;
-    color: #E0DECD;
-    letter-spacing: 4px;
-    text-transform: uppercase;
 }
 
 /* Navigation */
