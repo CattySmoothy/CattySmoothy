@@ -42,11 +42,18 @@ body {
 
 .header-inner {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 8px;
-    padding-right: 15%;
+}
+
+.artist-name {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 500;
+    color: #2D2A26;
+    letter-spacing: -1px;
 }
 
 .tagline {
