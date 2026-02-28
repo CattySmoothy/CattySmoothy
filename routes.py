@@ -16,3 +16,7 @@ def register_routes(app):
     @app.route('/profile')
     def profile():
         return render_template('profile.html', title="Profile")
+
+    @app.route('/support')
+    def support():
+        return render_template('support.html', title="Support")

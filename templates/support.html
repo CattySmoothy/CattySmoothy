@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="support-header">
+    <a href="{{ url_for('home') }}" class="back-link">← Back to Home</a>
+    <h1>Support My Work</h1>
+    <p>Choose a tier that works for you</p>
+</section>
+
+<section class="pricing-grid">
+    <div class="pricing-card light">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <p class="plan-desc">Perfect for getting started</p>
+        <ul class="pricing-features">
+            <li>✓ Access to free tutorials</li>
+            <li>✓ Community forum access</li>
+        </ul>
+        <a href="#" class="plan-button">Get Started</a>
+    </div>
+    
+    <div class="pricing-card dark">
+        <h3>Basic</h3>
+        <div class="price">$1.99<span class="price-period">/mo</span></div>
+        <p class="plan-desc">For dedicated supporters</p>
+        <ul class="pricing-features">
+            <li>✓ All Free features</li>
+            <li>✓ Premium tutorials</li>
+            <li>✓ Live Q&A sessions</li>
+        </ul>
+        <a href="#" class="plan-button">Choose Basic</a>
+    </div>
+    
+    <div class="pricing-card featured">
+        <h3>Premium</h3>
+        <div class="price">$49.99<span class="price-period">/mo</span></div>
+        <p class="plan-desc">For serious artists</p>
+        <ul class="pricing-features">
+            <li>✓ All Basic features</li>
+            <li>✓ Personal feedback</li>
+            <li>✓ Exclusive brushes & tools</li>
+            <li>✓ Priority support</li>
+        </ul>
+        <a href="#" class="plan-button">Choose Premium</a>
+    </div>
+</section>
+
+<section class="support-footer">
+    <p>Questions? Reach out anytime.</p>
+</section>
+{% endblock %}
