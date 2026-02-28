@@ -272,8 +272,8 @@ body {
 }
 
 .pricing-card.featured {
-    background: var(--color-surface);
-    border: 2px solid var(--color-accent);
+    background: #D2C296;
+    border: 2px solid #D2C296;
 }
 
 .pricing-card h3 {
@@ -284,7 +284,7 @@ body {
 
 .pricing-card.light h3,
 .pricing-card.featured h3 {
-    color: var(--color-text-primary);
+    color: #2D2A26;
 }
 
 .pricing-card.dark h3 {
@@ -298,7 +298,7 @@ body {
 
 .pricing-card.light .price,
 .pricing-card.featured .price {
-    color: var(--color-text-primary);
+    color: #2D2A26;
 }
 
 .pricing-card.dark .price {
@@ -347,7 +347,7 @@ body {
 
 .pricing-card.light .pricing-features li,
 .pricing-card.featured .pricing-features li {
-    color: var(--color-text-secondary);
+    color: #2D2A26;
 }
 
 .pricing-card.dark .pricing-features li {
@@ -380,7 +380,7 @@ body {
 }
 
 .pricing-card.featured .plan-button {
-    background: var(--color-accent);
+    background: #2D2A26;
     color: #FFFFFF;
 }
 
