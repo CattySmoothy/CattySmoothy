@@ -282,9 +282,11 @@ body {
     font-weight: 500;
 }
 
-.pricing-card.light h3,
-.pricing-card.featured h3 {
-    color: #2D2A26;
+.pricing-card.featured h3,
+.pricing-card.featured .price,
+.pricing-card.featured .price-period,
+.pricing-card.featured .pricing-features li {
+    color: #FAF6F0;
 }
 
 .pricing-card.dark h3 {
@@ -380,8 +382,8 @@ body {
 }
 
 .pricing-card.featured .plan-button {
-    background: #2D2A26;
-    color: #FFFFFF;
+    background: #FAF6F0;
+    color: #2D2A26;
 }
 
 .support-footer {
