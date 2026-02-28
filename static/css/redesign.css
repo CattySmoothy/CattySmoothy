@@ -36,8 +36,8 @@ body {
 
 /* Header */
 .site-header {
-    padding: 24px 0;
-    background: var(--color-bg);
+    padding: 48px 0;
+    background: linear-gradient(180deg, #C9DDE9 0%, #E8EEF2 100%);
 }
 
 .header-inner {
@@ -45,7 +45,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .artist-name {
@@ -57,7 +57,7 @@ body {
 }
 
 .tagline {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-text-secondary);
     letter-spacing: 3px;
     text-transform: uppercase;
