@@ -268,7 +268,28 @@ body {
 }
 
 .pricing-card.dark {
-    background: linear-gradient(135deg, #3D3A36 0%, #2A2825 100%);
+    background: linear-gradient(135deg, #7B9EAD 0%, #5A7B8A 100%);
+}
+
+.pricing-card.dark h3 {
+    color: #FAF6F0;
+}
+
+.pricing-card.dark .price {
+    color: #FAF6F0;
+}
+
+.pricing-card.dark .price-period {
+    color: #D8E2E8;
+}
+
+.pricing-card.dark .pricing-features li {
+    color: #FAF6F0;
+}
+
+.pricing-card.dark .plan-button {
+    background: #FAF6F0;
+    color: #5A7B8A;
 }
 
 .pricing-card.featured {
@@ -316,7 +337,7 @@ body {
 
 .pricing-card.light .price-period,
 .pricing-card.featured .price-period {
-    color: #6B645A;
+    color: #FAF6F0;
 }
 
 .pricing-card.dark .price-period {
@@ -330,7 +351,7 @@ body {
 
 .pricing-card.light .plan-desc,
 .pricing-card.featured .plan-desc {
-    color: #6B645A;
+    color: #FAF6F0;
 }
 
 .pricing-card.dark .plan-desc {
