@@ -341,7 +341,7 @@ body {
 }
 
 .pricing-card.dark .price-period {
-    color: #9B958F;
+    color: #FAF6F0;
 }
 
 .plan-desc {
@@ -372,11 +372,11 @@ body {
 
 .pricing-card.light .pricing-features li,
 .pricing-card.featured .pricing-features li {
-    color: #2D2A26;
+    color: #FAF6F0;
 }
 
 .pricing-card.dark .pricing-features li {
-    color: #FFFFFF;
+    color: #FAF6F0;
 }
 
 .plan-button {
