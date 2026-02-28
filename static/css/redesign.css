@@ -53,10 +53,10 @@ body {
     color: #FFFFFF;
     letter-spacing: 4px;
     text-transform: uppercase;
-    margin-left: 80px;
+    margin-right: 80px;
     display: block;
     width: 100%;
-    text-align: left;
+    text-align: right;
 }
 
 .artist-name {
