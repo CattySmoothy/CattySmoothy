@@ -58,7 +58,7 @@ body {
 
 .tagline {
     font-size: 13px;
-    color: var(--color-text-secondary);
+    color: #E0DECD;
     letter-spacing: 3px;
     text-transform: uppercase;
 }
