@@ -323,7 +323,44 @@ main {
 /* Pricing Section */
 .pricing-section {
     padding: var(--space-16) 0;
-    background: var(--gray-50);
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-experience {
+    background: linear-gradient(135deg, #f5f3ff, #eef2ff);
+    border-radius: var(--radius-2xl, 32px);
+    padding: var(--space-12);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.8s ease, box-shadow 0.6s ease;
+}
+
+.pricing-experience::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.4), transparent 55%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+.pricing-experience > * {
+    position: relative;
+    z-index: 1;
+}
+
+.pricing-experience[data-active-plan="free"] {
+    background: linear-gradient(135deg, #fdf2f8, #fae8ff);
+}
+
+.pricing-experience[data-active-plan="basic"] {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+}
+
+.pricing-experience[data-active-plan="premium"] {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
 }
 
 .pricing-header {
@@ -347,9 +384,9 @@ main {
 
 .pricing-table {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-8);
-    max-width: 1000px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -365,6 +402,12 @@ main {
 .pricing-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-xl);
+}
+
+.pricing-card.active {
+    transform: translateY(-12px) scale(1.02);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18);
 }
 
 .pricing-card.premium {
@@ -496,9 +539,9 @@ main {
 
 .pricing-info {
     text-align: center;
-    margin-top: var(--space-8);
+    margin-top: var(--space-10, 2.5rem);
     padding-top: var(--space-6);
-    border-top: 1px solid var(--gray-200);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .pricing-message {
@@ -516,6 +559,10 @@ main {
         padding: 0 var(--space-4);
     }
     
+    .pricing-experience {
+        padding: var(--space-8) var(--space-6);
+    }
+    
     .pricing-card.premium {
         transform: none;
     }
@@ -530,6 +577,10 @@ main {
     
     .pricing-subtitle {
         font-size: var(--text-base);
+    }
+    
+    .pricing-card.active {
+        transform: translateY(-6px);
     }
 }
 
