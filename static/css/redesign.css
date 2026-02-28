@@ -268,7 +268,7 @@ body {
 }
 
 .pricing-card.dark {
-    background: linear-gradient(135deg, #7B9EAD 0%, #5A7B8A 100%);
+    background: linear-gradient(135deg, #8FA693 0%, #7A8F7D 100%);
 }
 
 .pricing-card.dark h3 {
@@ -289,7 +289,7 @@ body {
 
 .pricing-card.dark .plan-button {
     background: #FAF6F0;
-    color: #5A7B8A;
+    color: #7A8F7D;
 }
 
 .pricing-card.featured {
@@ -370,7 +370,10 @@ body {
     list-style: none;
 }
 
-.pricing-card.light .pricing-features li,
+.pricing-card.light .pricing-features li {
+    color: #4A463F;
+}
+
 .pricing-card.featured .pricing-features li {
     color: #FAF6F0;
 }
