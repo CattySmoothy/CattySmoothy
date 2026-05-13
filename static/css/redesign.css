@@ -460,6 +460,15 @@ body {
     opacity: 1;
 }
 
+.about-content {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.about-content .content-container {
+    width: auto;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .works-grid {
