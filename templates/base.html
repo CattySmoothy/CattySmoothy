@@ -21,8 +21,7 @@
     <header class="site-header">
         <div class="container">
             <div class="header-inner">
-                <h1 class="artist-name">Raichuu</h1>
-                <p class="tagline">- AKA JUST ANOTHER ARTIST</p>
+
             </div>
         </div>
     </header>
@@ -32,7 +31,7 @@
             <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">WORK</a>
             <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">ABOUT</a>
             <a href="{{ url_for('support') }}" class="{% if request.endpoint == 'support' %}active{% endif %}">SUPPORT ME</a>
-            <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">PORTFOLIO</a>
+            <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">COMMUNITY</a>
         </div>
     </nav>
     
