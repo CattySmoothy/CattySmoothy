@@ -471,7 +471,7 @@ body {
 }
 
 .about-content .content-container {
-    width: auto;
+    width: fit-content;
 }
 
 /* Responsive */
