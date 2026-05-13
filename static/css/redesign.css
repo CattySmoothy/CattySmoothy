@@ -420,8 +420,7 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #FFFFFF;
-    border: 1px solid #D5E0E8;
+    background: #6B8BA8;
     padding: 12px 20px;
     border-radius: var(--radius-md);
     max-width: 400px;
@@ -436,7 +435,7 @@ body {
 .copy-btn {
     background: #FFFFFF;
     color: #6B8BA8;
-    border: 1px solid #C5D8E8;
+    border: none;
     padding: 6px 16px;
     border-radius: var(--radius-sm);
     font-size: 12px;
@@ -450,9 +449,8 @@ body {
 }
 
 .copy-btn:active {
-    box-shadow: 0 0 14px rgba(107, 139, 168, 0.5);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.4);
     background: #E8F1FA;
-    border-color: #6B8BA8;
 }
 
 .copy-feedback {
