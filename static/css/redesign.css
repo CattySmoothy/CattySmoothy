@@ -446,6 +446,7 @@ body {
 
 .copy-btn:hover {
     transform: scale(1.05);
+    background: #FFFFFF;
 }
 
 .copy-btn:active {
@@ -696,38 +697,6 @@ body {
     border-radius: 4px;
     max-width: 400px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.email-display:hover {
-    border-color: #D2C296;
-    box-shadow: 0 0 0 1px #D2C296;
-}
-
-.email-address {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: #864E3E;
-    letter-spacing: 0.5px;
-}
-
-.copy-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #7B9EAD;
-    padding: 4px 12px;
-    display: flex;
-    align-items: center;
-    transition: opacity 0.2s ease;
-    font-family: var(--font-body);
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-}
-
-.copy-btn:hover {
-    opacity: 0.6;
 }
 
 .copy-feedback {
