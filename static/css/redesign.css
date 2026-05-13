@@ -51,9 +51,8 @@ body {
 /* Navigation */
 .main-nav {
     display: flex;
-    justify-content: center;
-    gap: 96px;
-    padding: 24px 0;
+    justify-content: space-evenly;
+    padding: 24px 48px;
     border-bottom: 1px solid #E5E5E5;
 }
 
@@ -467,7 +466,8 @@ body {
 
 @media (max-width: 600px) {
     .main-nav {
-        gap: 24px;
+        gap: 16px;
+        padding: 16px 16px;
     }
     
     .works-grid {
