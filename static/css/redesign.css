@@ -201,15 +201,16 @@ body {
 
 .support-header h1 {
     font-family: var(--font-display);
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 500;
     color: var(--color-text-primary);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .support-header p {
-    font-size: 18px;
-    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--color-text-muted);
 }
 
 /* Pricing Grid */
@@ -451,10 +452,6 @@ body {
 .support-right .support-header {
     padding: 20px 0;
     text-align: right;
-}
-
-.support-right .support-header h1 {
-    font-size: 32px;
 }
 
 /* Responsive */
