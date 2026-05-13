@@ -428,12 +428,12 @@ body {
 
 .email-address {
     font-size: 14px;
-    color: #FAF6F0;
+    color: #C5DEE8;
     font-family: var(--font-body);
 }
 
 .copy-btn {
-    background: #FAF6F0;
+    background: #FFFFFF;
     color: #6B8BA8;
     border: none;
     padding: 6px 16px;
@@ -441,11 +441,16 @@ body {
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .copy-btn:hover {
     transform: scale(1.05);
+}
+
+.copy-btn:active {
+    box-shadow: 0 0 12px rgba(107, 139, 168, 0.5);
+    background: #E8F0F8;
 }
 
 .copy-feedback {
