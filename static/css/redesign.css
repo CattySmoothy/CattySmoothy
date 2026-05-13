@@ -48,37 +48,6 @@ body {
     gap: 8px;
 }
 
-.tagline {
-    font-size: 14px;
-    color: #2D2A26;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-left: 40px;
-}
-
-.artist-name {
-    font-family: var(--font-display);
-    font-size: 64px;
-    font-weight: 500;
-    color: #2D2A26;
-    letter-spacing: -1px;
-}
-
-.tagline {
-    font-size: 14px;
-    color: #F5F3EE;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-}
-
-.artist-name {
-    font-family: var(--font-display);
-    font-size: 64px;
-    font-weight: 500;
-    color: #E0DECD;
-    letter-spacing: -1px;
-}
-
 /* Navigation */
 .main-nav {
     display: flex;
@@ -337,20 +306,6 @@ body {
     color: #FAF6F0;
 }
 
-.plan-desc {
-    font-size: 14px;
-    margin-bottom: 8px;
-}
-
-.pricing-card.light .plan-desc,
-.pricing-card.featured .plan-desc {
-    color: #FAF6F0;
-}
-
-.pricing-card.dark .plan-desc {
-    color: var(--color-text-muted);
-}
-
 .pricing-features {
     display: flex;
     flex-direction: column;
@@ -483,10 +438,6 @@ body {
 }
 
 @media (max-width: 600px) {
-    .artist-name {
-        font-size: 36px;
-    }
-    
     .main-nav {
         gap: 24px;
     }
@@ -637,12 +588,6 @@ body {
     text-align: center;
 }
 
-.intro-text {
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.8;
-    color: var(--color-text-secondary);
-}
 
 .simple-list {
     list-style: none;
@@ -686,19 +631,6 @@ body {
     color: var(--color-text-primary);
 }
 
-.email-display {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    margin: 12px auto 0;
-    background: #FFFFFF;
-    border: 1px solid #E8E5E0;
-    border-radius: 4px;
-    max-width: 400px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
 .copy-feedback {
     font-family: var(--font-body);
     font-size: 12px;
@@ -713,38 +645,7 @@ body {
 .copy-feedback.show {
     opacity: 1;
 }
-
-/* Community Page */
-.stats-row {
-    display: flex;
-    justify-content: center;
-    gap: 48px;
-    margin-bottom: 48px;
-    padding: 32px 0;
-}
-
-.stat-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-.stat-value {
-    font-family: var(--font-display);
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-}
-
-.stat-label {
-    font-family: var(--font-body);
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-}
-
+   
 .cta-block {
     text-align: center;
     padding: 40px 32px;
