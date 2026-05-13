@@ -421,13 +421,41 @@ body {
     opacity: 1;
 }
 
-.about-content {
+.about-layout {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
 }
 
-.about-content .content-container {
-    width: fit-content;
+.about-content {
+    flex: 1;
+}
+
+.support-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.support-right .pricing-grid {
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 20px 0;
+}
+
+.support-right .pricing-card {
+    width: 280px;
+}
+
+.support-right .support-header {
+    padding: 20px 0;
+    text-align: right;
+}
+
+.support-right .support-header h1 {
+    font-size: 32px;
 }
 
 /* Responsive */
