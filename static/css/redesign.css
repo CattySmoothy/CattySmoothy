@@ -52,7 +52,7 @@ body {
 .main-nav {
     display: flex;
     justify-content: center;
-    gap: 48px;
+    gap: 96px;
     padding: 24px 0;
     border-bottom: 1px solid #E5E5E5;
 }
