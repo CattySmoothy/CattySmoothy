@@ -21,7 +21,13 @@
     <header class="site-header">
         <div class="container">
             <div class="header-inner">
-
+                <div class="theme-picker">
+                    <button class="theme-btn active" data-theme="default" title="Default" style="--theme-color: #8690A2"></button>
+                    <button class="theme-btn" data-theme="ocean" title="Ocean" style="--theme-color: #4A7A9A"></button>
+                    <button class="theme-btn" data-theme="forest" title="Forest" style="--theme-color: #4A7A5A"></button>
+                    <button class="theme-btn" data-theme="lavender" title="Lavender" style="--theme-color: #7A5A9A"></button>
+                    <button class="theme-btn" data-theme="rose" title="Rose" style="--theme-color: #9A5A5A"></button>
+                </div>
             </div>
         </div>
     </header>
@@ -43,5 +49,35 @@
             <p>&copy; 2026 Raichuu. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        (function() {
+            const html = document.documentElement;
+            const saved = localStorage.getItem('theme');
+            if (saved && saved !== 'default') {
+                html.setAttribute('data-theme', saved);
+            }
+
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const theme = this.dataset.theme;
+                    if (theme === 'default') {
+                        html.removeAttribute('data-theme');
+                    } else {
+                        html.setAttribute('data-theme', theme);
+                    }
+                    localStorage.setItem('theme', theme);
+                });
+            });
+
+            if (saved) {
+                const active = document.querySelector('.theme-btn[data-theme="' + saved + '"]');
+                if (active) active.classList.add('active');
+                else document.querySelector('.theme-btn[data-theme="default"]').classList.add('active');
+            }
+        })();
+    </script>
 </body>
 </html>
