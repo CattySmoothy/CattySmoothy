@@ -629,13 +629,28 @@ body {
     padding: 60px 0;
 }
 
-.about-box {
+.about-left {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     flex: 1;
     max-width: 480px;
+}
+
+.about-box {
+    flex: 1;
     background: var(--color-surface);
     border-radius: var(--radius-md);
     padding: 40px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.about-layout > .about-box {
+    max-width: 480px;
+}
+
+.about-box .content-block h2 {
+    text-align: left;
 }
 
 .about-box .page-title {
