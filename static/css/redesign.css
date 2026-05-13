@@ -416,6 +416,50 @@ body {
     color: var(--color-text-muted);
 }
 
+.email-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #6B8BA8;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    max-width: 400px;
+}
+
+.email-address {
+    font-size: 14px;
+    color: #FAF6F0;
+    font-family: var(--font-body);
+}
+
+.copy-btn {
+    background: #FAF6F0;
+    color: #6B8BA8;
+    border: none;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.copy-btn:hover {
+    transform: scale(1.05);
+}
+
+.copy-feedback {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.copy-feedback.show {
+    opacity: 1;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .works-grid {
