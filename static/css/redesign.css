@@ -623,35 +623,58 @@ body {
 
 .about-layout {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     gap: 48px;
+    padding: 60px 0;
 }
 
-.about-content {
+.about-box {
     flex: 1;
+    max-width: 480px;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
-.support-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+.about-box .page-title {
+    margin-bottom: 4px;
 }
 
-.support-right .pricing-grid {
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 20px 0;
+.about-box .page-content {
+    padding: 0;
+    min-height: 0;
 }
 
-.support-right .pricing-card {
-    width: 280px;
+.about-box .content-container {
+    max-width: none;
+    margin: 0;
 }
 
-.support-right .support-header {
-    padding: 20px 0;
-    text-align: right;
+.about-box .pricing-grid {
+    padding: 0;
+    gap: 20px;
+}
+
+.about-box .pricing-card {
+    width: 100%;
+}
+
+.about-box .support-header {
+    padding: 0;
+    text-align: left;
+}
+
+.about-box .support-footer {
+    padding: 20px 0 0;
+    text-align: left;
+    background: none;
+}
+
+.about-box .support-footer p {
+    font-size: 14px;
+    color: var(--color-text-muted);
 }
 
 /* Responsive */
