@@ -46,7 +46,14 @@
                             </div>
                         </div>
                         <div class="hsl-row">
-                            <span class="hsl-label">L</span>
+                            <span class="moon-label" id="moonLabel">
+                                <svg class="moon-icon moon-bright" viewBox="0 0 24 24" width="16" height="16">
+                                    <circle cx="12" cy="12" r="10" fill="currentColor"/>
+                                </svg>
+                                <svg class="moon-icon moon-dark" viewBox="0 0 24 24" width="16" height="16" style="display:none">
+                                    <path d="M12 2a10 10 0 1 0 10 10 8 8 0 0 1-8-8 8 8 0 0 1 8-8z" fill="currentColor"/>
+                                </svg>
+                            </span>
                             <div class="hsl-track" id="lightTrack">
                                 <div class="hsl-knob" id="knobLight" data-axis="light">
                                     <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
@@ -146,16 +153,27 @@
                 // Track glow matches current color
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
+
+                // Moon icon
+                const brightMoon = document.querySelector('.moon-bright');
+                const darkMoon = document.querySelector('.moon-dark');
+                if (light <= 50) {
+                    brightMoon.style.display = '';
+                    darkMoon.style.display = 'none';
+                } else {
+                    brightMoon.style.display = 'none';
+                    darkMoon.style.display = '';
+                }
             }
 
-            // Generate full theme from HSL (same as before)
+            // Generate full theme from HSL
             function generateTheme(h, s, l) {
-                const lf = clamp((l - 10) / 75, 0, 1);
-                const bgL = clamp(100 - (100 - l) * 0.25, 60, 98);
-                const surfL = clamp(bgL + 2, 65, 100);
-                const text1L = clamp(16 + 78 * (1 - lf), 8, 94);
-                const text2L = clamp(38 + 42 * (1 - lf), 20, 80);
-                const text3L = clamp(56 + 14 * (1 - lf), 30, 70);
+                const lf = clamp(l / 85, 0, 1);
+                const bgL = clamp(l * 0.7 + 20, 18, 97);
+                const surfL = clamp(bgL - 2, 20, 100);
+                const text1L = clamp(12 + 85 * (1 - lf), 12, 97);
+                const text2L = clamp(30 + 55 * (1 - lf), 30, 85);
+                const text3L = clamp(45 + 30 * (1 - lf), 45, 75);
                 const hdrH = ((h + 200) % 360 + 360) % 360;
                 const hdrS = clamp(s - 5, 3, 40);
                 const hdr1L = clamp(48 + 20 * lf, 25, 68);

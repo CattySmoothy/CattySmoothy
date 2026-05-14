@@ -265,6 +265,20 @@ body {
     flex-shrink: 0;
 }
 
+.moon-label {
+    width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.moon-icon {
+    display: block;
+    line-height: 0;
+}
+
 .hsl-track {
     position: relative;
     height: 14px;
