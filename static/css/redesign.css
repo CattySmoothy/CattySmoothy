@@ -716,28 +716,61 @@ body {
     font-size: 14px;
     color: var(--color-email-text);
     font-family: var(--font-body);
+    flex: 1;
+    min-width: 0;
 }
 
 .copy-btn {
-    background: var(--color-surface);
+    flex-shrink: 0;
+    background: var(--color-email-bg);
     color: var(--color-email-btn-text);
-    border: none;
-    padding: 6px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 18px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .copy-btn:hover {
     transform: scale(1.05);
-    background: var(--color-surface);
+    background: var(--color-email-bg);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .copy-btn:active {
-    box-shadow: 0 0 14px rgba(255, 255, 255, 0.4);
-    background: var(--color-email-btn-hover-bg);
+    background: var(--color-accent);
+    color: var(--color-on-dark);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
+    transform: scale(1.05);
+}
+
+.commission-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-accent) 70%, #5A9A6A);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 40%, #5A9A6A);
+    flex-shrink: 0;
+}
+
+.status-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-accent) 80%, #5A9A6A);
 }
 
 .copy-feedback {
