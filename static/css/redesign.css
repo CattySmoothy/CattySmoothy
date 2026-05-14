@@ -753,15 +753,15 @@ body {
 
 .copy-btn {
     flex-shrink: 0;
-    background: var(--color-card-dark-btn-bg);
-    color: var(--color-card-dark-btn-text);
+    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
+    color: var(--color-text-primary);
     border: none;
     padding: 6px 18px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
 .copy-btn:hover {
@@ -787,41 +787,6 @@ body {
 
 .copy-feedback.show {
     opacity: 1;
-}
-
-.email-address {
-    font-size: 14px;
-    color: var(--color-email-text);
-    font-family: var(--font-body);
-    flex: 1;
-    min-width: 0;
-}
-
-.copy-btn {
-    flex-shrink: 0;
-    background: var(--color-email-bg);
-    color: var(--color-email-btn-text);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 6px 18px;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.copy-btn:hover {
-    transform: scale(1.05);
-    background: var(--color-email-bg);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.copy-btn:active {
-    background: var(--color-accent);
-    color: var(--color-on-dark);
-    border-color: var(--color-accent);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
-    transform: scale(1.05);
 }
 
 .commission-status {
