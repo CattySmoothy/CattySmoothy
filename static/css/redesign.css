@@ -753,26 +753,25 @@ body {
 
 .copy-btn {
     flex-shrink: 0;
-    background: transparent;
-    color: var(--color-accent);
-    border: 1px solid var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
     padding: 6px 18px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
 .copy-btn:hover {
-    background: color-mix(in srgb, var(--color-accent) 15%, transparent);
     transform: scale(1.05);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 35%, transparent);
 }
 
 .copy-btn:active {
     background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
     color: var(--color-card-dark-solid);
-    border-color: color-mix(in srgb, var(--color-accent) 30%, white 70%);
     box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
     transform: scale(1.05);
 }
