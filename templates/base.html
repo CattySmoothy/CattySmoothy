@@ -21,12 +21,19 @@
     <header class="site-header">
         <div class="container">
             <div class="header-inner">
-                <div class="theme-picker">
-                    <button class="theme-btn active" data-theme="default" title="Default" style="--theme-gradient: linear-gradient(135deg, #D4C9B8, #B8C4D0)"></button>
-                    <button class="theme-btn" data-theme="ocean" title="Ocean" style="--theme-gradient: linear-gradient(135deg, #A8D4E8, #7BB8D8)"></button>
-                    <button class="theme-btn" data-theme="forest" title="Forest" style="--theme-gradient: linear-gradient(135deg, #B8D8B8, #8EC8A0)"></button>
-                    <button class="theme-btn" data-theme="lavender" title="Lavender" style="--theme-gradient: linear-gradient(135deg, #D0C0E8, #B8A0D8)"></button>
-                    <button class="theme-btn" data-theme="rose" title="Rose" style="--theme-gradient: linear-gradient(135deg, #E8C0C0, #D8A0A0)"></button>
+                <div class="sparkle-picker" id="sparklePicker">
+                    <div class="sparkle-track" id="sparkleTrack">
+                        <div class="sparkle-dot" data-angle="0"></div>
+                        <div class="sparkle-dot" data-angle="72"></div>
+                        <div class="sparkle-dot" data-angle="144"></div>
+                        <div class="sparkle-dot" data-angle="216"></div>
+                        <div class="sparkle-dot" data-angle="288"></div>
+                    </div>
+                    <div class="sparkle-handle" id="sparkleHandle">
+                        <svg viewBox="0 0 24 24" width="18" height="18">
+                            <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,30 +60,134 @@
     <script>
         (function() {
             const html = document.documentElement;
-            const saved = localStorage.getItem('theme');
-            if (saved && saved !== 'default') {
-                html.setAttribute('data-theme', saved);
+            const saved = localStorage.getItem('theme') || 'default';
+
+            const themes = ['default', 'ocean', 'forest', 'lavender', 'rose'];
+            const angles = [0, 72, 144, 216, 288];
+            const radius = 18;
+
+            const picker = document.getElementById('sparklePicker');
+            const handle = document.getElementById('sparkleHandle');
+            const dots = document.querySelectorAll('.sparkle-dot');
+
+            function setTheme(theme) {
+                if (theme === 'default') {
+                    html.removeAttribute('data-theme');
+                } else {
+                    html.setAttribute('data-theme', theme);
+                }
+                localStorage.setItem('theme', theme);
+                dots.forEach(d => {
+                    d.classList.toggle('active', d.dataset.angle == angles[themes.indexOf(theme)]);
+                });
             }
 
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    const theme = this.dataset.theme;
-                    if (theme === 'default') {
-                        html.removeAttribute('data-theme');
-                    } else {
-                        html.setAttribute('data-theme', theme);
+            function angleToPos(angle) {
+                const rad = angle * Math.PI / 180;
+                const cx = picker.offsetWidth / 2;
+                const cy = picker.offsetHeight / 2;
+                return {
+                    x: cx + radius * Math.sin(rad),
+                    y: cy - radius * Math.cos(rad)
+                };
+            }
+
+            function moveHandleTo(angle, animate) {
+                const pos = angleToPos(angle);
+                if (animate) {
+                    handle.style.transition = 'left 0.2s ease, top 0.2s ease';
+                } else {
+                    handle.style.transition = 'none';
+                }
+                handle.style.left = pos.x + 'px';
+                handle.style.top = pos.y + 'px';
+            }
+
+            function snapToNearest(px, py) {
+                const cx = picker.offsetWidth / 2;
+                const cy = picker.offsetHeight / 2;
+                const dx = px - cx;
+                const dy = -(py - cy);
+                let angle = Math.atan2(dx, dy) * 180 / Math.PI;
+                if (angle < 0) angle += 360;
+                let minDist = Infinity;
+                let best = 0;
+                for (let i = 0; i < angles.length; i++) {
+                    let diff = Math.abs(angle - angles[i]);
+                    if (diff > 180) diff = 360 - diff;
+                    if (diff < minDist) {
+                        minDist = diff;
+                        best = i;
                     }
-                    localStorage.setItem('theme', theme);
-                });
+                }
+                return best;
+            }
+
+            let dragging = false;
+            let dragAngle = null;
+
+            function startDrag(e) {
+                dragging = true;
+                handle.classList.add('glow');
+                handle.style.transition = 'none';
+                const t = e.type.startsWith('touch') ? e.touches[0] : e;
+                const rect = picker.getBoundingClientRect();
+                const px = t.clientX - rect.left;
+                const py = t.clientY - rect.top;
+                dragAngle = snapToNearest(px, py);
+                moveHandleTo(angles[dragAngle]);
+                e.preventDefault();
+            }
+
+            function onDrag(e) {
+                if (!dragging) return;
+                const t = e.type.startsWith('touch') ? e.touches[0] : e;
+                const rect = picker.getBoundingClientRect();
+                const px = Math.max(0, Math.min(rect.width, t.clientX - rect.left));
+                const py = Math.max(0, Math.min(rect.height, t.clientY - rect.top));
+                const idx = snapToNearest(px, py);
+                if (idx !== dragAngle) {
+                    dragAngle = idx;
+                    moveHandleTo(angles[idx]);
+                    setTheme(themes[idx]);
+                }
+                e.preventDefault();
+            }
+
+            function endDrag(e) {
+                if (!dragging) return;
+                dragging = false;
+                handle.classList.remove('glow');
+                if (dragAngle !== null) {
+                    moveHandleTo(angles[dragAngle], true);
+                }
+            }
+
+            // Mouse events
+            handle.addEventListener('mousedown', startDrag);
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', endDrag);
+
+            // Touch events
+            handle.addEventListener('touchstart', startDrag, { passive: false });
+            document.addEventListener('touchmove', onDrag, { passive: false });
+            document.addEventListener('touchend', endDrag);
+
+            // Initialize
+            const startIdx = themes.indexOf(saved) >= 0 ? themes.indexOf(saved) : 0;
+            moveHandleTo(angles[startIdx]);
+            dots.forEach(d => {
+                d.classList.toggle('active', d.dataset.angle == angles[startIdx]);
             });
 
-            if (saved) {
-                const active = document.querySelector('.theme-btn[data-theme="' + saved + '"]');
-                if (active) active.classList.add('active');
-                else document.querySelector('.theme-btn[data-theme="default"]').classList.add('active');
-            }
+            // Position dots
+            dots.forEach(d => {
+                const a = parseFloat(d.dataset.angle);
+                const pos = angleToPos(a);
+                d.style.left = pos.x + 'px';
+                d.style.top = pos.y + 'px';
+                d.style.transform = 'translate(-50%, -50%)';
+            });
         })();
     </script>
 </body>
