@@ -21,29 +21,33 @@
     <header class="site-header">
         <div class="container">
             <div class="header-inner">
-                <div class="constellation-picker" id="constellationPicker">
-                    <div class="constellation-bg" id="constellationBg"></div>
-                    <svg class="constellation-lines" id="constellationLines">
-                        <line id="lineHS" />
-                        <line id="lineHL" />
-                        <line id="lineSL" />
-                    </svg>
-                    <div class="constellation-dot hue-dot" id="dotHue" data-axis="hue">
-                        <div class="dot-ring"></div>
+                <div class="hsl-picker" id="hslPicker">
+                    <div class="hsl-bars">
+                        <div class="hsl-row">
+                            <span class="hsl-label">H</span>
+                            <div class="hsl-track" id="hueTrack">
+                                <div class="hsl-fill" id="hueFill"></div>
+                                <div class="hsl-knob" id="knobHue" data-axis="hue"></div>
+                            </div>
+                        </div>
+                        <div class="hsl-row">
+                            <span class="hsl-label">S</span>
+                            <div class="hsl-track" id="satTrack">
+                                <div class="hsl-fill" id="satFill"></div>
+                                <div class="hsl-knob" id="knobSat" data-axis="sat"></div>
+                            </div>
+                        </div>
+                        <div class="hsl-row">
+                            <span class="hsl-label">L</span>
+                            <div class="hsl-track" id="lightTrack">
+                                <div class="hsl-fill" id="lightFill"></div>
+                                <div class="hsl-knob" id="knobLight" data-axis="light"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="constellation-dot sat-dot" id="dotSat" data-axis="sat">
-                        <div class="dot-ring"></div>
-                    </div>
-                    <div class="constellation-dot light-dot" id="dotLight" data-axis="light">
-                        <div class="dot-ring"></div>
-                    </div>
-                    <div class="constellation-label">
-                        <span class="label-hue">H</span>
-                        <span class="label-sat">S</span>
-                        <span class="label-light">L</span>
-                    </div>
-                    <div class="constellation-sparkle" id="constellationSparkle" title="Apply theme">
-                        <svg viewBox="0 0 24 24" width="16" height="16">
+                    <div class="hsl-swatch" id="hslSwatch"></div>
+                    <div class="hsl-sparkle" id="hslSparkle" title="Apply theme">
+                        <svg viewBox="0 0 24 24" width="14" height="14">
                             <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
                         </svg>
                     </div>
@@ -74,74 +78,60 @@
         (function() {
             const html = document.documentElement;
 
-            // Default HSL values producing the original warm theme
             const DEFAULT_H = 36, DEFAULT_S = 18, DEFAULT_L = 85;
             let hue = DEFAULT_H, sat = DEFAULT_S, light = DEFAULT_L;
 
-            // Load saved theme or default
-            const saved = localStorage.getItem('constellationTheme');
-            let initialHSL;
+            const saved = localStorage.getItem('hslTheme');
             if (saved) {
                 try {
-                    initialHSL = JSON.parse(saved);
-                    hue = initialHSL.h;
-                    sat = initialHSL.s;
-                    light = initialHSL.l;
-                } catch(e) { setDefault(); }
+                    const p = JSON.parse(saved);
+                    hue = p.h; sat = p.s; light = p.l;
+                } catch(e) {}
             }
-            // Ensure these are applied on load
-            applyTheme(hue, sat, light, false);
-            applied = true;
 
-            const picker = document.getElementById('constellationPicker');
-            const bg = document.getElementById('constellationBg');
-            const dots = {
-                hue: document.getElementById('dotHue'),
-                sat: document.getElementById('dotSat'),
-                light: document.getElementById('dotLight')
+            // Track references
+            const tracks = {
+                hue: document.getElementById('hueTrack'),
+                sat: document.getElementById('satTrack'),
+                light: document.getElementById('lightTrack')
             };
-            const lines = {
-                hs: document.getElementById('lineHS'),
-                hl: document.getElementById('lineHL'),
-                sl: document.getElementById('lineSL')
+            const knobs = {
+                hue: document.getElementById('knobHue'),
+                sat: document.getElementById('knobSat'),
+                light: document.getElementById('knobLight')
             };
-            const sparkle = document.getElementById('constellationSparkle');
+            const swatch = document.getElementById('hslSwatch');
+            const sparkle = document.getElementById('hslSparkle');
 
-            const W = 170, H = 100;
-            const PAD = 12;
-
-            function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-            const UW = W - 2 * PAD, UH = H - 2 * PAD;
-
-            // Map dot position to value
-            function posToValue(axis, x, y) {
-                switch(axis) {
-                    case 'hue': return Math.round(clamp((x - PAD) / UW, 0, 1) * 360);
-                    case 'sat': return Math.round(clamp(1 - (y - PAD) / UH, 0, 1) * 100);
-                    case 'light': return Math.round(clamp(1 - (y - PAD) / UH, 0, 1) * 100);
-                }
-            }
-
-            // Map value to dot position
-            function valueToPos(axis, val) {
-                switch(axis) {
-                    case 'hue': return { x: PAD + (val / 360) * UW, y: H * 0.25 };
-                    case 'sat': return { x: W * 0.75, y: PAD + (1 - val / 100) * UH };
-                    case 'light': return { x: W * 0.5, y: PAD + (1 - val / 100) * UH };
-                }
-            }
+            function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
 
             function hslStr(h, s, l) {
                 return `hsl(${((h % 360) + 360) % 360}, ${clamp(s, 0, 100)}%, ${clamp(l, 0, 100)}%)`;
             }
-
             function hslaStr(h, s, l, a) {
                 return `hsla(${((h % 360) + 360) % 360}, ${clamp(s, 0, 100)}%, ${clamp(l, 0, 100)}%, ${a})`;
             }
 
-            // Generate full theme from HSL
+            // Update sat/light track gradients + knob positions + swatch
+            function updateUI() {
+                document.documentElement.style.setProperty('--hue-deg', hue);
+
+                // Knob positions
+                const huePct = hue / 360;
+                const satPct = sat / 100;
+                const lightPct = light / 100;
+
+                knobs.hue.style.left = (huePct * 100) + '%';
+                knobs.sat.style.left = (satPct * 100) + '%';
+                knobs.light.style.left = (lightPct * 100) + '%';
+
+                // Swatch
+                swatch.style.background = hslStr(hue, sat, light);
+            }
+
+            // Generate full theme from HSL (same as before)
             function generateTheme(h, s, l) {
-                const lf = clamp((l - 10) / 75, 0, 1); // 0 at l=10, 1 at l=85+
+                const lf = clamp((l - 10) / 75, 0, 1);
                 const bgL = clamp(100 - (100 - l) * 0.25, 60, 98);
                 const surfL = clamp(bgL + 2, 65, 100);
                 const text1L = clamp(16 + 78 * (1 - lf), 8, 94);
@@ -194,133 +184,82 @@
                 };
             }
 
-            function applyTheme(h, s, l, doSave) {
-                const vars = generateTheme(h, s, l);
+            function applyTheme() {
+                const vars = generateTheme(hue, sat, light);
                 for (const [key, val] of Object.entries(vars)) {
                     html.style.setProperty(key, val);
                 }
-                if (doSave !== false) {
-                    localStorage.setItem('constellationTheme', JSON.stringify({h, s, l}));
-                }
-                // Update background preview
-                bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
-                // Mark applied
+                localStorage.setItem('hslTheme', JSON.stringify({h: hue, s: sat, l: light}));
                 sparkle.classList.add('lit');
-                setTimeout(() => sparkle.classList.remove('lit'), 1500);
-                // Update constellation lines color
-                document.querySelectorAll('.constellation-lines line').forEach(line => {
-                    line.setAttribute('stroke', vars['--color-on-dark']);
-                });
+                setTimeout(() => sparkle.classList.remove('lit'), 1200);
             }
 
-            function updateDots() {
-                for (const [axis, dot] of Object.entries(dots)) {
-                    let val;
-                    switch(axis) {
-                        case 'hue': val = hue; break;
-                        case 'sat': val = sat; break;
-                        case 'light': val = light; break;
-                    }
-                    const pos = valueToPos(axis, val);
-                    dot.style.left = pos.x + 'px';
-                    dot.style.top = pos.y + 'px';
-                }
-                updateLines();
-            }
+            // --- Slider drag logic ---
+            let activeKnob = null;
+            let activeAxis = null;
 
-            function updateLines() {
-                const px = {};
-                for (const [axis, dot] of Object.entries(dots)) {
-                    px[axis] = {
-                        x: parseFloat(dot.style.left) || W/2,
-                        y: parseFloat(dot.style.top) || H/2
-                    };
-                }
-                lines.hs.setAttribute('x1', px.hue.x);
-                lines.hs.setAttribute('y1', px.hue.y);
-                lines.hs.setAttribute('x2', px.sat.x);
-                lines.hs.setAttribute('y2', px.sat.y);
-                lines.hl.setAttribute('x1', px.hue.x);
-                lines.hl.setAttribute('y1', px.hue.y);
-                lines.hl.setAttribute('x2', px.light.x);
-                lines.hl.setAttribute('y2', px.light.y);
-                lines.sl.setAttribute('x1', px.sat.x);
-                lines.sl.setAttribute('y1', px.sat.y);
-                lines.sl.setAttribute('x2', px.light.x);
-                lines.sl.setAttribute('y2', px.light.y);
-            }
-
-            // Drag handling
-            let activeDot = null;
-
-            function startDrag(axis, e) {
-                activeDot = dots[axis];
-                activeDot.classList.add('dragging');
-                const t = e.type.startsWith('touch') ? e.touches[0] : e;
-                e.preventDefault();
-            }
-
-            function onDrag(axis, e) {
-                if (!activeDot) return;
-                const t = e.type.startsWith('touch') ? e.touches[0] : e;
-                const rect = picker.getBoundingClientRect();
-                const x = clamp(t.clientX - rect.left, 0, W);
-                const y = clamp(t.clientY - rect.top, 0, H);
-                const val = posToValue(axis, x, y);
+            function getTrackValue(axis, clientX) {
+                const track = tracks[axis];
+                const rect = track.getBoundingClientRect();
+                const pct = clamp((clientX - rect.left) / rect.width, 0, 1);
                 switch(axis) {
-                    case 'hue': hue = val; break;
-                    case 'sat': sat = val; break;
-                    case 'light': light = val; break;
+                    case 'hue': return Math.round(pct * 360);
+                    case 'sat': return Math.round(pct * 100);
+                    case 'light': return Math.round(pct * 100);
                 }
-                const pos = valueToPos(axis, val);
-                activeDot.style.left = pos.x + 'px';
-                activeDot.style.top = pos.y + 'px';
-                updateLines();
-                // Live preview on bg
-                const vars = generateTheme(hue, sat, light);
-                bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
+            }
+
+            function startSlider(axis, e) {
+                activeAxis = axis;
+                activeKnob = knobs[axis];
+                activeKnob.classList.add('dragging');
+                const t = e.type.startsWith('touch') ? e.touches[0] : e;
+                const val = getTrackValue(axis, t.clientX);
+                if (axis === 'hue') hue = val;
+                else if (axis === 'sat') sat = val;
+                else if (axis === 'light') light = val;
+                updateUI();
+                // Live preview on swatch only (theme applied on sparkle click)
                 e.preventDefault();
             }
 
-            function endDrag() {
-                if (activeDot) {
-                    activeDot.classList.remove('dragging');
-                    activeDot = null;
+            function moveSlider(e) {
+                if (!activeAxis) return;
+                const t = e.type.startsWith('touch') ? e.touches[0] : e;
+                const val = getTrackValue(activeAxis, t.clientX);
+                if (activeAxis === 'hue') hue = val;
+                else if (activeAxis === 'sat') sat = val;
+                else if (activeAxis === 'light') light = val;
+                updateUI();
+                e.preventDefault();
+            }
+
+            function endSlider() {
+                if (activeKnob) {
+                    activeKnob.classList.remove('dragging');
+                    activeKnob = null;
                 }
+                activeAxis = null;
             }
 
-            // Attach drag events per dot (start only)
-            for (const [axis, dot] of Object.entries(dots)) {
-                dot.addEventListener('mousedown', (e) => startDrag(axis, e));
-                dot.addEventListener('touchstart', (e) => startDrag(axis, e), { passive: false });
+            // Attach per-track
+            for (const axis of ['hue', 'sat', 'light']) {
+                tracks[axis].addEventListener('mousedown', (e) => startSlider(axis, e));
+                tracks[axis].addEventListener('touchstart', (e) => startSlider(axis, e), { passive: false });
             }
 
-            // Global mouse/touch drag + end
-            document.addEventListener('mousemove', (e) => {
-                if (activeDot) onDrag(activeDot.dataset.axis, e);
-            });
-            document.addEventListener('mouseup', endDrag);
-            document.addEventListener('touchmove', (e) => {
-                if (activeDot) onDrag(activeDot.dataset.axis, e);
-            }, { passive: false });
-            document.addEventListener('touchend', endDrag);
+            document.addEventListener('mousemove', moveSlider);
+            document.addEventListener('mouseup', endSlider);
+            document.addEventListener('touchmove', moveSlider, { passive: false });
+            document.addEventListener('touchend', endSlider);
 
-            // Sparkle click to apply
-            sparkle.addEventListener('click', () => {
-                applyTheme(hue, sat, light);
-            });
+            // Sparkle apply
+            sparkle.addEventListener('click', applyTheme);
 
-            // Initialize positions
-            updateDots();
-            // Apply theme on load (no sparkle animation)
-            const vars = generateTheme(hue, sat, light);
-            for (const [key, val] of Object.entries(vars)) {
-                html.style.setProperty(key, val);
-            }
-            bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
-            document.querySelectorAll('.constellation-lines line').forEach(line => {
-                line.setAttribute('stroke', vars['--color-on-dark']);
-            });
+            // Initialize
+            updateUI();
+            applyTheme();
+            setTimeout(() => sparkle.classList.remove('lit'), 100);
         })();
     </script>
 </body>

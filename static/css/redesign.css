@@ -226,133 +226,131 @@ body {
     gap: 16px;
 }
 
-/* Constellation Picker */
-.constellation-picker {
+/* HSL Picker */
+.hsl-picker {
     position: relative;
-    width: 170px;
-    height: 100px;
-    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 200px;
+    height: 76px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.07);
     user-select: none;
     -webkit-user-select: none;
-    touch-action: none;
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.06);
 }
 
-.constellation-bg {
+.hsl-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.hsl-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hsl-label {
+    width: 12px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.hsl-track {
+    position: relative;
+    height: 8px;
+    flex: 1;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#hueTrack {
+    background: linear-gradient(90deg, #FF0000, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF, #FF0000);
+}
+
+#satTrack {
+    background: linear-gradient(90deg, #808080, hsl(var(--hue-deg, 36), 100%, 50%));
+}
+
+#lightTrack {
+    background: linear-gradient(90deg, #000000, #808080, #FFFFFF);
+}
+
+.hsl-fill {
+    display: none;
+}
+
+.hsl-knob {
     position: absolute;
-    inset: 0;
-    border-radius: 6px;
-    transition: background 0.4s ease;
-    background: rgba(255, 255, 255, 0.04);
-}
-
-.constellation-lines {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-
-.constellation-lines line {
-    stroke: rgba(255, 255, 255, 0.2);
-    stroke-width: 1;
-    stroke-dasharray: 3 3;
-    transition: stroke 0.3s ease;
-}
-
-.constellation-dot {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    margin: -9px;
-    z-index: 3;
-    cursor: grab;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    margin: -7px;
     border-radius: 50%;
-    transition: filter 0.2s ease;
-}
-
-.constellation-dot:active {
-    cursor: grabbing;
-}
-
-.dot-ring {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.15);
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.constellation-dot:hover .dot-ring {
-    border-color: rgba(255, 255, 255, 0.95);
-    background: rgba(255, 255, 255, 0.25);
-}
-
-.constellation-dot.dragging .dot-ring {
-    border-color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-}
-
-.constellation-dot.active .dot-ring {
-    border-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.9);
     background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+    cursor: grab;
+    z-index: 2;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
-.constellation-label {
+.hsl-knob:hover {
+    border-color: #FFFFFF;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.hsl-knob.dragging {
+    cursor: grabbing;
+    border-color: #FFFFFF;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+.hsl-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+.hsl-sparkle {
     position: absolute;
     bottom: 4px;
-    left: 8px;
-    display: flex;
-    gap: 16px;
-    z-index: 1;
-    pointer-events: none;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    opacity: 0.35;
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.constellation-sparkle {
-    position: absolute;
-    bottom: 2px;
-    right: 4px;
-    width: 22px;
-    height: 22px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
     z-index: 4;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.constellation-sparkle:hover {
-    color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.15);
+.hsl-sparkle:hover {
+    color: rgba(255, 255, 255, 0.85);
+    transform: scale(1.2);
 }
 
-.constellation-sparkle.lit {
+.hsl-sparkle.lit {
     color: #FFFFFF;
     filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
-    animation: sparkle-pulse 0.8s ease-in-out infinite alternate;
+    animation: hsl-sparkle-pulse 0.8s ease-in-out infinite alternate;
 }
 
-.constellation-sparkle.lit svg {
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7));
-}
-
-@keyframes sparkle-pulse {
+@keyframes hsl-sparkle-pulse {
     0% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4)); }
-    100% { transform: scale(1.2); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
+    100% { transform: scale(1.25); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
 }
 
 /* Navigation */
