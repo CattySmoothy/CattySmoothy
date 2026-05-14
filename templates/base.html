@@ -171,6 +171,12 @@
                     moonIcon.style.color = `rgb(${g},${g},${g})`;
                 }
 
+                // Hue crescent moon — rotate with hue value
+                const hueMoon = document.querySelector('.hsl-bars .hsl-row:first-child .moon-icon');
+                if (hueMoon) {
+                    hueMoon.style.transform = `rotate(${hue}deg)`;
+                }
+
                 // Saturation icon — clip rect sweeps from left half to full to right half
                 const satClip = document.getElementById('satClipRect');
                 if (satClip) {
