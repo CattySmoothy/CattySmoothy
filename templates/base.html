@@ -194,12 +194,13 @@
 
             // Generate full theme from HSL
             function generateTheme(h, s, l) {
-                const lf = clamp(l / 85, 0, 1);
                 const bgL = clamp(l * 0.7 + 20, 18, 97);
                 const surfL = clamp(bgL - 2, 20, 100);
-                const text1L = clamp(12 + 85 * (1 - lf), 12, 97);
-                const text2L = clamp(30 + 55 * (1 - lf), 30, 85);
-                const text3L = clamp(45 + 30 * (1 - lf), 45, 75);
+                // Text: white when bg is medium/dark, dark when bg is light
+                const text1L = bgL <= 68 ? 94 : clamp(94 - (bgL - 68) * 4, 8, 94);
+                const text2L = bgL <= 68 ? clamp(bgL + 22, 65, 88) : clamp(88 - (bgL - 68) * 3.5, 20, 88);
+                const text3L = bgL <= 68 ? clamp(bgL + 10, 45, 70) : clamp(70 - (bgL - 68) * 2.5, 30, 70);
+                const lf = l / 85;
                 const hdrH = ((h + 200) % 360 + 360) % 360;
                 const hdrS = clamp(s - 5, 3, 40);
                 const hdr1L = clamp(48 + 20 * lf, 25, 68);
