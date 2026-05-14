@@ -21,16 +21,29 @@
     <header class="site-header">
         <div class="container">
             <div class="header-inner">
-                <div class="sparkle-picker" id="sparklePicker">
-                    <div class="sparkle-track" id="sparkleTrack">
-                        <div class="sparkle-dot" data-angle="0"></div>
-                        <div class="sparkle-dot" data-angle="72"></div>
-                        <div class="sparkle-dot" data-angle="144"></div>
-                        <div class="sparkle-dot" data-angle="216"></div>
-                        <div class="sparkle-dot" data-angle="288"></div>
+                <div class="constellation-picker" id="constellationPicker">
+                    <div class="constellation-bg" id="constellationBg"></div>
+                    <svg class="constellation-lines" id="constellationLines">
+                        <line id="lineHS" />
+                        <line id="lineHL" />
+                        <line id="lineSL" />
+                    </svg>
+                    <div class="constellation-dot hue-dot" id="dotHue" data-axis="hue">
+                        <div class="dot-ring"></div>
                     </div>
-                    <div class="sparkle-handle" id="sparkleHandle">
-                        <svg viewBox="0 0 24 24" width="18" height="18">
+                    <div class="constellation-dot sat-dot" id="dotSat" data-axis="sat">
+                        <div class="dot-ring"></div>
+                    </div>
+                    <div class="constellation-dot light-dot" id="dotLight" data-axis="light">
+                        <div class="dot-ring"></div>
+                    </div>
+                    <div class="constellation-label">
+                        <span class="label-hue">H</span>
+                        <span class="label-sat">S</span>
+                        <span class="label-light">L</span>
+                    </div>
+                    <div class="constellation-sparkle" id="constellationSparkle" title="Apply theme">
+                        <svg viewBox="0 0 24 24" width="16" height="16">
                             <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
                         </svg>
                     </div>
@@ -60,133 +73,253 @@
     <script>
         (function() {
             const html = document.documentElement;
-            const saved = localStorage.getItem('theme') || 'default';
 
-            const themes = ['default', 'ocean', 'forest', 'lavender', 'rose'];
-            const angles = [0, 72, 144, 216, 288];
-            const radius = 18;
+            // Default HSL values producing the original warm theme
+            const DEFAULT_H = 36, DEFAULT_S = 18, DEFAULT_L = 85;
+            let hue = DEFAULT_H, sat = DEFAULT_S, light = DEFAULT_L;
 
-            const picker = document.getElementById('sparklePicker');
-            const handle = document.getElementById('sparkleHandle');
-            const dots = document.querySelectorAll('.sparkle-dot');
+            // Load saved theme or default
+            const saved = localStorage.getItem('constellationTheme');
+            let initialHSL;
+            if (saved) {
+                try {
+                    initialHSL = JSON.parse(saved);
+                    hue = initialHSL.h;
+                    sat = initialHSL.s;
+                    light = initialHSL.l;
+                } catch(e) { setDefault(); }
+            }
+            // Ensure these are applied on load
+            applyTheme(hue, sat, light, false);
+            applied = true;
 
-            function setTheme(theme) {
-                if (theme === 'default') {
-                    html.removeAttribute('data-theme');
-                } else {
-                    html.setAttribute('data-theme', theme);
+            const picker = document.getElementById('constellationPicker');
+            const bg = document.getElementById('constellationBg');
+            const dots = {
+                hue: document.getElementById('dotHue'),
+                sat: document.getElementById('dotSat'),
+                light: document.getElementById('dotLight')
+            };
+            const lines = {
+                hs: document.getElementById('lineHS'),
+                hl: document.getElementById('lineHL'),
+                sl: document.getElementById('lineSL')
+            };
+            const sparkle = document.getElementById('constellationSparkle');
+
+            const W = 170, H = 100;
+            const PAD = 12;
+
+            function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+            const UW = W - 2 * PAD, UH = H - 2 * PAD;
+
+            // Map dot position to value
+            function posToValue(axis, x, y) {
+                switch(axis) {
+                    case 'hue': return Math.round(clamp((x - PAD) / UW, 0, 1) * 360);
+                    case 'sat': return Math.round(clamp(1 - (y - PAD) / UH, 0, 1) * 100);
+                    case 'light': return Math.round(clamp(1 - (y - PAD) / UH, 0, 1) * 100);
                 }
-                localStorage.setItem('theme', theme);
-                dots.forEach(d => {
-                    d.classList.toggle('active', d.dataset.angle == angles[themes.indexOf(theme)]);
-                });
             }
 
-            function angleToPos(angle) {
-                const rad = angle * Math.PI / 180;
-                const cx = picker.offsetWidth / 2;
-                const cy = picker.offsetHeight / 2;
+            // Map value to dot position
+            function valueToPos(axis, val) {
+                switch(axis) {
+                    case 'hue': return { x: PAD + (val / 360) * UW, y: H * 0.25 };
+                    case 'sat': return { x: W * 0.75, y: PAD + (1 - val / 100) * UH };
+                    case 'light': return { x: W * 0.5, y: PAD + (1 - val / 100) * UH };
+                }
+            }
+
+            function hslStr(h, s, l) {
+                return `hsl(${((h % 360) + 360) % 360}, ${clamp(s, 0, 100)}%, ${clamp(l, 0, 100)}%)`;
+            }
+
+            function hslaStr(h, s, l, a) {
+                return `hsla(${((h % 360) + 360) % 360}, ${clamp(s, 0, 100)}%, ${clamp(l, 0, 100)}%, ${a})`;
+            }
+
+            // Generate full theme from HSL
+            function generateTheme(h, s, l) {
+                const lf = clamp((l - 10) / 75, 0, 1); // 0 at l=10, 1 at l=85+
+                const bgL = clamp(100 - (100 - l) * 0.25, 60, 98);
+                const surfL = clamp(bgL + 2, 65, 100);
+                const text1L = clamp(16 + 78 * (1 - lf), 8, 94);
+                const text2L = clamp(38 + 42 * (1 - lf), 20, 80);
+                const text3L = clamp(56 + 14 * (1 - lf), 30, 70);
+                const hdrH = ((h + 200) % 360 + 360) % 360;
+                const hdrS = clamp(s - 5, 3, 40);
+                const hdr1L = clamp(48 + 20 * lf, 25, 68);
+                const hdr2L = clamp(60 + 18 * lf, 35, 78);
+                const emailBgL = hdr1L;
+                const emailTextL = clamp(emailBgL + 30, 60, 95);
+                const onDarkL = clamp(bgL + 8, 70, 98);
+                const onLightL = clamp(text1L - 3, 8, 18);
+
                 return {
-                    x: cx + radius * Math.sin(rad),
-                    y: cy - radius * Math.cos(rad)
+                    '--color-bg': hslStr(h, clamp(s - 12, 3, 40), bgL),
+                    '--color-surface': hslStr(h, clamp(s - 15, 0, 35), surfL),
+                    '--color-text-primary': hslStr(h, clamp(s + 8, 5, 70), text1L),
+                    '--color-text-secondary': hslStr(h, clamp(s - 3, 3, 50), text2L),
+                    '--color-text-muted': hslStr(h, clamp(s - 8, 2, 40), text3L),
+                    '--color-accent': hslStr(h, clamp(s + 8, 5, 70), text1L),
+                    '--color-header-start': hslStr(hdrH, hdrS, hdr1L),
+                    '--color-header-end': hslStr(hdrH, clamp(hdrS - 3, 0, 35), hdr2L),
+                    '--color-card-light': hslaStr(h, clamp(s - 8, 2, 35), clamp(bgL - 3, 55, 95), 0.95),
+                    '--color-card-light-end': hslaStr(h, clamp(s - 12, 0, 30), clamp(bgL - 8, 50, 90), 0.95),
+                    '--color-card-light-border': hslaStr(h, clamp(s - 10, 0, 30), clamp(bgL - 15, 45, 85), 0.6),
+                    '--color-card-dark': hslaStr(h, clamp(s, 5, 60), clamp(hdr1L - 10, 20, 55), 0.9),
+                    '--color-card-dark-end': hslaStr(h, clamp(s - 5, 0, 50), clamp(hdr1L - 18, 15, 48), 0.9),
+                    '--color-card-dark-solid': hslStr(h, clamp(s, 5, 60), clamp(hdr1L - 8, 22, 58)),
+                    '--color-card-dark-solid-end': hslStr(h, clamp(s - 5, 0, 50), clamp(hdr1L - 16, 18, 50)),
+                    '--color-card-featured': hslaStr(h, clamp(s + 5, 10, 70), clamp(hdr1L - 18, 15, 48), 0.9),
+                    '--color-card-featured-end': hslaStr(h, clamp(s, 5, 60), clamp(hdr1L - 25, 10, 42), 0.9),
+                    '--color-card-featured-solid': hslStr(h, clamp(s + 5, 10, 70), clamp(hdr1L - 16, 18, 50)),
+                    '--color-card-featured-solid-end': hslStr(h, clamp(s, 5, 60), clamp(hdr1L - 23, 12, 44)),
+                    '--color-email-bg': hslStr(hdrH, hdrS, emailBgL),
+                    '--color-email-text': hslStr(hdrH, clamp(hdrS + 15, 10, 80), emailTextL),
+                    '--color-email-btn-text': hslStr(hdrH, hdrS, emailBgL),
+                    '--color-email-btn-hover-bg': hslStr(hdrH, clamp(hdrS + 15, 10, 80), clamp(emailTextL + 2, 70, 98)),
+                    '--color-email-feedback': hslStr(hdrH, clamp(hdrS + 5, 5, 50), clamp(emailBgL + 5, 30, 70)),
+                    '--color-nav-border': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 10, 50, 88)),
+                    '--color-footer-text': hslStr(h, clamp(s - 8, 2, 40), text3L),
+                    '--color-work-card-bg': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 10, 50, 88)),
+                    '--color-on-dark': hslStr(h, clamp(s - 8, 2, 35), onDarkL),
+                    '--color-on-light': hslStr(h, clamp(s + 10, 5, 70), onLightL),
+                    '--color-card-dark-btn-bg': '#FFFFFF',
+                    '--color-card-featured-btn-bg': hslStr(h, clamp(s - 8, 2, 35), onDarkL),
+                    '--color-card-featured-btn-text': hslStr(h, clamp(s + 10, 5, 70), onLightL),
+                    '--color-list-border': hslStr(h, clamp(s - 15, 0, 25), clamp(bgL - 5, 55, 93)),
+                    '--color-surface-alt': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 3, 58, 95)),
                 };
             }
 
-            function moveHandleTo(angle, animate) {
-                const pos = angleToPos(angle);
-                if (animate) {
-                    handle.style.transition = 'left 0.2s ease, top 0.2s ease';
-                } else {
-                    handle.style.transition = 'none';
+            function applyTheme(h, s, l, doSave) {
+                const vars = generateTheme(h, s, l);
+                for (const [key, val] of Object.entries(vars)) {
+                    html.style.setProperty(key, val);
                 }
-                handle.style.left = pos.x + 'px';
-                handle.style.top = pos.y + 'px';
+                if (doSave !== false) {
+                    localStorage.setItem('constellationTheme', JSON.stringify({h, s, l}));
+                }
+                // Update background preview
+                bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
+                // Mark applied
+                sparkle.classList.add('lit');
+                setTimeout(() => sparkle.classList.remove('lit'), 1500);
+                // Update constellation lines color
+                document.querySelectorAll('.constellation-lines line').forEach(line => {
+                    line.setAttribute('stroke', vars['--color-on-dark']);
+                });
             }
 
-            function snapToNearest(px, py) {
-                const cx = picker.offsetWidth / 2;
-                const cy = picker.offsetHeight / 2;
-                const dx = px - cx;
-                const dy = -(py - cy);
-                let angle = Math.atan2(dx, dy) * 180 / Math.PI;
-                if (angle < 0) angle += 360;
-                let minDist = Infinity;
-                let best = 0;
-                for (let i = 0; i < angles.length; i++) {
-                    let diff = Math.abs(angle - angles[i]);
-                    if (diff > 180) diff = 360 - diff;
-                    if (diff < minDist) {
-                        minDist = diff;
-                        best = i;
+            function updateDots() {
+                for (const [axis, dot] of Object.entries(dots)) {
+                    let val;
+                    switch(axis) {
+                        case 'hue': val = hue; break;
+                        case 'sat': val = sat; break;
+                        case 'light': val = light; break;
                     }
+                    const pos = valueToPos(axis, val);
+                    dot.style.left = pos.x + 'px';
+                    dot.style.top = pos.y + 'px';
                 }
-                return best;
+                updateLines();
             }
 
-            let dragging = false;
-            let dragAngle = null;
+            function updateLines() {
+                const px = {};
+                for (const [axis, dot] of Object.entries(dots)) {
+                    px[axis] = {
+                        x: parseFloat(dot.style.left) || W/2,
+                        y: parseFloat(dot.style.top) || H/2
+                    };
+                }
+                lines.hs.setAttribute('x1', px.hue.x);
+                lines.hs.setAttribute('y1', px.hue.y);
+                lines.hs.setAttribute('x2', px.sat.x);
+                lines.hs.setAttribute('y2', px.sat.y);
+                lines.hl.setAttribute('x1', px.hue.x);
+                lines.hl.setAttribute('y1', px.hue.y);
+                lines.hl.setAttribute('x2', px.light.x);
+                lines.hl.setAttribute('y2', px.light.y);
+                lines.sl.setAttribute('x1', px.sat.x);
+                lines.sl.setAttribute('y1', px.sat.y);
+                lines.sl.setAttribute('x2', px.light.x);
+                lines.sl.setAttribute('y2', px.light.y);
+            }
 
-            function startDrag(e) {
-                dragging = true;
-                handle.classList.add('glow');
-                handle.style.transition = 'none';
+            // Drag handling
+            let activeDot = null;
+
+            function startDrag(axis, e) {
+                activeDot = dots[axis];
+                activeDot.classList.add('dragging');
                 const t = e.type.startsWith('touch') ? e.touches[0] : e;
-                const rect = picker.getBoundingClientRect();
-                const px = t.clientX - rect.left;
-                const py = t.clientY - rect.top;
-                dragAngle = snapToNearest(px, py);
-                moveHandleTo(angles[dragAngle]);
                 e.preventDefault();
             }
 
-            function onDrag(e) {
-                if (!dragging) return;
+            function onDrag(axis, e) {
+                if (!activeDot) return;
                 const t = e.type.startsWith('touch') ? e.touches[0] : e;
                 const rect = picker.getBoundingClientRect();
-                const px = Math.max(0, Math.min(rect.width, t.clientX - rect.left));
-                const py = Math.max(0, Math.min(rect.height, t.clientY - rect.top));
-                const idx = snapToNearest(px, py);
-                if (idx !== dragAngle) {
-                    dragAngle = idx;
-                    moveHandleTo(angles[idx]);
-                    setTheme(themes[idx]);
+                const x = clamp(t.clientX - rect.left, 0, W);
+                const y = clamp(t.clientY - rect.top, 0, H);
+                const val = posToValue(axis, x, y);
+                switch(axis) {
+                    case 'hue': hue = val; break;
+                    case 'sat': sat = val; break;
+                    case 'light': light = val; break;
                 }
+                const pos = valueToPos(axis, val);
+                activeDot.style.left = pos.x + 'px';
+                activeDot.style.top = pos.y + 'px';
+                updateLines();
+                // Live preview on bg
+                const vars = generateTheme(hue, sat, light);
+                bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
                 e.preventDefault();
             }
 
-            function endDrag(e) {
-                if (!dragging) return;
-                dragging = false;
-                handle.classList.remove('glow');
-                if (dragAngle !== null) {
-                    moveHandleTo(angles[dragAngle], true);
+            function endDrag() {
+                if (activeDot) {
+                    activeDot.classList.remove('dragging');
+                    activeDot = null;
                 }
             }
 
-            // Mouse events
-            handle.addEventListener('mousedown', startDrag);
-            document.addEventListener('mousemove', onDrag);
+            // Attach drag events per dot (start only)
+            for (const [axis, dot] of Object.entries(dots)) {
+                dot.addEventListener('mousedown', (e) => startDrag(axis, e));
+                dot.addEventListener('touchstart', (e) => startDrag(axis, e), { passive: false });
+            }
+
+            // Global mouse/touch drag + end
+            document.addEventListener('mousemove', (e) => {
+                if (activeDot) onDrag(activeDot.dataset.axis, e);
+            });
             document.addEventListener('mouseup', endDrag);
-
-            // Touch events
-            handle.addEventListener('touchstart', startDrag, { passive: false });
-            document.addEventListener('touchmove', onDrag, { passive: false });
+            document.addEventListener('touchmove', (e) => {
+                if (activeDot) onDrag(activeDot.dataset.axis, e);
+            }, { passive: false });
             document.addEventListener('touchend', endDrag);
 
-            // Initialize
-            const startIdx = themes.indexOf(saved) >= 0 ? themes.indexOf(saved) : 0;
-            moveHandleTo(angles[startIdx]);
-            dots.forEach(d => {
-                d.classList.toggle('active', d.dataset.angle == angles[startIdx]);
+            // Sparkle click to apply
+            sparkle.addEventListener('click', () => {
+                applyTheme(hue, sat, light);
             });
 
-            // Position dots
-            dots.forEach(d => {
-                const a = parseFloat(d.dataset.angle);
-                const pos = angleToPos(a);
-                d.style.left = pos.x + 'px';
-                d.style.top = pos.y + 'px';
-                d.style.transform = 'translate(-50%, -50%)';
+            // Initialize positions
+            updateDots();
+            // Apply theme on load (no sparkle animation)
+            const vars = generateTheme(hue, sat, light);
+            for (const [key, val] of Object.entries(vars)) {
+                html.style.setProperty(key, val);
+            }
+            bg.style.background = `linear-gradient(135deg, ${vars['--color-header-start']}22, ${vars['--color-card-light']})`;
+            document.querySelectorAll('.constellation-lines line').forEach(line => {
+                line.setAttribute('stroke', vars['--color-on-dark']);
             });
         })();
     </script>

@@ -226,72 +226,133 @@ body {
     gap: 16px;
 }
 
-/* Sparkle Picker */
-.sparkle-picker {
+/* Constellation Picker */
+.constellation-picker {
     position: relative;
-    width: 60px;
-    height: 60px;
-    cursor: grab;
+    width: 170px;
+    height: 100px;
+    cursor: default;
     user-select: none;
     -webkit-user-select: none;
     touch-action: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
 }
 
-.sparkle-track {
+.constellation-bg {
     position: absolute;
     inset: 0;
+    border-radius: 6px;
+    transition: background 0.4s ease;
+    background: rgba(255, 255, 255, 0.04);
 }
 
-.sparkle-dot {
+.constellation-lines {
     position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.35);
-    top: 50%;
-    left: 50%;
-    transition: background 0.3s ease, transform 0.3s ease;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
 }
 
-.sparkle-dot.active {
-    background: rgba(255, 255, 255, 0.8);
-    transform: translate(-50%, -50%) scale(1.5);
+.constellation-lines line {
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    transition: stroke 0.3s ease;
 }
 
-.sparkle-handle {
+.constellation-dot {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 24px;
-    height: 24px;
-    margin: -12px;
-    color: rgba(255, 255, 255, 0.85);
-    transition: color 0.2s ease, filter 0.2s ease;
-    z-index: 2;
+    width: 18px;
+    height: 18px;
+    margin: -9px;
+    z-index: 3;
     cursor: grab;
+    border-radius: 50%;
+    transition: filter 0.2s ease;
 }
 
-.sparkle-handle svg {
-    display: block;
-    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+.constellation-dot:active {
+    cursor: grabbing;
 }
 
-.sparkle-handle.glow {
+.dot-ring {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.15);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.constellation-dot:hover .dot-ring {
+    border-color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.constellation-dot.dragging .dot-ring {
+    border-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+.constellation-dot.active .dot-ring {
+    border-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.constellation-label {
+    position: absolute;
+    bottom: 4px;
+    left: 8px;
+    display: flex;
+    gap: 16px;
+    z-index: 1;
+    pointer-events: none;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.35;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.constellation-sparkle {
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    z-index: 4;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.constellation-sparkle:hover {
+    color: rgba(255, 255, 255, 0.9);
+    transform: scale(1.15);
+}
+
+.constellation-sparkle.lit {
     color: #FFFFFF;
     filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
-    animation: sparkle-spin 0.6s linear infinite;
+    animation: sparkle-pulse 0.8s ease-in-out infinite alternate;
 }
 
-.sparkle-handle.glow svg {
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+.constellation-sparkle.lit svg {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.7));
 }
 
-@keyframes sparkle-spin {
-    0% { transform: rotate(0deg) scale(1); }
-    25% { transform: rotate(90deg) scale(1.15); }
-    50% { transform: rotate(180deg) scale(1); }
-    75% { transform: rotate(270deg) scale(1.15); }
-    100% { transform: rotate(360deg) scale(1); }
+@keyframes sparkle-pulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4)); }
+    100% { transform: scale(1.2); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)); }
 }
 
 /* Navigation */
