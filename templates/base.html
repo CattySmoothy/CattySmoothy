@@ -194,7 +194,7 @@
 
             // Generate full theme from HSL
             function generateTheme(h, s, l) {
-                const bgL = clamp(l * 0.7 + 20, 18, 97);
+                const bgL = clamp(l * 0.9 + 5, 15, 97);
                 const surfL = clamp(bgL - 2, 20, 100);
                 // Text: white when bg is medium/dark, dark when bg is light
                 const text1L = bgL <= 68 ? 94 : clamp(94 - (bgL - 68) * 4, 8, 94);
@@ -211,8 +211,8 @@
                 const onLightL = clamp(text1L - 3, 8, 18);
 
                 return {
-                    '--color-bg': hslStr(h, clamp(s - 12, 3, 40), bgL),
-                    '--color-surface': hslStr(h, clamp(s - 15, 0, 35), surfL),
+                    '--color-bg': hslStr(h, clamp(s - 5, 3, 50), bgL),
+                    '--color-surface': hslStr(h, clamp(s - 8, 0, 45), surfL),
                     '--color-text-primary': hslStr(h, clamp(s + 8, 5, 70), text1L),
                     '--color-text-secondary': hslStr(h, clamp(s - 3, 3, 50), text2L),
                     '--color-text-muted': hslStr(h, clamp(s - 8, 2, 40), text3L),
