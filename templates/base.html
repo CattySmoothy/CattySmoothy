@@ -55,11 +55,8 @@
                         </div>
                         <div class="hsl-row">
                             <span class="moon-label" id="moonLabel">
-                                <svg class="moon-icon moon-bright" viewBox="0 0 24 24" width="16" height="16">
+                                <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
                                     <circle cx="12" cy="12" r="10" fill="currentColor"/>
-                                </svg>
-                                <svg class="moon-icon moon-dark" viewBox="0 0 24 24" width="16" height="16" style="display:none">
-                                    <path d="M12 2a10 10 0 1 0 10 10 8 8 0 0 1-8-8 8 8 0 0 1 8-8z" fill="currentColor"/>
                                 </svg>
                             </span>
                             <div class="hsl-track" id="lightTrack">
@@ -162,15 +159,10 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon
-                const brightMoon = document.querySelector('.moon-bright');
-                const darkMoon = document.querySelector('.moon-dark');
-                if (light <= 50) {
-                    brightMoon.style.display = '';
-                    darkMoon.style.display = 'none';
-                } else {
-                    brightMoon.style.display = 'none';
-                    darkMoon.style.display = '';
+                // Moon icon — white full moon on dark, black full moon on light
+                const moonIcon = document.querySelector('#moonLabel .moon-icon');
+                if (moonIcon) {
+                    moonIcon.style.color = light <= 50 ? '#FFFFFF' : '#000000';
                 }
             }
 
