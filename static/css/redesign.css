@@ -753,15 +753,15 @@ body {
 
 .copy-btn {
     flex-shrink: 0;
-    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
-    color: var(--color-card-dark-solid);
+    background: var(--color-card-dark-btn-bg);
+    color: var(--color-card-dark-btn-text);
     border: none;
     padding: 6px 18px;
     border-radius: var(--radius-sm);
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .copy-btn:hover {
