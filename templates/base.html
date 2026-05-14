@@ -41,7 +41,12 @@
                         <div class="hsl-row">
                             <span class="moon-label">
                                 <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <path d="M12 2 A10 10 0 0 1 12 22 Z" fill="currentColor"/>
+                                    <defs>
+                                        <clipPath id="satClip">
+                                            <rect id="satClipRect" x="0" y="0" width="24" height="24"/>
+                                        </clipPath>
+                                    </defs>
+                                    <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
                                 </svg>
                             </span>
                             <div class="hsl-track" id="satTrack">
@@ -164,6 +169,20 @@
                 if (moonIcon) {
                     const g = Math.round(255 * (1 - light / 100));
                     moonIcon.style.color = `rgb(${g},${g},${g})`;
+                }
+
+                // Saturation icon — clip rect sweeps from left half to full to right half
+                const satClip = document.getElementById('satClipRect');
+                if (satClip) {
+                    if (sat <= 50) {
+                        const pct = sat / 50;
+                        satClip.setAttribute('x', '0');
+                        satClip.setAttribute('width', 12 + 12 * pct);
+                    } else {
+                        const pct = (sat - 50) / 50;
+                        satClip.setAttribute('x', 12 * pct);
+                        satClip.setAttribute('width', 24 - 12 * pct);
+                    }
                 }
             }
 
