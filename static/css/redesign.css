@@ -736,16 +736,16 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--color-surface);
-    padding: 12px 20px;
+    background: var(--color-card-dark-solid);
+    padding: 14px 20px;
     border-radius: var(--radius-md);
     max-width: 400px;
-    border: 1px solid var(--color-list-border);
+    border: 2px solid var(--color-accent);
 }
 
 .email-address {
     font-size: 14px;
-    color: var(--color-text-primary);
+    color: var(--color-on-dark);
     font-family: var(--font-body);
     flex: 1;
     min-width: 0;
@@ -753,9 +753,9 @@ body {
 
 .copy-btn {
     flex-shrink: 0;
-    background: var(--color-surface-alt);
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-list-border);
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
     padding: 6px 18px;
     border-radius: var(--radius-sm);
     font-size: 12px;
@@ -765,14 +765,14 @@ body {
 }
 
 .copy-btn:hover {
+    background: color-mix(in srgb, var(--color-accent) 15%, transparent);
     transform: scale(1.05);
-    border-color: var(--color-text-muted);
 }
 
 .copy-btn:active {
-    background: var(--color-accent);
-    color: var(--color-on-dark);
-    border-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
+    color: var(--color-card-dark-solid);
+    border-color: color-mix(in srgb, var(--color-accent) 30%, white 70%);
     box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
     transform: scale(1.05);
 }
