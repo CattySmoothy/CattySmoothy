@@ -753,8 +753,8 @@ body {
 
 .copy-btn {
     flex-shrink: 0;
-    background: var(--color-accent);
-    color: var(--color-bg);
+    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
+    color: var(--color-card-dark-solid);
     border: none;
     padding: 6px 18px;
     border-radius: var(--radius-sm);
@@ -770,8 +770,8 @@ body {
 }
 
 .copy-btn:active {
-    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
-    color: var(--color-card-dark-solid);
+    background: var(--color-accent);
+    color: var(--color-bg);
     box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
     transform: scale(1.05);
 }
