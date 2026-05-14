@@ -159,10 +159,11 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon — white full moon on dark, black full moon on light
+                // Moon icon — gray value matches inverse of light bar
                 const moonIcon = document.querySelector('#moonLabel .moon-icon');
                 if (moonIcon) {
-                    moonIcon.style.color = light <= 50 ? '#FFFFFF' : '#000000';
+                    const g = Math.round(255 * (1 - light / 100));
+                    moonIcon.style.color = `rgb(${g},${g},${g})`;
                 }
             }
 
