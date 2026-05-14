@@ -43,7 +43,7 @@
                                 <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
                                     <defs>
                                         <clipPath id="satClip">
-                                            <rect id="satClipRect" x="0" y="0" width="24" height="24"/>
+                                            <circle id="satClipCircle" cx="12" cy="12" r="10"/>
                                         </clipPath>
                                     </defs>
                                     <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
@@ -177,18 +177,11 @@
                     hueMoon.style.transform = `rotate(${hue}deg)`;
                 }
 
-                // Saturation icon — clip rect sweeps from left half to full to right half
-                const satClip = document.getElementById('satClipRect');
+                // Saturation icon — clip circle sweeps across for moon-phase curved transition
+                const satClip = document.getElementById('satClipCircle');
                 if (satClip) {
-                    if (sat <= 50) {
-                        const pct = sat / 50;
-                        satClip.setAttribute('x', '0');
-                        satClip.setAttribute('width', 12 + 12 * pct);
-                    } else {
-                        const pct = (sat - 50) / 50;
-                        satClip.setAttribute('x', 12 * pct);
-                        satClip.setAttribute('width', 24 - 12 * pct);
-                    }
+                    const cx = 2 + (sat / 100) * 20;
+                    satClip.setAttribute('cx', cx);
                 }
             }
 
