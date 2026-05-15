@@ -1010,8 +1010,10 @@ body {
 
 @media (max-width: 600px) {
     .main-nav {
-        gap: 16px;
+        gap: 12px;
         padding: 16px 16px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .works-grid {
@@ -1249,4 +1251,169 @@ body {
 
 .cta-link:hover {
     opacity: 0.6;
+}
+
+/* Donors page - Night Sky */
+.donors-page {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+}
+
+.donors-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.donors-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.donors-subtitle {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+}
+
+.night-sky {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 500px;
+    background: linear-gradient(180deg, #0B0E1A 0%, #141929 40%, #1A2440 70%, #1F2D4A 100%);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Background twinkle stars */
+.night-sky::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 50% 25%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 70% 10%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 15% 50%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 60% 45%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 5% 70%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 25% 80%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 55% 75%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 75% 85%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 95% 65%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 45% 40%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(1px 1px at 65% 70%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 35% 35%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 80% 40%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 50% 5%, rgba(255,255,255,0.4), transparent);
+    pointer-events: none;
+}
+
+.star-wrapper {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.star {
+    position: relative;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.star-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FFE9A0;
+    box-shadow:
+        0 0 6px 2px rgba(255, 233, 160, 0.6),
+        0 0 14px 6px rgba(255, 233, 160, 0.2),
+        0 0 30px 12px rgba(255, 233, 160, 0.08);
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% {
+        box-shadow:
+            0 0 6px 2px rgba(255, 233, 160, 0.6),
+            0 0 14px 6px rgba(255, 233, 160, 0.2),
+            0 0 30px 12px rgba(255, 233, 160, 0.08);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow:
+            0 0 10px 4px rgba(255, 233, 160, 0.8),
+            0 0 20px 10px rgba(255, 233, 160, 0.3),
+            0 0 40px 18px rgba(255, 233, 160, 0.12);
+        transform: scale(1.15);
+    }
+}
+
+.star-popup {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translateX(-50%);
+    background: rgba(15, 20, 40, 0.95);
+    border: 1px solid rgba(255, 233, 160, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    transform: translateX(-50%) translateY(4px);
+    z-index: 10;
+    min-width: 120px;
+}
+
+.star-wrapper:hover .star-popup {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.star-popup-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFE9A0;
+}
+
+.star-popup-amount {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 233, 160, 0.7);
+}
+
+.star-popup-msg {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    white-space: normal;
+    max-width: 180px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .night-sky {
+        height: 400px;
+    }
 }

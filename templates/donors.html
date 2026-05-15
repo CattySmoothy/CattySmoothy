@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="donors-page">
+    <div class="donors-header">
+        <h1 class="donors-title">Supporters</h1>
+        <p class="donors-subtitle">A night sky full of wonderful people</p>
+    </div>
+
+    <div class="night-sky" id="nightSky">
+        {% for donor in donors %}
+        <div class="star-wrapper" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%; animation-delay: {{ loop.index0 * 0.3 }}s;">
+            <div class="star" data-index="{{ loop.index0 }}">
+                <div class="star-dot"></div>
+            </div>
+            <div class="star-popup">
+                <span class="star-popup-name">{{ donor.name }}</span>
+                <span class="star-popup-amount">${{ "%.2f"|format(donor.amount) }}</span>
+                {% if donor.message %}
+                <span class="star-popup-msg">{{ donor.message }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
