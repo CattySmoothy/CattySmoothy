@@ -601,6 +601,33 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+    box-shadow: 0 0 30px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.pricing-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.08));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.pricing-card:hover::before {
+    opacity: 1;
+}
+
+.pricing-card > * {
+    position: relative;
+    z-index: 1;
 }
 
 .pricing-card.light {
