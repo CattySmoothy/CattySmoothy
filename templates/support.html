@@ -31,18 +31,10 @@
                     <button class="plan-button" onclick="goDonate()">Donate</button>
                 </div>
 
-                <div class="shooting-star-overlay" id="starOverlay">
-                    <div class="shooting-star-trail" id="starTrail"></div>
-                </div>
-
                 <script>
                 function goDonate() {
                     var amt = document.getElementById('donationAmount').value;
-                    var overlay = document.getElementById('starOverlay');
-                    overlay.classList.add('active');
-                    setTimeout(function() {
-                        window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
-                    }, 900);
+                    window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
                 }
 
                 function stepDonation(delta) {
