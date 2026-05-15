@@ -988,7 +988,6 @@ body {
 }
 
 .stat-moon-new,
-.stat-moon-crescent,
 .stat-moon-full {
     color: color-mix(in srgb, var(--color-accent) 95%, #FFFFFF);
     display: block;
