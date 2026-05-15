@@ -514,6 +514,11 @@ body {
     font-weight: 500;
     color: var(--color-on-dark);
     margin: 0;
+    transition: color 0.8s ease;
+}
+
+.cta-box.in-view h3 {
+    color: var(--color-text-primary);
 }
 
 .cta-button {
