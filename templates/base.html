@@ -186,28 +186,21 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon — solid at both extremes, yin-yang visible in mid-range
+                // Moon icon — even gradient distribution
                 const moonIcon = document.querySelector('#moonLabel .moon-icon');
                 if (moonIcon) {
                     var g = Math.round(255 * (1 - light / 100));
-                    var d = Math.round(g * (1 - 0.55 * Math.sin(Math.PI * light / 100)));
-                    if (g - d < 40) d = Math.max(0, g - 40);
+                    var d = Math.round(g * 0.5);
 
-                    if (light <= 1) {
-                        moonIcon.innerHTML = '<circle cx="12" cy="12" r="10" fill="rgb(255,255,255)"/>';
-                    } else if (light >= 99) {
-                        moonIcon.innerHTML = '<circle cx="12" cy="12" r="10" fill="rgb(0,0,0)"/>';
-                    } else {
-                        moonIcon.innerHTML =
-                            '<defs><mask id="yyMask">' +
-                            '<rect width="24" height="24" fill="white"/>' +
-                            '<path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>' +
-                            '<circle cx="9" cy="7" r="2.5" fill="black"/>' +
-                            '</mask></defs>' +
-                            '<circle cx="12" cy="12" r="10" fill="rgb(' + d + ',' + d + ',' + d + ')"/>' +
-                            '<circle cx="12" cy="12" r="10" fill="rgb(' + g + ',' + g + ',' + g + ')" mask="url(#yyMask)"/>' +
-                            '<circle cx="15" cy="17" r="2.5" fill="rgb(' + g + ',' + g + ',' + g + ')"/>';
-                    }
+                    moonIcon.innerHTML =
+                        '<defs><mask id="yyMask">' +
+                        '<rect width="24" height="24" fill="white"/>' +
+                        '<path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>' +
+                        '<circle cx="9" cy="7" r="2.5" fill="black"/>' +
+                        '</mask></defs>' +
+                        '<circle cx="12" cy="12" r="10" fill="rgb(' + d + ',' + d + ',' + d + ')"/>' +
+                        '<circle cx="12" cy="12" r="10" fill="rgb(' + g + ',' + g + ',' + g + ')" mask="url(#yyMask)"/>' +
+                        '<circle cx="15" cy="17" r="2.5" fill="rgb(' + g + ',' + g + ',' + g + ')"/>';
                     moonIcon.style.transform = 'rotate(' + (light * 3.6) + 'deg)';
                 }
 
