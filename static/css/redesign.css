@@ -524,7 +524,7 @@ body {
 }
 
 .cta-box.in-view {
-    background: var(--color-surface);
+    background: color-mix(in srgb, var(--color-bg) 92%, white 8%);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
 }
 
@@ -1028,7 +1028,7 @@ body {
 
 .about-box {
     flex: 1;
-    background: var(--color-surface);
+    background: color-mix(in srgb, var(--color-bg) 92%, white 8%);
     border-radius: var(--radius-md);
     padding: 40px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
