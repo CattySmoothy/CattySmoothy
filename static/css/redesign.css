@@ -934,12 +934,22 @@ body {
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: color-mix(in srgb, var(--color-accent) 70%, #5A9A6A);
-    box-shadow: 0 0 8px color-mix(in srgb, var(--color-accent) 40%, #5A9A6A);
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--color-accent) 40%, #5A9A6A);
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.stat-moon-crescent,
+.stat-moon-full {
+    color: color-mix(in srgb, var(--color-accent) 75%, #5A9A6A);
+    display: block;
 }
 
 .status-label {
