@@ -678,6 +678,43 @@ body {
 .price {
     font-size: 42px;
     font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.donation-currency {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.donation-input {
+    font-family: inherit;
+    font-size: 42px;
+    font-weight: 600;
+    width: 100px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid color-mix(in srgb, var(--color-on-light) 30%, transparent);
+    color: inherit;
+    outline: none;
+    padding: 0 2px;
+    line-height: 1;
+}
+
+.donation-input:focus {
+    border-bottom-color: var(--color-accent);
+}
+
+/* Hide number input spinners */
+.donation-input::-webkit-inner-spin-button,
+.donation-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.donation-input[type=number] {
+    -moz-appearance: textfield;
 }
 
 .pricing-card.light h3,

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-layout">
+    <div class="about-box">
+        <section class="support-header">
+            <div class="content-container">
+                <h1 class="page-title">Support My Work</h1>
+                <p class="page-subtitle">Choose a tier that works for you</p>
+            </div>
+        </section>
+
+        <section class="pricing-grid">
+            <div class="pricing-card light">
+                <h3>Donation</h3>
+                <div class="price">
+                    <span class="donation-currency">$</span>
+                    <input type="number" class="donation-input" value="5.00" min="0.50" step="0.50">
+                    <span class="price-period">one-time</span>
+                </div>
+                <ul class="pricing-features">
+                    <li>✓ Support the artist</li>
+                    <li>✓ No commitment</li>
+                </ul>
+                <a href="#" class="plan-button">Donate</a>
+            </div>
+
+            <div class="pricing-card dark">
+                <h3>Basic</h3>
+                <div class="price">$1.99<span class="price-period">/mo</span></div>
+                <ul class="pricing-features">
+                    <li>✓ All Free features</li>
+                    <li>✓ Premium tutorials</li>
+                    <li>✓ Live Q&A sessions</li>
+                </ul>
+                <a href="#" class="plan-button">Choose Basic</a>
+            </div>
+            
+            <div class="pricing-card featured">
+                <h3>Premium</h3>
+                <div class="price">$49.99<span class="price-period">/mo</span></div>
+                <ul class="pricing-features">
+                    <li>✓ All Basic features</li>
+                    <li>✓ Personal feedback</li>
+                    <li>✓ Priority support</li>
+                </ul>
+                <a href="#" class="plan-button">Choose Premium</a>
+            </div>
+        </section>
+
+        <section class="support-footer">
+            <div class="content-container">
+                <p>Questions? Reach out anytime.</p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -9,6 +9,10 @@ def register_routes(app):
     def about():
         return render_template('about.html', title="About")
 
+    @app.route('/support')
+    def support():
+        return render_template('support.html', title="Support")
+
     @app.route('/collections')
     def collections():
         return render_template('collections.html', title="Collections")
