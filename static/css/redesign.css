@@ -1565,6 +1565,75 @@ body {
     color: #FFFFFF;
 }
 
+/* Star depth fading */
+.star-wrapper {
+    transition: opacity 0.25s ease;
+}
+
+.star-wrapper[data-depth="far"] .star-dot {
+    opacity: 0.65;
+}
+
+.star-wrapper[data-depth="near"] .star-dot {
+    opacity: 0.9;
+}
+
+.star-wrapper.star-highlighted .star-dot {
+    box-shadow:
+        0 0 10px 4px rgba(255, 220, 100, 0.9),
+        0 0 24px 12px rgba(255, 220, 100, 0.4),
+        0 0 50px 24px rgba(255, 220, 100, 0.12);
+    background: #FFE066;
+}
+.star-wrapper.star-highlighted .star-popup {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Search bar */
+.donors-search {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 20;
+}
+
+.star-search-input {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 14px;
+    border: 1px solid rgba(232, 240, 255, 0.25);
+    border-radius: 20px;
+    background: rgba(15, 20, 40, 0.85);
+    color: #E8F0FF;
+    outline: none;
+    width: 220px;
+    backdrop-filter: blur(4px);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.star-search-input::placeholder {
+    color: rgba(232, 240, 255, 0.35);
+}
+
+.star-search-input:focus {
+    border-color: rgba(232, 240, 255, 0.5);
+    box-shadow: 0 0 12px rgba(232, 240, 255, 0.1);
+}
+
+.zoom-level {
+    font-size: 12px;
+    color: rgba(232, 240, 255, 0.4);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    min-width: 32px;
+    text-align: center;
+}
+
 /* Donate form */
 .donate-form {
     display: flex;

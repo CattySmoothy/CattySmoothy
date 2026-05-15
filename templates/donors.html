@@ -8,6 +8,11 @@
     </div>
 
     <div class="night-sky" id="nightSky">
+        <div class="donors-search">
+            <input type="text" id="starSearch" class="star-search-input" placeholder="Find a star by name…">
+            <span class="zoom-level" id="zoomLevel">1.0×</span>
+        </div>
+
         <div class="zoom-controls">
             <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
             <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
@@ -16,10 +21,13 @@
 
         <div class="sky-content" id="skyContent">
             <svg class="constellation-layer" id="constellationLayer"></svg>
+            {% set depths = ['far', 'mid', 'near'] %}
             {% for donor in donors %}
-            <div class="star-wrapper" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%;">
-                <div class="star" data-index="{{ loop.index0 }}">
-                    <div class="star-dot" style="animation-delay: {{ loop.index0 * 0.3 }}s;"></div>
+            {% set depth = depths[loop.index0 % 3] %}
+            {% set size = 4 if depth == 'far' else (6 if depth == 'mid' else 8) %}
+            <div class="star-wrapper" data-depth="{{ depth }}" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%;">
+                <div class="star" data-index="{{ loop.index0 }}" data-name="{{ donor.name|lower }}">
+                    <div class="star-dot" style="width: {{ size }}px; height: {{ size }}px; animation-delay: {{ loop.index0 * 0.3 }}s;"></div>
                 </div>
                 <div class="star-popup">
                     <span class="star-popup-name">{{ donor.name }}</span>
@@ -77,6 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var sky = document.getElementById('nightSky');
     var content = document.getElementById('skyContent');
     var conLayer = document.getElementById('constellationLayer');
+    var zoomLabel = document.getElementById('zoomLevel');
 
     var scale = 1;
     var panX = 0, panY = 0;
@@ -84,8 +93,81 @@ document.addEventListener('DOMContentLoaded', function() {
     var startX, startY;
     var dragPanX, dragPanY;
 
+    // --- Star depth config ---
+    var depthRanges = {
+        far:  { min: 0.2, max: 1.5, ideal: 0.8 },
+        mid:  { min: 0.6, max: 2.4, ideal: 1.2 },
+        near: { min: 1.2, max: 4.0, ideal: 2.0 }
+    };
+
+    function starOpacity(depth, s) {
+        var r = depthRanges[depth];
+        if (!r) return 1;
+        if (s < r.min) return Math.max(0, (s - r.min + 0.3) / 0.3);
+        if (s > r.max) return Math.max(0, (r.max - s + 0.3) / 0.3);
+        return 1;
+    }
+
+    function updateDepthVisibility() {
+        document.querySelectorAll('.star-wrapper').forEach(function(w) {
+            var d = w.dataset.depth || 'mid';
+            var op = starOpacity(d, scale);
+            w.style.opacity = op;
+            w.style.pointerEvents = op > 0.05 ? '' : 'none';
+        });
+    }
+
+    // --- Search ---
+    var searchInput = document.getElementById('starSearch');
+    var matchedStar = null;
+
+    searchInput.addEventListener('input', function() {
+        var q = searchInput.value.trim().toLowerCase();
+        var wrappers = document.querySelectorAll('.star-wrapper');
+        var firstMatch = null;
+
+        wrappers.forEach(function(w) {
+            var name = w.querySelector('.star').dataset.name || '';
+            var starDot = w.querySelector('.star-dot');
+            if (q && name.includes(q)) {
+                w.classList.add('star-highlighted');
+                if (!firstMatch) firstMatch = w;
+            } else {
+                w.classList.remove('star-highlighted');
+            }
+        });
+
+        if (q && firstMatch) {
+            centerOnStar(firstMatch);
+        }
+    });
+
+    function centerOnStar(wrapper) {
+        var skyRect = sky.getBoundingClientRect();
+        var wrapperRect = wrapper.getBoundingClientRect();
+        // target depth ideal scale
+        var depth = wrapper.dataset.depth || 'mid';
+        var targetScale = depthRanges[depth].ideal;
+        if (targetScale > 3) targetScale = 3;
+        if (targetScale < 0.5) targetScale = 0.5;
+
+        var cx = wrapperRect.left - skyRect.left + wrapperRect.width / 2;
+        var cy = wrapperRect.top - skyRect.top + wrapperRect.height / 2;
+        // current center of viewport in content coords
+        var vpCX = skyRect.width / 2;
+        var vpCY = skyRect.height / 2;
+
+        panX = vpCX - cx * (targetScale / scale);
+        panY = vpCY - cy * (targetScale / scale);
+        scale = targetScale;
+        updateTransform();
+    }
+
+    // --- Zoom ---
     function updateTransform() {
         content.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')';
+        zoomLabel.textContent = scale.toFixed(1) + '\u00d7';
+        updateDepthVisibility();
         updateConstellations();
     }
 
@@ -103,11 +185,15 @@ document.addEventListener('DOMContentLoaded', function() {
         scale = 1;
         panX = 0;
         panY = 0;
+        searchInput.value = '';
+        document.querySelectorAll('.star-wrapper').forEach(function(w) {
+            w.classList.remove('star-highlighted');
+        });
         updateTransform();
     });
 
     sky.addEventListener('mousedown', function(e) {
-        if (e.target.closest('.zoom-controls') || e.target.closest('.star-popup')) return;
+        if (e.target.closest('.zoom-controls') || e.target.closest('.star-popup') || e.target.closest('.donors-search')) return;
         isDragging = true;
         startX = e.clientX - panX;
         startY = e.clientY - panY;
