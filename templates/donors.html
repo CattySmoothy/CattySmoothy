@@ -24,8 +24,10 @@
                 <div class="star-popup">
                     <span class="star-popup-name">{{ donor.name }}</span>
                     <span class="star-popup-amount">${{ "%.2f"|format(donor.amount) }}</span>
-                    {% if donor.message %}
+                    {% if donor.message and donor.get('public') %}
                     <span class="star-popup-msg">{{ donor.message }}</span>
+                    {% elif donor.message and not donor.get('public') %}
+                    <span class="star-popup-msg star-popup-private">{{ donor.message }} <span class="private-badge">(private)</span></span>
                     {% endif %}
                 </div>
             </div>

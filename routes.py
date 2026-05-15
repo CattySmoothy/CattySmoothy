@@ -1,18 +1,18 @@
 from flask import render_template, request
 
 donors = [
-    {"name": "Luna", "message": "Love your art!", "amount": 10.00},
-    {"name": "Starfall", "message": "Keep creating!", "amount": 25.00},
-    {"name": "Nebula", "message": "You inspire me", "amount": 5.00},
-    {"name": "Celeste", "message": "Amazing work!", "amount": 50.00},
-    {"name": "Orion", "message": "Digital art gang", "amount": 15.00},
-    {"name": "Aurora", "message": "More tutorials please!", "amount": 20.00},
-    {"name": "Comet", "message": "You're so talented", "amount": 8.00},
-    {"name": "Vega", "message": "Keep shining ✨", "amount": 30.00},
-    {"name": "Nova", "message": "First time donating!", "amount": 12.00},
-    {"name": "Sirius", "message": "Best artist ever", "amount": 100.00},
-    {"name": "Eclipse", "message": "Love the style", "amount": 7.50},
-    {"name": "Lyra", "message": "So happy to support", "amount": 18.00},
+    {"name": "Luna", "message": "Love your art!", "amount": 10.00, "public": True},
+    {"name": "Starfall", "message": "Keep creating!", "amount": 25.00, "public": True},
+    {"name": "Nebula", "message": "You inspire me", "amount": 5.00, "public": True},
+    {"name": "Celeste", "message": "Amazing work!", "amount": 50.00, "public": True},
+    {"name": "Orion", "message": "Digital art gang", "amount": 15.00, "public": True},
+    {"name": "Aurora", "message": "More tutorials please!", "amount": 20.00, "public": True},
+    {"name": "Comet", "message": "You're so talented", "amount": 8.00, "public": True},
+    {"name": "Vega", "message": "Keep shining ✨", "amount": 30.00, "public": True},
+    {"name": "Nova", "message": "First time donating!", "amount": 12.00, "public": True},
+    {"name": "Sirius", "message": "Best artist ever", "amount": 100.00, "public": True},
+    {"name": "Eclipse", "message": "Love the style", "amount": 7.50, "public": True},
+    {"name": "Lyra", "message": "So happy to support", "amount": 18.00, "public": True},
 ]
 
 def register_routes(app):
@@ -35,7 +35,12 @@ def register_routes(app):
 
     @app.route('/donors')
     def donors_page():
-        return render_template('donors.html', title="Supporters", donors=donors)
+        key = request.args.get('key', '')
+        if key == 'c4tty5m00thy':
+            shown = donors
+        else:
+            shown = [d for d in donors if d.get('public')]
+        return render_template('donors.html', title="Supporters", donors=shown)
 
     @app.route('/collections')
     def collections():

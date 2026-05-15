@@ -25,8 +25,22 @@
             </div>
 
             <div class="donate-field">
-                <label class="donate-label" for="donateMessage">Message <span class="donate-note">(will be shown publicly)</span></label>
+                <label class="donate-label" for="donateMessage">Message</label>
                 <textarea id="donateMessage" class="donate-textarea" placeholder="Love your art!" maxlength="100" rows="3"></textarea>
+            </div>
+
+            <div class="donate-field">
+                <label class="donate-label">Visibility</label>
+                <div class="donate-visibility">
+                    <label class="donate-radio">
+                        <input type="radio" name="visibility" value="public" checked>
+                        <span class="donate-radio-label">Public <span class="donate-note">(shown on supporters page)</span></span>
+                    </label>
+                    <label class="donate-radio">
+                        <input type="radio" name="visibility" value="private">
+                        <span class="donate-radio-label">Private <span class="donate-note">(only the artist can see)</span></span>
+                    </label>
+                </div>
             </div>
 
             <button type="submit" class="plan-button donate-submit">Complete Donation</button>
@@ -40,7 +54,11 @@ document.getElementById('donateForm').addEventListener('submit', function(e) {
     var name = document.getElementById('donateName').value || 'Anonymous';
     var msg = document.getElementById('donateMessage').value || '';
     var amt = document.getElementById('donateAmount').value;
-    alert('Thank you, ' + name + '! \\nYour donation of $' + amt + ' will light up the sky. \\n(Your message will appear publicly among the stars.)');
+    var vis = document.querySelector('input[name="visibility"]:checked').value;
+    var note = vis === 'public'
+        ? 'Your message will appear publicly among the stars.'
+        : 'Your message will be kept private, only visible to the artist.';
+    alert('Thank you, ' + name + '! \\nYour donation of $' + amt + ' will light up the sky. \\n' + note);
     window.location.href = "{{ url_for('donors_page') }}";
 });
 </script>
