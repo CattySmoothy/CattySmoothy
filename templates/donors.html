@@ -25,6 +25,7 @@
             {% for donor in donors %}
             {% set depth = depths[loop.index0 % 3] %}
             {% set size = 4 if depth == 'far' else (6 if depth == 'mid' else 8) %}
+            {% set mtype = donor.get('type', 'free') %}
             <div class="star-wrapper" data-depth="{{ depth }}" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%;">
                 <div class="star" data-index="{{ loop.index0 }}" data-name="{{ donor.name|lower }}">
                     <div class="star-dot" style="width: {{ size }}px; height: {{ size }}px; animation-delay: {{ loop.index0 * 0.3 }}s;"></div>
@@ -32,10 +33,20 @@
                 <div class="star-popup">
                     <span class="star-popup-name">{{ donor.name }}</span>
                     <span class="star-popup-amount">${{ "%.2f"|format(donor.amount) }}</span>
-                    {% if donor.message and donor.get('public') %}
-                    <span class="star-popup-msg">{{ donor.message }}</span>
-                    {% elif donor.message and not donor.get('public') %}
-                    <span class="star-popup-msg star-popup-private">{{ donor.message }} <span class="private-badge">(private)</span></span>
+                    {% if donor.message %}
+                        {% if donor.type == 'promise' %}
+                        <span class="star-popup-msg star-msg-promise">
+                            <span class="promise-check">☐</span>
+                            {{ donor.message }}
+                        </span>
+                        {% elif donor.type == 'story' %}
+                        <span class="star-popup-msg star-msg-story">{{ donor.message }}</span>
+                        {% else %}
+                        <span class="star-popup-msg">{{ donor.message }}</span>
+                        {% endif %}
+                    {% endif %}
+                    {% if not donor.get('public') %}
+                    <span class="star-popup-private-badge">(private)</span>
                     {% endif %}
                 </div>
             </div>

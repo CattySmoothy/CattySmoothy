@@ -25,8 +25,47 @@
             </div>
 
             <div class="donate-field">
-                <label class="donate-label" for="donateMessage">Message</label>
-                <textarea id="donateMessage" class="donate-textarea" placeholder="Love your art!" maxlength="100" rows="3"></textarea>
+                <label class="donate-label">Message Type</label>
+                <div class="donate-msg-types">
+                    <label class="donate-radio">
+                        <input type="radio" name="msgType" value="free" checked onchange="toggleMsgType()">
+                        <span class="donate-radio-label">Free message</span>
+                    </label>
+                    <label class="donate-radio">
+                        <input type="radio" name="msgType" value="promise" onchange="toggleMsgType()">
+                        <span class="donate-radio-label">Promise / Goal</span>
+                    </label>
+                    <label class="donate-radio">
+                        <input type="radio" name="msgType" value="story" onchange="toggleMsgType()">
+                        <span class="donate-radio-label">Story</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="donate-field" id="msgFree">
+                <label class="donate-label">Your Message</label>
+                <textarea id="donateMessage" class="donate-textarea" placeholder="Love your art!" maxlength="200" rows="3"></textarea>
+            </div>
+
+            <div class="donate-field" id="msgPromise" style="display:none;">
+                <label class="donate-label">Your Promise / Goal</label>
+                <input type="text" id="promiseText" class="donate-input" placeholder="I promise to practice drawing every day…" maxlength="100">
+                <label class="donate-check-wrap">
+                    <input type="checkbox" id="promiseDone" class="donate-checkbox">
+                    <span class="donate-check-label">Check when completed ✦</span>
+                </label>
+            </div>
+
+            <div class="donate-field" id="msgStory" style="display:none;">
+                <label class="donate-label">Pick a prompt or write your own</label>
+                <select id="storyPrompt" class="donate-input donate-select" onchange="fillStory()">
+                    <option value="">— Choose a prompt —</option>
+                    <option value="How I found this artist">How I found this artist</option>
+                    <option value="My favorite artwork here">My favorite artwork here</option>
+                    <option value="What art means to me">What art means to me</option>
+                    <option value="A memory this art reminds me of">A memory this art reminds me of</option>
+                </select>
+                <textarea id="storyText" class="donate-textarea" placeholder="Your story…" maxlength="300" rows="3"></textarea>
             </div>
 
             <div class="donate-field">
@@ -49,16 +88,43 @@
 </div>
 
 <script>
+function toggleMsgType() {
+    var t = document.querySelector('input[name="msgType"]:checked').value;
+    document.getElementById('msgFree').style.display = t === 'free' ? '' : 'none';
+    document.getElementById('msgPromise').style.display = t === 'promise' ? '' : 'none';
+    document.getElementById('msgStory').style.display = t === 'story' ? '' : 'none';
+}
+
+function fillStory() {
+    var sel = document.getElementById('storyPrompt');
+    if (sel.value) {
+        document.getElementById('storyText').value = sel.value;
+    }
+}
+
 document.getElementById('donateForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var name = document.getElementById('donateName').value || 'Anonymous';
-    var msg = document.getElementById('donateMessage').value || '';
     var amt = document.getElementById('donateAmount').value;
     var vis = document.querySelector('input[name="visibility"]:checked').value;
+    var t = document.querySelector('input[name="msgType"]:checked').value;
+
+    var msgDesc = '';
+    if (t === 'free') {
+        msgDesc = document.getElementById('donateMessage').value || '(no message)';
+    } else if (t === 'promise') {
+        var p = document.getElementById('promiseText').value || '(no promise)';
+        var done = document.getElementById('promiseDone').checked ? '✓ completed' : '☐ pending';
+        msgDesc = 'Promise: "' + p + '" (' + done + ')';
+    } else {
+        var s = document.getElementById('storyText').value || '(no story)';
+        msgDesc = 'Story: ' + s;
+    }
+
     var note = vis === 'public'
         ? 'Your message will appear publicly among the stars.'
         : 'Your message will be kept private, only visible to the artist.';
-    alert('Thank you, ' + name + '! \\nYour donation of $' + amt + ' will light up the sky. \\n' + note);
+    alert('Thank you, ' + name + '! \\nDonation of $' + amt + ' will light up the sky. \\n' + msgDesc + ' \\n' + note);
     window.location.href = "{{ url_for('donors_page') }}";
 });
 </script>
