@@ -1900,3 +1900,76 @@ body {
     color: rgba(232, 240, 255, 0.35);
     font-weight: 400;
 }
+
+/* Shooting star transition */
+.shooting-star-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.shooting-star-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.shooting-star-overlay::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow:
+        0 0 8px 4px rgba(255, 255, 255, 0.8),
+        0 0 20px 10px rgba(255, 255, 255, 0.3);
+    top: -10%;
+    left: -10%;
+    animation: starShoot 0.85s ease-in forwards;
+}
+
+.shooting-star-overlay::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.8), transparent);
+    top: -8px;
+    left: -10%;
+    width: 200px;
+    animation: trailShoot 0.85s ease-in forwards;
+}
+
+@keyframes starShoot {
+    0% {
+        top: -10%;
+        left: -10%;
+        transform: scale(1);
+    }
+    20% {
+        transform: scale(1.5);
+    }
+    100% {
+        top: 110%;
+        left: 110%;
+        transform: scale(0.3);
+        opacity: 0.3;
+    }
+}
+
+@keyframes trailShoot {
+    0% {
+        top: -8px;
+        left: -10%;
+        width: 200px;
+        opacity: 1;
+    }
+    100% {
+        top: 108%;
+        left: 108%;
+        width: 60px;
+        opacity: 0;
+    }
+}
