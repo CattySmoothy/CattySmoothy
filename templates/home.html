@@ -28,4 +28,19 @@
         <a href="{{ url_for('about') }}" class="cta-button">Get in Touch</a>
     </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var cta = document.querySelector('.cta-box');
+    if (cta) {
+        var obs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) {
+                    cta.classList.add('in-view');
+                }
+            });
+        }, { threshold: 0.3 });
+        obs.observe(cta);
+    }
+});
+</script>
 {% endblock %}
