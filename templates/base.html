@@ -186,11 +186,12 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon — even gradient distribution
+                // Moon icon — even yin-yang in middle, converges at both ends
                 const moonIcon = document.querySelector('#moonLabel .moon-icon');
                 if (moonIcon) {
                     var g = Math.round(255 * (1 - light / 100));
-                    var d = Math.round(g * 0.5);
+                    var factor = 1 - 0.5 * Math.sin(Math.PI * light / 100);
+                    var d = Math.round(g * factor);
 
                     moonIcon.innerHTML =
                         '<defs><mask id="yyMask">' +
