@@ -1283,41 +1283,45 @@ body {
 
 /* Donors page - Night Sky */
 .donors-page {
-    min-height: 80vh;
+    min-height: 100vh;
+    position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 40px 24px;
+    margin: 0;
+    padding: 0;
 }
 
 .donors-header {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
-    margin-bottom: 40px;
+    z-index: 5;
+    animation: fadeInText 1.5s ease forwards;
+}
+
+@keyframes fadeInText {
+    0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .donors-title {
     font-family: var(--font-display);
     font-size: 36px;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: #FFE9A0;
     margin: 0;
-}
-
-.donors-subtitle {
-    font-size: 15px;
-    color: var(--color-text-secondary);
-    margin-top: 8px;
+    text-shadow: 0 0 20px rgba(255, 233, 160, 0.3);
 }
 
 .night-sky {
     position: relative;
     width: 100%;
-    max-width: 900px;
-    height: 500px;
+    flex: 1;
+    min-height: 100vh;
     background: linear-gradient(180deg, #0B0E1A 0%, #141929 40%, #1A2440 70%, #1F2D4A 100%);
-    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4);
 }
 
 /* Background twinkle stars */
@@ -1437,11 +1441,4 @@ body {
     font-style: italic;
     white-space: normal;
     max-width: 180px;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-    .night-sky {
-        height: 400px;
-    }
 }
