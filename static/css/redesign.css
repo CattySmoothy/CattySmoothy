@@ -801,9 +801,20 @@ body {
 }
 
 @keyframes lineGlow {
-    0% { text-shadow: none; }
-    50% { text-shadow: 0 0 6px color-mix(in srgb, var(--color-accent) 35%, transparent); }
-    100% { text-shadow: none; }
+    0% {
+        text-shadow: 0 0 2px color-mix(in srgb, var(--color-accent) 10%, transparent);
+        opacity: 0.6;
+    }
+    50% {
+        text-shadow:
+            0 0 8px color-mix(in srgb, var(--color-accent) 45%, transparent),
+            0 0 20px color-mix(in srgb, var(--color-accent) 20%, transparent);
+        opacity: 1;
+    }
+    100% {
+        text-shadow: none;
+        opacity: 1;
+    }
 }
 
 .pricing-features li {
@@ -812,12 +823,12 @@ body {
 }
 
 .pricing-card:hover .pricing-features li {
-    animation: lineGlow 0.5s ease forwards;
+    animation: lineGlow 1.2s ease forwards;
 }
 
 .pricing-card .pricing-features li:nth-child(1) { animation-delay: 0s; }
-.pricing-card .pricing-features li:nth-child(2) { animation-delay: 0.12s; }
-.pricing-card .pricing-features li:nth-child(3) { animation-delay: 0.24s; }
+.pricing-card .pricing-features li:nth-child(2) { animation-delay: 0.3s; }
+.pricing-card .pricing-features li:nth-child(3) { animation-delay: 0.6s; }
 
 .pricing-card.light .pricing-features li {
     color: var(--color-on-light);
