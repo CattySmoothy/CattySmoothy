@@ -761,16 +761,6 @@ body {
     border-bottom-color: var(--color-accent);
 }
 
-/* Hide number input spinners */
-.donation-input::-webkit-inner-spin-button,
-.donation-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.donation-input[type=number] {
-    -moz-appearance: textfield;
-}
-
 .pricing-card.light h3,
 .pricing-card.light .price,
 .pricing-card.light .price-period,
