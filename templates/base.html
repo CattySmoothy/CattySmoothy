@@ -239,6 +239,26 @@
                 var label = document.querySelector('.status-moon');
                 if (!dot || !label) return;
 
+                var isOpen = phase.name === 'Waning Crescent';
+                var statusLabel = document.getElementById('statusLabel');
+                var commissionText = document.getElementById('commissionText');
+                var statusEl = document.getElementById('commissionStatus');
+
+                if (statusEl) {
+                    statusEl.classList.toggle('open', isOpen);
+                    statusEl.classList.toggle('closed', !isOpen);
+                }
+                if (statusLabel) {
+                    statusLabel.textContent = isOpen
+                        ? 'Commissions are currently open'
+                        : 'Commissions are currently closed';
+                }
+                if (commissionText) {
+                    commissionText.textContent = isOpen
+                        ? "I'm currently accepting commission requests for digital paintings, character art, and illustrations."
+                        : 'Commissions are currently closed. Please check back during the next moon cycle.';
+                }
+
                 if (phase.crescent) {
                     dot.innerHTML = '<svg class="stat-moon-crescent" viewBox="0 0 24 24" width="10" height="10"><path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/></svg>';
                 } else if (phase.name === 'Full Moon') {

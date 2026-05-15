@@ -1001,7 +1001,20 @@ body {
     letter-spacing: 0.3px;
     background: color-mix(in srgb, var(--color-accent) 12%, transparent);
     color: color-mix(in srgb, var(--color-accent) 90%, #5A9A6A);
-    text-transform: uppercase;
+}
+
+.commission-status.closed {
+    background: color-mix(in srgb, var(--color-accent) 5%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    opacity: 0.75;
+}
+
+.commission-status.closed .status-label {
+    color: color-mix(in srgb, var(--color-accent) 50%, #5A9A6A);
+}
+
+.commission-status.closed .status-dot {
+    border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
 }
 
 .copy-feedback {
