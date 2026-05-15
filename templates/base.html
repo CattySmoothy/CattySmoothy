@@ -162,7 +162,7 @@
                 return `hsla(${((h % 360) + 360) % 360}, ${clamp(s, 0, 100)}%, ${clamp(l, 0, 100)}%, ${a})`;
             }
 
-            // Update hue gradient with current sat/light + knob positions + swatch + star dots + glow
+            // Update sat/light track gradients + knob positions + swatch + star dots + glow
             function updateUI() {
                 document.documentElement.style.setProperty('--hue-deg', hue);
 
@@ -174,15 +174,6 @@
                 knobs.hue.style.left = (huePct * 100) + '%';
                 knobs.sat.style.left = (satPct * 100) + '%';
                 knobs.light.style.left = (lightPct * 100) + '%';
-
-                // Hue track gradient uses current sat and light
-                var steps = [0, 60, 120, 180, 240, 300, 360];
-                var gradStops = steps.map(function(h) {
-                    return 'hsl(' + h + ', ' + sat + '%, ' + light + '%)';
-                });
-                tracks.hue.style.backgroundImage =
-                    'radial-gradient(circle at 8px 7px, var(--star-dot, rgba(255,255,255,0.2)) 1.8px, transparent 1.8px), ' +
-                    'linear-gradient(90deg, ' + gradStops.join(', ') + ')';
 
                 // Swatch
                 swatch.style.background = hslStr(hue, sat, light);
@@ -252,7 +243,7 @@
                 }
 
                 var dot = document.querySelector('.status-dot');
-                var label = document.querySelector(.status-moon');
+                var label = document.querySelector('.status-moon');
                 if (!dot || !label) return;
 
                 var isOpen = phase.name === 'New Moon';
