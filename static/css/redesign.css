@@ -843,7 +843,7 @@ body {
 .copy-btn {
     flex-shrink: 0;
     background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
-    color: var(--color-text-primary);
+    color: #1A1A1A;
     border: none;
     padding: 6px 18px;
     border-radius: var(--radius-sm);
