@@ -186,13 +186,12 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon — yin-yang always visible with contrast
+                // Moon icon — inverts so white slider gives full dark moon
                 const moonIcon = document.querySelector('#moonLabel .moon-icon');
                 if (moonIcon) {
-                    var g = Math.round(255 * light / 100);
-                    var d = Math.round(g * 0.45);
-                    if (g - d < 40) d = Math.max(0, g - 40);
-                    if (d < 30 && g > 60) d = 30;
+                    var g = Math.round(255 * (1 - light / 100));
+                    var d = Math.round(g * 0.35);
+                    if (g - d < 45) d = Math.max(0, g - 45);
                     moonIcon.style.color = `rgb(${g},${g},${g})`;
                     moonIcon.style.setProperty('--moon-dark', `rgb(${d},${d},${d})`);
                     moonIcon.style.transform = `rotate(${light * 3.6}deg)`;
