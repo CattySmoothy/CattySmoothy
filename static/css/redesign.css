@@ -686,22 +686,18 @@ body {
     border: 1px solid var(--color-card-light-border);
 }
 
-.pricing-card.dark {
-    background: linear-gradient(135deg, var(--color-card-dark) 0%, var(--color-card-dark-end) 100%);
-}
-
 .pricing-card.featured {
     background: linear-gradient(135deg, var(--color-card-featured) 0%, var(--color-card-featured-end) 100%);
     border: none;
 }
 
 .pricing-card.dark {
-    background: linear-gradient(135deg, var(--color-card-dark-solid) 0%, var(--color-card-dark-solid-end) 100%);
+    background: linear-gradient(135deg, var(--color-card-featured-solid) 0%, var(--color-card-featured-solid-end) 100%);
 }
 
 .pricing-card.dark .plan-button {
-    background: var(--color-card-dark-btn-bg);
-    color: var(--color-card-dark-btn-text);
+    background: var(--color-card-featured-btn-bg);
+    color: var(--color-card-featured-btn-text);
 }
 
 .pricing-card.featured {
@@ -718,11 +714,18 @@ body {
 .pricing-card.featured h3,
 .pricing-card.featured .price,
 .pricing-card.featured .price-period,
-.pricing-card.featured .pricing-features li {
+.pricing-card.featured .pricing-features li,
+.pricing-card.dark h3,
+.pricing-card.dark .price,
+.pricing-card.dark .price-period,
+.pricing-card.dark .pricing-features li {
     color: var(--color-on-dark);
 }
 
-.pricing-card.dark h3 {
+.pricing-card.featured:hover h3,
+.pricing-card.featured:hover .price,
+.pricing-card.dark:hover h3,
+.pricing-card.dark:hover .price {
     color: #FFFFFF;
 }
 
@@ -737,20 +740,6 @@ body {
 .donation-currency {
     font-size: 42px;
     font-weight: 600;
-    line-height: 1;
-}
-
-.donation-input {
-    font-family: inherit;
-    font-size: 42px;
-    font-weight: 600;
-    width: 100px;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid color-mix(in srgb, var(--color-on-light) 30%, transparent);
-    color: inherit;
-    outline: none;
-    padding: 0 2px;
     line-height: 1;
 }
 
@@ -775,10 +764,6 @@ body {
     color: var(--color-on-light);
 }
 
-.pricing-card.dark .price {
-    color: #FFFFFF;
-}
-
 .price-period {
     font-size: 14px;
     font-weight: 400;
@@ -786,10 +771,6 @@ body {
 
 .pricing-card.light .price-period,
 .pricing-card.featured .price-period {
-    color: var(--color-on-dark);
-}
-
-.pricing-card.dark .price-period {
     color: var(--color-on-dark);
 }
 
@@ -834,14 +815,6 @@ body {
     color: var(--color-on-light);
 }
 
-.pricing-card.featured .pricing-features li {
-    color: var(--color-on-dark);
-}
-
-.pricing-card.dark .pricing-features li {
-    color: var(--color-on-dark);
-}
-
 .plan-button {
     display: block;
     padding: 14px 20px;
@@ -860,11 +833,6 @@ body {
 .pricing-card.light .plan-button {
     background: var(--color-on-light);
     color: var(--color-on-dark);
-}
-
-.pricing-card.dark .plan-button {
-    background: var(--color-card-dark-btn-bg);
-    color: var(--color-card-dark-btn-text);
 }
 
 .pricing-card.featured .plan-button {
