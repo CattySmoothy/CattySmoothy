@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
 
 :root {
     --color-bg: #FAF8F5;
@@ -7,39 +7,10 @@
     --color-text-secondary: #6B6560;
     --color-text-muted: #9B9590;
     --color-accent: #2D2A26;
-    
-    --color-header-start: #8690A2;
-    --color-header-end: #A8ACB8;
-    --color-card-light: rgba(235, 243, 250, 0.95);
-    --color-card-light-end: rgba(213, 230, 245, 0.95);
-    --color-card-light-border: rgba(200, 220, 240, 0.6);
-    --color-card-dark: rgba(168, 201, 232, 0.9);
-    --color-card-dark-end: rgba(130, 170, 206, 0.9);
-    --color-card-dark-solid: #A8C9E8;
-    --color-card-dark-solid-end: #82AACE;
-    --color-card-featured: rgba(123, 168, 208, 0.9);
-    --color-card-featured-end: rgba(91, 142, 186, 0.9);
-    --color-card-featured-solid: #7BA8D0;
-    --color-card-featured-solid-end: #5B8EBA;
-    --color-email-bg: #6B8BA8;
-    --color-email-text: #C5DEE8;
-    --color-email-btn-text: #6B8BA8;
-    --color-email-btn-hover-bg: #E8F1FA;
-    --color-email-feedback: #7B9EAD;
-    --color-nav-border: #E5E5E5;
-    --color-footer-text: #9B9590;
-    --color-work-card-bg: #E5E5E5;
-    --color-on-dark: #FAF6F0;
-    --color-on-light: #4A463F;
-    --color-card-dark-btn-bg: #FFFFFF;
-    --color-card-featured-btn-bg: #FAF6F0;
-    --color-card-featured-btn-text: #2D2A26;
-    --color-card-dark-btn-text: var(--color-text-primary);
-    --color-list-border: #F0F0F0;
-    --color-surface-alt: #F5F5F5;
-    
+
     --font-display: 'Playfair Display', serif;
     --font-body: 'DM Sans', sans-serif;
+    --font-sub: 'Quicksand', sans-serif;
     
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -902,6 +873,7 @@ body {
 }
 
 .support-footer p {
+    font-family: var(--font-sub);
     font-size: 14px;
     color: var(--color-text-muted);
 }
@@ -918,9 +890,9 @@ body {
 }
 
 .email-address {
+    font-family: var(--font-sub);
     font-size: 14px;
     color: var(--color-text-primary);
-    font-family: var(--font-body);
     flex: 1;
     min-width: 0;
 }
@@ -995,6 +967,7 @@ body {
 }
 
 .status-label {
+    font-family: var(--font-sub);
     font-size: 13px;
     font-weight: 500;
     color: color-mix(in srgb, var(--color-accent) 80%, #5A9A6A);
@@ -1198,7 +1171,7 @@ body {
 }
 
 .join-content p {
-    font-family: var(--font-body);
+    font-family: var(--font-sub);
     font-size: 15px;
     color: var(--color-text-secondary);
     line-height: 1.7;
@@ -1248,7 +1221,7 @@ body {
 }
 
 .page-subtitle {
-    font-family: var(--font-body);
+    font-family: var(--font-sub);
     font-size: 15px;
     color: var(--color-text-muted);
     text-align: center;
