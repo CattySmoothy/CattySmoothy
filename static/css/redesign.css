@@ -1592,14 +1592,17 @@ body {
 
 /* Search bar */
 .donors-search {
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: 14px;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
-    z-index: 20;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.donors-header.settled .donors-search {
+    opacity: 1;
 }
 
 .star-search-input {
