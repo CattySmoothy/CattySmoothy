@@ -1333,6 +1333,129 @@ body {
     opacity: 0.6;
 }
 
+/* Community - Lunar Bloom Club */
+.club-section {
+    background: color-mix(in srgb, var(--color-bg) 92%, white 8%);
+    border-radius: var(--radius-md);
+    padding: 48px 40px;
+    margin-top: 48px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
+}
+
+.club-header {
+    margin-bottom: 32px;
+}
+
+.club-name {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    letter-spacing: -0.5px;
+    margin: 0 0 8px;
+}
+
+.club-tagline {
+    font-family: var(--font-sub);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+}
+
+.club-description {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 36px;
+}
+
+.club-section h2 {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+}
+
+.club-activities,
+.club-playlist,
+.club-plan {
+    margin-bottom: 36px;
+}
+
+.club-activities ul,
+.club-plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.club-activities ul li,
+.club-plan ul li {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+.club-activities ul li::before {
+    content: "★ ";
+    color: var(--color-accent);
+    font-size: 11px;
+}
+
+.club-playlist p {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.club-plan ul li strong {
+    color: var(--color-text-primary);
+}
+
+.club-signup {
+    padding-top: 12px;
+}
+
+.club-signup p {
+    font-family: var(--font-sub);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 0 0 16px;
+}
+
+.signup-link {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-text-primary);
+    padding-bottom: 2px;
+    transition: opacity 0.2s ease;
+}
+
+.signup-link:hover {
+    opacity: 0.6;
+}
+
 /* Donors page - Night Sky */
 .donors-active main,
 .donors-active .container {
