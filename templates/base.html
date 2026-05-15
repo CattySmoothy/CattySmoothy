@@ -266,10 +266,12 @@
                         : 'Commissions are currently closed. Please check back during the next moon cycle.';
                 }
 
-                if (phase.crescent) {
-                    dot.innerHTML = '<svg class="stat-moon-crescent" viewBox="0 0 24 24" width="10" height="10"><path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/></svg>';
+                if (phase.name === 'New Moon') {
+                    dot.innerHTML = '<svg class="stat-moon-new" viewBox="0 0 24 24" width="10" height="10"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
                 } else if (phase.name === 'Full Moon') {
                     dot.innerHTML = '<svg class="stat-moon-full" viewBox="0 0 24 24" width="10" height="10"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>';
+                } else if (phase.crescent) {
+                    dot.innerHTML = '<svg class="stat-moon-crescent" viewBox="0 0 24 24" width="10" height="10"><path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/></svg>';
                 } else {
                     dot.innerHTML = '';
                 }
