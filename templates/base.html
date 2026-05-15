@@ -87,8 +87,12 @@
     <nav class="main-nav">
         <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">WORK</a>
         <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">ABOUT</a>
-        <a href="{{ url_for('support') }}" class="{% if request.endpoint == 'support' %}active{% endif %}">SUPPORT</a>
-        <a href="{{ url_for('donors_page') }}" class="{% if request.endpoint == 'donors_page' %}active{% endif %}">SUPPORTERS</a>
+        <div class="nav-dropdown">
+            <a href="{{ url_for('support') }}" class="nav-dropdown-toggle {% if request.endpoint == 'support' or request.endpoint == 'donors_page' %}active{% endif %}">SUPPORT</a>
+            <div class="nav-dropdown-menu">
+                <a href="{{ url_for('donors_page') }}" class="{% if request.endpoint == 'donors_page' %}active{% endif %}">SUPPORTERS</a>
+            </div>
+        </div>
         <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">COMMUNITY</a>
     </nav>
     
