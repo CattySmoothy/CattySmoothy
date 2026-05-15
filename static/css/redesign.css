@@ -1352,6 +1352,12 @@ body {
     text-align: center;
     z-index: 5;
     animation: fadeInText 2s ease forwards;
+    transition: top 1.2s ease, transform 1.2s ease;
+}
+
+.donors-header.settled {
+    top: 40px;
+    transform: translateX(-50%);
 }
 
 @keyframes fadeInText {
@@ -1368,6 +1374,14 @@ body {
     text-shadow:
         0 0 20px rgba(255, 255, 255, 0.3),
         0 0 60px rgba(255, 255, 255, 0.15);
+}
+
+.donors-timer {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
 }
 
 .night-sky {

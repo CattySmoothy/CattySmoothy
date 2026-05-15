@@ -2,8 +2,9 @@
 
 {% block content %}
 <div class="donors-page">
-    <div class="donors-header">
+    <div class="donors-header" id="donorsHeader">
         <h1 class="donors-title">My wonderful stars</h1>
+        <div class="donors-timer" id="donorsTimer"></div>
     </div>
 
     <div class="night-sky" id="nightSky">
@@ -23,4 +24,42 @@
         {% endfor %}
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var header = document.getElementById('donorsHeader');
+    var timer = document.getElementById('donorsTimer');
+
+    header.addEventListener('animationend', function() {
+        header.classList.add('settled');
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    });
+
+    function updateTimer() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var cycleStart = new Date(year - (year - 2024) % 4, 0, 1);
+        var cycleEnd = new Date(cycleStart.getFullYear() + 4, 0, 1);
+        var total = (cycleEnd - now) / 1000;
+
+        if (total <= 0) {
+            timer.textContent = '✦ A new cycle begins ✦';
+            return;
+        }
+
+        var days = Math.floor(total / 86400);
+        var hours = Math.floor((total % 86400) / 3600);
+        var mins = Math.floor((total % 3600) / 60);
+        var secs = Math.floor(total % 60);
+
+        var y = Math.floor(days / 365);
+        var d = days % 365;
+
+        timer.textContent = '✦ ' + y + 'y ' + d + 'd ' +
+            String(hours).padStart(2, '0') + ':' +
+            String(mins).padStart(2, '0') + ':' +
+            String(secs).padStart(2, '0') + ' ✦';
+    }
+});
+</script>
 {% endblock %}
