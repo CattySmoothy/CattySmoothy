@@ -912,7 +912,7 @@ body {
 
 .email-address {
     font-size: 14px;
-    color: var(--color-on-dark);
+    color: var(--color-text-primary);
     font-family: var(--font-body);
     flex: 1;
     min-width: 0;
