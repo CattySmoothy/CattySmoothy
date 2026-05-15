@@ -309,20 +309,7 @@ body {
 #lightTrack {
     background-image:
         radial-gradient(circle at 8px 7px, var(--star-dot, rgba(255, 255, 255, 0.2)) 1.8px, transparent 1.8px),
-        linear-gradient(90deg,
-            #000000 0%,
-            #141414 12%,
-            #2E2E2E 24%,
-            #474747 35%,
-            #606060 45%,
-            #787878 54%,
-            #909090 63%,
-            #A8A8A8 72%,
-            #C2C2C2 81%,
-            #DCDCDC 90%,
-            #F0F0F0 96%,
-            #FFFFFF 100%
-        );
+        linear-gradient(90deg, #000000 0%, #FFFFFF 100%);
 }
 
 .hsl-track::after {
