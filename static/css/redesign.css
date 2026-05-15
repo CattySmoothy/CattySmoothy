@@ -888,6 +888,13 @@ body {
     color: var(--color-card-featured-btn-text);
 }
 
+.pricing-card.dark:hover .plan-button,
+.pricing-card.featured:hover .plan-button {
+    color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .support-footer {
     padding: 40px 0;
     text-align: center;
