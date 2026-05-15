@@ -743,6 +743,20 @@ body {
     line-height: 1;
 }
 
+.donation-input {
+    font-family: inherit;
+    font-size: 42px;
+    font-weight: 600;
+    width: 100px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid color-mix(in srgb, var(--color-on-light) 30%, transparent);
+    color: inherit;
+    outline: none;
+    padding: 0 2px;
+    line-height: 1;
+}
+
 .donation-input:focus {
     border-bottom-color: var(--color-accent);
 }
