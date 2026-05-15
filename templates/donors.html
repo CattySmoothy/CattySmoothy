@@ -8,22 +8,32 @@
     </div>
 
     <div class="night-sky" id="nightSky">
-        {% for donor in donors %}
-        <div class="star-wrapper" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%; animation-delay: {{ loop.index0 * 0.3 }}s;">
-            <div class="star" data-index="{{ loop.index0 }}">
-                <div class="star-dot"></div>
-            </div>
-            <div class="star-popup">
-                <span class="star-popup-name">{{ donor.name }}</span>
-                <span class="star-popup-amount">${{ "%.2f"|format(donor.amount) }}</span>
-                {% if donor.message %}
-                <span class="star-popup-msg">{{ donor.message }}</span>
-                {% endif %}
-            </div>
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
+            <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
+            <button class="zoom-btn" id="zoomReset" title="Reset">⟲</button>
         </div>
-        {% endfor %}
+
+        <div class="sky-content" id="skyContent">
+            <svg class="constellation-layer" id="constellationLayer"></svg>
+            {% for donor in donors %}
+            <div class="star-wrapper" style="left: {{ 5 + (loop.index0 * 7 + loop.index0 * loop.index0 * 3) % 85 }}%; top: {{ 10 + (loop.index0 * 11 + loop.index0 * 5) % 75 }}%;">
+                <div class="star" data-index="{{ loop.index0 }}">
+                    <div class="star-dot" style="animation-delay: {{ loop.index0 * 0.3 }}s;"></div>
+                </div>
+                <div class="star-popup">
+                    <span class="star-popup-name">{{ donor.name }}</span>
+                    <span class="star-popup-amount">${{ "%.2f"|format(donor.amount) }}</span>
+                    {% if donor.message %}
+                    <span class="star-popup-msg">{{ donor.message }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var header = document.getElementById('donorsHeader');
@@ -60,6 +70,133 @@ document.addEventListener('DOMContentLoaded', function() {
             String(mins).padStart(2, '0') + ':' +
             String(secs).padStart(2, '0') + ' ✦';
     }
+
+    // Galaxy zoom and pan
+    var sky = document.getElementById('nightSky');
+    var content = document.getElementById('skyContent');
+    var conLayer = document.getElementById('constellationLayer');
+
+    var scale = 1;
+    var panX = 0, panY = 0;
+    var isDragging = false;
+    var startX, startY;
+    var dragPanX, dragPanY;
+
+    function updateTransform() {
+        content.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')';
+        updateConstellations();
+    }
+
+    document.getElementById('zoomIn').addEventListener('click', function() {
+        scale = Math.min(scale + 0.25, 3);
+        updateTransform();
+    });
+
+    document.getElementById('zoomOut').addEventListener('click', function() {
+        scale = Math.max(scale - 0.25, 0.5);
+        updateTransform();
+    });
+
+    document.getElementById('zoomReset').addEventListener('click', function() {
+        scale = 1;
+        panX = 0;
+        panY = 0;
+        updateTransform();
+    });
+
+    sky.addEventListener('mousedown', function(e) {
+        if (e.target.closest('.zoom-controls') || e.target.closest('.star-popup')) return;
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+        sky.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateTransform();
+    });
+
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        sky.style.cursor = 'grab';
+    });
+
+    sky.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        var rect = sky.getBoundingClientRect();
+        var mx = e.clientX - rect.left;
+        var my = e.clientY - rect.top;
+
+        var delta = e.deltaY > 0 ? -0.15 : 0.15;
+        var newScale = Math.max(0.5, Math.min(3, scale + delta));
+
+        if (newScale !== scale) {
+            var ratio = newScale / scale;
+            panX = mx - (mx - panX) * ratio;
+            panY = my - (my - panY) * ratio;
+            scale = newScale;
+            updateTransform();
+        }
+    }, { passive: false });
+
+    // Constellation lines
+    var starWrappers = document.querySelectorAll('.star-wrapper');
+    var stars = [];
+
+    starWrappers.forEach(function(w) {
+        var left = parseFloat(w.style.left);
+        var top = parseFloat(w.style.top);
+        var idx = parseInt(w.querySelector('.star').dataset.index);
+        stars.push({ el: w, left: left, top: top, index: idx });
+    });
+
+    function getStarCenter(wrapper) {
+        var skyRect = sky.getBoundingClientRect();
+        var wRect = wrapper.getBoundingClientRect();
+        return {
+            x: (wRect.left - skyRect.left + wRect.width / 2),
+            y: (wRect.top - skyRect.top + wRect.height / 2)
+        };
+    }
+
+    function updateConstellations() {
+        var skyW = sky.offsetWidth;
+        var skyH = sky.offsetHeight;
+        conLayer.setAttribute('width', skyW);
+        conLayer.setAttribute('height', skyH);
+        conLayer.style.width = skyW + 'px';
+        conLayer.style.height = skyH + 'px';
+
+        var html = '';
+        var threshold = 120 / scale;
+
+        for (var i = 0; i < stars.length; i++) {
+            for (var j = i + 1; j < stars.length; j++) {
+                var c1 = getStarCenter(stars[i].el);
+                var c2 = getStarCenter(stars[j].el);
+                var dx = c1.x - c2.x;
+                var dy = c1.y - c2.y;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < threshold) {
+                    var opacity = Math.max(0.05, Math.min(0.3, 1 - dist / threshold));
+                    html += '<line x1="' + c1.x + '" y1="' + c1.y +
+                        '" x2="' + c2.x + '" y2="' + c2.y +
+                        '" stroke="rgba(232, 240, 255, ' + opacity.toFixed(2) + ')" stroke-width="0.8"/>';
+                }
+            }
+        }
+        conLayer.innerHTML = html;
+    }
+
+    sky.style.cursor = 'grab';
+    updateTransform();
+
+    // Re-draw constellations on resize
+    window.addEventListener('resize', updateConstellations);
 });
 </script>
 {% endblock %}
