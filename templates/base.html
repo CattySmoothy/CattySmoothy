@@ -26,7 +26,7 @@
                         <div class="hsl-row">
                             <span class="moon-label">
                                 <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <path d="M12 2A10 10 0 1 0 22 12A9 9 0 1 1 12 2Z" fill="currentColor"/>
+                                    <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
                                 </svg>
                             </span>
                             <div class="hsl-track" id="hueTrack">
@@ -61,7 +61,15 @@
                         <div class="hsl-row">
                             <span class="moon-label" id="moonLabel">
                                 <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <circle cx="12" cy="12" r="10" fill="currentColor"/>
+                                    <defs>
+                                        <mask id="yyMask">
+                                            <rect width="24" height="24" fill="white"/>
+                                            <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
+                                            <circle cx="9" cy="7" r="2.5" fill="black"/>
+                                        </mask>
+                                    </defs>
+                                    <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
+                                    <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
                                 </svg>
                             </span>
                             <div class="hsl-track" id="lightTrack">
