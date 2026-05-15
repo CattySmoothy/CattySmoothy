@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 
 donors = [
     {"name": "Luna", "message": "Love your art!", "amount": 10.00},
@@ -27,6 +27,11 @@ def register_routes(app):
     @app.route('/support')
     def support():
         return render_template('support.html', title="Support")
+
+    @app.route('/donate')
+    def donate():
+        amount = request.args.get('amount', '5.00')
+        return render_template('donate.html', title="Donate", amount=amount)
 
     @app.route('/donors')
     def donors_page():

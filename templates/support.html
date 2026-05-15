@@ -11,19 +11,26 @@
         </section>
 
         <section class="pricing-grid">
-            <div class="pricing-card light pricing-card-wide">
-                <h3>Send Stardust</h3>
-                <div class="price">
-                    <span class="donation-currency">$</span>
-                    <input type="number" class="donation-input" value="5.00" min="0.50" step="0.50">
-                    <span class="price-period">one-time</span>
+                <div class="pricing-card light pricing-card-wide">
+                    <h3>Send Stardust</h3>
+                    <div class="price">
+                        <span class="donation-currency">$</span>
+                        <input type="number" id="donationAmount" class="donation-input" value="5.00" min="0.50" step="0.50">
+                        <span class="price-period">one-time</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>✓ Support the artist</li>
+                        <li>✓ Donate however much you like <3</li>
+                    </ul>
+                    <button class="plan-button" onclick="goDonate()">Donate</button>
                 </div>
-                <ul class="pricing-features">
-                    <li>✓ Support the artist</li>
-                    <li>✓ Donate however much you like <3</li>
-                </ul>
-                <a href="{{ url_for('donors_page') }}" class="plan-button">Donate</a>
-            </div>
+
+                <script>
+                function goDonate() {
+                    var amt = document.getElementById('donationAmount').value;
+                    window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
+                }
+                </script>
 
             <div class="pricing-card dark">
                 <h3>Basic</h3>

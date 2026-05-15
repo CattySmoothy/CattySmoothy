@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-layout" style="justify-content: center;">
+    <div class="about-box" style="max-width: 480px;">
+        <section class="support-header">
+            <div class="content-container">
+                <h1 class="page-title">Send Stardust</h1>
+                <p class="page-subtitle">Your support means the world</p>
+            </div>
+        </section>
+
+        <form class="donate-form" id="donateForm">
+            <div class="donate-field">
+                <label class="donate-label" for="donateAmount">Amount</label>
+                <div class="donate-amount-wrap">
+                    <span class="donate-currency-symbol">$</span>
+                    <input type="number" id="donateAmount" class="donate-input" value="{{ amount }}" min="0.50" step="0.50" readonly>
+                </div>
+            </div>
+
+            <div class="donate-field">
+                <label class="donate-label" for="donateName">Your Name</label>
+                <input type="text" id="donateName" class="donate-input" placeholder="Starlight" maxlength="30" required>
+            </div>
+
+            <div class="donate-field">
+                <label class="donate-label" for="donateMessage">Message <span class="donate-note">(will be shown publicly)</span></label>
+                <textarea id="donateMessage" class="donate-textarea" placeholder="Love your art!" maxlength="100" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="plan-button donate-submit">Complete Donation</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('donateForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var name = document.getElementById('donateName').value || 'Anonymous';
+    var msg = document.getElementById('donateMessage').value || '';
+    var amt = document.getElementById('donateAmount').value;
+    alert('Thank you, ' + name + '! \\nYour donation of $' + amt + ' will light up the sky. \\n(Your message will appear publicly among the stars.)');
+    window.location.href = "{{ url_for('donors_page') }}";
+});
+</script>
+{% endblock %}
