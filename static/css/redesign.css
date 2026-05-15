@@ -1636,17 +1636,13 @@ body {
 
 /* Search bar */
 .donors-search {
-    margin-top: 14px;
+    position: absolute;
+    top: 24px;
+    left: 24px;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 12px;
-    opacity: 0;
-    transition: opacity 1.2s ease;
-}
-
-.donors-header.settled .donors-search {
-    opacity: 1;
+    z-index: 20;
 }
 
 .star-search-input {
