@@ -892,7 +892,7 @@ body {
 .email-address {
     font-family: var(--font-sub);
     font-size: 14px;
-    color: var(--color-text-primary);
+    color: #FFFFFF;
     flex: 1;
     min-width: 0;
 }
