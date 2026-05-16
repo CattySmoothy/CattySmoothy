@@ -1334,13 +1334,75 @@ body {
 }
 
 /* Community - Lunar Bloom Club */
-.club-section {
-    background: color-mix(in srgb, var(--color-bg) 92%, white 8%);
-    border-radius: var(--radius-md);
-    padding: 48px 40px;
+.club-layout {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
     margin-top: 48px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.club-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 0 0 300px;
+    position: sticky;
+    top: 24px;
+}
+
+.club-cta-card {
+    background: var(--color-card-dark-solid);
+    border-radius: var(--radius-md);
+    padding: 36px 28px;
     text-align: center;
+    border: 2px solid var(--color-accent);
+}
+
+.club-cta-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-on-dark);
+    margin: 0 0 12px;
+    line-height: 1.3;
+}
+
+.club-cta-text {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-on-dark);
+    opacity: 0.75;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+
+.club-join-btn {
+    display: inline-block;
+    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
+    color: var(--color-card-dark-solid);
+    padding: 12px 28px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.club-join-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 35%, transparent);
+}
+
+.club-join-btn:active {
+    background: var(--color-accent);
+    color: var(--color-bg);
+}
+
+.club-intros {
+    flex: 1;
+    min-width: 0;
 }
 
 .club-header {
@@ -1365,95 +1427,85 @@ body {
     margin: 0;
 }
 
-.club-description {
-    font-family: var(--font-body);
-    font-size: 13px;
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 520px;
-    margin: 0 auto 36px;
+.club-dropdown {
+    border-bottom: 1px solid var(--color-list-border);
+    padding: 4px 0;
 }
 
-.club-section h2 {
+.club-dropdown[open] {
+    padding-bottom: 16px;
+}
+
+.club-dropdown-summary {
     font-family: var(--font-body);
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    color: var(--color-text-primary);
+    padding: 16px 0;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: color 0.2s ease;
+}
+
+.club-dropdown-summary::-webkit-details-marker {
+    display: none;
+}
+
+.club-dropdown-summary::after {
+    content: '+';
+    font-size: 18px;
+    font-weight: 300;
     color: var(--color-text-muted);
-    margin: 0 0 20px;
+    transition: transform 0.2s ease;
+    line-height: 1;
 }
 
-.club-activities,
-.club-playlist,
-.club-plan {
-    margin-bottom: 36px;
+.club-dropdown[open] .club-dropdown-summary::after {
+    content: '−';
 }
 
-.club-activities ul,
-.club-plan ul {
+.club-dropdown-summary:hover {
+    color: var(--color-accent);
+}
+
+.club-dropdown-body {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 8px;
+}
+
+.club-dropdown-body p {
+    margin: 0;
+}
+
+.club-dropdown-body ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-.club-activities ul li,
-.club-plan ul li {
-    font-family: var(--font-body);
+.club-dropdown-body ul li {
     font-size: 14px;
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
     line-height: 1.6;
 }
 
-.club-activities ul li::before {
+.club-dropdown-body ul li::before {
     content: "★ ";
     color: var(--color-accent);
     font-size: 11px;
 }
 
-.club-playlist p {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    line-height: 1.7;
-    max-width: 520px;
-    margin: 0 auto;
-}
-
-.club-plan ul li strong {
+.club-dropdown-body ul li strong {
     color: var(--color-text-primary);
-}
-
-.club-signup {
-    padding-top: 12px;
-}
-
-.club-signup p {
-    font-family: var(--font-sub);
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    margin: 0 0 16px;
-}
-
-.signup-link {
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    border-bottom: 1px solid var(--color-text-primary);
-    padding-bottom: 2px;
-    transition: opacity 0.2s ease;
-}
-
-.signup-link:hover {
-    opacity: 0.6;
 }
 
 /* Donors page - Night Sky */
