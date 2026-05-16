@@ -765,20 +765,28 @@ body {
     position: absolute;
     top: 20px;
     left: -16px;
-    width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: 16px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
     z-index: 101;
-    transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    padding: 0;
-    line-height: 0;
+    transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, padding 0.3s ease;
+    padding: 0 4px;
+    line-height: 1;
+    overflow: hidden;
+}
+
+.donor-sidebar.expanded .donor-sidebar-toggle {
+    padding: 0 10px;
+}
+
+.donor-sidebar-toggle svg {
+    flex-shrink: 0;
 }
 
 .donor-sidebar-toggle:hover {
@@ -807,6 +815,26 @@ body {
 .donor-nav-item:hover {
     color: #FFFFFF;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.donor-toggle-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: opacity 0.2s ease, transform 0.3s ease;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.donor-sidebar.expanded .donor-toggle-label {
+    opacity: 1;
+    transform: scaleX(1);
+    pointer-events: auto;
 }
 
 .donor-nav-icon {
@@ -1106,7 +1134,36 @@ body {
     opacity: 1;
 }
 
+/* About page floral pattern overlay */
+@property --floral-reveal {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 50%;
+}
+
+.about-floral-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='currentColor'%3E%3Ccircle cx='25' cy='25' r='1.5' opacity='.35'/%3E%3Cellipse cx='28.5' cy='23.5' rx='3.5' ry='1.2' opacity='.15' transform='rotate(0%2025%2025)'/%3E%3Cellipse cx='28.5' cy='23.5' rx='3.5' ry='1.2' opacity='.15' transform='rotate(72%2025%2025)'/%3E%3Cellipse cx='28.5' cy='23.5' rx='3.5' ry='1.2' opacity='.15' transform='rotate(144%2025%2025)'/%3E%3Cellipse cx='28.5' cy='23.5' rx='3.5' ry='1.2' opacity='.15' transform='rotate(216%2025%2025)'/%3E%3Cellipse cx='28.5' cy='23.5' rx='3.5' ry='1.2' opacity='.15' transform='rotate(288%2025%2025)'/%3E%3Ccircle cx='90' cy='45' r='1' opacity='.25'/%3E%3Cellipse cx='92.5' cy='44' rx='2.5' ry='0.8' opacity='.1' transform='rotate(20%2090%2045)'/%3E%3Cellipse cx='92.5' cy='44' rx='2.5' ry='0.8' opacity='.1' transform='rotate(92%2090%2045)'/%3E%3Cellipse cx='92.5' cy='44' rx='2.5' ry='0.8' opacity='.1' transform='rotate(164%2090%2045)'/%3E%3Ccircle cx='50' cy='95' r='1.2' opacity='.3'/%3E%3Cellipse cx='53' cy='93.5' rx='3' ry='1' opacity='.12' transform='rotate(40%2050%2095)'/%3E%3Cellipse cx='53' cy='93.5' rx='3' ry='1' opacity='.12' transform='rotate(112%2050%2095)'/%3E%3Cellipse cx='53' cy='93.5' rx='3' ry='1' opacity='.12' transform='rotate(184%2050%2095)'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 240px 240px;
+    color: var(--color-text-primary);
+    opacity: 0.7;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--floral-reveal), black calc(var(--floral-reveal) + 2px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent var(--floral-reveal), black calc(var(--floral-reveal) + 2px));
+    animation: revealFloral 2.5s ease-out forwards;
+}
+
+@keyframes revealFloral {
+    0% { --floral-reveal: 50%; }
+    100% { --floral-reveal: 0%; }
+}
+
 .about-layout {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: flex-start;
