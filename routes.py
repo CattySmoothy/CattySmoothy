@@ -1,5 +1,4 @@
-from flask import render_template, request, Response
-import pattern_generator
+from flask import render_template, request
 
 donors = [
     {"name": "Luna", "message": "Love your art!", "amount": 10.00, "public": True},
@@ -54,20 +53,3 @@ def register_routes(app):
     @app.route('/join')
     def join():
         return render_template('join.html', title="Join Discord")
-
-    # ── Pattern generator endpoints ─────────────────────────────────────
-    @app.route('/patterns/winter-swirls.svg')
-    def pattern_winter_swirls():
-        w = request.args.get('w', 600, type=int)
-        h = request.args.get('h', 600, type=int)
-        seed = request.args.get('seed', None, type=int)
-        svg = pattern_generator.generate_winter_swirls(width=w, height=h, seed=seed)
-        return Response(svg, mimetype='image/svg+xml')
-
-    @app.route('/patterns/celestial-collage.svg')
-    def pattern_celestial_collage():
-        w = request.args.get('w', 800, type=int)
-        h = request.args.get('h', 800, type=int)
-        seed = request.args.get('seed', None, type=int)
-        svg = pattern_generator.generate_celestial_collage(width=w, height=h, seed=seed)
-        return Response(svg, mimetype='image/svg+xml')

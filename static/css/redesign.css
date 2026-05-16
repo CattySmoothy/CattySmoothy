@@ -1148,8 +1148,35 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 48px;
-    padding: 60px 0;
+    gap: 0;
+    padding: 60px 0 40px;
+    min-height: 400px;
+}
+
+/* Swirl pattern — reveals from edges inward */
+@property --swirl-reveal {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 60%;
+}
+
+.swirl-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("/static/images/swirl-pattern.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--swirl-reveal), black calc(var(--swirl-reveal) + 3px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent var(--swirl-reveal), black calc(var(--swirl-reveal) + 3px));
+    animation: revealSwirls 3s ease-out forwards;
+}
+
+@keyframes revealSwirls {
+    0% { --swirl-reveal: 60%; }
+    100% { --swirl-reveal: 0%; }
 }
 
 @keyframes revealFloral {
