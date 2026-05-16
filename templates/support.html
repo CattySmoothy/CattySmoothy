@@ -1,81 +1,119 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="about-layout">
-    <div class="about-box">
-        <section class="support-header">
-            <div class="content-container">
-                <h1 class="page-title">Support My Work</h1>
-                <p class="page-subtitle">Choose a tier that works for you</p>
-            </div>
-        </section>
+<div class="support-page-wrap">
+    <div class="support-sidebar" id="supportSidebar">
+        <button class="support-sidebar-toggle" id="sidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z"/>
+            </svg>
+        </button>
+        <nav class="support-sidebar-nav">
+            <a href="{{ url_for('home') }}" class="support-nav-item" title="Work">
+                <span class="support-nav-icon">✦</span>
+                <span class="support-nav-label">Work</span>
+            </a>
+            <a href="{{ url_for('about') }}" class="support-nav-item" title="About">
+                <span class="support-nav-icon">✦</span>
+                <span class="support-nav-label">About</span>
+            </a>
+            <a href="{{ url_for('support') }}" class="support-nav-item" title="Support">
+                <span class="support-nav-icon">✦</span>
+                <span class="support-nav-label">Support</span>
+            </a>
+            <a href="{{ url_for('profile') }}" class="support-nav-item" title="Community">
+                <span class="support-nav-icon">✦</span>
+                <span class="support-nav-label">Community</span>
+            </a>
+        </nav>
+    </div>
 
-        <section class="pricing-grid">
-                <div class="pricing-card light pricing-card-wide">
-                    <h3>Send Stardust</h3>
-                    <div class="price">
-                        <span class="donation-currency">$</span>
-                        <div class="donation-stepper">
-                            <input type="number" id="donationAmount" class="donation-input" value="5.00" min="0.50" step="0.50">
-                            <div class="donation-arrows">
-                                <button type="button" class="donation-arrow up" onclick="stepDonation(0.50)" aria-label="Increase">▲</button>
-                                <button type="button" class="donation-arrow down" onclick="stepDonation(-0.50)" aria-label="Decrease">▼</button>
-                            </div>
-                        </div>
-                        <span class="price-period">one-time</span>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✓ Support the artist</li>
-                        <li>✓ Donate however much you like <3</li>
-                    </ul>
-                    <button class="plan-button" onclick="goDonate()">Donate</button>
+    <div class="about-layout">
+        <div class="about-box">
+            <section class="support-header">
+                <div class="content-container">
+                    <h1 class="page-title">Support My Work</h1>
+                    <p class="page-subtitle">Choose a tier that works for you</p>
                 </div>
+            </section>
 
-                <script>
-                function goDonate() {
-                    var amt = document.getElementById('donationAmount').value;
-                    window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
-                }
+            <section class="pricing-grid">
+                    <div class="pricing-card light pricing-card-wide">
+                        <h3>Send Stardust</h3>
+                        <div class="price">
+                            <span class="donation-currency">$</span>
+                            <div class="donation-stepper">
+                                <input type="number" id="donationAmount" class="donation-input" value="5.00" min="0.50" step="0.50">
+                                <div class="donation-arrows">
+                                    <button type="button" class="donation-arrow up" onclick="stepDonation(0.50)" aria-label="Increase">▲</button>
+                                    <button type="button" class="donation-arrow down" onclick="stepDonation(-0.50)" aria-label="Decrease">▼</button>
+                                </div>
+                            </div>
+                            <span class="price-period">one-time</span>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>✓ Support the artist</li>
+                            <li>✓ Donate however much you like <3</li>
+                        </ul>
+                        <button class="plan-button" onclick="goDonate()">Donate</button>
+                    </div>
 
-                function stepDonation(delta) {
-                    var input = document.getElementById('donationAmount');
-                    var val = parseFloat(input.value) || 0;
-                    var step = parseFloat(input.step) || 0.50;
-                    var min = parseFloat(input.min) || 0.50;
-                    val = Math.round((val + delta) / step) * step;
-                    if (val < min) val = min;
-                    input.value = val.toFixed(2);
-                }
-                </script>
+                    <script>
+                    function goDonate() {
+                        var amt = document.getElementById('donationAmount').value;
+                        window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
+                    }
 
-            <div class="pricing-card dark">
-                <h3>Basic</h3>
-                <div class="price">$1.99<span class="price-period">/mo</span></div>
-                <ul class="pricing-features">
-                    <li>✓ All Free features</li>
-                    <li>✓ Premium tutorials</li>
-                    <li>✓ Live Q&A sessions</li>
-                </ul>
-                <a href="#" class="plan-button">Choose Basic</a>
-            </div>
-            
-            <div class="pricing-card featured">
-                <h3>Premium</h3>
-                <div class="price">$49.99<span class="price-period">/mo</span></div>
-                <ul class="pricing-features">
-                    <li>✓ All Basic features</li>
-                    <li>✓ Personal feedback</li>
-                    <li>✓ Priority support</li>
-                </ul>
-                <a href="#" class="plan-button">Choose Premium</a>
-            </div>
-        </section>
+                    function stepDonation(delta) {
+                        var input = document.getElementById('donationAmount');
+                        var val = parseFloat(input.value) || 0;
+                        var step = parseFloat(input.step) || 0.50;
+                        var min = parseFloat(input.min) || 0.50;
+                        val = Math.round((val + delta) / step) * step;
+                        if (val < min) val = min;
+                        input.value = val.toFixed(2);
+                    }
+                    </script>
 
-        <section class="support-footer">
-            <div class="content-container">
-                <p>Questions? Reach out anytime.</p>
-            </div>
-        </section>
+                <div class="pricing-card dark">
+                    <h3>Basic</h3>
+                    <div class="price">$1.99<span class="price-period">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>✓ All Free features</li>
+                        <li>✓ Premium tutorials</li>
+                        <li>✓ Live Q&A sessions</li>
+                    </ul>
+                    <a href="#" class="plan-button">Choose Basic</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <h3>Premium</h3>
+                    <div class="price">$49.99<span class="price-period">/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>✓ All Basic features</li>
+                        <li>✓ Personal feedback</li>
+                        <li>✓ Priority support</li>
+                    </ul>
+                    <a href="#" class="plan-button">Choose Premium</a>
+                </div>
+            </section>
+
+            <section class="support-footer">
+                <div class="content-container">
+                    <p>Questions? Reach out anytime.</p>
+                </div>
+            </section>
+        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggle = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('supportSidebar');
+    toggle.addEventListener('click', function() {
+        sidebar.classList.toggle('expanded');
+    });
+});
+</script>
 {% endblock %}
