@@ -1482,7 +1482,7 @@ body {
 
 .club-join-btn {
     display: inline-block;
-    background: color-mix(in srgb, var(--color-accent) 30%, white 70%);
+    background: var(--color-on-dark);
     color: var(--color-card-dark-solid);
     padding: 12px 28px;
     font-family: var(--font-body);
@@ -1496,12 +1496,13 @@ body {
 
 .club-join-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 35%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 .club-join-btn:active {
     background: var(--color-accent);
     color: var(--color-bg);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent) 50%, transparent);
 }
 
 .club-intros {
