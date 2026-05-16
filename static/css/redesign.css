@@ -1481,6 +1481,7 @@ body {
 
 .club-dropdown-body p {
     margin: 0;
+    color: inherit;
 }
 
 .club-dropdown-body ul {
