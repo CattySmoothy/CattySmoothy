@@ -2,6 +2,32 @@
 
 {% block content %}
 <div class="donors-page">
+    <div class="donor-sidebar" id="donorSidebar">
+        <nav class="donor-sidebar-nav">
+            <a href="{{ url_for('home') }}" class="donor-nav-item" title="Work">
+                <span class="donor-nav-icon">✦</span>
+                <span class="donor-nav-label">Work</span>
+            </a>
+            <a href="{{ url_for('about') }}" class="donor-nav-item" title="About">
+                <span class="donor-nav-icon">✦</span>
+                <span class="donor-nav-label">About</span>
+            </a>
+            <a href="{{ url_for('support') }}" class="donor-nav-item" title="Support">
+                <span class="donor-nav-icon">✦</span>
+                <span class="donor-nav-label">Support</span>
+            </a>
+            <a href="{{ url_for('profile') }}" class="donor-nav-item" title="Community">
+                <span class="donor-nav-icon">✦</span>
+                <span class="donor-nav-label">Community</span>
+            </a>
+        </nav>
+        <button class="donor-sidebar-toggle" id="donorSidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z"/>
+            </svg>
+        </button>
+    </div>
+
     <div class="donors-header" id="donorsHeader">
         <h1 class="donors-title">My wonderful stars</h1>
         <div class="donors-timer" id="donorsTimer"></div>
@@ -296,6 +322,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Re-draw constellations on resize
     window.addEventListener('resize', updateConstellations);
+});
+
+// Sidebar toggle
+var sidebarToggle = document.getElementById('donorSidebarToggle');
+var donorSidebar = document.getElementById('donorSidebar');
+sidebarToggle.addEventListener('click', function() {
+    donorSidebar.classList.toggle('expanded');
 });
 </script>
 {% endblock %}
