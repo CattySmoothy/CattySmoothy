@@ -1501,6 +1501,13 @@ body {
     padding: 36px 28px;
     text-align: center;
     border: 2px solid var(--color-accent);
+    box-shadow: 0 4px 24px color-mix(in srgb, var(--color-accent) 20%, transparent), inset 0 1px 0 color-mix(in srgb, var(--color-on-dark) 15%, transparent);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.club-cta-card:hover {
+    box-shadow: 0 6px 32px color-mix(in srgb, var(--color-accent) 35%, transparent), inset 0 1px 0 color-mix(in srgb, var(--color-on-dark) 20%, transparent);
+    transform: translateY(-2px);
 }
 
 .club-cta-title {
