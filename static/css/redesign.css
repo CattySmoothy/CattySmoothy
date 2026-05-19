@@ -1523,7 +1523,6 @@ body {
     font-family: var(--font-body);
     font-size: 13px;
     color: var(--color-on-dark);
-    opacity: 0.75;
     line-height: 1.6;
     margin: 0 0 24px;
 }
