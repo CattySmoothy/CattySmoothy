@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-layout" style="justify-content: center;">
+    <div class="about-box" style="max-width: 480px; text-align: center;">
+        <h1 class="page-title" style="margin-bottom: 16px;">Thank You!</h1>
+        <p style="font-family: var(--font-body); font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 32px;">
+            Your payment was successful. Your support means the world — you've officially joined the stars ✨
+        </p>
+        <a href="{{ url_for('donors_page') }}" class="cta-link">See the Night Sky</a>
+    </div>
+</div>
+{% endblock %}

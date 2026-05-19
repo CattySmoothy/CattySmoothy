@@ -11,6 +11,7 @@
         </section>
 
         <form class="donate-form" id="donateForm">
+            <input type="hidden" id="stripePk" value="{{ publishable_key }}">
             <div class="donate-field">
                 <label class="donate-label" for="donateAmount">Amount</label>
                 <div class="donate-amount-wrap">
@@ -111,21 +112,46 @@ document.getElementById('donateForm').addEventListener('submit', function(e) {
 
     var msgDesc = '';
     if (t === 'free') {
-        msgDesc = document.getElementById('donateMessage').value || '(no message)';
+        msgDesc = document.getElementById('donateMessage').value || '';
     } else if (t === 'promise') {
-        var p = document.getElementById('promiseText').value || '(no promise)';
-        var done = document.getElementById('promiseDone').checked ? '✓ completed' : '☐ pending';
+        var p = document.getElementById('promiseText').value || '';
+        var done = document.getElementById('promiseDone').checked ? 'completed' : 'pending';
         msgDesc = 'Promise: "' + p + '" (' + done + ')';
     } else {
-        var s = document.getElementById('storyText').value || '(no story)';
+        var s = document.getElementById('storyText').value || '';
         msgDesc = 'Story: ' + s;
     }
 
-    var note = vis === 'public'
-        ? 'Your message will appear publicly among the stars.'
-        : 'Your message will be kept private, only visible to the artist.';
-    alert('Thank you, ' + name + '! \\nDonation of $' + amt + ' will light up the sky. \\n' + msgDesc + ' \\n' + note);
-    window.location.href = "{{ url_for('donors_page') }}";
+    var btn = this.querySelector('.donate-submit');
+    btn.textContent = 'Redirecting...';
+    btn.disabled = true;
+
+    fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            amount: amt,
+            name: name,
+            message: msgDesc,
+            msgType: t,
+            visibility: vis
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            alert('Error: ' + (data.error || 'Something went wrong'));
+            btn.textContent = 'Complete Donation';
+            btn.disabled = false;
+        }
+    })
+    .catch(function() {
+        alert('Could not connect to payment server.');
+        btn.textContent = 'Complete Donation';
+        btn.disabled = false;
+    });
 });
 </script>
 {% endblock %}

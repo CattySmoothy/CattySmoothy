@@ -46,6 +46,32 @@
                     if (val < min) val = min;
                     input.value = val.toFixed(2);
                 }
+
+                function subscribe(amount, planName) {
+                    var btn = event.target;
+                    btn.textContent = 'Redirecting...';
+                    btn.disabled = true;
+                    fetch('/create-subscription-session', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ amount: amount, planName: planName })
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.url) {
+                            window.location.href = data.url;
+                        } else {
+                            alert('Error: ' + (data.error || 'Something went wrong'));
+                            btn.textContent = 'Choose ' + planName;
+                            btn.disabled = false;
+                        }
+                    })
+                    .catch(function() {
+                        alert('Could not connect to payment server.');
+                        btn.textContent = 'Choose ' + planName;
+                        btn.disabled = false;
+                    });
+                }
                 </script>
 
             <div class="pricing-card dark">
@@ -56,7 +82,7 @@
                     <li>✓ Premium tutorials</li>
                     <li>✓ Live Q&A sessions</li>
                 </ul>
-                <a href="#" class="plan-button">Choose Basic</a>
+                <button class="plan-button" onclick="subscribe(1.99, 'Basic')">Choose Basic</button>
             </div>
             
             <div class="pricing-card featured">
@@ -67,7 +93,7 @@
                     <li>✓ Personal feedback</li>
                     <li>✓ Priority support</li>
                 </ul>
-                <a href="#" class="plan-button">Choose Premium</a>
+                <button class="plan-button" onclick="subscribe(49.99, 'Premium')">Choose Premium</button>
             </div>
         </section>
 

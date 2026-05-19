@@ -1,4 +1,10 @@
-from flask import render_template, request
+import os
+from flask import render_template, request, jsonify, redirect, url_for
+import stripe
+
+PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
+
+DOMAIN = os.getenv('DOMAIN', 'http://localhost:5001')
 
 donors = [
     {"name": "Luna", "message": "Love your art!", "amount": 10.00, "public": True},
@@ -26,12 +32,12 @@ def register_routes(app):
 
     @app.route('/support')
     def support():
-        return render_template('support.html', title="Support")
+        return render_template('support.html', title="Support", publishable_key=PUBLISHABLE_KEY)
 
     @app.route('/donate')
     def donate():
         amount = request.args.get('amount', '5.00')
-        return render_template('donate.html', title="Donate", amount=amount)
+        return render_template('donate.html', title="Donate", amount=amount, publishable_key=PUBLISHABLE_KEY)
 
     @app.route('/donors')
     def donors_page():
@@ -53,3 +59,76 @@ def register_routes(app):
     @app.route('/join')
     def join():
         return render_template('join.html', title="Join Discord")
+
+    @app.route('/create-checkout-session', methods=['POST'])
+    def create_checkout_session():
+        data = request.get_json()
+        amount = data.get('amount', 5.00)
+        name = data.get('name', 'Anonymous')
+        message = data.get('message', '')
+        msg_type = data.get('msgType', 'free')
+        visibility = data.get('visibility', 'public')
+
+        try:
+            session = stripe.checkout.Session.create(
+                mode='payment',
+                line_items=[{
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': 'Stardust Donation',
+                        },
+                        'unit_amount': int(float(amount) * 100),
+                    },
+                    'quantity': 1,
+                }],
+                metadata={
+                    'donor_name': name,
+                    'message': message,
+                    'msg_type': msg_type,
+                    'visibility': visibility,
+                },
+                success_url=DOMAIN + '/success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=DOMAIN + '/cancel',
+            )
+            return jsonify({'url': session.url})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/create-subscription-session', methods=['POST'])
+    def create_subscription_session():
+        data = request.get_json()
+        amount = data.get('amount', 1.99)
+        plan_name = data.get('planName', '')
+
+        try:
+            session = stripe.checkout.Session.create(
+                mode='subscription',
+                line_items=[{
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': plan_name + ' Subscription',
+                        },
+                        'unit_amount': int(float(amount) * 100),
+                        'recurring': {'interval': 'month'},
+                    },
+                    'quantity': 1,
+                }],
+                metadata={
+                    'plan': plan_name,
+                },
+                success_url=DOMAIN + '/success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=DOMAIN + '/cancel',
+            )
+            return jsonify({'url': session.url})
+        except Exception as e:
+            return jsonify({'error': str(e)}), 400
+
+    @app.route('/success')
+    def success():
+        return render_template('success.html', title="Payment Successful")
+
+    @app.route('/cancel')
+    def cancel():
+        return render_template('cancel.html', title="Payment Cancelled")
