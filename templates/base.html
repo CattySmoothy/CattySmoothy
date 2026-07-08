@@ -211,18 +211,7 @@
                         <div class="form-section">
                             <h3 class="form-section-title">Privacy, Visibility &amp; Alerts</h3>
 
-                            <div class="form-field">
-                                <label for="visibilitySlider" class="form-label">The Shrouding</label>
-                                <div class="slider-container">
-                                    <input type="range" id="visibilitySlider" name="visibility" min="0" max="100" value="70" class="form-range">
-                                    <div class="slider-labels">
-                                        <span class="slider-label">Fully Ghost <span class="slider-desc">(anonymous)</span></span>
-                                        <span class="slider-label">Shadow Mode <span class="slider-desc">(tags only)</span></span>
-                                        <span class="slider-label">Bright Daylight <span class="slider-desc">(public profile)</span></span>
-                                    </div>
-                                </div>
-                                <div class="slider-value" id="sliderValueDisplay">Bright Daylight</div>
-                            </div>
+
 
                             <div class="form-field">
                                 <label class="form-label">Notification Alerts</label>
@@ -659,8 +648,6 @@
             const personaName = document.getElementById('personaName');
             const personaBio = document.getElementById('personaBio');
             const bioCharCount = document.getElementById('bioCharCount');
-            const visibilitySlider = document.getElementById('visibilitySlider');
-            const sliderValueDisplay = document.getElementById('sliderValueDisplay');
             const tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
 
             function updatePreview() {
@@ -680,21 +667,13 @@
                 tagInputs.forEach(cb => { if (cb.checked) selected.push(cb.value); });
                 previewBanner.textContent = selected.length ? selected.join(' · ') : '🎨 Creative';
 
-                // Stamina from slider
-                const val = parseInt(visibilitySlider.value);
-                const fill = Math.round(val * 0.7 + 15);
-                previewStaminaFill.style.width = fill + '%';
-                previewStaminaValue.textContent = fill + '%';
-
-                // Slider label
-                if (val <= 20) sliderValueDisplay.textContent = 'Fully Ghost (anonymous)';
-                else if (val <= 55) sliderValueDisplay.textContent = 'Shadow Mode (tags only)';
-                else sliderValueDisplay.textContent = 'Bright Daylight (public profile)';
+                // Stamina (default 70%)
+                previewStaminaFill.style.width = '70%';
+                previewStaminaValue.textContent = '70%';
             }
 
             personaName.addEventListener('input', updatePreview);
             personaBio.addEventListener('input', updatePreview);
-            visibilitySlider.addEventListener('input', updatePreview);
             tagInputs.forEach(cb => cb.addEventListener('change', function() {
                 const checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
                 if (checked.length > 3) this.checked = false;
