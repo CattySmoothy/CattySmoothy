@@ -197,13 +197,13 @@ body {
     padding: 24px 0 0;
     width: 52px;
     background: var(--color-header-start);
-    transition: width 0.3s ease;
+    transition: width 0.35s ease;
     overflow: hidden;
 }
 
 .site-sidebar:hover,
 .site-sidebar.expanded {
-    width: 160px;
+    width: 180px;
 }
 
 .sidebar-toggle {
@@ -228,22 +228,19 @@ body {
     display: flex;
     align-items: center;
     gap: 0;
-    transition: gap 0.3s ease;
-}
-
-.site-sidebar:hover .toggle-sparkle,
-.site-sidebar.expanded .toggle-sparkle {
-    gap: 4px;
 }
 
 .tw-right {
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transform: translateX(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .site-sidebar:hover .tw-right,
 .site-sidebar.expanded .tw-right {
     opacity: 1;
+    transform: translateX(0);
+    margin-right: 4px;
 }
 
 .sidebar-toggle:hover {
@@ -300,7 +297,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: 28px;
     flex: 0 1 auto;
 }
 
@@ -429,14 +426,14 @@ body {
 .main-area {
     flex: 1;
     margin-left: 52px;
-    transition: margin-left 0.3s ease;
+    transition: margin-left 0.35s ease;
 }
 
 .site-sidebar:hover + .main-area,
 .site-sidebar:hover ~ .main-area,
 .site-sidebar.expanded + .main-area,
 .site-sidebar.expanded ~ .main-area {
-    margin-left: 160px;
+    margin-left: 180px;
 }
 
 .settings-overlay {
