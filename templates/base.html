@@ -567,10 +567,6 @@
                     ? clamp(28 + (l - 50) * 0.45, 28, 50)
                     : clamp(l * 0.8, 20, 50);
 
-                // Settings panel uses complementary hue
-                const setS = clamp(s * 0.5, 6, 35);
-                const setL = clamp(l * 0.85 + 5, 70, 95);
-
                 const cardDarkL = clamp(l * 0.4, 24, 42);
                 const featuredL = clamp(l * 0.3, 18, 34);
 
@@ -585,13 +581,13 @@
                     '--color-text-muted': hslStr(h, clamp(s * 0.4, 8, 35), text3L),
                     '--color-accent': hslStr(h, accentS, accentL),
 
-                    // Sidebar: selected hue
+                    // Sidebar: selected hue throughout, bottom section uses complementary
                     '--color-header-start': hslStr(h, sideS, side1L),
                     '--color-header-end': hslStr(h, clamp(sideS - 5, 5, 50), side2L),
+                    '--color-sidebar-bottom': hslStr(hdrH, sideS, clamp(side1L - 4, 24, 44)),
 
-                    // Settings panel: complementary hue
-                    '--color-settings-bg': hslStr(hdrH, setS, setL),
-                    '--color-settings-header': hslStr(hdrH, clamp(setS + 5, 8, 40), clamp(setL - 8, 65, 90)),
+                    // Settings panel: light tint of the main hue
+                    '--color-settings-bg': hslStr(h, clamp(s * 0.2, 2, 10), surfL),
 
                     '--color-card-light': hslaStr(h, clamp(s * 0.4, 5, 25), bgL - 2, 0.95),
                     '--color-card-light-end': hslaStr(h, clamp(s * 0.3, 3, 18), bgL - 5, 0.95),
