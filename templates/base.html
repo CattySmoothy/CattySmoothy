@@ -458,8 +458,12 @@
                 knobs.sat.style.left = (satPct * 100) + '%';
                 knobs.light.style.left = (lightPct * 100) + '%';
 
-                // Swatch
-                swatch.style.background = hslStr(hue, sat, light);
+                // Swatch — preview the actual accent color that will be applied
+                const accentS = Math.max(8, Math.min(65, sat));
+                const accentL = light > 50
+                    ? Math.max(28, Math.min(50, 28 + (light - 50) * 0.45))
+                    : Math.max(20, Math.min(50, light * 0.8));
+                swatch.style.background = hslStr(hue, accentS, accentL);
 
                 // Star pathway dots glow in current hue
                 const dotColor = hslaStr(hue, Math.min(sat + 20, 70), Math.min(light + 15, 75), 0.4);
@@ -541,30 +545,37 @@
             }
 
             // Generate full theme from HSL — background stays primarily white,
-            // theme affects accent elements (header, cards, borders, email).
-            // Text lightness is high enough to show the theme hue visibly.
+            // theme affects accent elements.
             function generateTheme(h, s, l) {
                 const bgL = 96;
                 const surfL = 98;
 
-                // Text light enough to show theme colour, dark enough for WCAG AA+ on white
                 const text1L = 22;
                 const text2L = 35;
                 const text3L = 38;
 
                 const hdrH = ((h + 200) % 360 + 360) % 360;
-                const hdrS = clamp(s, 10, 55);
-                const hdr1L = clamp(l * 0.45, 28, 48);
-                const hdr2L = clamp(l * 0.65, 40, 65);
+
+                // Sidebar uses the selected hue directly
+                const sideS = clamp(s * 1.0, 10, 55);
+                const side1L = clamp(l * 0.5, 28, 48);
+                const side2L = clamp(l * 0.7, 40, 65);
+
+                // Accent uses raw s/l as closely as possible while staying readable on white
+                const accentS = clamp(s, 8, 65);
+                const accentL = l > 50
+                    ? clamp(28 + (l - 50) * 0.45, 28, 50)
+                    : clamp(l * 0.8, 20, 50);
+
+                // Settings panel uses complementary hue
+                const setS = clamp(s * 0.5, 6, 35);
+                const setL = clamp(l * 0.85 + 5, 70, 95);
 
                 const cardDarkL = clamp(l * 0.4, 24, 42);
                 const featuredL = clamp(l * 0.3, 18, 34);
 
                 const onDarkL = 92;
                 const onLightL = 12;
-
-                const accentS = clamp(s, 20, 65);
-                const accentL = clamp(l * 0.55 + 5, 30, 52);
 
                 return {
                     '--color-bg': hslStr(h, clamp(s * 0.35, 3, 15), bgL),
@@ -574,8 +585,13 @@
                     '--color-text-muted': hslStr(h, clamp(s * 0.4, 8, 35), text3L),
                     '--color-accent': hslStr(h, accentS, accentL),
 
-                    '--color-header-start': hslStr(hdrH, hdrS, hdr1L),
-                    '--color-header-end': hslStr(hdrH, clamp(hdrS - 5, 5, 50), hdr2L),
+                    // Sidebar: selected hue
+                    '--color-header-start': hslStr(h, sideS, side1L),
+                    '--color-header-end': hslStr(h, clamp(sideS - 5, 5, 50), side2L),
+
+                    // Settings panel: complementary hue
+                    '--color-settings-bg': hslStr(hdrH, setS, setL),
+                    '--color-settings-header': hslStr(hdrH, clamp(setS + 5, 8, 40), clamp(setL - 8, 65, 90)),
 
                     '--color-card-light': hslaStr(h, clamp(s * 0.4, 5, 25), bgL - 2, 0.95),
                     '--color-card-light-end': hslaStr(h, clamp(s * 0.3, 3, 18), bgL - 5, 0.95),
@@ -589,11 +605,11 @@
                     '--color-card-featured-solid': hslStr(h, clamp(s * 0.9, 12, 60), featuredL),
                     '--color-card-featured-solid-end': hslStr(h, clamp(s * 0.7, 8, 50), featuredL - 2),
 
-                    '--color-email-bg': hslStr(hdrH, hdrS, hdr1L),
-                    '--color-email-text': hslStr(hdrH, clamp(hdrS + 10, 15, 65), clamp(hdr1L + 30, 65, 90)),
-                    '--color-email-btn-text': hslStr(hdrH, hdrS, hdr1L),
-                    '--color-email-btn-hover-bg': hslStr(hdrH, clamp(hdrS + 10, 15, 65), clamp(hdr1L + 35, 70, 95)),
-                    '--color-email-feedback': hslStr(hdrH, clamp(hdrS + 5, 8, 40), clamp(hdr1L + 8, 36, 60)),
+                    '--color-email-bg': hslStr(h, sideS, side1L),
+                    '--color-email-text': hslStr(h, clamp(sideS + 10, 15, 65), clamp(side1L + 32, 65, 90)),
+                    '--color-email-btn-text': hslStr(h, sideS, side1L),
+                    '--color-email-btn-hover-bg': hslStr(h, clamp(sideS + 10, 15, 65), clamp(side1L + 35, 70, 95)),
+                    '--color-email-feedback': hslStr(h, clamp(sideS + 5, 8, 40), clamp(side1L + 10, 38, 60)),
 
                     '--color-nav-border': hslStr(h, clamp(s * 0.25, 3, 15), bgL - 10),
                     '--color-footer-text': hslStr(h, clamp(s * 0.25, 5, 18), text3L),
@@ -606,9 +622,9 @@
                     '--color-list-border': hslStr(h, clamp(s * 0.2, 2, 10), bgL - 4),
                     '--color-surface-alt': hslStr(h, clamp(s * 0.25, 3, 12), bgL - 2),
 
-                    // Sync the hardcoded --primary-warm values so the settings overlay matches the theme
+                    // Sync --primary-warm so buttons/form-focus use the theme accent
                     '--primary-warm': hslStr(h, accentS, accentL),
-                    '--primary-warm-light': hslStr(h, clamp(accentS - 5, 10, 50), clamp(accentL + 15, 50, 75)),
+                    '--primary-warm-light': hslStr(h, clamp(accentS - 5, 10, 50), clamp(accentL + 18, 50, 75)),
                 };
             }
 
