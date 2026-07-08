@@ -175,6 +175,47 @@
                 </div>
             </div>
 
+            <!-- About Me section -->
+            <div class="owner-about">
+                <div class="about-inner">
+                    <h2 class="about-heading">About Me</h2>
+                    <p class="about-subtitle">A self-taught digital artist</p>
+                    <div class="about-block">
+                        <h3>What I Create</h3>
+                        <ul class="simple-list">
+                            <li>Digital Paintings</li>
+                            <li>Process Videos</li>
+                            <li>Tutorials</li>
+                            <li>Wallpapers</li>
+                            <li>Sketches & Studies</li>
+                        </ul>
+                    </div>
+                    <div class="about-block">
+                        <h3>Commissions</h3>
+                        <p class="about-text">I'm currently accepting commission requests for digital paintings, character art, and illustrations.</p>
+                        <ul class="simple-list">
+                            <li>Character Illustrations</li>
+                            <li>Portrait Art</li>
+                            <li>Concept Art</li>
+                            <li>Custom Wallpapers</li>
+                        </ul>
+                        <div class="commission-status" id="ownerCommissionStatus">
+                            <span class="status-dot"></span>
+                            <span class="status-label">Commissions are currently closed</span>
+                            <span class="status-moon">Full Moon</span>
+                        </div>
+                    </div>
+                    <div class="about-block">
+                        <h3>Get in Touch</h3>
+                        <div class="email-display">
+                            <span class="email-address">raichuuxxofficial@gmail.com</span>
+                            <button class="copy-btn" onclick="copyOwnerEmail()" title="Copy email">Copy</button>
+                        </div>
+                        <div class="copy-feedback" id="ownerCopyFeedback"></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="profile-grid" id="memberGrid">
                 {% for m in members %}
                 <div class="profile-card">
@@ -231,6 +272,19 @@
 {% endblock %}
 
 <script>
+function copyOwnerEmail() {
+    const email = 'raichuuxxofficial@gmail.com';
+    const feedback = document.getElementById('ownerCopyFeedback');
+    navigator.clipboard.writeText(email).then(function() {
+        feedback.textContent = 'Copied!';
+        feedback.className = 'copy-feedback show';
+        setTimeout(function() {
+            feedback.textContent = '';
+            feedback.className = 'copy-feedback';
+        }, 2000);
+    });
+}
+
 (function() {
     const searchInput = document.getElementById('memberSearch');
     const sortSelect = document.getElementById('sortFilter');
