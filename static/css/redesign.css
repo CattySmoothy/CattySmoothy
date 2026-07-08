@@ -461,41 +461,19 @@ body {
     overflow: hidden;
 }
 
-.preview-stamina-bar {
-    width: 100%;
-    height: 6px;
-    background: color-mix(in srgb, var(--color-text-muted) 12%, transparent);
-    border-radius: 3px;
-    overflow: hidden;
-}
-
-.preview-stamina-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-warm), var(--primary-warm-light));
-    border-radius: 3px;
-    transition: width 0.3s ease;
-}
-
-.preview-stamina-info {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 4px;
-}
-
-.preview-stamina-label {
+.preview-pronouns {
+    display: inline-block;
     font-family: var(--font-sub);
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.7px;
-}
-
-.preview-stamina-value {
-    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
-    color: var(--primary-warm);
+    color: #5C4A32;
+    background: color-mix(in srgb, var(--accent-gold) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-gold) 35%, transparent);
+    border-radius: 20px;
+    padding: 2px 12px;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.4);
 }
 
 /* ── Form Sections ── */
@@ -583,6 +561,33 @@ body {
     font-size: 11px;
     color: var(--color-text-muted);
     margin-top: 4px;
+}
+
+/* ── Pronoun Picker ── */
+
+.pronoun-picker {
+    position: relative;
+}
+
+.pronoun-input {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    font-weight: 600;
+    color: #5C4A32;
+    background: color-mix(in srgb, var(--accent-gold) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-gold) 35%, transparent);
+    border-radius: 20px;
+    padding: 6px 16px;
+    width: 100%;
+    max-width: 220px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pronoun-input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 15%, transparent);
 }
 
 /* ── Avatar Upload ── */
@@ -808,6 +813,124 @@ body {
     color: var(--color-text-secondary);
     border-color: color-mix(in srgb, var(--color-text-muted) 35%, transparent);
     background: color-mix(in srgb, var(--color-text-muted) 4%, transparent);
+}
+
+/* ── Social Link Matrix ── */
+
+.social-matrix {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.social-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.social-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.social-row[data-platform="instagram"] .social-icon-wrap { color: #E4405F; }
+.social-row[data-platform="pinterest"] .social-icon-wrap { color: #BD081C; }
+.social-row[data-platform="discord"] .social-icon-wrap { color: #5865F2; }
+.social-row[data-platform="spotify"] .social-icon-wrap { color: #1DB954; }
+.social-row[data-platform="youtube"] .social-icon-wrap { color: #FF0000; }
+.social-row[data-platform="tiktok"] .social-icon-wrap { color: #000000; }
+.social-row[data-platform="github"] .social-icon-wrap { color: #333333; }
+.social-row[data-platform="other"] .social-icon-wrap { color: var(--color-text-muted); }
+
+.social-input {
+    flex: 1;
+    font-size: 13px;
+    padding: 7px 10px;
+}
+
+.social-remove {
+    width: 22px;
+    height: 22px;
+    border: none;
+    background: color-mix(in srgb, var(--color-text-muted) 10%, transparent);
+    color: var(--color-text-muted);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.social-remove:hover {
+    background: color-mix(in srgb, var(--primary-warm) 15%, transparent);
+    color: var(--primary-warm);
+}
+
+.social-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.social-add-select {
+    font-family: var(--font-sub);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    border-radius: 6px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+    flex: 1;
+    max-width: 200px;
+}
+
+.social-add-select:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 12%, transparent);
+}
+
+.social-add-btn {
+    font-family: var(--font-sub);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: none;
+    border: 1px dashed color-mix(in srgb, var(--color-text-muted) 20%, transparent);
+    border-radius: 6px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.social-add-btn:hover {
+    color: var(--color-text-secondary);
+    border-color: color-mix(in srgb, var(--color-text-muted) 35%, transparent);
+    background: color-mix(in srgb, var(--color-text-muted) 4%, transparent);
+}
+
+.social-hint {
+    font-family: var(--font-sub);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin: 0;
 }
 
 /* ── Range Slider ── */
@@ -1866,43 +1989,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 0;
-    padding: 60px 0 40px;
-    min-height: 400px;
-}
-
-/* Swirl pattern — reveals from edges inward */
-@property --swirl-reveal {
-    syntax: '<percentage>';
-    inherits: false;
-    initial-value: 60%;
-}
-
-.swirl-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: url("/static/images/swirl-pattern.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--swirl-reveal), black calc(var(--swirl-reveal) + 3px));
-    mask-image: radial-gradient(circle at 50% 50%, transparent var(--swirl-reveal), black calc(var(--swirl-reveal) + 3px));
-    animation: revealSwirls 3s ease-out forwards;
-}
-
-@keyframes revealSwirls {
-    0% { --swirl-reveal: 60%; }
-    100% { --swirl-reveal: 0%; }
-}
-
-.about-layout {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
     gap: 48px;
     padding: 60px 0 40px;
     min-height: 400px;
@@ -2411,6 +2497,8 @@ body {
 :root {
     --primary-warm: #E8756A;
     --primary-warm-light: #F5A89A;
+    --accent-gold: #C9A84C;
+    --accent-gold-light: #E8D08A;
 }
 
 .profile-cards-section {
@@ -2436,11 +2524,174 @@ body {
     margin-bottom: 32px;
 }
 
-.profile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 28px;
-    padding: 4px 0 40px;
+/* ── Community Controls (Search + Sort) ── */
+
+.community-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.community-search {
+    position: relative;
+    flex: 1;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.search-input {
+    width: 100%;
+    font-family: var(--font-sub);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    border-radius: 20px;
+    padding: 8px 14px 8px 36px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+    border-color: var(--primary-warm);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-warm) 15%, transparent);
+}
+
+.sort-select {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    border-radius: 20px;
+    padding: 8px 14px;
+    outline: none;
+    cursor: pointer;
+    min-width: 140px;
+    transition: border-color 0.2s ease;
+}
+
+.sort-select:focus {
+    border-color: var(--primary-warm);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-warm) 15%, transparent);
+}
+
+/* ── Owner Card ── */
+
+.owner-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: color-mix(in srgb, var(--color-surface) 95%, var(--primary-warm) 5%);
+    border: 1px solid color-mix(in srgb, var(--primary-warm) 20%, transparent);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px color-mix(in srgb, var(--color-text-primary) 6%, transparent);
+}
+
+.owner-card-image {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-warm), #A07ABC);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.owner-initials {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    user-select: none;
+}
+
+.owner-card-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.owner-name {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.owner-username {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.owner-bio {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 6px 0 0;
+    line-height: 1.5;
+}
+
+.owner-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.owner-social-link {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-text-muted) 8%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    transition: all 0.2s ease;
+}
+
+.owner-social-link:hover {
+    color: var(--primary-warm);
+    background: color-mix(in srgb, var(--primary-warm) 12%, transparent);
+}
+
+.commission-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-sub);
+    font-size: 11px;
+    font-weight: 600;
+    color: #3A7A44;
+    background: color-mix(in srgb, #3A7A44 10%, transparent);
+    border: 1px solid color-mix(in srgb, #3A7A44 25%, transparent);
+    border-radius: 20px;
+    padding: 3px 12px;
+    margin-top: 8px;
+}
+
+.commission-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3A7A44;
 }
 
 /* ── Card container & 3D flip ── */
@@ -2558,50 +2809,6 @@ body {
     font-size: 13px;
     color: var(--color-text-muted);
     margin-top: 2px;
-}
-
-/* ── Stamina Bar ── */
-
-.card-stamina {
-    margin-top: auto;
-    padding-top: 12px;
-}
-
-.stamina-bar {
-    width: 100%;
-    height: 8px;
-    background: color-mix(in srgb, var(--color-text-muted) 15%, transparent);
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.stamina-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-warm), var(--primary-warm-light));
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-.stamina-info {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-}
-
-.stamina-label {
-    font-family: var(--font-sub);
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.stamina-value {
-    font-family: var(--font-body);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--primary-warm);
 }
 
 /* ── Back ── */

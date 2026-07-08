@@ -102,16 +102,8 @@
                             <div class="preview-banner" id="previewBanner">🎨 Creative</div>
                             <div class="preview-body">
                                 <h3 class="preview-name" id="previewName">Artist</h3>
+                                <span class="preview-pronouns" id="previewPronouns">she/her</span>
                                 <p class="preview-bio" id="previewBio">Your mantra here</p>
-                                <div class="preview-stamina">
-                                    <div class="preview-stamina-bar">
-                                        <div class="preview-stamina-fill" id="previewStaminaFill" style="width: 70%"></div>
-                                    </div>
-                                    <div class="preview-stamina-info">
-                                        <span class="preview-stamina-label">Stamina</span>
-                                        <span class="preview-stamina-value" id="previewStaminaValue">70%</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,6 +138,23 @@
                                 <label for="personaBio" class="form-label">Your Mantra / Bio</label>
                                 <textarea id="personaBio" name="bio" placeholder="Describe your creative journey in one sentence..." class="form-textarea" maxlength="150" rows="3"></textarea>
                                 <span class="char-count"><span id="bioCharCount">0</span>/150</span>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="pronounSelect" class="form-label">Preferred Pronouns</label>
+                                <div class="pronoun-picker">
+                                    <input type="text" id="pronounSelect" name="pronouns" list="pronounOptions" placeholder="she/her" class="pronoun-input" value="she/her">
+                                    <datalist id="pronounOptions">
+                                        <option value="she/her">
+                                        <option value="they/them">
+                                        <option value="he/him">
+                                        <option value="she/they">
+                                        <option value="he/they">
+                                        <option value="fluid">
+                                        <option value="any/all">
+                                        <option value="Custom">
+                                    </datalist>
+                                </div>
                             </div>
 
                             <div class="form-field">
@@ -248,7 +257,58 @@
                             </div>
                         </div>
 
-                        <!-- Sub-section D: Theme Customization (HSL Picker) -->
+                        <!-- Sub-section D: Digital Footprint -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Digital Footprint <span class="tag-hint">(social links)</span></h3>
+                            <div class="social-matrix" id="socialMatrix">
+                                <div class="social-row" data-platform="instagram">
+                                    <div class="social-icon-wrap">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                            <circle cx="17" cy="7" r="1.2" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="form-input social-input">
+                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                </div>
+                                <div class="social-row" data-platform="pinterest">
+                                    <div class="social-icon-wrap">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                            <path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="form-input social-input">
+                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                </div>
+                                <div class="social-row" data-platform="discord">
+                                    <div class="social-icon-wrap">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                            <path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/>
+                                        </svg>
+                                    </div>
+                                    <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="form-input social-input">
+                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                </div>
+                            </div>
+                            <div class="social-controls">
+                                <select class="social-add-select" id="socialPlatformSelect">
+                                    <option value="">Add a platform…</option>
+                                    <option value="instagram">Instagram</option>
+                                    <option value="pinterest">Pinterest</option>
+                                    <option value="discord">Discord</option>
+                                    <option value="spotify">Spotify</option>
+                                    <option value="youtube">YouTube</option>
+                                    <option value="tiktok">TikTok</option>
+                                    <option value="github">GitHub</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
+                            </div>
+                            <p class="social-hint">Each URL is validated — broken links will be rejected on save.</p>
+                        </div>
+
+                        <!-- Sub-section E: Theme Customization (HSL Picker) -->
                         <div class="form-section">
                             <h3 class="form-section-title">Theme Customization</h3>
                             <div class="hsl-picker" id="hslPicker">
@@ -440,7 +500,6 @@
                 var label = document.querySelector('.status-moon');
                 if (!dot || !label) return;
 
-                var isOpen = phase.name === 'New Moon';
                 var statusLabel = document.getElementById('statusLabel');
                 var commissionText = document.getElementById('commissionText');
                 var statusEl = document.getElementById('commissionStatus');
@@ -639,14 +698,14 @@
             // ── Live Profile Preview ──
             const previewName = document.getElementById('previewName');
             const previewBio = document.getElementById('previewBio');
+            const previewPronouns = document.getElementById('previewPronouns');
             const previewBanner = document.getElementById('previewBanner');
             const previewInitials = document.getElementById('previewInitials');
             const avatarInitials = document.getElementById('avatarInitials');
-            const previewStaminaFill = document.getElementById('previewStaminaFill');
-            const previewStaminaValue = document.getElementById('previewStaminaValue');
 
             const personaName = document.getElementById('personaName');
             const personaBio = document.getElementById('personaBio');
+            const pronounSelect = document.getElementById('pronounSelect');
             const bioCharCount = document.getElementById('bioCharCount');
             const tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
 
@@ -662,18 +721,14 @@
                 previewBio.textContent = bio || 'Your mantra here';
                 bioCharCount.textContent = bio.length;
 
-                // Tags: show up to 3 selected
-                const selected = [];
-                tagInputs.forEach(cb => { if (cb.checked) selected.push(cb.value); });
-                previewBanner.textContent = selected.length ? selected.join(' · ') : '🎨 Creative';
-
-                // Stamina (default 70%)
-                previewStaminaFill.style.width = '70%';
-                previewStaminaValue.textContent = '70%';
+                // Pronouns
+                const pval = pronounSelect.value.trim();
+                previewPronouns.textContent = pval || 'she/her';
             }
 
             personaName.addEventListener('input', updatePreview);
             personaBio.addEventListener('input', updatePreview);
+            pronounSelect.addEventListener('input', updatePreview);
             tagInputs.forEach(cb => cb.addEventListener('change', function() {
                 const checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
                 if (checked.length > 3) this.checked = false;
@@ -728,6 +783,54 @@
             document.querySelectorAll('.swap-remove').forEach(btn => {
                 btn.addEventListener('click', function() {
                     this.closest('.swap-item').remove();
+                });
+            });
+
+            // ── Social Link Matrix ──
+            const socialIcons = {
+                instagram: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>',
+                pinterest: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>',
+                discord: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>',
+                spotify: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.2-.7-.5 0-.4.2-.6.5-.7 4-.9 7.4-.5 10.1 1.1.3.1.4.5.3.9zm1.5-3.3c-.3.4-.8.5-1.2.2-2.8-1.7-7.1-2.2-10.5-1.2-.5.1-1-.2-1.1-.7 0-.5.3-.9.8-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.8.3 1.3zm.1-3.4c-3.4-2-9-2.2-12.2-1.2-.6.2-1.2-.1-1.4-.7-.2-.6.1-1.2.7-1.4 3.7-1.1 9.9-.9 13.8 1.5.5.3.7 1 .4 1.5-.3.4-.9.6-1.3.3z" fill="currentColor"/></svg>',
+                youtube: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M23.5 6.2a2.9 2.9 0 0 0-2-2C19.8 3.7 12 3.7 12 3.7s-7.8 0-9.5.5a2.9 2.9 0 0 0-2 2C0 7.9 0 12 0 12s0 4.1.5 5.8a2.9 2.9 0 0 0 2 2c1.7.5 9.5.5 9.5.5s7.8 0 9.5-.5a2.9 2.9 0 0 0 2-2c.5-1.7.5-5.8.5-5.8s0-4.1-.5-5.8zM9.6 15.5V8.5l6.4 3.5-6.4 3.5z" fill="currentColor"/></svg>',
+                tiktok: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12.5 0h3.7v3.7A4.5 4.5 0 0 0 20 7.5h-3.7v6.2a4.4 4.4 0 1 1-3.8-4.4V3.7h-2.8a4.5 4.5 0 0 0 0 9h.1v3.8a8.2 8.2 0 1 1 2.7-16z" fill="currentColor"/></svg>',
+                github: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.4 3.5 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg>',
+                other: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="currentColor"/></svg>'
+            };
+            const socialPlaceholders = {
+                instagram: 'https://instagram.com/yourhandle',
+                pinterest: 'https://pinterest.com/yourhandle',
+                discord: 'https://discord.com/users/yourid',
+                spotify: 'https://open.spotify.com/user/yourid',
+                youtube: 'https://youtube.com/@yourchannel',
+                tiktok: 'https://tiktok.com/@yourhandle',
+                github: 'https://github.com/yourhandle',
+                other: 'https://yourlink.com/yourhandle'
+            };
+
+            document.getElementById('addSocialBtn').addEventListener('click', function() {
+                const select = document.getElementById('socialPlatformSelect');
+                const platform = select.value;
+                if (!platform) return;
+                const matrix = document.getElementById('socialMatrix');
+                const row = document.createElement('div');
+                row.className = 'social-row';
+                row.dataset.platform = platform;
+                row.innerHTML =
+                    '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' +
+                    '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="form-input social-input">' +
+                    '<button type="button" class="social-remove" aria-label="Remove">×</button>';
+                matrix.appendChild(row);
+                row.querySelector('.social-input').focus();
+                row.querySelector('.social-remove').addEventListener('click', function() {
+                    row.remove();
+                });
+                select.value = '';
+            });
+
+            document.querySelectorAll('#socialMatrix .social-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.social-row').remove();
                 });
             });
 
