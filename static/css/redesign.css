@@ -196,7 +196,7 @@ body {
     align-items: center;
     padding: 24px 0;
     width: 52px;
-    background: linear-gradient(180deg, var(--color-header-start) 0%, var(--color-header-end) 100%);
+    background: var(--color-header-start);
     transition: width 0.3s ease;
     overflow: hidden;
 }
@@ -226,6 +226,50 @@ body {
     color: #FFFFFF;
     background: rgba(255, 255, 255, 0.12);
     box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+}
+
+/* ── Profile Badge (top-right avatar circle) ── */
+
+.profile-badge {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid var(--color-card-light-border, rgba(0,0,0,0.1));
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-badge:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border-color: var(--color-accent, #888);
+}
+
+.profile-badge-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--color-header-start);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.profile-badge-initials {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: var(--font-body, sans-serif);
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-nav {
@@ -313,6 +357,19 @@ body {
 .layout-wrap {
     display: flex;
     min-height: 100vh;
+}
+
+/* Subtle noise texture over the whole site */
+.layout-wrap::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
 }
 
 .main-area {

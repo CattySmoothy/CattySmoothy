@@ -34,6 +34,11 @@
 </head>
 <body class="{% if request.endpoint == 'donors_page' %}donors-active{% endif %}">
     <div class="layout-wrap">
+    <div class="profile-badge" id="profileBadge" title="Edit Profile">
+        <div class="profile-badge-avatar" id="profileBadgeAvatar">
+            <span class="profile-badge-initials" id="profileBadgeInitials">C</span>
+        </div>
+    </div>
     <aside class="site-sidebar" id="siteSidebar">
         <button class="sidebar-toggle" id="sidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -561,9 +566,9 @@
                 return {
                     '--color-bg': hslStr(h, clamp(s * 0.25, 2, 12), bgL),
                     '--color-surface': hslStr(h, clamp(s * 0.15, 1, 8), surfL),
-                    '--color-text-primary': hslStr(h, 0, text1L),
-                    '--color-text-secondary': hslStr(h, clamp(s * 0.15, 2, 12), text2L),
-                    '--color-text-muted': hslStr(h, clamp(s * 0.2, 3, 15), text3L),
+                    '--color-text-primary': hslStr(h, clamp(s * 0.15, 3, 12), text1L),
+                    '--color-text-secondary': hslStr(h, clamp(s * 0.2, 4, 15), text2L),
+                    '--color-text-muted': hslStr(h, clamp(s * 0.25, 5, 18), text3L),
                     '--color-accent': hslStr(h, clamp(s * 0.8, 10, 55), clamp(35 + (100 - s) * 0.15, 35, 50)),
 
                     '--color-header-start': hslStr(hdrH, hdrS, hdr1L),
@@ -682,6 +687,7 @@
             const overlay = document.getElementById('settingsOverlay');
             const settingsTriggers = [
                 document.getElementById('settingsNavLink'),
+                document.getElementById('profileBadge'),
             ].filter(Boolean);
             const closeBtn = document.getElementById('settingsClose');
 
@@ -727,6 +733,8 @@
             const previewBanner = document.getElementById('previewBanner');
             const previewInitials = document.getElementById('previewInitials');
             const avatarInitials = document.getElementById('avatarInitials');
+            const badgeInitials = document.getElementById('profileBadgeInitials');
+            const badgeAvatar = document.getElementById('profileBadgeAvatar');
 
             const personaName = document.getElementById('personaName');
             const personaBio = document.getElementById('personaBio');
@@ -794,6 +802,7 @@
                 const initial = name.charAt(0).toUpperCase() || 'A';
                 previewInitials.textContent = initial;
                 avatarInitials.textContent = initial;
+                badgeInitials.textContent = initial;
 
                 const bio = personaBio.value;
                 previewBio.textContent = bio || 'Your mantra here';
@@ -835,6 +844,11 @@
                     pi.style.backgroundSize = 'cover';
                     pi.style.backgroundPosition = 'center';
                     pi.querySelector('.preview-initials').style.display = 'none';
+                    // Also update the profile badge
+                    badgeAvatar.style.backgroundImage = 'url(' + ev.target.result + ')';
+                    badgeAvatar.style.backgroundSize = 'cover';
+                    badgeAvatar.style.backgroundPosition = 'center';
+                    badgeInitials.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             });
