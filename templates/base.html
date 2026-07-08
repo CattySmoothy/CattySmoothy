@@ -41,11 +41,7 @@
     </div>
     <aside class="site-sidebar" id="siteSidebar">
         <button class="sidebar-toggle" id="sidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18"/>
-                <path d="M3 12h18"/>
-                <path d="M3 18h18"/>
-            </svg>
+            <span class="toggle-sparkle">✦</span>
         </button>
         <nav class="sidebar-nav">
             <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Work">
@@ -64,11 +60,15 @@
                 <span class="sidebar-nav-icon">&#9733;</span>
                 <span class="sidebar-nav-label">Community</span>
             </a>
+            <a href="#" class="sidebar-nav-item" title="Updates">
+                <span class="sidebar-nav-icon">.ᐟ</span>
+                <span class="sidebar-nav-label">Updates</span>
+            </a>
         </nav>
         <div class="sidebar-bottom">
             <div class="sidebar-divider"></div>
             <a href="#" id="settingsNavLink" class="sidebar-nav-item settings-nav-link" title="Settings">
-                <span class="sidebar-nav-icon settings-icon">&#9881;</span>
+                <span class="sidebar-nav-icon">꩜</span>
                 <span class="sidebar-nav-label">Settings</span>
             </a>
         </div>
