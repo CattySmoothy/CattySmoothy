@@ -72,86 +72,13 @@
 
 <section class="page-content">
     <div class="content-container">
-        <div class="club-layout">
-            <div class="club-cta">
-                <div class="club-cta-card">
-                    <h2 class="club-cta-title">Sign Up to Join Lunar Bloom</h2>
-                    <p class="club-cta-text">Becoming a member and gaining volunteer hours as well as experience.</p>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMGHncxT6ZqT5BdbCZpv2N0CEwapPL007bw0tqFcP4IHFhjg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="club-join-btn">Sign Up</a>
-                </div>
-                <div class="club-cta-card">
-                    <h2 class="club-cta-title">Join Community</h2>
-                    <p class="club-cta-text">Become part of a global family of creatives supporting each other through art.</p>
-                    <a href="{{ url_for('join') }}" class="club-join-btn">Join Now</a>
-                </div>
-            </div>
-
-            <div class="club-intros">
-                <div class="club-header">
-                    <h1 class="club-name">Lunar Bloom</h1>
-                    <p class="club-tagline">Bridging the gap between creative expression and psychological healing globally</p>
-                </div>
-
-                <details class="club-dropdown" open>
-                    <summary class="club-dropdown-summary">About the Club</summary>
-                    <div class="club-dropdown-body">
-                        <p>Providing new meanings to personal challenges · Creating belonging and community · Encouraging safe space creation (all kinds of art allowed)</p>
-                    </div>
-                </details>
-
-                <details class="club-dropdown">
-                    <summary class="club-dropdown-summary">Activities</summary>
-                    <div class="club-dropdown-body">
-                        <ul>
-                            <li>Digital Memory Archive</li>
-                            <li>Art Swaps</li>
-                            <li>Prompts</li>
-                            <li>"Traveling Sketchbook"</li>
-                            <li>Postcards</li>
-                        </ul>
-                    </div>
-                </details>
-
-                <details class="club-dropdown">
-                    <summary class="club-dropdown-summary">Monthly Prompt Playlist</summary>
-                    <div class="club-dropdown-body">
-                        <p>Each month's prompt comes with a curated community playlist. Members submit one song that helped them through a specific emotion, creating a collaborative sonic environment for the art session. Visual art is always better with good music &gt;&lt;</p>
-                    </div>
-                </details>
-
-                <details class="club-dropdown">
-                    <summary class="club-dropdown-summary">Club Plan</summary>
-                    <div class="club-dropdown-body">
-                        <ul>
-                            <li><strong>Member Code of Care:</strong> A commitment to non-judgment, confidentiality, and "process over product"</li>
-                            <li><strong>Digital Archive:</strong> A dedicated platform where members can upload high-quality scans of their contributions</li>
-                            <li><strong>Monthly Events:</strong> Planned on Canva and posted on social media</li>
-                        </ul>
-                    </div>
-                </details>
-            </div>
+        <div class="community-tabs">
+            <button class="community-tab active" data-tab="members">Members</button>
+            <button class="community-tab" data-tab="join">Join Organization</button>
         </div>
 
-        <section class="profile-cards-section">
-            <h2 class="profile-cards-title">Community Members</h2>
-
-            <div class="community-controls">
-                <div class="community-search">
-                    <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21l-4.35-4.35"/>
-                    </svg>
-                    <input type="text" id="memberSearch" class="search-input" placeholder="Search by name, username, or tags…">
-                </div>
-                <select id="sortFilter" class="sort-select">
-                    <option value="name">Sort by Name</option>
-                    <option value="username">Sort by Username</option>
-                </select>
-            </div>
-
-            <p class="profile-cards-subtitle">Hover or tap a card to see their full profile</p>
-
-            <!-- About Me / Owner Card -->
+        <div class="community-tab-content active" id="tab-members">
+            <!-- Owner Card -->
             <div class="owner-card" id="ownerCard">
                 <div class="owner-card-image">
                     <span class="owner-initials">CR</span>
@@ -216,60 +143,139 @@
                 </div>
             </div>
 
-            <div class="profile-grid" id="memberGrid">
-                {% for m in members %}
-                <div class="profile-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-image" style="background: {{ m.gradient }}">
-                                <span class="card-initial">{{ m.initials }}</span>
-                                <div class="lace-border"></div>
+            <section class="profile-cards-section">
+                <h2 class="profile-cards-title">Community Members</h2>
+
+                <div class="community-controls">
+                    <div class="community-search">
+                        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        <input type="text" id="memberSearch" class="search-input" placeholder="Search by name, username, or tags…">
+                    </div>
+                    <select id="sortFilter" class="sort-select">
+                        <option value="name">Sort by Name</option>
+                        <option value="username">Sort by Username</option>
+                    </select>
+                </div>
+
+                <p class="profile-cards-subtitle">Hover or tap a card to see their full profile</p>
+
+                <div class="profile-grid" id="memberGrid">
+                    {% for m in members %}
+                    <div class="profile-card">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-image" style="background: {{ m.gradient }}">
+                                    <span class="card-initial">{{ m.initials }}</span>
+                                    <div class="lace-border"></div>
+                                </div>
+                                <div class="card-banner">{{ m.tags }}</div>
+                                <div class="card-body">
+                                    <h3 class="card-name">{{ m.name }}</h3>
+                                    <span class="card-username">{{ m.username }}</span>
+                                </div>
                             </div>
-                            <div class="card-banner">{{ m.tags }}</div>
-                            <div class="card-body">
-                                <h3 class="card-name">{{ m.name }}</h3>
-                                <span class="card-username">{{ m.username }}</span>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading current-heading">Current Class</h4>
-                                <p class="card-back-text">{{ m.vulnerabilities }}</p>
-                            </div>
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading future-heading">Future Class</h4>
-                                <p class="card-back-text">{{ m.aspiration }}</p>
-                            </div>
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading stats-heading">Stat Swap</h4>
-                                <div class="card-stats">
-                                    <div class="card-strengths">
-                                        <span class="stat-label strengths-label">Strengths</span>
-                                        <ul class="stat-list">
-                                            {% for s in m.strengths %}
-                                            <li>{{ s }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="card-weaknesses">
-                                        <span class="stat-label weaknesses-label">Weaknesses</span>
-                                        <ul class="stat-list">
-                                            {% for w in m.weaknesses %}
-                                            <li>{{ w }}</li>
-                                            {% endfor %}
-                                        </ul>
+                            <div class="card-back">
+                                <div class="card-back-section">
+                                    <h4 class="card-back-heading current-heading">Current Class</h4>
+                                    <p class="card-back-text">{{ m.vulnerabilities }}</p>
+                                </div>
+                                <div class="card-back-section">
+                                    <h4 class="card-back-heading future-heading">Future Class</h4>
+                                    <p class="card-back-text">{{ m.aspiration }}</p>
+                                </div>
+                                <div class="card-back-section">
+                                    <h4 class="card-back-heading stats-heading">Stat Swap</h4>
+                                    <div class="card-stats">
+                                        <div class="card-strengths">
+                                            <span class="stat-label strengths-label">Strengths</span>
+                                            <ul class="stat-list">
+                                                {% for s in m.strengths %}
+                                                <li>{{ s }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="card-weaknesses">
+                                            <span class="stat-label weaknesses-label">Weaknesses</span>
+                                            <ul class="stat-list">
+                                                {% for w in m.weaknesses %}
+                                                <li>{{ w }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+            </section>
+        </div>
+
+        <div class="community-tab-content" id="tab-join">
+            <div class="club-cta">
+                <div class="club-cta-card">
+                    <h2 class="club-cta-title">Sign Up to Join Lunar Bloom</h2>
+                    <p class="club-cta-text">Becoming a member and gaining volunteer hours as well as experience.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMGHncxT6ZqT5BdbCZpv2N0CEwapPL007bw0tqFcP4IHFhjg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="club-join-btn">Sign Up</a>
+                </div>
+                <div class="club-cta-card">
+                    <h2 class="club-cta-title">Join Community</h2>
+                    <p class="club-cta-text">Become part of a global family of creatives supporting each other through art.</p>
+                    <a href="{{ url_for('join') }}" class="club-join-btn">Join Now</a>
+                </div>
             </div>
-        </section>
+
+            <div class="club-intros">
+                <div class="club-header">
+                    <h1 class="club-name">Lunar Bloom</h1>
+                    <p class="club-tagline">Bridging the gap between creative expression and psychological healing globally</p>
+                </div>
+
+                <details class="club-dropdown" open>
+                    <summary class="club-dropdown-summary">About the Club</summary>
+                    <div class="club-dropdown-body">
+                        <p>Providing new meanings to personal challenges · Creating belonging and community · Encouraging safe space creation (all kinds of art allowed)</p>
+                    </div>
+                </details>
+
+                <details class="club-dropdown">
+                    <summary class="club-dropdown-summary">Activities</summary>
+                    <div class="club-dropdown-body">
+                        <ul>
+                            <li>Digital Memory Archive</li>
+                            <li>Art Swaps</li>
+                            <li>Prompts</li>
+                            <li>"Traveling Sketchbook"</li>
+                            <li>Postcards</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="club-dropdown">
+                    <summary class="club-dropdown-summary">Monthly Prompt Playlist</summary>
+                    <div class="club-dropdown-body">
+                        <p>Each month's prompt comes with a curated community playlist. Members submit one song that helped them through a specific emotion, creating a collaborative sonic environment for the art session. Visual art is always better with good music &gt;&lt;</p>
+                    </div>
+                </details>
+
+                <details class="club-dropdown">
+                    <summary class="club-dropdown-summary">Club Plan</summary>
+                    <div class="club-dropdown-body">
+                        <ul>
+                            <li><strong>Member Code of Care:</strong> A commitment to non-judgment, confidentiality, and "process over product"</li>
+                            <li><strong>Digital Archive:</strong> A dedicated platform where members can upload high-quality scans of their contributions</li>
+                            <li><strong>Monthly Events:</strong> Planned on Canva and posted on social media</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
     </div>
 </section>
-{% endblock %}
 
 <script>
 function copyOwnerEmail() {
@@ -286,6 +292,22 @@ function copyOwnerEmail() {
 }
 
 (function() {
+    const tabs = document.querySelectorAll('.community-tab');
+    const contents = {
+        members: document.getElementById('tab-members'),
+        join: document.getElementById('tab-join')
+    };
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            tabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            Object.values(contents).forEach(c => c.classList.remove('active'));
+            const target = contents[this.dataset.tab];
+            if (target) target.classList.add('active');
+        });
+    });
+
     const searchInput = document.getElementById('memberSearch');
     const sortSelect = document.getElementById('sortFilter');
     const grid = document.getElementById('memberGrid');
@@ -319,3 +341,4 @@ function copyOwnerEmail() {
     if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
 })();
 </script>
+{% endblock %}

@@ -2780,6 +2780,50 @@ body {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-warm) 15%, transparent);
 }
 
+/* ── Community Tabs ── */
+
+.community-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.community-tab {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.community-tab:hover {
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
+}
+
+.community-tab.active {
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.community-tab-content {
+    display: none;
+}
+
+.community-tab-content.active {
+    display: block;
+}
+
 /* ── Owner Card ── */
 
 .owner-card {
