@@ -1324,7 +1324,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-accent);
 }
 
 .moon-icon {

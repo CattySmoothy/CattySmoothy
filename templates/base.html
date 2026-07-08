@@ -470,12 +470,16 @@
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
 
-                // Moon icon — even yin-yang in middle, converges at both ends
+                // Moon icon — even yin-yang in middle, converges at both ends, uses theme hue
                 const moonIcon = document.querySelector('#moonLabel .moon-icon');
                 if (moonIcon) {
                     var g = Math.round(255 * (1 - light / 100));
                     var factor = 1 - 0.5 * Math.sin(Math.PI * light / 100);
                     var d = Math.round(g * factor);
+
+                    const mL = Math.round(light * 0.5);
+                    const darkFill = hslStr(hue, clamp(sat + 10, 20, 60), Math.max(10, Math.round(50 - mL * 0.4)));
+                    const lightFill = hslStr(hue, clamp(sat + 10, 20, 60), Math.max(15, Math.round(85 - mL * 0.6)));
 
                     moonIcon.innerHTML =
                         '<defs><mask id="yyMask">' +
@@ -483,9 +487,9 @@
                         '<path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>' +
                         '<circle cx="9" cy="7" r="2.5" fill="black"/>' +
                         '</mask></defs>' +
-                        '<circle cx="12" cy="12" r="10" fill="rgb(' + d + ',' + d + ',' + d + ')"/>' +
-                        '<circle cx="12" cy="12" r="10" fill="rgb(' + g + ',' + g + ',' + g + ')" mask="url(#yyMask)"/>' +
-                        '<circle cx="15" cy="17" r="2.5" fill="rgb(' + g + ',' + g + ',' + g + ')"/>';
+                        '<circle cx="12" cy="12" r="10" fill="' + darkFill + '"/>' +
+                        '<circle cx="12" cy="12" r="10" fill="' + lightFill + '" mask="url(#yyMask)"/>' +
+                        '<circle cx="15" cy="17" r="2.5" fill="' + lightFill + '"/>';
                     moonIcon.style.transform = 'rotate(' + (light * 3.6) + 'deg)';
                 }
 
