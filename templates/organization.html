@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-content">
+    <div class="content-container">
+        <div class="club-cta">
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Sign Up to Join Lunar Bloom</h2>
+                <p class="club-cta-text">Becoming a member and gaining volunteer hours as well as experience.</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMGHncxT6ZqT5BdbCZpv2N0CEwapPL007bw0tqFcP4IHFhjg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="club-join-btn">Sign Up</a>
+            </div>
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Join Community</h2>
+                <p class="club-cta-text">Become part of a global family of creatives supporting each other through art.</p>
+                <a href="{{ url_for('join') }}" class="club-join-btn">Join Now</a>
+            </div>
+        </div>
+
+        <div class="club-intros">
+            <div class="club-header">
+                <h1 class="club-name">Lunar Bloom</h1>
+                <p class="club-tagline">Bridging the gap between creative expression and psychological healing globally</p>
+            </div>
+
+            <details class="club-dropdown" open>
+                <summary class="club-dropdown-summary">About the Club</summary>
+                <div class="club-dropdown-body">
+                    <p>Providing new meanings to personal challenges · Creating belonging and community · Encouraging safe space creation (all kinds of art allowed)</p>
+                </div>
+            </details>
+
+            <details class="club-dropdown">
+                <summary class="club-dropdown-summary">Activities</summary>
+                <div class="club-dropdown-body">
+                    <ul>
+                        <li>Digital Memory Archive</li>
+                        <li>Art Swaps</li>
+                        <li>Prompts</li>
+                        <li>"Traveling Sketchbook"</li>
+                        <li>Postcards</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="club-dropdown">
+                <summary class="club-dropdown-summary">Monthly Prompt Playlist</summary>
+                <div class="club-dropdown-body">
+                    <p>Each month's prompt comes with a curated community playlist. Members submit one song that helped them through a specific emotion, creating a collaborative sonic environment for the art session. Visual art is always better with good music &gt;&lt;</p>
+                </div>
+            </details>
+
+            <details class="club-dropdown">
+                <summary class="club-dropdown-summary">Club Plan</summary>
+                <div class="club-dropdown-body">
+                    <ul>
+                        <li><strong>Member Code of Care:</strong> A commitment to non-judgment, confidentiality, and "process over product"</li>
+                        <li><strong>Digital Archive:</strong> A dedicated platform where members can upload high-quality scans of their contributions</li>
+                        <li><strong>Monthly Events:</strong> Planned on Canva and posted on social media</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+{% endblock %}

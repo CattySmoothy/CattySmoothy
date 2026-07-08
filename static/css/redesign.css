@@ -2782,46 +2782,21 @@ body {
 
 /* ── Community Tabs ── */
 
-.community-tabs {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 28px;
-    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
-    border-radius: 10px;
-    padding: 4px;
+/* ── Sidebar Sub-Item ── */
+
+.sidebar-sub-item {
+    padding-left: 24px;
+    margin-top: -12px;
+    margin-bottom: -12px;
 }
 
-.community-tab {
-    flex: 1;
-    font-family: var(--font-body);
+.sidebar-sub-item .sidebar-nav-icon {
     font-size: 14px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    background: transparent;
-    border: none;
-    border-radius: 7px;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    width: 18px;
 }
 
-.community-tab:hover {
-    color: var(--color-text-primary);
-    background: color-mix(in srgb, var(--color-text-muted) 6%, transparent);
-}
-
-.community-tab.active {
-    color: var(--color-text-primary);
-    background: var(--color-surface);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-}
-
-.community-tab-content {
-    display: none;
-}
-
-.community-tab-content.active {
-    display: block;
+.sidebar-sub-item .sidebar-nav-label {
+    font-size: 13px;
 }
 
 /* ── Owner Card ── */
