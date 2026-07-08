@@ -301,7 +301,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
-    flex: 1;
+    flex: 0 1 auto;
 }
 
 .sidebar-nav-item {
