@@ -2797,16 +2797,12 @@ body {
     background: color-mix(in srgb, var(--color-header-start) 90%, #000 10%);
     border-radius: 0 0 8px 8px;
     padding: 4px 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
+    display: none;
     z-index: 200;
 }
 
-.site-sidebar:hover .sidebar-nav-item-wrapper:hover .sidebar-flyout,
-.site-sidebar.expanded .sidebar-nav-item-wrapper:hover .sidebar-flyout {
-    opacity: 1;
-    pointer-events: auto;
+.sidebar-nav-item-wrapper.open .sidebar-flyout {
+    display: block;
 }
 
 .sidebar-flyout-item {

@@ -60,8 +60,8 @@
                 <span class="sidebar-nav-icon">&#9733;</span>
                 <span class="sidebar-nav-label">Community</span>
             </a>
-            <div class="sidebar-nav-item-wrapper">
-                <a href="{{ url_for('organization') }}" class="sidebar-nav-item" title="Organization">
+            <div class="sidebar-nav-item-wrapper" id="orgWrapper">
+                <a href="#" class="sidebar-nav-item" title="Organization" id="orgToggle">
                     <span class="sidebar-nav-icon">&#9733;</span>
                     <span class="sidebar-nav-label">Organization</span>
                 </a>
@@ -752,6 +752,20 @@
                 sidebarToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
                     siteSidebar.classList.toggle('expanded');
+                });
+            }
+
+            // Organization dropdown toggle
+            const orgWrapper = document.getElementById('orgWrapper');
+            if (orgWrapper) {
+                orgWrapper.addEventListener('click', function(e) {
+                    if (e.target.closest('.sidebar-flyout-item')) return;
+                    this.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!orgWrapper.contains(e.target)) {
+                        orgWrapper.classList.remove('open');
+                    }
                 });
             }
 
