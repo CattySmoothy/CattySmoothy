@@ -208,18 +208,18 @@ body {
 
 .sidebar-toggle {
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    border: none;
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
+    width: auto;
+    height: auto;
+    padding: 4px 8px;
     margin-bottom: 28px;
-    transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .toggle-sparkle {
@@ -352,10 +352,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding: 8px 0 16px;
+    gap: 8px;
+    padding: 12px 0 20px;
     box-sizing: border-box;
-    background: transparent;
+    background: var(--color-sidebar-bottom);
     margin-top: auto;
 }
 
@@ -364,7 +364,7 @@ body {
     height: 14px;
     line-height: 14px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
     font-size: 10px;
     overflow: hidden;
     display: flex;
@@ -380,11 +380,10 @@ body {
 
 .settings-nav-link {
     cursor: pointer;
-    width: calc(100% - 12px);
-    border-radius: 8px;
+    width: 100%;
+    border-radius: 0;
     padding: 10px 0;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease;
     justify-content: center;
 }
 
@@ -397,9 +396,7 @@ body {
 }
 
 .settings-nav-link:hover {
-    background: var(--color-sidebar-bottom);
-    border-color: var(--color-sidebar-bottom);
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
 }
 
