@@ -1383,7 +1383,7 @@ body {
 .hsl-knob {
     position: absolute;
     top: 50%;
-    margin-top: -11px;
+    margin-top: -9px;
     cursor: grab;
     z-index: 2;
     color: rgba(255, 255, 255, 0.8);
