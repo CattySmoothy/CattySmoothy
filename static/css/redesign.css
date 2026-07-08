@@ -201,6 +201,7 @@ body {
     overflow: hidden;
 }
 
+.site-sidebar:hover,
 .site-sidebar.expanded {
     width: 160px;
 }
@@ -240,7 +241,7 @@ body {
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.78);
     transition: color 0.2s ease;
     white-space: nowrap;
     padding: 0 10px;
@@ -250,7 +251,7 @@ body {
 
 .sidebar-nav-item:hover {
     color: #FFFFFF;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .sidebar-nav-icon {
@@ -273,6 +274,7 @@ body {
     pointer-events: none;
 }
 
+.site-sidebar:hover .sidebar-nav-label,
 .site-sidebar.expanded .sidebar-nav-label {
     opacity: 1;
     transform: translateX(0);
@@ -319,6 +321,8 @@ body {
     transition: margin-left 0.3s ease;
 }
 
+.site-sidebar:hover + .main-area,
+.site-sidebar:hover ~ .main-area,
 .site-sidebar.expanded + .main-area,
 .site-sidebar.expanded ~ .main-area {
     margin-left: 160px;
@@ -1741,14 +1745,14 @@ body {
     align-items: center;
     gap: 10px;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.78);
     transition: color 0.2s ease;
     white-space: nowrap;
 }
 
 .donor-nav-item:hover {
     color: #FFFFFF;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .donor-toggle-label {
@@ -1756,7 +1760,7 @@ body {
     font-size: 12px;
     font-weight: 500;
     letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.78);
     white-space: nowrap;
     pointer-events: none;
 }

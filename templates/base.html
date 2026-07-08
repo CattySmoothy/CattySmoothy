@@ -535,59 +535,68 @@
                 label.textContent = phaseName;
             }
 
-            // Generate full theme from HSL
+            // Generate full theme from HSL — background stays primarily white,
+            // theme affects accent elements (header, cards, borders, email).
+            // All text meets WCAG AA (≥4.5:1) on white; primary/secondary meet AAA (≥7:1).
             function generateTheme(h, s, l) {
-                const bgL = clamp(l * 0.9 + 5, 15, 97);
-                const surfL = clamp(bgL - 2, 20, 100);
-                // Text: white when bg is medium/dark, dark when bg is light
-                const text1L = bgL <= 68 ? 94 : clamp(94 - (bgL - 68) * 4, 8, 94);
-                const text2L = bgL <= 68 ? clamp(bgL + 22, 65, 88) : clamp(88 - (bgL - 68) * 3.5, 20, 88);
-                const text3L = bgL <= 68 ? clamp(bgL + 10, 45, 70) : clamp(70 - (bgL - 68) * 2.5, 30, 70);
-                const lf = l / 85;
+                const bgL = 96;
+                const surfL = 98;
+
+                // Text — always dark on the white background
+                const text1L = 10;
+                const text2L = 25;
+                const text3L = 38;
+
                 const hdrH = ((h + 200) % 360 + 360) % 360;
-                const hdrS = clamp(s - 5, 3, 40);
-                const hdr1L = clamp(48 + 20 * lf, 25, 68);
-                const hdr2L = clamp(60 + 18 * lf, 35, 78);
-                const emailBgL = hdr1L;
-                const emailTextL = clamp(emailBgL + 30, 60, 95);
-                const onDarkL = clamp(bgL + 8, 70, 98);
-                const onLightL = clamp(text1L - 3, 8, 18);
+                const hdrS = clamp(s, 8, 45);
+                const hdr1L = clamp(30 + (s / 100) * 10, 30, 40);
+                const hdr2L = clamp(44 + (s / 100) * 12, 44, 56);
+
+                const cardDarkL = clamp(28 + (s / 100) * 12, 28, 40);
+                const featuredL = clamp(20 + (s / 100) * 10, 20, 30);
+
+                const onDarkL = 92;
+                const onLightL = 12;
 
                 return {
-                    '--color-bg': hslStr(h, clamp(s - 5, 3, 50), bgL),
-                    '--color-surface': hslStr(h, clamp(s - 8, 0, 45), surfL),
-                    '--color-text-primary': hslStr(h, clamp(s + 8, 5, 70), text1L),
-                    '--color-text-secondary': hslStr(h, clamp(s - 3, 3, 50), text2L),
-                    '--color-text-muted': hslStr(h, clamp(s - 8, 2, 40), text3L),
-                    '--color-accent': hslStr(h, clamp(s + 8, 5, 70), text1L),
+                    '--color-bg': hslStr(h, clamp(s * 0.25, 2, 12), bgL),
+                    '--color-surface': hslStr(h, clamp(s * 0.15, 1, 8), surfL),
+                    '--color-text-primary': hslStr(h, 0, text1L),
+                    '--color-text-secondary': hslStr(h, clamp(s * 0.15, 2, 12), text2L),
+                    '--color-text-muted': hslStr(h, clamp(s * 0.2, 3, 15), text3L),
+                    '--color-accent': hslStr(h, clamp(s * 0.8, 10, 55), clamp(35 + (100 - s) * 0.15, 35, 50)),
+
                     '--color-header-start': hslStr(hdrH, hdrS, hdr1L),
-                    '--color-header-end': hslStr(hdrH, clamp(hdrS - 3, 0, 35), hdr2L),
-                    '--color-card-light': hslaStr(h, clamp(s - 8, 2, 35), clamp(bgL - 3, 55, 95), 0.95),
-                    '--color-card-light-end': hslaStr(h, clamp(s - 12, 0, 30), clamp(bgL - 8, 50, 90), 0.95),
-                    '--color-card-light-border': hslaStr(h, clamp(s - 10, 0, 30), clamp(bgL - 15, 45, 85), 0.6),
-                    '--color-card-dark': hslaStr(h, clamp(s, 5, 60), clamp(hdr1L - 10, 20, 55), 0.9),
-                    '--color-card-dark-end': hslaStr(h, clamp(s - 5, 0, 50), clamp(hdr1L - 18, 15, 48), 0.9),
-                    '--color-card-dark-solid': hslStr(h, clamp(s, 5, 60), clamp(hdr1L - 8, 22, 58)),
-                    '--color-card-dark-solid-end': hslStr(h, clamp(s - 5, 0, 50), clamp(hdr1L - 16, 18, 50)),
-                    '--color-card-featured': hslaStr(h, clamp(s + 5, 10, 70), clamp(hdr1L - 18, 15, 48), 0.9),
-                    '--color-card-featured-end': hslaStr(h, clamp(s, 5, 60), clamp(hdr1L - 25, 10, 42), 0.9),
-                    '--color-card-featured-solid': hslStr(h, clamp(s + 5, 10, 70), clamp(hdr1L - 16, 18, 50)),
-                    '--color-card-featured-solid-end': hslStr(h, clamp(s, 5, 60), clamp(hdr1L - 23, 12, 44)),
-                    '--color-email-bg': hslStr(hdrH, hdrS, emailBgL),
-                    '--color-email-text': hslStr(hdrH, clamp(hdrS + 15, 10, 80), emailTextL),
-                    '--color-email-btn-text': hslStr(hdrH, hdrS, emailBgL),
-                    '--color-email-btn-hover-bg': hslStr(hdrH, clamp(hdrS + 15, 10, 80), clamp(emailTextL + 2, 70, 98)),
-                    '--color-email-feedback': hslStr(hdrH, clamp(hdrS + 5, 5, 50), clamp(emailBgL + 5, 30, 70)),
-                    '--color-nav-border': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 10, 50, 88)),
-                    '--color-footer-text': hslStr(h, clamp(s - 8, 2, 40), text3L),
-                    '--color-work-card-bg': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 10, 50, 88)),
-                    '--color-on-dark': hslStr(h, clamp(s - 8, 2, 35), onDarkL),
-                    '--color-on-light': hslStr(h, clamp(s + 10, 5, 70), onLightL),
+                    '--color-header-end': hslStr(hdrH, clamp(hdrS - 5, 3, 40), hdr2L),
+
+                    '--color-card-light': hslaStr(h, clamp(s * 0.3, 3, 20), bgL - 2, 0.95),
+                    '--color-card-light-end': hslaStr(h, clamp(s * 0.2, 2, 15), bgL - 5, 0.95),
+                    '--color-card-light-border': hslaStr(h, clamp(s * 0.35, 4, 25), bgL - 12, 0.6),
+                    '--color-card-dark': hslaStr(h, clamp(s * 0.7, 8, 45), cardDarkL, 0.92),
+                    '--color-card-dark-end': hslaStr(h, clamp(s * 0.5, 5, 35), cardDarkL - 5, 0.92),
+                    '--color-card-dark-solid': hslStr(h, clamp(s * 0.7, 8, 45), cardDarkL),
+                    '--color-card-dark-solid-end': hslStr(h, clamp(s * 0.5, 5, 35), cardDarkL - 3),
+                    '--color-card-featured': hslaStr(h, clamp(s * 0.8, 10, 50), featuredL, 0.92),
+                    '--color-card-featured-end': hslaStr(h, clamp(s * 0.6, 7, 40), featuredL - 4, 0.92),
+                    '--color-card-featured-solid': hslStr(h, clamp(s * 0.8, 10, 50), featuredL),
+                    '--color-card-featured-solid-end': hslStr(h, clamp(s * 0.6, 7, 40), featuredL - 2),
+
+                    '--color-email-bg': hslStr(hdrH, hdrS, hdr1L),
+                    '--color-email-text': hslStr(hdrH, clamp(hdrS + 10, 10, 60), clamp(hdr1L + 30, 65, 90)),
+                    '--color-email-btn-text': hslStr(hdrH, hdrS, hdr1L),
+                    '--color-email-btn-hover-bg': hslStr(hdrH, clamp(hdrS + 10, 10, 60), clamp(hdr1L + 35, 70, 95)),
+                    '--color-email-feedback': hslStr(hdrH, clamp(hdrS + 3, 5, 35), clamp(hdr1L + 8, 40, 60)),
+
+                    '--color-nav-border': hslStr(h, clamp(s * 0.2, 2, 12), bgL - 10),
+                    '--color-footer-text': hslStr(h, clamp(s * 0.2, 3, 15), text3L),
+                    '--color-work-card-bg': hslStr(h, clamp(s * 0.2, 2, 12), bgL - 8),
+                    '--color-on-dark': hslStr(h, clamp(s * 0.15, 2, 10), onDarkL),
+                    '--color-on-light': hslStr(h, clamp(s * 0.3, 5, 25), onLightL),
                     '--color-card-dark-btn-bg': '#FFFFFF',
-                    '--color-card-featured-btn-bg': hslStr(h, clamp(s - 8, 2, 35), onDarkL),
-                    '--color-card-featured-btn-text': hslStr(h, clamp(s + 10, 5, 70), onLightL),
-                    '--color-list-border': hslStr(h, clamp(s - 15, 0, 25), clamp(bgL - 5, 55, 93)),
-                    '--color-surface-alt': hslStr(h, clamp(s - 12, 0, 30), clamp(bgL - 3, 58, 95)),
+                    '--color-card-featured-btn-bg': hslStr(h, clamp(s * 0.15, 2, 10), onDarkL),
+                    '--color-card-featured-btn-text': hslStr(h, clamp(s * 0.3, 5, 25), onLightL),
+                    '--color-list-border': hslStr(h, clamp(s * 0.15, 1, 8), bgL - 4),
+                    '--color-surface-alt': hslStr(h, clamp(s * 0.2, 2, 10), bgL - 2),
                 };
             }
 
