@@ -1327,9 +1327,9 @@ body {
 
 .hsl-track {
     position: relative;
-    height: 14px;
+    height: 22px;
     flex: 1;
-    border-radius: 7px;
+    border-radius: 11px;
     cursor: pointer;
     background-blend-mode: overlay, normal;
     background-size: 16px 16px, 100% 100%;
@@ -1337,7 +1337,12 @@ body {
     mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
     box-shadow: 0 0 30px var(--track-glow, rgba(255, 255, 255, 0.04));
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease, height 0.2s ease, transform 0.2s ease;
+}
+
+.hsl-track:hover {
+    height: 30px;
+    box-shadow: 0 0 50px var(--track-glow, rgba(255, 255, 255, 0.2));
 }
 
 #hueTrack {
@@ -1371,16 +1376,16 @@ body {
 .hsl-knob {
     position: absolute;
     top: 50%;
-    margin-top: -7px;
+    margin-top: -11px;
     cursor: grab;
     z-index: 2;
     color: rgba(255, 255, 255, 0.8);
     transition: color 0.15s ease, filter 0.15s ease;
     line-height: 0;
-    transform: translateX(-78%);
+    transform: translateX(-50%);
 }
 
-.shooting-star {
+.knob-sparkle {
     display: block;
     filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
 }
@@ -1394,10 +1399,6 @@ body {
     cursor: grabbing;
     color: #FFFFFF;
     filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.7));
-}
-
-.hsl-knob.dragging .star-tail {
-    opacity: 0.7 !important;
 }
 
 .hsl-swatch {
