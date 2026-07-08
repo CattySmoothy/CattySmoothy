@@ -194,7 +194,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 24px 0;
+    padding: 24px 0 0;
     width: 52px;
     background: var(--color-header-start);
     transition: width 0.3s ease;
