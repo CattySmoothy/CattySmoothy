@@ -52,6 +52,10 @@ def register_routes(app):
     def collections():
         return render_template('collections.html', title="Collections")
 
+    @app.route('/updates')
+    def updates():
+        return render_template('updates.html', title="Updates")
+
     @app.route('/profile')
     def profile():
         return render_template('profile.html', title="Profile")

@@ -225,6 +225,19 @@ body {
 .toggle-sparkle {
     font-size: 22px;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+
+.tw-right {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.site-sidebar:hover .tw-right,
+.site-sidebar.expanded .tw-right {
+    opacity: 1;
 }
 
 .sidebar-toggle:hover {
@@ -339,10 +352,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     padding: 8px 0 16px;
     box-sizing: border-box;
-    background: var(--color-sidebar-bottom);
+    background: transparent;
     margin-top: auto;
 }
 
@@ -367,14 +380,27 @@ body {
 
 .settings-nav-link {
     cursor: pointer;
-    width: calc(100% - 8px);
-    border-radius: 6px;
-    transition: background 0.2s ease, box-shadow 0.2s ease;
+    width: calc(100% - 12px);
+    border-radius: 8px;
+    padding: 10px 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+    justify-content: center;
+}
+
+.settings-nav-link .sidebar-nav-icon {
+    font-size: 26px;
+}
+
+.settings-nav-link .sidebar-nav-label {
+    font-size: 15px;
 }
 
 .settings-nav-link:hover {
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--color-sidebar-bottom);
+    border-color: var(--color-sidebar-bottom);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: #FFFFFF;
 }
 
 /* Main area offset for sidebar */
@@ -3628,4 +3654,36 @@ body {
     font-size: 10px;
     color: rgba(232, 240, 255, 0.35);
     font-weight: 400;
+}
+
+/* ── Updates Page ── */
+
+.updates-page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px;
+}
+
+.updates-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.updates-notif {
+    display: block;
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 16px;
+    color: var(--color-accent);
+}
+
+.updates-list {
+    text-align: center;
+}
+
+.updates-empty {
+    font-family: var(--font-sub);
+    font-size: 16px;
+    color: var(--color-text-muted);
+    padding: 48px 0;
 }
