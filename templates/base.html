@@ -542,13 +542,14 @@
 
             // Generate full theme from HSL — background stays primarily white,
             // theme affects accent elements (header, cards, borders, email).
-            // All text meets WCAG AA (≥4.5:1) on white; primary/secondary meet AAA (≥7:1).
+            // Text lightness is high enough to show the theme hue visibly.
             function generateTheme(h, s, l) {
                 const bgL = 96;
                 const surfL = 98;
 
-                const text1L = 10;
-                const text2L = 25;
+                // Text light enough to show theme colour, dark enough for WCAG AA+ on white
+                const text1L = 22;
+                const text2L = 35;
                 const text3L = 38;
 
                 const hdrH = ((h + 200) % 360 + 360) % 360;
@@ -562,15 +563,15 @@
                 const onDarkL = 92;
                 const onLightL = 12;
 
-                const accentS = clamp(s * 0.9, 15, 60);
+                const accentS = clamp(s, 20, 65);
                 const accentL = clamp(l * 0.55 + 5, 30, 52);
 
                 return {
                     '--color-bg': hslStr(h, clamp(s * 0.35, 3, 15), bgL),
                     '--color-surface': hslStr(h, clamp(s * 0.2, 2, 10), surfL),
-                    '--color-text-primary': hslStr(h, clamp(s * 0.4, 8, 28), text1L),
-                    '--color-text-secondary': hslStr(h, clamp(s * 0.35, 6, 22), text2L),
-                    '--color-text-muted': hslStr(h, clamp(s * 0.3, 5, 18), text3L),
+                    '--color-text-primary': hslStr(h, clamp(s * 0.6, 15, 55), text1L),
+                    '--color-text-secondary': hslStr(h, clamp(s * 0.5, 12, 45), text2L),
+                    '--color-text-muted': hslStr(h, clamp(s * 0.4, 8, 35), text3L),
                     '--color-accent': hslStr(h, accentS, accentL),
 
                     '--color-header-start': hslStr(hdrH, hdrS, hdr1L),
