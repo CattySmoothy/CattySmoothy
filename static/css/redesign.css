@@ -2782,21 +2782,48 @@ body {
 
 /* ── Community Tabs ── */
 
-/* ── Sidebar Sub-Item ── */
+/* ── Sidebar Nav Item Wrapper / Flyout ── */
 
-.sidebar-sub-item {
-    padding-left: 24px;
-    margin-top: -12px;
-    margin-bottom: -12px;
+.sidebar-nav-item-wrapper {
+    position: relative;
+    width: 100%;
 }
 
-.sidebar-sub-item .sidebar-nav-icon {
-    font-size: 14px;
-    width: 18px;
+.sidebar-flyout {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-header-start) 90%, #000 10%);
+    border-radius: 0 0 8px 8px;
+    padding: 4px 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 200;
 }
 
-.sidebar-sub-item .sidebar-nav-label {
+.site-sidebar:hover .sidebar-nav-item-wrapper:hover .sidebar-flyout,
+.site-sidebar.expanded .sidebar-nav-item-wrapper:hover .sidebar-flyout {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.sidebar-flyout-item {
+    display: block;
+    font-family: var(--font-body);
     font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    padding: 8px 16px 8px 40px;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-flyout-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
 }
 
 /* ── Owner Card ── */

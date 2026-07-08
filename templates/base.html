@@ -60,10 +60,15 @@
                 <span class="sidebar-nav-icon">&#9733;</span>
                 <span class="sidebar-nav-label">Community</span>
             </a>
-            <a href="{{ url_for('organization') }}" class="sidebar-nav-item sidebar-sub-item" title="Organization">
-                <span class="sidebar-nav-icon">&#9733;</span>
-                <span class="sidebar-nav-label">Organization</span>
-            </a>
+            <div class="sidebar-nav-item-wrapper">
+                <a href="{{ url_for('organization') }}" class="sidebar-nav-item" title="Organization">
+                    <span class="sidebar-nav-icon">&#9733;</span>
+                    <span class="sidebar-nav-label">Organization</span>
+                </a>
+                <div class="sidebar-flyout">
+                    <a href="{{ url_for('profile') }}" class="sidebar-flyout-item">Apply &amp; Join</a>
+                </div>
+            </div>
             <a href="{{ url_for('updates') }}" class="sidebar-nav-item" title="Updates">
                 <span class="sidebar-nav-icon">.ᐟ</span>
                 <span class="sidebar-nav-label">Updates</span>
