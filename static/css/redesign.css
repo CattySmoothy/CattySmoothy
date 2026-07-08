@@ -296,9 +296,10 @@ body {
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 28px;
     flex: 0 1 auto;
+    width: 100%;
 }
 
 .sidebar-nav-icon {
