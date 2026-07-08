@@ -1661,6 +1661,331 @@ body {
     color: var(--color-text-primary);
 }
 
+/* ── Profile Cards Section ─────────────────────────────────────────────── */
+
+:root {
+    --primary-warm: #E8756A;
+    --primary-warm-light: #F5A89A;
+}
+
+.profile-cards-section {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-muted) 20%, transparent);
+}
+
+.profile-cards-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.profile-cards-subtitle {
+    font-family: var(--font-sub);
+    font-size: 14px;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+    padding: 4px 0 40px;
+}
+
+/* ── Card container & 3D flip ── */
+
+.profile-card {
+    perspective: 1000px;
+    height: 420px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.profile-card:hover .card-inner,
+.profile-card:focus-within .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-surface);
+    box-shadow: 0 4px 24px color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+}
+
+/* ── Front ── */
+
+.card-front {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-image {
+    position: relative;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-initial {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Lace border at bottom of image */
+.lace-border {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 18px;
+    background: var(--color-surface);
+    -webkit-mask: radial-gradient(circle at 8px 9px, transparent 5px, black 5px);
+    mask: radial-gradient(circle at 8px 9px, transparent 5px, black 5px);
+    -webkit-mask-size: 16px 18px;
+    mask-size: 16px 18px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* ── Aesthetic banner ── */
+
+.card-banner {
+    padding: 7px 14px;
+    font-family: var(--font-sub);
+    font-size: 12px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, var(--primary-warm), var(--primary-warm-light));
+    text-align: center;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Card body (front) ── */
+
+.card-body {
+    flex: 1;
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-name {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.card-username {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+/* ── Stamina Bar ── */
+
+.card-stamina {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.stamina-bar {
+    width: 100%;
+    height: 8px;
+    background: color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stamina-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-warm), var(--primary-warm-light));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.stamina-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.stamina-label {
+    font-family: var(--font-sub);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.stamina-value {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary-warm);
+}
+
+/* ── Back ── */
+
+.card-back {
+    transform: rotateY(180deg);
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+}
+
+.card-back-section {
+    flex-shrink: 0;
+}
+
+.card-back-heading {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 5px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid;
+}
+
+.current-heading {
+    color: var(--primary-warm);
+    border-color: color-mix(in srgb, var(--primary-warm) 25%, transparent);
+}
+
+.future-heading {
+    color: #6ABA8A;
+    border-color: color-mix(in srgb, #6ABA8A 25%, transparent);
+}
+
+.stats-heading {
+    color: var(--color-text-secondary);
+    border-color: color-mix(in srgb, var(--color-text-secondary) 20%, transparent);
+}
+
+.card-back-text {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* ── Stat Swap ── */
+
+.card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 2px;
+}
+
+.stat-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.strengths-label {
+    color: #6ABA8A;
+}
+
+.weaknesses-label {
+    color: var(--primary-warm);
+}
+
+.stat-list {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+}
+
+.stat-list li {
+    font-family: var(--font-sub);
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    padding: 2px 0 2px 14px;
+    position: relative;
+}
+
+.card-strengths .stat-list li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: #6ABA8A;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.card-weaknesses .stat-list li::before {
+    content: '−';
+    position: absolute;
+    left: 0;
+    color: var(--primary-warm);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 640px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .profile-card {
+        height: 400px;
+    }
+
+    .card-back {
+        padding: 16px 18px 18px;
+        gap: 8px;
+    }
+}
+
+/* ── End Profile Cards ── */
+
+
 /* Donors page - Night Sky */
 .donors-active main,
 .donors-active .container {

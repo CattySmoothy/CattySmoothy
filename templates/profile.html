@@ -1,6 +1,81 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% set members = [
+    {
+        'name': 'Maya Chen',
+        'username': '@moonlitbrush',
+        'initials': 'MC',
+        'gradient': 'linear-gradient(135deg, #667eea, #764ba2)',
+        'tags': '🎨 Digital · 🌸 Soft Aesthetic · 🌙 Night Owl',
+        'stamina': 72,
+        'vulnerabilities': 'Struggling with Grade 10 Math · Exam Burnout',
+        'aspiration': 'Aspiring Art Therapist',
+        'strengths': ['Creative Writing', 'Fine Art', 'Watercolor', 'Empathy'],
+        'weaknesses': ['Mathematics', 'Public Speaking', 'Time Management']
+    },
+    {
+        'name': 'Riley Patel',
+        'username': '@stellarvisions',
+        'initials': 'RP',
+        'gradient': 'linear-gradient(135deg, #f093fb, #f5576c)',
+        'tags': '✨ Space · 🖌️ Concept · 🌟 Visionary',
+        'stamina': 55,
+        'vulnerabilities': 'Social Anxiety · Creative Block',
+        'aspiration': 'Dreaming of being a Concept Artist at a game studio',
+        'strengths': ['Digital Painting', 'Worldbuilding', 'Color Theory'],
+        'weaknesses': ['Self-Promotion', 'Deadlines', 'Networking']
+    },
+    {
+        'name': 'Jade Nakamura',
+        'username': '@softpixels',
+        'initials': 'JN',
+        'gradient': 'linear-gradient(135deg, #a8edea, #fed6e3)',
+        'tags': '🌸 Pastel · 🧸 Cozy · 📓 Journaling',
+        'stamina': 88,
+        'vulnerabilities': 'Perfectionism · Comparing myself to others',
+        'aspiration': 'Aspiring Children\'s Book Illustrator',
+        'strengths': ['Character Design', 'Storyboarding', 'Watercolor'],
+        'weaknesses': ['Digital Tools', 'Pricing Art', 'Saying No']
+    },
+    {
+        'name': 'Alex Rivera',
+        'username': '@eclipsebind',
+        'initials': 'AR',
+        'gradient': 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)',
+        'tags': '🌑 Dark Fantasy · 🐉 Creature Design · 🔥 Ambitious',
+        'stamina': 41,
+        'vulnerabilities': 'Chronic Illness Flare-ups · Motivation Dips',
+        'aspiration': 'Aspiring Creature Designer for Film',
+        'strengths': ['Sculpture', 'Anatomy', 'Traditional Ink', 'Storytelling'],
+        'weaknesses': ['Consistency', 'Digital Workflow', 'Asking for Help']
+    },
+    {
+        'name': 'Priya Sharma',
+        'username': '@glitchgarden',
+        'initials': 'PS',
+        'gradient': 'linear-gradient(135deg, #fccb90, #d57eeb)',
+        'tags': '🌿 Nature · 🌈 Glitch · 🔮 Experimental',
+        'stamina': 63,
+        'vulnerabilities': 'Imposter Syndrome · Financial Stress',
+        'aspiration': 'Aspiring Multimedia Installation Artist',
+        'strengths': ['Mixed Media', 'Photography', 'Curating', 'Community Building'],
+        'weaknesses': ['Grant Writing', 'Studio Space', 'Technical Skills']
+    },
+    {
+        'name': 'Sam Okafor',
+        'username': '@okafordraws',
+        'initials': 'SO',
+        'gradient': 'linear-gradient(135deg, #ffecd2, #fcb69f)',
+        'tags': '✏️ Sketching · 📖 Manga · 🗣️ Storyteller',
+        'stamina': 79,
+        'vulnerabilities': 'Family Expectations · Burnout Cycles',
+        'aspiration': 'Aspiring Manga Artist & Publisher',
+        'strengths': ['Inking', 'Expressive Faces', 'Pacing', 'Worldbuilding'],
+        'weaknesses': ['Backgrounds', 'Color', 'Promotion']
+    }
+] %}
+
 <section class="page-content">
     <div class="content-container">
         <div class="club-layout">
@@ -62,6 +137,70 @@
                 </details>
             </div>
         </div>
+
+        <section class="profile-cards-section">
+            <h2 class="profile-cards-title">Community Members</h2>
+            <p class="profile-cards-subtitle">Hover or tap a card to see their full profile</p>
+            <div class="profile-grid">
+                {% for m in members %}
+                <div class="profile-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-image" style="background: {{ m.gradient }}">
+                                <span class="card-initial">{{ m.initials }}</span>
+                                <div class="lace-border"></div>
+                            </div>
+                            <div class="card-banner">{{ m.tags }}</div>
+                            <div class="card-body">
+                                <h3 class="card-name">{{ m.name }}</h3>
+                                <span class="card-username">{{ m.username }}</span>
+                                <div class="card-stamina">
+                                    <div class="stamina-bar">
+                                        <div class="stamina-fill" style="width: {{ m.stamina }}%"></div>
+                                    </div>
+                                    <div class="stamina-info">
+                                        <span class="stamina-label">Stamina</span>
+                                        <span class="stamina-value">{{ m.stamina }}%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-back-section">
+                                <h4 class="card-back-heading current-heading">Current Class</h4>
+                                <p class="card-back-text">{{ m.vulnerabilities }}</p>
+                            </div>
+                            <div class="card-back-section">
+                                <h4 class="card-back-heading future-heading">Future Class</h4>
+                                <p class="card-back-text">{{ m.aspiration }}</p>
+                            </div>
+                            <div class="card-back-section">
+                                <h4 class="card-back-heading stats-heading">Stat Swap</h4>
+                                <div class="card-stats">
+                                    <div class="card-strengths">
+                                        <span class="stat-label strengths-label">Strengths</span>
+                                        <ul class="stat-list">
+                                            {% for s in m.strengths %}
+                                            <li>{{ s }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="card-weaknesses">
+                                        <span class="stat-label weaknesses-label">Weaknesses</span>
+                                        <ul class="stat-list">
+                                            {% for w in m.weaknesses %}
+                                            <li>{{ w }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </section>
 {% endblock %}
