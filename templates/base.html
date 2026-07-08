@@ -33,40 +33,42 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body class="{% if request.endpoint == 'donors_page' %}donors-active{% endif %}">
-    <header class="site-header {% if request.endpoint == 'donors_page' %}site-header-hidden{% endif %}">
-        <div class="container">
-            <div class="header-inner">
-                <button class="settings-trigger" id="settingsTrigger" title="Theme Settings" aria-label="Theme Settings">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-                    </svg>
-                </button>
-            </div>
+    <div class="layout-wrap">
+    <aside class="site-sidebar" id="siteSidebar">
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"/>
+                <path d="M3 12h18"/>
+                <path d="M3 18h18"/>
+            </svg>
+        </button>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Work">
+                <span class="sidebar-nav-icon">&#9733;</span>
+                <span class="sidebar-nav-label">Work</span>
+            </a>
+            <a href="{{ url_for('about') }}" class="sidebar-nav-item" title="About">
+                <span class="sidebar-nav-icon">&#9733;</span>
+                <span class="sidebar-nav-label">About</span>
+            </a>
+            <a href="{{ url_for('support') }}" class="sidebar-nav-item" title="Support">
+                <span class="sidebar-nav-icon">&#9733;</span>
+                <span class="sidebar-nav-label">Support</span>
+            </a>
+            <a href="{{ url_for('profile') }}" class="sidebar-nav-item" title="Community">
+                <span class="sidebar-nav-icon">&#9733;</span>
+                <span class="sidebar-nav-label">Community</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="sidebar-divider"></div>
+            <a href="#" id="settingsNavLink" class="sidebar-nav-item settings-nav-link" title="Settings">
+                <span class="sidebar-nav-icon settings-icon">&#9881;</span>
+                <span class="sidebar-nav-label">Settings</span>
+            </a>
         </div>
-    </header>
-    
-    <nav class="main-nav">
-        {% if request.endpoint == 'donors_page' %}
-        <a href="{{ url_for('home') }}" class="nav-sparkle" title="Work">✦</a>
-        <a href="{{ url_for('about') }}" class="nav-sparkle" title="About">✦</a>
-        <a href="{{ url_for('support') }}" class="nav-sparkle" title="Support">✦</a>
-        <a href="{{ url_for('profile') }}" class="nav-sparkle" title="Community">✦</a>
-        <a href="#" id="settingsNavLinkDonors" class="nav-sparkle settings-nav-link" title="Settings">⚙</a>
-        {% else %}
-        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">WORK</a>
-        <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">ABOUT</a>
-        <div class="nav-dropdown">
-            <a href="{{ url_for('support') }}" class="nav-dropdown-toggle {% if request.endpoint == 'support' or request.endpoint == 'donors_page' %}active{% endif %}">SUPPORT</a>
-            <div class="nav-dropdown-menu">
-                <a href="{{ url_for('donors_page') }}" class="{% if request.endpoint == 'donors_page' %}active{% endif %}">SUPPORTERS</a>
-            </div>
-        </div>
-        <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">COMMUNITY</a>
-        <a href="#" id="settingsNavLink" class="settings-nav-link">SETTINGS</a>
-        {% endif %}
-    </nav>
-    
+    </aside>
+    <div class="main-area">
     <main>
         <div class="container">
             {% block content %}{% endblock %}
@@ -78,6 +80,8 @@
             <p>&copy; 2026 Raichuu. All rights reserved.</p>
         </div>
     </footer>
+    </div>
+    </div>
 
     <!-- Settings overlay -->
     <div class="settings-overlay" id="settingsOverlay">
@@ -668,9 +672,7 @@
             // Settings overlay toggle
             const overlay = document.getElementById('settingsOverlay');
             const settingsTriggers = [
-                document.getElementById('settingsTrigger'),
                 document.getElementById('settingsNavLink'),
-                document.getElementById('settingsNavLinkDonors'),
             ].filter(Boolean);
             const closeBtn = document.getElementById('settingsClose');
 
@@ -698,6 +700,16 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && overlay.classList.contains('open')) closeSettings();
             });
+
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const siteSidebar = document.getElementById('siteSidebar');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    siteSidebar.classList.toggle('expanded');
+                });
+            }
 
             // ── Live Profile Preview ──
             const previewName = document.getElementById('previewName');
