@@ -36,74 +36,12 @@
     <header class="site-header {% if request.endpoint == 'donors_page' %}site-header-hidden{% endif %}">
         <div class="container">
             <div class="header-inner">
-                <div class="hsl-picker" id="hslPicker">
-                    <div class="hsl-bars">
-                        <div class="hsl-row">
-                            <span class="moon-label">
-                                <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
-                                </svg>
-                            </span>
-                            <div class="hsl-track" id="hueTrack">
-                                <div class="hsl-knob" id="knobHue" data-axis="hue">
-                                    <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                        <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                        <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hsl-row">
-                            <span class="moon-label">
-                                <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <defs>
-                                        <clipPath id="satClip">
-                                            <circle id="satClipCircle" cx="12" cy="12" r="10"/>
-                                        </clipPath>
-                                    </defs>
-                                    <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
-                                </svg>
-                            </span>
-                            <div class="hsl-track" id="satTrack">
-                                <div class="hsl-knob" id="knobSat" data-axis="sat">
-                                    <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                        <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                        <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hsl-row">
-                            <span class="moon-label" id="moonLabel">
-                                <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                    <defs>
-                                        <mask id="yyMask">
-                                            <rect width="24" height="24" fill="white"/>
-                                            <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
-                                            <circle cx="9" cy="7" r="2.5" fill="black"/>
-                                        </mask>
-                                    </defs>
-                                    <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
-                                    <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
-                                    <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
-                                </svg>
-                            </span>
-                            <div class="hsl-track" id="lightTrack">
-                                <div class="hsl-knob" id="knobLight" data-axis="light">
-                                    <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                        <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                        <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
-                        <svg class="hsl-sparkle" viewBox="0 0 24 24" width="20" height="20">
-                            <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                        </svg>
-                    </div>
-                </div>
+                <button class="settings-trigger" id="settingsTrigger" title="Theme Settings" aria-label="Theme Settings">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -114,6 +52,7 @@
         <a href="{{ url_for('about') }}" class="nav-sparkle" title="About">✦</a>
         <a href="{{ url_for('support') }}" class="nav-sparkle" title="Support">✦</a>
         <a href="{{ url_for('profile') }}" class="nav-sparkle" title="Community">✦</a>
+        <a href="#" id="settingsNavLinkDonors" class="nav-sparkle settings-nav-link" title="Settings">⚙</a>
         {% else %}
         <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">WORK</a>
         <a href="{{ url_for('about') }}" class="{% if request.endpoint == 'about' %}active{% endif %}">ABOUT</a>
@@ -124,6 +63,7 @@
             </div>
         </div>
         <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active{% endif %}">COMMUNITY</a>
+        <a href="#" id="settingsNavLink" class="settings-nav-link">SETTINGS</a>
         {% endif %}
     </nav>
     
@@ -138,6 +78,83 @@
             <p>&copy; 2026 Raichuu. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Settings overlay -->
+    <div class="settings-overlay" id="settingsOverlay">
+        <div class="settings-panel">
+            <button class="settings-close" id="settingsClose" aria-label="Close settings">&times;</button>
+            <h2 class="settings-title">Theme Settings</h2>
+            <p class="settings-subtitle">Drag the sliders to customize your color palette</p>
+            <div class="hsl-picker" id="hslPicker">
+                <div class="hsl-bars">
+                    <div class="hsl-row">
+                        <span class="moon-label">
+                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        <div class="hsl-track" id="hueTrack">
+                            <div class="hsl-knob" id="knobHue" data-axis="hue">
+                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hsl-row">
+                        <span class="moon-label">
+                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <defs>
+                                    <clipPath id="satClip">
+                                        <circle id="satClipCircle" cx="12" cy="12" r="10"/>
+                                    </clipPath>
+                                </defs>
+                                <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
+                            </svg>
+                        </span>
+                        <div class="hsl-track" id="satTrack">
+                            <div class="hsl-knob" id="knobSat" data-axis="sat">
+                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hsl-row">
+                        <span class="moon-label" id="moonLabel">
+                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                <defs>
+                                    <mask id="yyMask">
+                                        <rect width="24" height="24" fill="white"/>
+                                        <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
+                                        <circle cx="9" cy="7" r="2.5" fill="black"/>
+                                    </mask>
+                                </defs>
+                                <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
+                                <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
+                                <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
+                            </svg>
+                        </span>
+                        <div class="hsl-track" id="lightTrack">
+                            <div class="hsl-knob" id="knobLight" data-axis="light">
+                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
+                    <svg class="hsl-sparkle" viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         (function() {
@@ -406,6 +423,40 @@
             updateUI();
             applyTheme();
             setTimeout(() => sparkle.classList.remove('lit'), 100);
+
+            // Settings overlay toggle
+            const overlay = document.getElementById('settingsOverlay');
+            const settingsTriggers = [
+                document.getElementById('settingsTrigger'),
+                document.getElementById('settingsNavLink'),
+                document.getElementById('settingsNavLinkDonors'),
+            ].filter(Boolean);
+            const closeBtn = document.getElementById('settingsClose');
+
+            function openSettings() {
+                overlay.classList.add('open');
+            }
+
+            function closeSettings() {
+                overlay.classList.remove('open');
+            }
+
+            settingsTriggers.forEach(el => {
+                if (el) el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openSettings();
+                });
+            });
+
+            if (closeBtn) closeBtn.addEventListener('click', closeSettings);
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeSettings();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('open')) closeSettings();
+            });
         })();
     </script>
 </body>
