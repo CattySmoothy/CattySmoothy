@@ -141,9 +141,12 @@
                             </div>
 
                             <div class="form-field">
-                                <label for="pronounSelect" class="form-label">Preferred Pronouns</label>
+                                <label class="form-label">Preferred Pronouns</label>
                                 <div class="pronoun-picker">
-                                    <input type="text" id="pronounSelect" name="pronouns" list="pronounOptions" placeholder="she/her" class="pronoun-input" value="she/her">
+                                    <div class="pronoun-tag-input" id="pronounTagInput">
+                                        <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
+                                        <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add pronoun…" class="pronoun-text-input">
+                                    </div>
                                     <datalist id="pronounOptions">
                                         <option value="she/her">
                                         <option value="they/them">
@@ -154,6 +157,7 @@
                                         <option value="any/all">
                                         <option value="Custom">
                                     </datalist>
+                                    <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
                                 </div>
                             </div>
 
@@ -705,9 +709,62 @@
 
             const personaName = document.getElementById('personaName');
             const personaBio = document.getElementById('personaBio');
-            const pronounSelect = document.getElementById('pronounSelect');
+            const pronounInput = document.getElementById('pronounInput');
+            const pronounTagInput = document.getElementById('pronounTagInput');
+            const pronounsHidden = document.getElementById('pronounsHidden');
             const bioCharCount = document.getElementById('bioCharCount');
             const tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
+
+            function getPronouns() {
+                const chips = pronounTagInput.querySelectorAll('.pronoun-chip');
+                return Array.from(chips).map(c => c.textContent.replace('×', '').trim());
+            }
+
+            function updatePronounsHidden() {
+                const vals = getPronouns();
+                pronounsHidden.value = vals.join(', ');
+                previewPronouns.textContent = vals.length ? vals.join(' · ') : 'she/her';
+            }
+
+            function addPronounChip(val) {
+                val = val.trim();
+                if (!val) return;
+                const existing = getPronouns();
+                if (existing.includes(val)) return;
+                const chip = document.createElement('span');
+                chip.className = 'pronoun-chip';
+                chip.innerHTML = val + '<span class="pronoun-chip-remove" data-value="' + val.replace(/"/g, '&quot;') + '">&times;</span>';
+                chip.querySelector('.pronoun-chip-remove').addEventListener('click', function() {
+                    chip.remove();
+                    updatePronounsHidden();
+                });
+                pronounTagInput.insertBefore(chip, pronounInput);
+                updatePronounsHidden();
+            }
+
+            pronounInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addPronounChip(this.value);
+                    this.value = '';
+                } else if (e.key === 'Backspace' && !this.value) {
+                    const chips = pronounTagInput.querySelectorAll('.pronoun-chip');
+                    const last = chips[chips.length - 1];
+                    if (last) last.remove();
+                    updatePronounsHidden();
+                }
+            });
+
+            pronounInput.addEventListener('input', function() {
+                const val = this.value.trim();
+                // Preview single typed value for live feel
+                const chips = getPronouns();
+                if (val) {
+                    previewPronouns.textContent = chips.length ? chips.join(' · ') + ' · ' + val : val;
+                } else {
+                    previewPronouns.textContent = chips.length ? chips.join(' · ') : 'she/her';
+                }
+            });
 
             function updatePreview() {
                 const name = personaName.value.trim() || 'Artist';
@@ -720,21 +777,24 @@
                 const bio = personaBio.value;
                 previewBio.textContent = bio || 'Your mantra here';
                 bioCharCount.textContent = bio.length;
-
-                // Pronouns
-                const pval = pronounSelect.value.trim();
-                previewPronouns.textContent = pval || 'she/her';
             }
 
             personaName.addEventListener('input', updatePreview);
             personaBio.addEventListener('input', updatePreview);
-            pronounSelect.addEventListener('input', updatePreview);
             tagInputs.forEach(cb => cb.addEventListener('change', function() {
                 const checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
                 if (checked.length > 3) this.checked = false;
                 updatePreview();
             }));
             updatePreview();
+            // Init pronoun hidden + preview + static chip remove handlers
+            pronounTagInput.querySelectorAll('.pronoun-chip-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.pronoun-chip').remove();
+                    updatePronounsHidden();
+                });
+            });
+            updatePronounsHidden();
 
             // ── Avatar upload preview ──
             const avatarInput = document.getElementById('avatarInput');
