@@ -973,6 +973,24 @@ body {
     -webkit-user-select: none;
 }
 
+.hsl-apply-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.hsl-apply-label {
+    font-family: var(--font-sub);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: center;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
 /* ── Responsive ── */
 
 @media (max-width: 768px) {
