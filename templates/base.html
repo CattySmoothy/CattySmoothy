@@ -82,76 +82,262 @@
     <!-- Settings overlay -->
     <div class="settings-overlay" id="settingsOverlay">
         <div class="settings-panel">
-            <button class="settings-close" id="settingsClose" aria-label="Close settings">&times;</button>
-            <h2 class="settings-title">Theme Settings</h2>
-            <p class="settings-subtitle">Drag the sliders to customize your color palette</p>
-            <div class="hsl-picker" id="hslPicker">
-                <div class="hsl-bars">
-                    <div class="hsl-row">
-                        <span class="moon-label">
-                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
-                            </svg>
-                        </span>
-                        <div class="hsl-track" id="hueTrack">
-                            <div class="hsl-knob" id="knobHue" data-axis="hue">
-                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                </svg>
+            <div class="settings-header">
+                <div>
+                    <h2 class="settings-title">Profile &amp; Settings</h2>
+                    <p class="settings-subtitle">Manage your digital identity and canvas preferences</p>
+                </div>
+                <button class="settings-close" id="settingsClose" aria-label="Close settings">&times;</button>
+            </div>
+
+            <div class="settings-body">
+                <!-- Left: Live Preview Card -->
+                <div class="settings-left">
+                    <div class="preview-card" id="previewCard">
+                        <div class="preview-card-inner">
+                            <div class="preview-image" id="previewImage">
+                                <span class="preview-initials" id="previewInitials">A</span>
+                                <div class="preview-lace"></div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="hsl-row">
-                        <span class="moon-label">
-                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                <defs>
-                                    <clipPath id="satClip">
-                                        <circle id="satClipCircle" cx="12" cy="12" r="10"/>
-                                    </clipPath>
-                                </defs>
-                                <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
-                            </svg>
-                        </span>
-                        <div class="hsl-track" id="satTrack">
-                            <div class="hsl-knob" id="knobSat" data-axis="sat">
-                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hsl-row">
-                        <span class="moon-label" id="moonLabel">
-                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                <defs>
-                                    <mask id="yyMask">
-                                        <rect width="24" height="24" fill="white"/>
-                                        <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
-                                        <circle cx="9" cy="7" r="2.5" fill="black"/>
-                                    </mask>
-                                </defs>
-                                <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
-                                <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
-                                <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
-                            </svg>
-                        </span>
-                        <div class="hsl-track" id="lightTrack">
-                            <div class="hsl-knob" id="knobLight" data-axis="light">
-                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
-                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
-                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
-                                </svg>
+                            <div class="preview-banner" id="previewBanner">🎨 Creative</div>
+                            <div class="preview-body">
+                                <h3 class="preview-name" id="previewName">Artist</h3>
+                                <p class="preview-bio" id="previewBio">Your mantra here</p>
+                                <div class="preview-stamina">
+                                    <div class="preview-stamina-bar">
+                                        <div class="preview-stamina-fill" id="previewStaminaFill" style="width: 70%"></div>
+                                    </div>
+                                    <div class="preview-stamina-info">
+                                        <span class="preview-stamina-label">Stamina</span>
+                                        <span class="preview-stamina-value" id="previewStaminaValue">70%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
-                    <svg class="hsl-sparkle" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                    </svg>
+
+                <!-- Right: Data Editor Form -->
+                <div class="settings-right">
+                    <form id="profileForm" class="profile-form">
+
+                        <!-- Sub-section A: Identity Customization -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Identity Customization</h3>
+
+                            <div class="form-field avatar-field">
+                                <label class="form-label">Canvas Icon</label>
+                                <div class="avatar-upload" id="avatarUpload">
+                                    <div class="avatar-preview" id="avatarPreview">
+                                        <span class="avatar-initials" id="avatarInitials">A</span>
+                                        <div class="avatar-lace"></div>
+                                    </div>
+                                    <div class="avatar-overlay">Change Canvas Icon</div>
+                                    <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
+                                </div>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="personaName" class="form-label">Display Name</label>
+                                <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="form-input" value="Artist" maxlength="30">
+                            </div>
+
+                            <div class="form-field">
+                                <label for="personaBio" class="form-label">Your Mantra / Bio</label>
+                                <textarea id="personaBio" name="bio" placeholder="Describe your creative journey in one sentence..." class="form-textarea" maxlength="150" rows="3"></textarea>
+                                <span class="char-count"><span id="bioCharCount">0</span>/150</span>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label">Aesthetic Tags <span class="tag-hint">(choose up to 3)</span></label>
+                                <div class="tag-grid" id="aestheticTags">
+                                    {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
+                                    {% for tag in tags %}
+                                    <label class="tag-chip">
+                                        <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
+                                        <span class="tag-label">{{ tag }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-section B: The Gamified Stat Board -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Gamified Stat Board</h3>
+
+                            <div class="form-field">
+                                <label for="currentClass" class="form-label">Current Class <span class="tag-hint">(Actual Self)</span></label>
+                                <textarea id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Struggling with Public Speaking, Creative Block" class="form-textarea" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-field">
+                                <label for="futureClass" class="form-label">Future Class <span class="tag-hint">(Ideal Self)</span></label>
+                                <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist, Concept Artist" class="form-input">
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label">Strength Swap Matrix</label>
+                                <div class="swap-grid">
+                                    <div class="swap-column">
+                                        <span class="swap-heading strengths-heading">Strengths <span class="swap-hint">(offered for trades)</span></span>
+                                        <div class="swap-list" id="strengthsList">
+                                            <div class="swap-item">
+                                                <input type="text" name="strengths[]" placeholder="e.g. Writing" class="form-input swap-input">
+                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                            </div>
+                                            <div class="swap-item">
+                                                <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="form-input swap-input">
+                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
+                                    </div>
+                                    <div class="swap-column">
+                                        <span class="swap-heading weaknesses-heading">Weaknesses <span class="swap-hint">(skills to learn)</span></span>
+                                        <div class="swap-list" id="weaknessesList">
+                                            <div class="swap-item">
+                                                <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="form-input swap-input">
+                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-section C: Privacy, Visibility & Alerts -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Privacy, Visibility &amp; Alerts</h3>
+
+                            <div class="form-field">
+                                <label for="visibilitySlider" class="form-label">The Shrouding</label>
+                                <div class="slider-container">
+                                    <input type="range" id="visibilitySlider" name="visibility" min="0" max="100" value="70" class="form-range">
+                                    <div class="slider-labels">
+                                        <span class="slider-label">Fully Ghost <span class="slider-desc">(anonymous)</span></span>
+                                        <span class="slider-label">Shadow Mode <span class="slider-desc">(tags only)</span></span>
+                                        <span class="slider-label">Bright Daylight <span class="slider-desc">(public profile)</span></span>
+                                    </div>
+                                </div>
+                                <div class="slider-value" id="sliderValueDisplay">Bright Daylight</div>
+                            </div>
+
+                            <div class="form-field">
+                                <label class="form-label">Notification Alerts</label>
+                                <div class="toggle-grid">
+                                    <div class="toggle-row">
+                                        <span class="toggle-text">Co-Op Match Requests</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="toggleCoop" name="notify_coop" checked>
+                                            <span class="toggle-track"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <span class="toggle-text">Card Trade Offers</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="toggleTrades" name="notify_trades" checked>
+                                            <span class="toggle-track"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <span class="toggle-text">Community Event Reminders</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="toggleEvents" name="notify_events">
+                                            <span class="toggle-track"></span>
+                                        </label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <span class="toggle-text">New Member Alerts</span>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" id="toggleMembers" name="notify_members">
+                                            <span class="toggle-track"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-section D: Theme Customization (HSL Picker) -->
+                        <div class="form-section">
+                            <h3 class="form-section-title">Theme Customization</h3>
+                            <div class="hsl-picker" id="hslPicker">
+                                <div class="hsl-bars">
+                                    <div class="hsl-row">
+                                        <span class="moon-label">
+                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                                <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
+                                            </svg>
+                                        </span>
+                                        <div class="hsl-track" id="hueTrack">
+                                            <div class="hsl-knob" id="knobHue" data-axis="hue">
+                                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hsl-row">
+                                        <span class="moon-label">
+                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                                <defs>
+                                                    <clipPath id="satClip">
+                                                        <circle id="satClipCircle" cx="12" cy="12" r="10"/>
+                                                    </clipPath>
+                                                </defs>
+                                                <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
+                                            </svg>
+                                        </span>
+                                        <div class="hsl-track" id="satTrack">
+                                            <div class="hsl-knob" id="knobSat" data-axis="sat">
+                                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="hsl-row">
+                                        <span class="moon-label" id="moonLabel">
+                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                                <defs>
+                                                    <mask id="yyMask">
+                                                        <rect width="24" height="24" fill="white"/>
+                                                        <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
+                                                        <circle cx="9" cy="7" r="2.5" fill="black"/>
+                                                    </mask>
+                                                </defs>
+                                                <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
+                                                <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
+                                                <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
+                                            </svg>
+                                        </span>
+                                        <div class="hsl-track" id="lightTrack">
+                                            <div class="hsl-knob" id="knobLight" data-axis="light">
+                                                <svg class="shooting-star" viewBox="0 0 34 12" width="40" height="14">
+                                                    <path class="star-tail" d="M0 6 L18 6" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.45"/>
+                                                    <path class="star-head" d="M 26 1 L 27.2 4.4 L 30.8 4.5 L 27.9 6.6 L 28.9 10 L 26 8 L 23.1 10 L 24.1 6.6 L 21.2 4.5 L 24.8 4.4 Z" fill="currentColor"/>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
+                                    <svg class="hsl-sparkle" viewBox="0 0 24 24" width="20" height="20">
+                                        <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
+            </div>
+
+            <div class="settings-footer">
+                <button type="submit" form="profileForm" class="settings-submit-btn" id="profileSubmitBtn">Update Profile &amp; Canvas</button>
             </div>
         </div>
     </div>
@@ -456,6 +642,137 @@
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && overlay.classList.contains('open')) closeSettings();
+            });
+
+            // ── Live Profile Preview ──
+            const previewName = document.getElementById('previewName');
+            const previewBio = document.getElementById('previewBio');
+            const previewBanner = document.getElementById('previewBanner');
+            const previewInitials = document.getElementById('previewInitials');
+            const avatarInitials = document.getElementById('avatarInitials');
+            const previewStaminaFill = document.getElementById('previewStaminaFill');
+            const previewStaminaValue = document.getElementById('previewStaminaValue');
+
+            const personaName = document.getElementById('personaName');
+            const personaBio = document.getElementById('personaBio');
+            const bioCharCount = document.getElementById('bioCharCount');
+            const visibilitySlider = document.getElementById('visibilitySlider');
+            const sliderValueDisplay = document.getElementById('sliderValueDisplay');
+            const tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
+
+            function updatePreview() {
+                const name = personaName.value.trim() || 'Artist';
+                previewName.textContent = name;
+
+                const initial = name.charAt(0).toUpperCase() || 'A';
+                previewInitials.textContent = initial;
+                avatarInitials.textContent = initial;
+
+                const bio = personaBio.value;
+                previewBio.textContent = bio || 'Your mantra here';
+                bioCharCount.textContent = bio.length;
+
+                // Tags: show up to 3 selected
+                const selected = [];
+                tagInputs.forEach(cb => { if (cb.checked) selected.push(cb.value); });
+                previewBanner.textContent = selected.length ? selected.join(' · ') : '🎨 Creative';
+
+                // Stamina from slider
+                const val = parseInt(visibilitySlider.value);
+                const fill = Math.round(val * 0.7 + 15);
+                previewStaminaFill.style.width = fill + '%';
+                previewStaminaValue.textContent = fill + '%';
+
+                // Slider label
+                if (val <= 20) sliderValueDisplay.textContent = 'Fully Ghost (anonymous)';
+                else if (val <= 55) sliderValueDisplay.textContent = 'Shadow Mode (tags only)';
+                else sliderValueDisplay.textContent = 'Bright Daylight (public profile)';
+            }
+
+            personaName.addEventListener('input', updatePreview);
+            personaBio.addEventListener('input', updatePreview);
+            visibilitySlider.addEventListener('input', updatePreview);
+            tagInputs.forEach(cb => cb.addEventListener('change', function() {
+                const checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
+                if (checked.length > 3) this.checked = false;
+                updatePreview();
+            }));
+            updatePreview();
+
+            // ── Avatar upload preview ──
+            const avatarInput = document.getElementById('avatarInput');
+            avatarInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const preview = document.getElementById('avatarPreview');
+                    preview.style.backgroundImage = 'url(' + ev.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    preview.querySelector('.avatar-initials').style.display = 'none';
+                    // Also update the preview card
+                    const pi = document.getElementById('previewImage');
+                    pi.style.backgroundImage = 'url(' + ev.target.result + ')';
+                    pi.style.backgroundSize = 'cover';
+                    pi.style.backgroundPosition = 'center';
+                    pi.querySelector('.preview-initials').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // ── Dynamic Swap Lists ──
+            document.querySelectorAll('.swap-add').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const listId = this.dataset.list;
+                    const name = this.dataset.name;
+                    const placeholder = this.dataset.placeholder;
+                    const list = document.getElementById(listId);
+                    const item = document.createElement('div');
+                    item.className = 'swap-item';
+                    item.innerHTML =
+                        '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="form-input swap-input">' +
+                        '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
+                    list.appendChild(item);
+
+                    item.querySelector('.swap-remove').addEventListener('click', function() {
+                        item.remove();
+                    });
+
+                    item.querySelector('.swap-input').focus();
+                });
+            });
+
+            document.querySelectorAll('.swap-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.swap-item').remove();
+                });
+            });
+
+            // ── Form submit ──
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const data = {};
+                for (const [key, value] of formData.entries()) {
+                    if (key.endsWith('[]')) {
+                        const k = key.slice(0, -2);
+                        if (!data[k]) data[k] = [];
+                        data[k].push(value);
+                    } else {
+                        data[key] = value;
+                    }
+                }
+                console.log('Profile data:', data);
+                // Visual feedback on button
+                const btn = document.getElementById('profileSubmitBtn');
+                const orig = btn.textContent;
+                btn.textContent = 'Saved!';
+                btn.style.background = '#6ABA8A';
+                setTimeout(() => {
+                    btn.textContent = orig;
+                    btn.style.background = '';
+                }, 2000);
             });
         })();
     </script>
