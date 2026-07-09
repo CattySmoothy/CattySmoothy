@@ -375,6 +375,11 @@
                                 </div>
                                 <p class="os-webcam-hint">drop your icon here ✦</p>
                             </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">webcam.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
                         </div>
 
                     </div>
@@ -467,6 +472,11 @@
                                 </div>
 
                             </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">editor.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
                         </div>
 
                     </div>
@@ -524,6 +534,11 @@
                                     <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
                                 </div>
                             </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">sites.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
                         </div>
 
                         <!-- Window: Webring -->
@@ -557,6 +572,35 @@
                                     </label>
                                 </div>
                                 <p class="os-webring-hint">display badges on your profile</p>
+                            </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">webring.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+
+                        <!-- Window: Profile Rank -->
+                        <div class="os-window os-window-rank">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
+                                </div>
+                                <span class="os-titlebar-text">★ Profile Rank</span>
+                                <div class="os-titlebar-ornament">~</div>
+                            </div>
+                            <div class="os-window-body os-window-body-center">
+                                <div class="os-rank-display">
+                                    <span class="os-rank-big-star">★</span>
+                                    <div class="os-rank-level" id="rankLevel">Lv.1</div>
+                                    <div class="os-rank-title" id="rankTitle">Novice</div>
+                                    <div class="os-rank-xp-bar">
+                                        <div class="os-rank-xp-fill" id="osXpFill" style="width:0%"></div>
+                                    </div>
+                                    <div class="os-rank-xp-text" id="osXpText">0 / 20 XP</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1135,6 +1179,7 @@
                         var hudInit = hudAvatar.querySelector('.game-hud-initials');
                         if (hudInit) hudInit.style.display = 'none';
                     }
+                    if (typeof updateGamifiedUI === 'function') updateGamifiedUI();
                 };
                 reader.readAsDataURL(file);
             });
@@ -1231,7 +1276,8 @@
             setTimeout(function() {
                 btn.textContent = orig;
                 btn.style.background = '';
-            }, 2000);
+                updateGamifiedUI();
+            }, 1200);
         });
 
         // Custom nav links
@@ -1272,6 +1318,165 @@
                 osDismiss.textContent = document.body.classList.contains('os-hud-hidden') ? '✕ show hud' : '✕ dismiss';
             });
         }
+
+        // ── Gamified Profile Tracker ──
+        var ranks = [
+            { level: 1, title: 'Novice', xp: 0 },
+            { level: 2, title: 'Apprentice', xp: 20 },
+            { level: 3, title: 'Dreamer', xp: 40 },
+            { level: 4, title: 'Artisan', xp: 60 },
+            { level: 5, title: 'Visionary', xp: 80 },
+            { level: 6, title: 'Starlight', xp: 100 },
+            { level: 7, title: 'Celestial', xp: 120 }
+        ];
+
+        function calcProfileXP() {
+            var xp = 0;
+            // Bio fields: name, age, pronouns, tags → 4
+            if (document.getElementById('personaName').value.trim()) xp += 5;
+            if (document.getElementById('personaAge').value.trim()) xp += 5;
+            var pronounChips = document.querySelectorAll('#pronounTagInput .pronoun-chip');
+            if (pronounChips.length > 0) xp += 5;
+            var checkedTags = document.querySelectorAll('#aestheticTags .tag-input:checked');
+            if (checkedTags.length > 0) xp += 5;
+            // Webcam: avatar uploaded?
+            var avatarPreview = document.getElementById('avatarPreview');
+            if (avatarPreview && avatarPreview.style.backgroundImage) xp += 5;
+            // Editor fields: bio, current class, future class, fav track, status → 5
+            if (document.getElementById('personaBio').value.trim()) xp += 5;
+            if (document.getElementById('currentClass').value.trim()) xp += 5;
+            if (document.getElementById('futureClass').value.trim()) xp += 5;
+            if (document.getElementById('favTrack').value.trim()) xp += 5;
+            if (document.getElementById('statusUpdate').value.trim()) xp += 5;
+            // Strengths + weaknesses
+            var strengths = document.querySelectorAll('#strengthsList .swap-input');
+            strengths.forEach(function(s) { if (s.value.trim()) xp += 3; });
+            var weaknesses = document.querySelectorAll('#weaknessesList .swap-input');
+            weaknesses.forEach(function(s) { if (s.value.trim()) xp += 3; });
+            // Social links
+            var socialInputs = document.querySelectorAll('#socialMatrix .social-input');
+            socialInputs.forEach(function(s) { if (s.value.trim()) xp += 3; });
+            // Webring
+            var webringChecked = document.querySelectorAll('#webringBadges input:checked');
+            webringChecked.forEach(function() { xp += 3; });
+            return Math.min(xp, 130);
+        }
+
+        function getRank(xp) {
+            var r = ranks[0];
+            for (var i = ranks.length - 1; i >= 0; i--) {
+                if (xp >= ranks[i].xp) { r = ranks[i]; break; }
+            }
+            return r;
+        }
+
+        function xpForNextLevel(xp) {
+            for (var i = 0; i < ranks.length - 1; i++) {
+                if (xp >= ranks[i].xp && xp < ranks[i + 1].xp) return ranks[i + 1].xp;
+            }
+            return ranks[ranks.length - 1].xp;
+        }
+
+        function updateGamifiedUI() {
+            var xp = calcProfileXP();
+            var rank = getRank(xp);
+            var nextXp = xpForNextLevel(xp);
+            var prevXp = rank.xp;
+            var xpInLevel = xp - prevXp;
+            var xpForLevel = nextXp - prevXp;
+            var pct = xpForLevel > 0 ? (xpInLevel / xpForLevel) * 100 : 100;
+
+            var rankEl = document.getElementById('rankLevel');
+            var titleEl = document.getElementById('rankTitle');
+            var xpFill = document.getElementById('osXpFill');
+            var xpText = document.getElementById('osXpText');
+            if (rankEl) rankEl.textContent = 'Lv.' + rank.level;
+            if (titleEl) titleEl.textContent = rank.title;
+            if (xpFill) xpFill.style.width = Math.min(pct, 100) + '%';
+            if (xpText) xpText.textContent = xp + ' XP';
+
+            // Badges
+            var bioBadge = document.getElementById('bioBadge');
+            if (bioBadge) {
+                var count = 0;
+                if (document.getElementById('personaName').value.trim()) count++;
+                if (document.getElementById('personaAge').value.trim()) count++;
+                if (document.querySelectorAll('#pronounTagInput .pronoun-chip').length > 0) count++;
+                if (document.querySelectorAll('#aestheticTags .tag-input:checked').length > 0) count++;
+                bioBadge.textContent = count + '/4';
+                bioBadge.className = 'os-footer-badge' + (count === 4 ? ' badge-complete' : '');
+            }
+            var webcamBadge = document.getElementById('webcamBadge');
+            if (webcamBadge) {
+                var hasAvatar = avatarPreview && avatarPreview.style.backgroundImage;
+                webcamBadge.textContent = hasAvatar ? '1/1' : '0/1';
+                webcamBadge.className = 'os-footer-badge' + (hasAvatar ? ' badge-complete' : '');
+            }
+            var editorBadge = document.getElementById('editorBadge');
+            if (editorBadge) {
+                var ec = 0;
+                if (document.getElementById('personaBio').value.trim()) ec++;
+                if (document.getElementById('currentClass').value.trim()) ec++;
+                if (document.getElementById('futureClass').value.trim()) ec++;
+                if (document.getElementById('favTrack').value.trim()) ec++;
+                if (document.getElementById('statusUpdate').value.trim()) ec++;
+                var sCount = document.querySelectorAll('#strengthsList .swap-input');
+                sCount.forEach(function(s) { if (s.value.trim()) ec++; });
+                var wCount = document.querySelectorAll('#weaknessesList .swap-input');
+                wCount.forEach(function(s) { if (s.value.trim()) ec++; });
+                var navCount = document.querySelectorAll('#osNavLinks .os-nav-row');
+                navCount.forEach(function() { ec++; });
+                editorBadge.textContent = ec + '/8';
+                editorBadge.className = 'os-footer-badge' + (ec === 8 ? ' badge-complete' : '');
+            }
+            var sitesBadge = document.getElementById('sitesBadge');
+            if (sitesBadge) {
+                var sc = 0;
+                var si = document.querySelectorAll('#socialMatrix .social-input');
+                si.forEach(function(s) { if (s.value.trim()) sc++; });
+                sitesBadge.textContent = sc + '/3';
+                sitesBadge.className = 'os-footer-badge' + (sc >= 3 ? ' badge-complete' : '');
+            }
+            var webringBadge = document.getElementById('webringBadge');
+            if (webringBadge) {
+                var wc = document.querySelectorAll('#webringBadges input:checked').length;
+                webringBadge.textContent = wc + '/4';
+                webringBadge.className = 'os-footer-badge' + (wc === 4 ? ' badge-complete' : '');
+            }
+        }
+
+        // Level-up save animation
+        var saveBtn = document.getElementById('profileEditorSubmitBtn');
+        if (saveBtn) {
+            var origSave = saveBtn.textContent;
+            saveBtn.addEventListener('click', function(e) {
+                var xp = calcProfileXP();
+                var rank = getRank(xp);
+                saveBtn.textContent = '✦ Level Up! ✦';
+                saveBtn.classList.add('os-save-levelup');
+                setTimeout(function() {
+                    saveBtn.textContent = origSave;
+                    saveBtn.classList.remove('os-save-levelup');
+                    updateGamifiedUI();
+                }, 1200);
+            });
+        }
+
+        // Recalc badges on input changes
+        document.querySelectorAll('.os-input, .os-textarea').forEach(function(el) {
+            el.addEventListener('input', updateGamifiedUI);
+        });
+        document.querySelectorAll('.tag-input').forEach(function(el) {
+            el.addEventListener('change', updateGamifiedUI);
+        });
+        document.querySelectorAll('.swap-add, .swap-remove, .os-nav-add, .os-nav-remove, .social-add-btn, .social-remove').forEach(function(el) {
+            el.addEventListener('click', function() { setTimeout(updateGamifiedUI, 50); });
+        });
+        document.querySelectorAll('#webringBadges input').forEach(function(el) {
+            el.addEventListener('change', updateGamifiedUI);
+        });
+
+        updateGamifiedUI();
     }
 })();
 </script>

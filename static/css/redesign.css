@@ -4162,14 +4162,14 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .game-column {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 .game-panel {
     background: color-mix(in srgb, var(--color-surface) 92%, var(--color-header-start) 8%);
     border: 1px solid color-mix(in srgb, var(--color-text-muted) 12%, transparent);
     border-radius: 12px;
-    padding: 16px;
+    padding: 20px;
     box-shadow: 0 2px 12px color-mix(in srgb, var(--color-text-primary) 4%, transparent);
 }
 
@@ -4177,8 +4177,8 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
     border-bottom: 1px solid color-mix(in srgb, var(--color-text-muted) 10%, transparent);
     font-family: var(--font-body);
     font-size: 11px;
@@ -4198,7 +4198,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .player-card {
     text-align: center;
-    padding: 24px 16px 16px;
+    padding: 28px 20px 20px;
 }
 
 .player-avatar {
@@ -4381,16 +4381,16 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .community-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
 }
 
 .community-grid .profile-card {
-    height: 340px;
+    height: 360px;
 }
 
 .community-grid .card-image {
-    height: 130px;
+    height: 140px;
 }
 
 .community-grid .card-initial {
@@ -4403,20 +4403,20 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 }
 
 .community-grid .card-body {
-    padding: 10px 12px 12px;
+    padding: 14px 16px 16px;
 }
 
 .community-grid .card-name {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .community-grid .card-username {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 .community-grid .card-back {
-    padding: 14px 16px 16px;
-    gap: 6px;
+    padding: 18px 20px 20px;
+    gap: 8px;
 }
 
 .community-grid .card-back-heading {
@@ -4485,8 +4485,8 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .discord-member-list {
     display: flex;
-    gap: 2px;
-    padding: 8px 10px;
+    gap: 4px;
+    padding: 12px 14px;
     overflow-x: auto;
 }
 
@@ -4843,7 +4843,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 32px;
+    padding: 40px;
     overflow-y: auto;
     position: relative;
 }
@@ -4873,7 +4873,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .game-dashboard-content {
     display: flex;
-    gap: 24px;
+    gap: 28px;
     width: 100%;
     align-items: flex-start;
 }
@@ -4905,9 +4905,9 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .profile-layout {
     display: flex;
-    gap: 24px;
+    gap: 28px;
     width: 100%;
-    max-width: 700px;
+    max-width: 780px;
     margin: 0 auto;
 }
 
@@ -5041,7 +5041,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     gap: 0;
     width: 100%;
     height: 100%;
-    min-height: 520px;
+    min-height: 600px;
     background: var(--color-surface);
     border-radius: 14px;
     border: 1px solid color-mix(in srgb, var(--color-text-muted) 12%, transparent);
@@ -5049,7 +5049,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 }
 
 .mail-conversations {
-    width: 280px;
+    width: 300px;
     flex-shrink: 0;
     border-right: 1px solid color-mix(in srgb, var(--color-text-muted) 12%, transparent);
     display: flex;
@@ -5194,7 +5194,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .mail-notecards {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -5552,7 +5552,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     position: relative;
     width: 100%;
     min-height: 700px;
-    padding: 28px;
+    padding: 36px;
 }
 
 /* ── Desktop Icons ── */
@@ -5595,8 +5595,8 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 /* ── 3-Column Grid ── */
 .os-grid {
     display: grid;
-    grid-template-columns: 320px 1fr 280px;
-    gap: 24px;
+    grid-template-columns: 360px 1fr 320px;
+    gap: 28px;
     align-items: start;
     position: relative;
     z-index: 1;
@@ -5605,7 +5605,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .os-col {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 28px;
 }
 
 /* ── OS Window Card ── */
@@ -5674,7 +5674,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 /* ── Window Body ── */
 .os-window-body {
-    padding: 18px 20px;
+    padding: 24px 28px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -5869,8 +5869,8 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 28px;
-    padding: 10px 20px;
+    margin-top: 32px;
+    padding: 12px 24px;
     background: color-mix(in srgb, var(--color-surface) 50%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -5928,6 +5928,157 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .os-taskbar-save:hover {
     background: color-mix(in srgb, var(--color-accent) 80%, #000);
     transform: translateY(-1px);
+}
+
+/* ── Gamified Elements ── */
+
+/* Rank / Level display */
+.os-taskbar-rank {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-sub);
+    font-size: 12px;
+    color: var(--color-text-primary);
+}
+.rank-star {
+    color: #febc2e;
+    font-size: 14px;
+    filter: drop-shadow(0 0 4px rgba(254, 188, 46, 0.3));
+}
+.rank-level {
+    font-weight: 700;
+    font-size: 13px;
+}
+.rank-title {
+    color: var(--color-text-muted);
+    font-size: 11px;
+    font-style: italic;
+}
+
+/* XP Bar */
+.os-xp-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.os-xp-bar {
+    width: 80px;
+    height: 8px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-text-muted) 12%, transparent);
+    border: 1px solid color-mix(in srgb, #d4af80 16%, transparent);
+    overflow: hidden;
+}
+.os-xp-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #d4af80, #febc2e);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 8px rgba(254, 188, 46, 0.2);
+}
+.os-xp-text {
+    font-family: var(--font-sub);
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    min-width: 36px;
+}
+
+/* Footer badges */
+.os-footer-badge {
+    font-family: var(--font-sub);
+    font-size: 10px;
+    color: color-mix(in srgb, #d4af80 60%, transparent);
+    background: color-mix(in srgb, #d4af80 8%, transparent);
+    padding: 1px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s;
+}
+.os-footer-badge.badge-complete {
+    color: #6ABA8A;
+    background: color-mix(in srgb, #6ABA8A 12%, transparent);
+}
+
+/* Stat Display */
+.os-stat-display {
+    border-top: 1px solid color-mix(in srgb, #d4af80 12%, transparent);
+    padding-top: 14px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.os-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.os-stat-icon {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.os-stat-bar {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-muted) 10%, transparent);
+    overflow: hidden;
+}
+.os-stat-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+.os-stat-fill-creativity {
+    background: linear-gradient(90deg, #f093fb, #f5576c);
+    box-shadow: 0 0 6px rgba(245, 87, 108, 0.2);
+}
+.os-stat-fill-vision {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    box-shadow: 0 0 6px rgba(118, 75, 162, 0.2);
+}
+.os-stat-fill-bravery {
+    background: linear-gradient(90deg, #febc2e, #f57c00);
+    box-shadow: 0 0 6px rgba(245, 124, 0, 0.2);
+}
+.os-stat-fill-growth {
+    background: linear-gradient(90deg, #6ABA8A, #43a047);
+    box-shadow: 0 0 6px rgba(67, 160, 71, 0.2);
+}
+.os-stat-label {
+    font-family: var(--font-sub);
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    width: 55px;
+    text-align: right;
+    flex-shrink: 0;
+}
+.os-stat-value {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* Level-up save animation */
+.os-taskbar-save.os-save-levelup {
+    animation: osLevelUp 1.2s ease;
+    background: linear-gradient(135deg, #febc2e, #f57c00, #d4af80);
+    background-size: 200% 200%;
+}
+@keyframes osLevelUp {
+    0% { transform: scale(1); box-shadow: 0 0 0 rgba(254,188,46,0); }
+    30% { transform: scale(1.12); box-shadow: 0 0 30px rgba(254,188,46,0.5); }
+    60% { transform: scale(0.95); }
+    100% { transform: scale(1); box-shadow: 0 0 0 rgba(254,188,46,0); }
 }
 
 /* ── Pronoun chips in OS style ── */
