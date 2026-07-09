@@ -310,6 +310,11 @@ body {
     line-height: 1;
 }
 
+a[title="Home"] .sidebar-nav-icon { font-size: 28px; }
+a[title="Updates"] .sidebar-nav-icon { font-size: 30px; }
+a[title="Organization"] .sidebar-nav-icon { font-size: 24px; }
+a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
+
 .sidebar-nav-item {
     display: flex;
     align-items: center;
