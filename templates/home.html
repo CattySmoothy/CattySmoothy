@@ -235,6 +235,7 @@
                         <span class="mail-conv-header-icon">✉</span>
                         Mailbox
                         <button class="mail-new-btn" id="mailNewBtn" title="New Message">✏</button>
+                        <button class="mail-trash-btn" id="mailTrashBtn" title="Trash conversation">🗑</button>
                     </div>
                     <div class="mail-conv-list" id="mailConvList"></div>
                 </div>
@@ -275,214 +276,309 @@
 
         <!-- Profile view -->
         <div class="realm-view active" data-realm="profile">
-            <div class="profile-layout">
-                <div class="game-panel player-card">
-                    <div class="player-avatar" id="dashAvatar">
-                        <span class="player-initials">CR</span>
-                        <div class="lace-border"></div>
-                    </div>
-                    <h2 class="player-name">Catty Smoothy</h2>
-                    <span class="player-username">@cattysmoothy</span>
-                    <p class="player-bio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
-                    <div class="player-social">
-                        <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" title="Instagram" class="player-social-link">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                        </a>
-                        <a href="https://www.youtube.com/@cattysmoothy" target="_blank" rel="noopener" title="YouTube" class="player-social-link">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                        </a>
-                    </div>
-                    <div class="player-commission" id="dashCommissionPill">
-                        <span class="commission-dot"></span>
-                        <span>Commissions Open</span>
-                    </div>
-                    <div class="commission-status-inline" id="commissionStatus">
-                        <span class="status-dot"></span>
-                        <span class="status-label" id="statusLabel">Commissions are currently closed</span>
-                        <span class="status-moon">Full Moon</span>
-                    </div>
-                </div>
-                <div class="game-panel about-mini">
-                    <h3>About</h3>
-                    <ul>
-                        <li>Digital Paintings</li>
-                        <li>Process Videos</li>
-                        <li>Tutorials</li>
-                        <li>Wallpapers</li>
-                        <li>Sketches & Studies</li>
-                    </ul>
-                    <a href="{{ url_for('commissions') }}" class="email-link">Commission Info →</a>
-                    <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted);">
-                        <span>raichuuxxofficial@gmail.com</span>
-                    </div>
-                </div>
-            </div>
+            <div class="os-desktop" id="osDesktop">
 
-            <div class="profile-editor">
+                <!-- Desktop Icons (scattered) -->
+                <div class="desktop-icon di-mail" title="Notifications">
+                    <span class="di-icon">✉</span>
+                    <span class="di-label">Mail</span>
+                </div>
+                <div class="desktop-icon di-star" title="Milestones">
+                    <span class="di-icon">✦</span>
+                    <span class="di-label">Stars</span>
+                </div>
+                <div class="desktop-icon di-cloud" title="Mood">
+                    <span class="di-icon">☁</span>
+                    <span class="di-label">Mood</span>
+                </div>
+
                 <form id="profileFormEditor" class="profile-form">
 
-                    <!-- Identity Customization -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">Identity Customization</h3>
+                <!-- 3-Column Window Grid -->
+                <div class="os-grid">
 
-                        <div class="form-field avatar-field">
-                            <label class="form-label">Canvas Icon</label>
-                            <div class="avatar-upload" id="avatarUpload">
-                                <div class="avatar-preview" id="avatarPreview">
-                                    <span class="avatar-initials" id="avatarInitials">A</span>
-                                    <div class="avatar-lace"></div>
+                    <!-- LEFT COLUMN -->
+                    <div class="os-col os-col-left">
+
+                        <!-- Window: Bio / Identity -->
+                        <div class="os-window os-window-bio">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
                                 </div>
-                                <div class="avatar-overlay">Change Canvas Icon</div>
-                                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
+                                <span class="os-titlebar-text">❀ Bio / Identity</span>
+                                <div class="os-titlebar-ornament">~</div>
                             </div>
-                        </div>
-
-                        <div class="form-field">
-                            <label for="personaName" class="form-label">Display Name</label>
-                            <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="form-input" value="Catty Smoothy" maxlength="30">
-                        </div>
-
-                        <div class="form-field">
-                            <label for="personaBio" class="form-label">Your Mantra / Bio</label>
-                            <textarea id="personaBio" name="bio" placeholder="Describe your creative journey in one sentence..." class="form-textarea" maxlength="150" rows="3">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</textarea>
-                            <span class="char-count"><span id="bioCharCount">0</span>/150</span>
-                        </div>
-
-                        <div class="form-field">
-                            <label class="form-label">Preferred Pronouns</label>
-                            <div class="pronoun-picker">
-                                <div class="pronoun-tag-input" id="pronounTagInput">
-                                    <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
-                                    <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add pronoun…" class="pronoun-text-input">
+                            <div class="os-window-body">
+                                <div class="os-field">
+                                    <label class="os-label">Display Name</label>
+                                    <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="os-input" value="Catty Smoothy" maxlength="30">
                                 </div>
-                                <datalist id="pronounOptions">
-                                    <option value="she/her">
-                                    <option value="they/them">
-                                    <option value="he/him">
-                                    <option value="she/they">
-                                    <option value="he/they">
-                                    <option value="fluid">
-                                    <option value="any/all">
-                                    <option value="Custom">
-                                </datalist>
-                                <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
+                                <div class="os-field">
+                                    <label class="os-label">Age</label>
+                                    <input type="text" id="personaAge" name="age" placeholder="e.g. 22" class="os-input" maxlength="3">
+                                </div>
+                                <div class="os-field">
+                                    <label class="os-label">Pronouns</label>
+                                    <div class="pronoun-picker">
+                                        <div class="pronoun-tag-input" id="pronounTagInput">
+                                            <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
+                                            <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add…" class="pronoun-text-input os-input">
+                                        </div>
+                                        <datalist id="pronounOptions">
+                                            <option value="she/her"><option value="they/them"><option value="he/him"><option value="she/they"><option value="he/they"><option value="fluid"><option value="any/all"><option value="Custom">
+                                        </datalist>
+                                        <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
+                                    </div>
+                                </div>
+                                <div class="os-field">
+                                    <label class="os-label">Aesthetic Tags <span class="os-hint">(up to 3)</span></label>
+                                    <div class="tag-grid" id="aestheticTags">
+                                        {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
+                                        {% for tag in tags %}
+                                        <label class="tag-chip">
+                                            <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
+                                            <span class="tag-label">{{ tag }}</span>
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">identity.exe</span>
+                                <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
 
-                        <div class="form-field">
-                            <label class="form-label">Aesthetic Tags <span class="tag-hint">(choose up to 3)</span></label>
-                            <div class="tag-grid" id="aestheticTags">
-                                {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
-                                {% for tag in tags %}
-                                <label class="tag-chip">
-                                    <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
-                                    <span class="tag-label">{{ tag }}</span>
-                                </label>
-                                {% endfor %}
+                        <!-- Window: Webcam Profile Picture -->
+                        <div class="os-window os-window-webcam">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
+                                </div>
+                                <span class="os-titlebar-text">📷 Webcam Profile</span>
+                                <div class="os-titlebar-ornament">~</div>
+                            </div>
+                            <div class="os-window-body os-window-body-center">
+                                <div class="avatar-upload" id="avatarUpload">
+                                    <div class="avatar-preview" id="avatarPreview">
+                                        <span class="avatar-initials" id="avatarInitials">C</span>
+                                        <div class="avatar-lace"></div>
+                                    </div>
+                                    <div class="avatar-overlay">✧ drag &amp; drop ✧</div>
+                                    <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
+                                </div>
+                                <p class="os-webcam-hint">drop your icon here ✦</p>
                             </div>
                         </div>
+
                     </div>
 
-                    <!-- Gamified Stat Board -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">Gamified Stat Board</h3>
+                    <!-- CENTER COLUMN -->
+                    <div class="os-col os-col-center">
 
-                        <div class="form-field">
-                            <label for="currentClass" class="form-label">Current Class <span class="tag-hint">(Actual Self)</span></label>
-                            <textarea id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Struggling with Public Speaking, Creative Block" class="form-textarea" rows="3"></textarea>
-                        </div>
+                        <!-- Window: Main Editor -->
+                        <div class="os-window os-window-main">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
+                                </div>
+                                <span class="os-titlebar-text">✎ Profile Editor</span>
+                                <div class="os-titlebar-ornament">~</div>
+                            </div>
+                            <div class="os-window-body">
+                                <div class="os-field">
+                                    <label class="os-label">Site Bio</label>
+                                    <textarea id="personaBio" name="bio" placeholder="Describe your creative journey..." class="os-textarea" maxlength="250" rows="3">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</textarea>
+                                    <span class="char-count"><span id="bioCharCount">0</span>/250</span>
+                                </div>
 
-                        <div class="form-field">
-                            <label for="futureClass" class="form-label">Future Class <span class="tag-hint">(Ideal Self)</span></label>
-                            <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist, Concept Artist" class="form-input">
-                        </div>
+                                <div class="os-field">
+                                    <label class="os-label">Current Class <span class="os-hint">(vulnerabilities)</span></label>
+                                    <input type="text" id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Creative Block" class="os-input" value="Struggling with Grade 10 Math · Exam Burnout">
+                                </div>
 
-                        <div class="form-field">
-                            <label class="form-label">Strength Swap Matrix</label>
-                            <div class="swap-grid">
-                                <div class="swap-column">
-                                    <span class="swap-heading strengths-heading">Strengths <span class="swap-hint">(offered for trades)</span></span>
-                                    <div class="swap-list" id="strengthsList">
-                                        <div class="swap-item">
-                                            <input type="text" name="strengths[]" placeholder="e.g. Writing" class="form-input swap-input">
-                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                        </div>
-                                        <div class="swap-item">
-                                            <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="form-input swap-input">
-                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                <div class="os-field">
+                                    <label class="os-label">Future Class <span class="os-hint">(aspiration)</span></label>
+                                    <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist" class="os-input" value="Aspiring Digital Artist">
+                                </div>
+
+                                <div class="os-field">
+                                    <label class="os-label">Custom Nav Links</label>
+                                    <div class="os-nav-links" id="osNavLinks">
+                                        <div class="os-nav-row">
+                                            <input type="text" name="nav_label[]" placeholder="Label" class="os-input os-input-sm">
+                                            <input type="url" name="nav_url[]" placeholder="https://" class="os-input os-input-sm">
+                                            <button type="button" class="os-nav-remove" aria-label="Remove">×</button>
                                         </div>
                                     </div>
-                                    <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
+                                    <button type="button" class="os-nav-add" id="osNavAdd">+ Add Link</button>
                                 </div>
-                                <div class="swap-column">
-                                    <span class="swap-heading weaknesses-heading">Weaknesses <span class="swap-hint">(skills to learn)</span></span>
-                                    <div class="swap-list" id="weaknessesList">
-                                        <div class="swap-item">
-                                            <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="form-input swap-input">
-                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
+
+                                <div class="os-field">
+                                    <label class="os-label">Showcase Widgets</label>
+                                    <div class="os-widgets">
+                                        <div class="os-widget-row">
+                                            <span class="os-widget-icon">🎵</span>
+                                            <input type="text" name="favorite_track" placeholder="Favorite track (e.g. Lana Del Rey – Video Games)" class="os-input os-widget-input" id="favTrack">
+                                        </div>
+                                        <div class="os-widget-row">
+                                            <span class="os-widget-icon">🌐</span>
+                                            <input type="text" name="status_update" placeholder="Status update..." class="os-input os-widget-input" id="statusUpdate">
                                         </div>
                                     </div>
-                                    <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
                                 </div>
+
+                                <div class="os-field">
+                                    <label class="os-label">Strength Swap Matrix</label>
+                                    <div class="swap-grid">
+                                        <div class="swap-column">
+                                            <span class="swap-heading strengths-heading">Strengths</span>
+                                            <div class="swap-list" id="strengthsList">
+                                                <div class="swap-item">
+                                                    <input type="text" name="strengths[]" placeholder="e.g. Writing" class="os-input swap-input">
+                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                                </div>
+                                                <div class="swap-item">
+                                                    <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="os-input swap-input">
+                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
+                                        </div>
+                                        <div class="swap-column">
+                                            <span class="swap-heading weaknesses-heading">Weaknesses</span>
+                                            <div class="swap-list" id="weaknessesList">
+                                                <div class="swap-item">
+                                                    <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="os-input swap-input">
+                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
 
-                    <!-- Digital Footprint -->
-                    <div class="form-section">
-                        <h3 class="form-section-title">Digital Footprint <span class="tag-hint">(social links)</span></h3>
-                        <div class="social-matrix" id="socialMatrix">
-                            <div class="social-row" data-platform="instagram">
-                                <div class="social-icon-wrap">
-                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                        <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                        <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                        <circle cx="17" cy="7" r="1.2" fill="currentColor"/>
-                                    </svg>
+                    <!-- RIGHT COLUMN -->
+                    <div class="os-col os-col-right">
+
+                        <!-- Window: Other Sites -->
+                        <div class="os-window os-window-sites">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
                                 </div>
-                                <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="form-input social-input">
-                                <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                <span class="os-titlebar-text">🔗 Other Sites</span>
+                                <div class="os-titlebar-ornament">~</div>
                             </div>
-                            <div class="social-row" data-platform="pinterest">
-                                <div class="social-icon-wrap">
-                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                        <path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/>
-                                    </svg>
+                            <div class="os-window-body">
+                                <div class="social-matrix" id="socialMatrix">
+                                    <div class="social-row" data-platform="instagram">
+                                        <div class="social-icon-wrap">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>
+                                        </div>
+                                        <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="os-input social-input">
+                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                    </div>
+                                    <div class="social-row" data-platform="pinterest">
+                                        <div class="social-icon-wrap">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>
+                                        </div>
+                                        <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="os-input social-input">
+                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                    </div>
+                                    <div class="social-row" data-platform="discord">
+                                        <div class="social-icon-wrap">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>
+                                        </div>
+                                        <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="os-input social-input">
+                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
+                                    </div>
                                 </div>
-                                <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="form-input social-input">
-                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
-                            </div>
-                            <div class="social-row" data-platform="discord">
-                                <div class="social-icon-wrap">
-                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                        <path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/>
-                                    </svg>
+                                <div class="social-controls">
+                                    <select class="social-add-select" id="socialPlatformSelect">
+                                        <option value="">Add platform…</option>
+                                        <option value="instagram">Instagram</option>
+                                        <option value="pinterest">Pinterest</option>
+                                        <option value="discord">Discord</option>
+                                        <option value="spotify">Spotify</option>
+                                        <option value="youtube">YouTube</option>
+                                        <option value="tiktok">TikTok</option>
+                                        <option value="github">GitHub</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
                                 </div>
-                                <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="form-input social-input">
-                                <button type="button" class="social-remove" aria-label="Remove">×</button>
                             </div>
                         </div>
-                        <div class="social-controls">
-                            <select class="social-add-select" id="socialPlatformSelect">
-                                <option value="">Add a platform…</option>
-                                <option value="instagram">Instagram</option>
-                                <option value="pinterest">Pinterest</option>
-                                <option value="discord">Discord</option>
-                                <option value="spotify">Spotify</option>
-                                <option value="youtube">YouTube</option>
-                                <option value="tiktok">TikTok</option>
-                                <option value="github">GitHub</option>
-                                <option value="other">Other</option>
-                            </select>
-                            <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
+
+                        <!-- Window: Webring -->
+                        <div class="os-window os-window-webring">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
+                                </div>
+                                <span class="os-titlebar-text">✦ Webring</span>
+                                <div class="os-titlebar-ornament">~</div>
+                            </div>
+                            <div class="os-window-body">
+                                <div class="os-webring-badges" id="webringBadges">
+                                    <label class="os-webring-badge">
+                                        <input type="checkbox" name="webring_art" checked>
+                                        <span class="os-badge-label">🎨 Art Webring</span>
+                                    </label>
+                                    <label class="os-webring-badge">
+                                        <input type="checkbox" name="webring_music">
+                                        <span class="os-badge-label">🎵 Music Webring</span>
+                                    </label>
+                                    <label class="os-webring-badge">
+                                        <input type="checkbox" name="webring_writing">
+                                        <span class="os-badge-label">✍ Writing Webring</span>
+                                    </label>
+                                    <label class="os-webring-badge">
+                                        <input type="checkbox" name="webring_dev">
+                                        <span class="os-badge-label">💻 Dev Webring</span>
+                                    </label>
+                                </div>
+                                <p class="os-webring-hint">display badges on your profile</p>
+                            </div>
                         </div>
-                        <p class="social-hint">Each URL is validated — broken links will be rejected on save.</p>
+
                     </div>
 
-                    <div class="profile-editor-footer">
-                        <button type="submit" form="profileFormEditor" class="settings-submit-btn" id="profileEditorSubmitBtn">Update Profile</button>
+                </div>
+
+                <!-- Taskbar with Save -->
+                <div class="os-taskbar">
+                    <div class="os-taskbar-left">
+                        <span class="os-taskbar-item os-taskbar-start">✦ Start</span>
+                        <span class="os-taskbar-divider">|</span>
+                        <span class="os-taskbar-item" id="osTaskClock">00:00</span>
                     </div>
+                    <div class="os-taskbar-right">
+                        <span class="os-taskbar-item os-taskbar-dismiss" id="osDismissHUD" title="Dismiss HUD">✕ dismiss</span>
+                        <button type="submit" class="os-taskbar-save" id="profileEditorSubmitBtn">💾 Save Profile</button>
+                    </div>
+                </div>
+
                 </form>
+
             </div>
         </div>
     </div>
@@ -683,6 +779,7 @@
     var mailInput = document.getElementById('mailInput');
     var mailSendBtn = document.getElementById('mailSendBtn');
     var mailNewBtn = document.getElementById('mailNewBtn');
+    var mailTrashBtn = document.getElementById('mailTrashBtn');
     var mailComposePanel = document.getElementById('mailComposePanel');
     var mailComposeClose = document.getElementById('mailComposeClose');
     var mailRecipientList = document.getElementById('mailRecipientList');
@@ -898,6 +995,19 @@
             if (e.key === 'Enter' && e.shiftKey) sendMessage();
         });
         mailNewBtn.addEventListener('click', showComposePanel);
+        mailTrashBtn.addEventListener('click', function() {
+            if (activeConv === null) return;
+            if (!confirm('Trash this conversation?')) return;
+            localStorage.removeItem('mailConv_' + activeConv);
+            activeConv = null;
+            mailChat.style.display = 'flex';
+            mailComposePanel.style.display = 'none';
+            mailChatHeader.innerHTML = '<span class="mail-chat-placeholder">Select a conversation</span>';
+            mailNotecards.innerHTML = '<div class="mail-notecards-placeholder">Mailbox emptied. Select someone to start again.</div>';
+            mailInput.disabled = true;
+            mailSendBtn.disabled = true;
+            buildConvList();
+        });
         mailComposeClose.addEventListener('click', function() {
             mailComposePanel.style.display = 'none';
             mailChat.style.display = 'flex';
@@ -1039,7 +1149,7 @@
                 var list = document.getElementById(listId);
                 var item = document.createElement('div');
                 item.className = 'swap-item';
-                item.innerHTML = '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="form-input swap-input">' + '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
+                item.innerHTML = '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="os-input swap-input">' + '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
                 list.appendChild(item);
                 item.querySelector('.swap-remove').addEventListener('click', function() { item.remove(); });
                 item.querySelector('.swap-input').focus();
@@ -1083,7 +1193,7 @@
                 var row = document.createElement('div');
                 row.className = 'social-row';
                 row.dataset.platform = platform;
-                row.innerHTML = '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' + '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="form-input social-input">' + '<button type="button" class="social-remove" aria-label="Remove">×</button>';
+                row.innerHTML = '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' + '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="os-input social-input">' + '<button type="button" class="social-remove" aria-label="Remove">×</button>';
                 matrix.appendChild(row);
                 row.querySelector('.social-input').focus();
                 row.querySelector('.social-remove').addEventListener('click', function() { row.remove(); });
@@ -1123,6 +1233,45 @@
                 btn.style.background = '';
             }, 2000);
         });
+
+        // Custom nav links
+        var osNavAdd = document.getElementById('osNavAdd');
+        if (osNavAdd) {
+            osNavAdd.addEventListener('click', function() {
+                var container = document.getElementById('osNavLinks');
+                var row = document.createElement('div');
+                row.className = 'os-nav-row';
+                row.innerHTML = '<input type="text" name="nav_label[]" placeholder="Label" class="os-input os-input-sm">' +
+                    '<input type="url" name="nav_url[]" placeholder="https://" class="os-input os-input-sm">' +
+                    '<button type="button" class="os-nav-remove" aria-label="Remove">×</button>';
+                container.appendChild(row);
+                row.querySelector('.os-nav-remove').addEventListener('click', function() { row.remove(); });
+                row.querySelector('input').focus();
+            });
+        }
+        document.querySelectorAll('.os-nav-remove').forEach(function(btn) {
+            btn.addEventListener('click', function() { this.closest('.os-nav-row').remove(); });
+        });
+
+        // Taskbar clock
+        var osTaskClock = document.getElementById('osTaskClock');
+        if (osTaskClock) {
+            function updateTaskClock() {
+                var now = new Date();
+                osTaskClock.textContent = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+            }
+            updateTaskClock();
+            setInterval(updateTaskClock, 10000);
+        }
+
+        // Dismiss HUD
+        var osDismiss = document.getElementById('osDismissHUD');
+        if (osDismiss) {
+            osDismiss.addEventListener('click', function() {
+                document.body.classList.toggle('os-hud-hidden');
+                osDismiss.textContent = document.body.classList.contains('os-hud-hidden') ? '✕ show hud' : '✕ dismiss';
+            });
+        }
     }
 })();
 </script>
