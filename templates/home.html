@@ -79,8 +79,12 @@
             <span class="bubble-tooltip">Community</span>
         </div>
         <div class="realm-bubble custom-cursor-on-hover active" data-realm="profile" title="Profile">
-            <span class="bubble-icon custom-cursor-on-hover">ᥫ᭡</span>
+            <span class="bubble-icon custom-cursor-on-hover">✎</span>
             <span class="bubble-tooltip">Profile</span>
+        </div>
+        <div class="realm-bubble custom-cursor-on-hover" data-realm="mail" title="Mail">
+            <span class="bubble-icon custom-cursor-on-hover">✉</span>
+            <span class="bubble-tooltip">Mail</span>
         </div>
     </div>
 
@@ -183,37 +187,31 @@
                     </div>
                 </div>
 
-                <div class="game-column">
+                <div class="game-column" id="sidePanel">
                     <div class="game-panel player-card">
-                        <div class="player-avatar" id="dashAvatar">
-                            <span class="player-initials">CR</span>
+                        <div class="player-avatar" id="sideAvatar">
+                            <span class="player-initials" id="sideInitials">CR</span>
                             <div class="lace-border"></div>
                         </div>
-                        <h2 class="player-name">Catty Smoothy</h2>
-                        <span class="player-username">@cattysmoothy</span>
-                        <p class="player-bio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
-                        <div class="player-social">
-                            <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" title="Instagram" class="player-social-link">
-                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                            </a>
-                            <a href="https://www.youtube.com/@cattysmoothy" target="_blank" rel="noopener" title="YouTube" class="player-social-link">
-                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                            </a>
-                        </div>
-                        <div class="player-commission" id="dashCommissionPill">
+                        <h2 class="player-name" id="sideName">Catty Smoothy</h2>
+                        <span class="player-username" id="sideUsername">@cattysmoothy</span>
+                        <p class="player-bio" id="sideBio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
+                        <div class="player-social" id="sideSocialLinks"></div>
+                        <div class="player-commission" id="sideCommissionPill">
                             <span class="commission-dot"></span>
-                            <span>Commissions Open</span>
+                            <span>Commissions</span>
                         </div>
-                        <div class="commission-status-inline" id="commissionStatus">
+                        <div class="commission-status-inline" id="sideCommissionStatus">
                             <span class="status-dot"></span>
-                            <span class="status-label" id="statusLabel">Commissions are currently closed</span>
-                            <span class="status-moon">Full Moon</span>
+                            <span class="status-label" id="sideStatusLabel">Commissions are currently closed</span>
+                            <span class="status-moon" id="sideMoon">Full Moon</span>
+                            <button class="comm-toggle-btn" id="commToggleBtn" title="Toggle commission status">✎</button>
                         </div>
                     </div>
 
                     <div class="game-panel about-mini">
                         <h3>About</h3>
-                        <ul>
+                        <ul id="sideAboutList">
                             <li>Digital Paintings</li>
                             <li>Process Videos</li>
                             <li>Tutorials</li>
@@ -222,8 +220,54 @@
                         </ul>
                         <a href="{{ url_for('commissions') }}" class="email-link">Commission Info →</a>
                         <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted);">
-                            <span>raichuuxxofficial@gmail.com</span>
+                            <span id="sideEmail">raichuuxxofficial@gmail.com</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mail view -->
+        <div class="realm-view" data-realm="mail">
+            <div class="mail-layout">
+                <div class="mail-conversations">
+                    <div class="mail-conv-header">
+                        <span class="mail-conv-header-icon">✉</span>
+                        Mailbox
+                        <button class="mail-new-btn" id="mailNewBtn" title="New Message">✏</button>
+                    </div>
+                    <div class="mail-conv-list" id="mailConvList"></div>
+                </div>
+                <div class="mail-chat">
+                    <div class="mail-chat-header" id="mailChatHeader">
+                        <span class="mail-chat-placeholder">Select a conversation</span>
+                    </div>
+                    <div class="mail-notecards" id="mailNotecards">
+                        <div class="mail-notecards-placeholder">Select someone from the mailbox to read their mail.</div>
+                    </div>
+                    <div class="mail-compose" id="mailCompose">
+                        <textarea class="mail-compose-field-input" id="mailInput" placeholder="Write a letter…" rows="3" disabled></textarea>
+                        <button class="mail-send-btn" id="mailSendBtn" disabled>Send ✉</button>
+                    </div>
+                </div>
+                <div class="mail-compose-panel" id="mailComposePanel" style="display:none;">
+                    <div class="mail-compose-header">
+                        <span class="mail-compose-header-icon">✏</span>
+                        New Message
+                        <button class="mail-compose-close" id="mailComposeClose">&times;</button>
+                    </div>
+                    <div class="mail-compose-body">
+                        <div class="mail-compose-field">
+                            <label class="mail-compose-label">To:</label>
+                            <div class="mail-recipient-list" id="mailRecipientList"></div>
+                        </div>
+                        <div class="mail-compose-field">
+                            <label class="mail-compose-label">Message:</label>
+                            <textarea class="mail-compose-input" id="mailComposeInput" placeholder="Write your message…" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="mail-compose-footer">
+                        <button class="mail-compose-send" id="mailComposeSend">Send ✉</button>
                     </div>
                 </div>
             </div>
@@ -273,105 +317,172 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- ── Blog-style Profile Overlay ── -->
-<div class="profile-overlay" id="profileOverlay">
-    <div class="profile-overlay-bg"></div>
-    <div class="profile-window">
-        <div class="profile-window-title">
-            <span class="profile-window-title-text" id="profileTitle">Profile</span>
-            <button class="profile-window-close" id="profileClose">&times;</button>
-        </div>
-        <div class="profile-window-body">
-            <div class="profile-left">
-                <div class="profile-section bio-section">
-                    <div class="profile-pfp" id="profilePfp">
-                        <span class="profile-pfp-initials" id="profilePfpInitials">?</span>
-                    </div>
-                    <h2 class="profile-display-name" id="profileDisplayName">Artist</h2>
-                    <div class="profile-details">
-                        <div class="profile-detail-row"><span class="detail-label">pronouns: </span><span id="profilePronouns">she/her</span></div>
-                        <div class="profile-detail-row"><span class="detail-label">age: </span><span id="profileAge">25</span></div>
-                        <div class="profile-detail-row"><span class="detail-label">nationality: </span><span id="profileNationality">unknown</span></div>
-                    </div>
-                    <p class="profile-bio-text" id="profileBioText">Your mantra here</p>
-                    <div class="profile-tags" id="profileTags"></div>
-                </div>
+            <div class="profile-editor">
+                <form id="profileFormEditor" class="profile-form">
 
-                <div class="profile-section contact-section">
-                    <div class="profile-section-header">contact</div>
-                    <div class="profile-contact-item">
-                        <span class="detail-label">mail: </span>
-                        <span id="profileEmail">raichuuxxofficial@gmail.com</span>
-                    </div>
-                    <div class="profile-social-links" id="profileSocialLinks"></div>
-                </div>
+                    <!-- Identity Customization -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Identity Customization</h3>
 
-                <div class="profile-section">
-                    <div class="profile-section-header">commission</div>
-                    <div class="commission-status-inline toggleable" id="profileCommissionStatus">
-                        <span class="status-dot"></span>
-                        <span class="status-label" id="profileCommLabel">Commissions are currently closed</span>
-                        <span class="status-moon" id="profileCommMoon">Full Moon</span>
-                        <button class="comm-toggle-btn" id="commToggleBtn" title="Toggle commission status">✎</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="profile-middle">
-                <div class="profile-section">
-                    <div class="profile-section-header">blog</div>
-                    <div class="profile-blog-feed" id="profileBlogFeed">
-                        <div class="blog-post">
-                            <div class="blog-post-title">Welcome to my profile!</div>
-                            <div class="blog-post-date">Just now</div>
-                            <div class="blog-post-body">This is my creative corner. I share my artistic journey, recent works, and thoughts here.</div>
+                        <div class="form-field avatar-field">
+                            <label class="form-label">Canvas Icon</label>
+                            <div class="avatar-upload" id="avatarUpload">
+                                <div class="avatar-preview" id="avatarPreview">
+                                    <span class="avatar-initials" id="avatarInitials">A</span>
+                                    <div class="avatar-lace"></div>
+                                </div>
+                                <div class="avatar-overlay">Change Canvas Icon</div>
+                                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
+                            </div>
                         </div>
-                        <div class="blog-post">
-                            <div class="blog-post-title">New Season Started</div>
-                            <div class="blog-post-date">Today</div>
-                            <div class="blog-post-body">Excited to start a new season of creativity and growth. Stay tuned for new projects!</div>
+
+                        <div class="form-field">
+                            <label for="personaName" class="form-label">Display Name</label>
+                            <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="form-input" value="Catty Smoothy" maxlength="30">
+                        </div>
+
+                        <div class="form-field">
+                            <label for="personaBio" class="form-label">Your Mantra / Bio</label>
+                            <textarea id="personaBio" name="bio" placeholder="Describe your creative journey in one sentence..." class="form-textarea" maxlength="150" rows="3">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</textarea>
+                            <span class="char-count"><span id="bioCharCount">0</span>/150</span>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Preferred Pronouns</label>
+                            <div class="pronoun-picker">
+                                <div class="pronoun-tag-input" id="pronounTagInput">
+                                    <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
+                                    <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add pronoun…" class="pronoun-text-input">
+                                </div>
+                                <datalist id="pronounOptions">
+                                    <option value="she/her">
+                                    <option value="they/them">
+                                    <option value="he/him">
+                                    <option value="she/they">
+                                    <option value="he/they">
+                                    <option value="fluid">
+                                    <option value="any/all">
+                                    <option value="Custom">
+                                </datalist>
+                                <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
+                            </div>
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Aesthetic Tags <span class="tag-hint">(choose up to 3)</span></label>
+                            <div class="tag-grid" id="aestheticTags">
+                                {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
+                                {% for tag in tags %}
+                                <label class="tag-chip">
+                                    <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
+                                    <span class="tag-label">{{ tag }}</span>
+                                </label>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="profile-section">
-                    <div class="profile-section-header">gallery</div>
-                    <div class="profile-gallery-carousel" id="profileGallery">
-                        <div class="gallery-track" id="galleryTrack">
-                            <div class="gallery-item">🎨</div>
-                            <div class="gallery-item">✏️</div>
-                            <div class="gallery-item">🖌️</div>
-                            <div class="gallery-item">🌸</div>
-                            <div class="gallery-item">✨</div>
-                            <div class="gallery-item">🌙</div>
+                    <!-- Gamified Stat Board -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Gamified Stat Board</h3>
+
+                        <div class="form-field">
+                            <label for="currentClass" class="form-label">Current Class <span class="tag-hint">(Actual Self)</span></label>
+                            <textarea id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Struggling with Public Speaking, Creative Block" class="form-textarea" rows="3"></textarea>
                         </div>
-                        <button class="gallery-arrow gallery-arrow-left" id="galleryPrev">‹</button>
-                        <button class="gallery-arrow gallery-arrow-right" id="galleryNext">›</button>
-                    </div>
-                </div>
-            </div>
 
-            <div class="profile-right">
-                <div class="profile-section">
-                    <div class="profile-section-header">strengths</div>
-                    <div class="profile-stat-list" id="profileStrengths"></div>
-                </div>
-                <div class="profile-section">
-                    <div class="profile-section-header">weaknesses</div>
-                    <div class="profile-stat-list" id="profileWeaknesses"></div>
-                </div>
-                <div class="profile-section">
-                    <div class="profile-section-header">current class</div>
-                    <p class="profile-class-text" id="profileCurrentClass">—</p>
-                </div>
-                <div class="profile-section">
-                    <div class="profile-section-header">future class</div>
-                    <p class="profile-class-text" id="profileFutureClass">—</p>
-                </div>
+                        <div class="form-field">
+                            <label for="futureClass" class="form-label">Future Class <span class="tag-hint">(Ideal Self)</span></label>
+                            <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist, Concept Artist" class="form-input">
+                        </div>
+
+                        <div class="form-field">
+                            <label class="form-label">Strength Swap Matrix</label>
+                            <div class="swap-grid">
+                                <div class="swap-column">
+                                    <span class="swap-heading strengths-heading">Strengths <span class="swap-hint">(offered for trades)</span></span>
+                                    <div class="swap-list" id="strengthsList">
+                                        <div class="swap-item">
+                                            <input type="text" name="strengths[]" placeholder="e.g. Writing" class="form-input swap-input">
+                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                        </div>
+                                        <div class="swap-item">
+                                            <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="form-input swap-input">
+                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
+                                </div>
+                                <div class="swap-column">
+                                    <span class="swap-heading weaknesses-heading">Weaknesses <span class="swap-hint">(skills to learn)</span></span>
+                                    <div class="swap-list" id="weaknessesList">
+                                        <div class="swap-item">
+                                            <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="form-input swap-input">
+                                            <button type="button" class="swap-remove" aria-label="Remove">×</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Digital Footprint -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Digital Footprint <span class="tag-hint">(social links)</span></h3>
+                        <div class="social-matrix" id="socialMatrix">
+                            <div class="social-row" data-platform="instagram">
+                                <div class="social-icon-wrap">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                        <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                                        <circle cx="17" cy="7" r="1.2" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="form-input social-input">
+                                <button type="button" class="social-remove" aria-label="Remove">×</button>
+                            </div>
+                            <div class="social-row" data-platform="pinterest">
+                                <div class="social-icon-wrap">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                        <path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="form-input social-input">
+                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
+                            </div>
+                            <div class="social-row" data-platform="discord">
+                                <div class="social-icon-wrap">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
+                                        <path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="form-input social-input">
+                                <button type="button" class="social-remove" aria-label="Remove">×</button>
+                            </div>
+                        </div>
+                        <div class="social-controls">
+                            <select class="social-add-select" id="socialPlatformSelect">
+                                <option value="">Add a platform…</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="pinterest">Pinterest</option>
+                                <option value="discord">Discord</option>
+                                <option value="spotify">Spotify</option>
+                                <option value="youtube">YouTube</option>
+                                <option value="tiktok">TikTok</option>
+                                <option value="github">GitHub</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
+                        </div>
+                        <p class="social-hint">Each URL is validated — broken links will be rejected on save.</p>
+                    </div>
+
+                    <div class="profile-editor-footer">
+                        <button type="submit" form="profileFormEditor" class="settings-submit-btn" id="profileEditorSubmitBtn">Update Profile</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -438,40 +549,20 @@
         if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
     }
 
-    // ── Profile overlay ──
+    // ── Side panel ──
     const membersData = {{ members | tojson }};
     const currentUser = {{ current_user | tojson }};
 
-    const overlay = document.getElementById('profileOverlay');
-    const closeBtn = document.getElementById('profileClose');
-
-    function populateProfile(data, isOwn) {
-        document.getElementById('profilePfpInitials').textContent = data.initials || '?';
-        document.getElementById('profilePfp').style.background = data.gradient || 'var(--color-accent)';
-        document.getElementById('profileDisplayName').textContent = data.name || 'Artist';
-        document.getElementById('profileTitle').textContent = data.name ? data.name + "'s Profile" : 'Profile';
-        document.getElementById('profilePronouns').textContent = data.pronouns || 'she/her';
-        document.getElementById('profileAge').textContent = data.age || '—';
-        document.getElementById('profileNationality').textContent = data.nationality || '—';
-        document.getElementById('profileBioText').textContent = data.bio || data.aspiration || '—';
-        document.getElementById('profileEmail').textContent = data.email || 'raichuuxxofficial@gmail.com';
-        document.getElementById('profileCurrentClass').textContent = data.vulnerabilities || '—';
-        document.getElementById('profileFutureClass').textContent = data.aspiration || '—';
-
-        // Tags
-        const tagsEl = document.getElementById('profileTags');
-        tagsEl.innerHTML = '';
-        if (data.tags) {
-            data.tags.split('·').forEach(function(t) {
-                var span = document.createElement('span');
-                span.className = 'profile-tag';
-                span.textContent = t.trim();
-                tagsEl.appendChild(span);
-            });
-        }
+    function populateSidePanel(data) {
+        document.getElementById('sideInitials').textContent = data.initials || '?';
+        document.getElementById('sideAvatar').style.background = data.gradient || 'var(--color-accent)';
+        document.getElementById('sideName').textContent = data.name || 'Artist';
+        document.getElementById('sideUsername').textContent = data.username || '';
+        document.getElementById('sideBio').textContent = data.bio || data.aspiration || '—';
+        document.getElementById('sideEmail').textContent = data.email || 'raichuuxxofficial@gmail.com';
 
         // Social links
-        const socialEl = document.getElementById('profileSocialLinks');
+        var socialEl = document.getElementById('sideSocialLinks');
         socialEl.innerHTML = '';
         if (data.social) {
             data.social.forEach(function(s) {
@@ -485,46 +576,24 @@
             });
         }
 
-        // Strengths
-        const strengthsEl = document.getElementById('profileStrengths');
-        strengthsEl.innerHTML = '';
-        (data.strengths || []).forEach(function(s) {
-            var div = document.createElement('div');
-            div.className = 'profile-stat-item';
-            div.textContent = s;
-            strengthsEl.appendChild(div);
+        // About list
+        var aboutEl = document.getElementById('sideAboutList');
+        aboutEl.innerHTML = '';
+        var items = data.about || ['Digital Paintings', 'Process Videos', 'Tutorials', 'Wallpapers', 'Sketches & Studies'];
+        items.forEach(function(item) {
+            var li = document.createElement('li');
+            li.textContent = item;
+            aboutEl.appendChild(li);
         });
-
-        // Weaknesses
-        const weaknessesEl = document.getElementById('profileWeaknesses');
-        weaknessesEl.innerHTML = '';
-        (data.weaknesses || []).forEach(function(w) {
-            var div = document.createElement('div');
-            div.className = 'profile-stat-item';
-            div.textContent = w;
-            weaknessesEl.appendChild(div);
-        });
-
-        // Commission status
-        var commEl = document.getElementById('profileCommissionStatus');
-        if (data.isOpen !== undefined) {
-            commEl.classList.toggle('open', data.isOpen);
-        }
     }
 
-    function openProfile(data, isOwn) {
-        populateProfile(data, isOwn);
-        overlay.classList.add('open');
-    }
-
-    function closeProfile() {
-        overlay.classList.remove('open');
-    }
-
-    if (closeBtn) closeBtn.addEventListener('click', closeProfile);
-    overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeProfile();
-    });
+    // Side panel default (Catty Smoothy / current user)
+    populateSidePanel(Object.assign({}, currentUser, {
+        social: [
+            {url: 'https://www.instagram.com/kenmrai/', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>'},
+            {url: 'https://www.youtube.com/@cattysmoothy', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/></svg>'}
+        ]
+    }));
 
     // Member card clicks
     document.querySelectorAll('.profile-card').forEach(function(card, idx) {
@@ -532,7 +601,7 @@
         card.addEventListener('click', function(e) {
             if (e.target.closest('.card-back')) return;
             var data = membersData[idx] || {};
-            openProfile(data, false);
+            populateSidePanel(data);
         });
     });
 
@@ -541,7 +610,7 @@
         el.addEventListener('click', function() {
             var idx = parseInt(this.dataset.memberIdx);
             var data = membersData[idx] || {};
-            openProfile(data, false);
+            populateSidePanel(data);
         });
     });
 
@@ -552,34 +621,38 @@
             e.preventDefault();
             var name = (document.getElementById('hudName') || {}).textContent || 'Artist';
             var pronouns = (document.getElementById('hudPronouns') || {}).textContent || 'she/her';
-            openProfile(Object.assign({}, currentUser, {
+            var userData = Object.assign({}, currentUser, {
                 name: name,
                 pronouns: pronouns,
                 bio: document.getElementById('previewBio') ? document.getElementById('previewBio').textContent : currentUser.aspiration
-            }), true);
+            });
+            populateSidePanel(userData);
         });
         hudAvatar.style.cursor = 'pointer';
     }
 
     // Commission toggle
     var commToggleBtn = document.getElementById('commToggleBtn');
+    if (!commToggleBtn) commToggleBtn = document.querySelector('.comm-toggle-btn');
     var commOpen = localStorage.getItem('commissionsOpen') === 'true';
     function updateCommUI() {
-        var el = document.getElementById('profileCommissionStatus');
-        var label = document.getElementById('profileCommLabel');
-        var moon = document.getElementById('profileCommMoon');
-        if (commOpen) {
-            el.classList.add('open');
-            el.classList.remove('closed');
-            if (label) label.textContent = 'Commissions are currently open';
-            if (moon) moon.textContent = 'New Moon';
-        } else {
-            el.classList.remove('open');
-            el.classList.add('closed');
-            if (label) label.textContent = 'Commissions are currently closed';
-            if (moon) moon.textContent = 'Full Moon';
+        // Sync side panel
+        var sideStatus = document.getElementById('sideCommissionStatus');
+        var sideLabel = document.getElementById('sideStatusLabel');
+        var sideMoon = document.getElementById('sideMoon');
+        if (sideStatus) {
+            sideStatus.classList.toggle('open', commOpen);
+            sideStatus.classList.toggle('closed', !commOpen);
         }
-        // Sync main page elements
+        if (sideLabel) {
+            sideLabel.textContent = commOpen
+                ? 'Commissions are currently open'
+                : 'Commissions are currently closed';
+        }
+        if (sideMoon) {
+            sideMoon.textContent = commOpen ? 'New Moon' : 'Full Moon';
+        }
+        // Sync Profile view
         var mainStatus = document.getElementById('commissionStatus');
         var mainLabel = document.getElementById('statusLabel');
         if (mainStatus) {
@@ -602,21 +675,453 @@
         });
     }
 
-    // Gallery carousel
-    var track = document.getElementById('galleryTrack');
-    var prevBtn = document.getElementById('galleryPrev');
-    var nextBtn = document.getElementById('galleryNext');
-    var scrollPos = 0;
-    if (track && nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            scrollPos = Math.min(scrollPos + 120, track.scrollWidth - track.parentElement.offsetWidth);
-            track.style.transform = 'translateX(-' + scrollPos + 'px)';
+    // ── Mail / Messaging ──
+    var activeConv = null;
+    var convList = document.getElementById('mailConvList');
+    var mailChatHeader = document.getElementById('mailChatHeader');
+    var mailNotecards = document.getElementById('mailNotecards');
+    var mailInput = document.getElementById('mailInput');
+    var mailSendBtn = document.getElementById('mailSendBtn');
+    var mailNewBtn = document.getElementById('mailNewBtn');
+    var mailComposePanel = document.getElementById('mailComposePanel');
+    var mailComposeClose = document.getElementById('mailComposeClose');
+    var mailRecipientList = document.getElementById('mailRecipientList');
+    var mailComposeInput = document.getElementById('mailComposeInput');
+    var mailComposeSend = document.getElementById('mailComposeSend');
+    var mailChat = document.querySelector('.mail-chat');
+
+    if (convList) {
+        var autoReplies = [
+            'That sounds amazing! ✨',
+            'I would love to collaborate on something!',
+            'Thanks for reaching out! 😊',
+            'That is so sweet of you to say!',
+            'I have been working on some new pieces lately.',
+            'Let me know if you need anything!',
+            'Your art is so inspiring!',
+            'Have you seen the latest community event?',
+            'I am really excited about this project!',
+            'Sending good vibes your way! 🌙'
+        ];
+
+        var selectedRecipient = null;
+
+        function buildConvList() {
+            convList.innerHTML = '';
+            var allContacts = [currentUser].concat(membersData);
+            allContacts.forEach(function(contact, idx) {
+                var item = document.createElement('div');
+                item.className = 'mail-conv-item';
+                item.dataset.convIdx = idx;
+                var avatar = document.createElement('div');
+                avatar.className = 'mail-conv-avatar';
+                avatar.style.background = contact.gradient || 'var(--color-accent)';
+                avatar.textContent = contact.initials || '?';
+                var info = document.createElement('div');
+                info.className = 'mail-conv-info';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'mail-conv-name';
+                nameEl.textContent = contact.name || 'Unknown';
+                var preview = document.createElement('div');
+                preview.className = 'mail-conv-preview';
+                preview.id = 'mailPreview_' + idx;
+                var conv = JSON.parse(localStorage.getItem('mailConv_' + idx) || '[]');
+                preview.textContent = conv.length ? conv[conv.length - 1].text : 'No messages yet';
+                info.appendChild(nameEl);
+                info.appendChild(preview);
+                item.appendChild(avatar);
+                item.appendChild(info);
+                item.addEventListener('click', function() {
+                    openConv(parseInt(this.dataset.convIdx));
+                });
+                convList.appendChild(item);
+            });
+        }
+
+        function openConv(idx) {
+            activeConv = idx;
+            mailComposePanel.style.display = 'none';
+            mailChat.style.display = 'flex';
+            convList.querySelectorAll('.mail-conv-item').forEach(function(el) {
+                el.classList.toggle('active', parseInt(el.dataset.convIdx) === idx);
+            });
+            var contact = idx === 0 ? currentUser : membersData[idx - 1];
+            mailChatHeader.innerHTML = '<div class="mail-chat-avatar" style="background:' + (contact.gradient || 'var(--color-accent)') + '">' + (contact.initials || '?') + '</div><div class="mail-chat-info"><div class="mail-chat-name">' + (contact.name || 'Unknown') + '</div><div class="mail-chat-status">online</div></div>';
+            mailInput.disabled = false;
+            mailSendBtn.disabled = false;
+            mailInput.focus();
+            renderNotecards();
+        }
+
+        function getContactForConv(idx) {
+            return idx === 0 ? currentUser : membersData[idx - 1];
+        }
+
+        function renderNotecards() {
+            if (activeConv === null) return;
+            var conv = JSON.parse(localStorage.getItem('mailConv_' + activeConv) || '[]');
+            mailNotecards.innerHTML = '';
+            if (!conv.length) {
+                mailNotecards.innerHTML = '<div class="mail-notecards-placeholder">No letters yet. Write one!</div>';
+                return;
+            }
+            var otherContact = getContactForConv(activeConv);
+            conv.forEach(function(msg) {
+                var sender = msg.isOwn ? currentUser : otherContact;
+                var card = document.createElement('div');
+                card.className = 'mail-notecard' + (msg.isOwn ? ' mail-notecard-own' : '');
+
+                var profile = document.createElement('div');
+                profile.className = 'mail-notecard-profile';
+
+                var avatar = document.createElement('div');
+                avatar.className = 'mail-notecard-avatar';
+                avatar.style.background = sender.gradient || 'var(--color-accent)';
+                avatar.textContent = sender.initials || '?';
+
+                var info = document.createElement('div');
+                info.className = 'mail-notecard-info';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'mail-notecard-name';
+                nameEl.textContent = sender.name || 'Unknown';
+                var userEl = document.createElement('div');
+                userEl.className = 'mail-notecard-username';
+                userEl.textContent = sender.username || '';
+                info.appendChild(nameEl);
+                info.appendChild(userEl);
+
+                var body = document.createElement('div');
+                body.className = 'mail-notecard-body';
+                body.textContent = msg.text;
+
+                var ts = document.createElement('div');
+                ts.className = 'mail-notecard-ts';
+                var d = new Date(msg.ts || Date.now());
+                ts.textContent = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+
+                profile.appendChild(avatar);
+                profile.appendChild(info);
+                card.appendChild(profile);
+                card.appendChild(body);
+                card.appendChild(ts);
+                mailNotecards.appendChild(card);
+            });
+            mailNotecards.scrollTop = mailNotecards.scrollHeight;
+        }
+
+        function sendMessage() {
+            var text = mailInput.value.trim();
+            if (!text || activeConv === null) return;
+            var conv = JSON.parse(localStorage.getItem('mailConv_' + activeConv) || '[]');
+            conv.push({text: text, isOwn: true, ts: Date.now()});
+            localStorage.setItem('mailConv_' + activeConv, JSON.stringify(conv));
+            mailInput.value = '';
+            renderNotecards();
+            var preview = document.getElementById('mailPreview_' + activeConv);
+            if (preview) preview.textContent = text;
+            setTimeout(function() {
+                var c = JSON.parse(localStorage.getItem('mailConv_' + activeConv) || '[]');
+                var reply = autoReplies[Math.floor(Math.random() * autoReplies.length)];
+                c.push({text: reply, isOwn: false, ts: Date.now()});
+                localStorage.setItem('mailConv_' + activeConv, JSON.stringify(c));
+                renderNotecards();
+                var p = document.getElementById('mailPreview_' + activeConv);
+                if (p) p.textContent = reply;
+            }, 1500 + Math.random() * 2000);
+        }
+
+        function buildRecipientList() {
+            mailRecipientList.innerHTML = '';
+            membersData.forEach(function(contact, idx) {
+                var card = document.createElement('div');
+                card.className = 'mail-recipient-card';
+                card.dataset.memberIdx = idx;
+                var avatar = document.createElement('div');
+                avatar.className = 'mail-recipient-avatar';
+                avatar.style.background = contact.gradient || 'var(--color-accent)';
+                avatar.textContent = contact.initials || '?';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'mail-recipient-name';
+                nameEl.textContent = contact.name || 'Unknown';
+                var userEl = document.createElement('div');
+                userEl.className = 'mail-recipient-username';
+                userEl.textContent = contact.username || '';
+                card.appendChild(avatar);
+                card.appendChild(nameEl);
+                card.appendChild(userEl);
+                card.addEventListener('click', function() {
+                    var midx = parseInt(this.dataset.memberIdx);
+                    selectedRecipient = midx;
+                    mailRecipientList.querySelectorAll('.mail-recipient-card').forEach(function(c) {
+                        c.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+                mailRecipientList.appendChild(card);
+            });
+        }
+
+        function showComposePanel() {
+            selectedRecipient = null;
+            mailComposeInput.value = '';
+            mailRecipientList.querySelectorAll('.mail-recipient-card').forEach(function(c) {
+                c.classList.remove('selected');
+            });
+            mailChat.style.display = 'none';
+            mailComposePanel.style.display = 'flex';
+            mailComposeInput.focus();
+        }
+
+        function sendNewMessage() {
+            var text = mailComposeInput.value.trim();
+            if (!text || selectedRecipient === null) return;
+            var convIdx = selectedRecipient + 1;
+            var conv = JSON.parse(localStorage.getItem('mailConv_' + convIdx) || '[]');
+            conv.push({text: text, isOwn: true, ts: Date.now()});
+            localStorage.setItem('mailConv_' + convIdx, JSON.stringify(conv));
+            openConv(convIdx);
+            var preview = document.getElementById('mailPreview_' + convIdx);
+            if (preview) preview.textContent = text;
+            setTimeout(function() {
+                var c = JSON.parse(localStorage.getItem('mailConv_' + convIdx) || '[]');
+                var reply = autoReplies[Math.floor(Math.random() * autoReplies.length)];
+                c.push({text: reply, isOwn: false, ts: Date.now()});
+                localStorage.setItem('mailConv_' + convIdx, JSON.stringify(c));
+                renderNotecards();
+                var p = document.getElementById('mailPreview_' + convIdx);
+                if (p) p.textContent = reply;
+            }, 1500 + Math.random() * 2000);
+        }
+
+        mailSendBtn.addEventListener('click', sendMessage);
+        mailInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.shiftKey) sendMessage();
         });
+        mailNewBtn.addEventListener('click', showComposePanel);
+        mailComposeClose.addEventListener('click', function() {
+            mailComposePanel.style.display = 'none';
+            mailChat.style.display = 'flex';
+        });
+        mailComposeSend.addEventListener('click', sendNewMessage);
+        mailComposeInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendNewMessage();
+            }
+        });
+
+        buildConvList();
+        buildRecipientList();
     }
-    if (track && prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            scrollPos = Math.max(scrollPos - 120, 0);
-            track.style.transform = 'translateX(-' + scrollPos + 'px)';
+
+    // ── Profile Editor ──
+    var editorForm = document.getElementById('profileFormEditor');
+    if (editorForm) {
+        var hudName = document.getElementById('hudName');
+        var hudPronouns = document.getElementById('hudPronouns');
+        var hudInitials = document.getElementById('hudInitials');
+        var hudAvatar = document.getElementById('hudAvatar');
+        var personaName = document.getElementById('personaName');
+        var personaBio = document.getElementById('personaBio');
+        var bioCharCount = document.getElementById('bioCharCount');
+        var pronounInput = document.getElementById('pronounInput');
+        var pronounTagInput = document.getElementById('pronounTagInput');
+        var pronounsHidden = document.getElementById('pronounsHidden');
+        var tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
+
+        function getPronouns() {
+            var chips = pronounTagInput.querySelectorAll('.pronoun-chip');
+            return Array.from(chips).map(function(c) { return c.textContent.replace('×', '').trim(); });
+        }
+
+        function updatePronounsHidden() {
+            var vals = getPronouns();
+            pronounsHidden.value = vals.join(', ');
+            if (hudPronouns) hudPronouns.textContent = vals.length ? vals.join(' · ') : 'she/her';
+        }
+
+        function addPronounChip(val) {
+            val = val.trim();
+            if (!val) return;
+            var existing = getPronouns();
+            if (existing.includes(val)) return;
+            var chip = document.createElement('span');
+            chip.className = 'pronoun-chip';
+            chip.innerHTML = val + '<span class="pronoun-chip-remove" data-value="' + val.replace(/"/g, '&quot;') + '">&times;</span>';
+            chip.querySelector('.pronoun-chip-remove').addEventListener('click', function() {
+                chip.remove();
+                updatePronounsHidden();
+            });
+            pronounTagInput.insertBefore(chip, pronounInput);
+            updatePronounsHidden();
+        }
+
+        pronounInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addPronounChip(this.value);
+                this.value = '';
+            } else if (e.key === 'Backspace' && !this.value) {
+                var chips = pronounTagInput.querySelectorAll('.pronoun-chip');
+                var last = chips[chips.length - 1];
+                if (last) last.remove();
+                updatePronounsHidden();
+            }
+        });
+
+        pronounInput.addEventListener('input', function() {
+            var val = this.value.trim();
+            var chips = getPronouns();
+            var display = val ? (chips.length ? chips.join(' · ') + ' · ' + val : val) : (chips.length ? chips.join(' · ') : 'she/her');
+            if (hudPronouns) hudPronouns.textContent = display;
+        });
+
+        function updatePreview() {
+            var name = personaName.value.trim() || 'Artist';
+            hudName.textContent = name;
+            var initial = name.charAt(0).toUpperCase() || 'A';
+            hudInitials.textContent = initial;
+            var bio = personaBio.value;
+            bioCharCount.textContent = bio.length;
+        }
+
+        personaName.addEventListener('input', updatePreview);
+        personaBio.addEventListener('input', updatePreview);
+        tagInputs.forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                var checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
+                if (checked.length > 3) this.checked = false;
+                updatePreview();
+            });
+        });
+        updatePreview();
+
+        pronounTagInput.querySelectorAll('.pronoun-chip-remove').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                this.closest('.pronoun-chip').remove();
+                updatePronounsHidden();
+            });
+        });
+        updatePronounsHidden();
+
+        // Avatar upload
+        var avatarInput = document.getElementById('avatarInput');
+        if (avatarInput) {
+            avatarInput.addEventListener('change', function(e) {
+                var file = e.target.files[0];
+                if (!file) return;
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                    var preview = document.getElementById('avatarPreview');
+                    preview.style.backgroundImage = 'url(' + ev.target.result + ')';
+                    preview.style.backgroundSize = 'cover';
+                    preview.style.backgroundPosition = 'center';
+                    var initSpan = preview.querySelector('.avatar-initials');
+                    if (initSpan) initSpan.style.display = 'none';
+                    if (hudAvatar) {
+                        hudAvatar.style.backgroundImage = 'url(' + ev.target.result + ')';
+                        hudAvatar.style.backgroundSize = 'cover';
+                        hudAvatar.style.backgroundPosition = 'center';
+                        var hudInit = hudAvatar.querySelector('.game-hud-initials');
+                        if (hudInit) hudInit.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Dynamic swap lists
+        document.querySelectorAll('.swap-add').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var listId = this.dataset.list;
+                var name = this.dataset.name;
+                var placeholder = this.dataset.placeholder;
+                var list = document.getElementById(listId);
+                var item = document.createElement('div');
+                item.className = 'swap-item';
+                item.innerHTML = '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="form-input swap-input">' + '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
+                list.appendChild(item);
+                item.querySelector('.swap-remove').addEventListener('click', function() { item.remove(); });
+                item.querySelector('.swap-input').focus();
+            });
+        });
+        document.querySelectorAll('.swap-remove').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                this.closest('.swap-item').remove();
+            });
+        });
+
+        // Social link matrix
+        var socialIcons = {
+            instagram: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>',
+            pinterest: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>',
+            discord: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>',
+            spotify: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.2-.7-.5 0-.4.2-.6.5-.7 4-.9 7.4-.5 10.1 1.1.3.1.4.5.3.9zm1.5-3.3c-.3.4-.8.5-1.2.2-2.8-1.7-7.1-2.2-10.5-1.2-.5.1-1-.2-1.1-.7 0-.5.3-.9.8-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.8.3 1.3zm.1-3.4c-3.4-2-9-2.2-12.2-1.2-.6.2-1.2-.1-1.4-.7-.2-.6.1-1.2.7-1.4 3.7-1.1 9.9-.9 13.8 1.5.5.3.7 1 .4 1.5-.3.4-.9.6-1.3.3z" fill="currentColor"/></svg>',
+            youtube: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M23.5 6.2a2.9 2.9 0 0 0-2-2C19.8 3.7 12 3.7 12 3.7s-7.8 0-9.5.5a2.9 2.9 0 0 0-2 2C0 7.9 0 12 0 12s0 4.1.5 5.8a2.9 2.9 0 0 0 2 2c1.7.5 9.5.5 9.5.5s7.8 0 9.5-.5a2.9 2.9 0 0 0 2-2c.5-1.7.5-5.8.5-5.8s0-4.1-.5-5.8zM9.6 15.5V8.5l6.4 3.5-6.4 3.5z" fill="currentColor"/></svg>',
+            tiktok: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12.5 0h3.7v3.7A4.5 4.5 0 0 0 20 7.5h-3.7v6.2a4.4 4.4 0 1 1-3.8-4.4V3.7h-2.8a4.5 4.5 0 0 0 0 9h.1v3.8a8.2 8.2 0 1 1 2.7-16z" fill="currentColor"/></svg>',
+            github: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.4 3.5 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg>',
+            other: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="currentColor"/></svg>'
+        };
+        var socialPlaceholders = {
+            instagram: 'https://instagram.com/yourhandle',
+            pinterest: 'https://pinterest.com/yourhandle',
+            discord: 'https://discord.com/users/yourid',
+            spotify: 'https://open.spotify.com/user/yourid',
+            youtube: 'https://youtube.com/@yourchannel',
+            tiktok: 'https://tiktok.com/@yourhandle',
+            github: 'https://github.com/yourhandle',
+            other: 'https://yourlink.com/yourhandle'
+        };
+
+        var addSocialBtn = document.getElementById('addSocialBtn');
+        if (addSocialBtn) {
+            addSocialBtn.addEventListener('click', function() {
+                var select = document.getElementById('socialPlatformSelect');
+                var platform = select.value;
+                if (!platform) return;
+                var matrix = document.getElementById('socialMatrix');
+                var row = document.createElement('div');
+                row.className = 'social-row';
+                row.dataset.platform = platform;
+                row.innerHTML = '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' + '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="form-input social-input">' + '<button type="button" class="social-remove" aria-label="Remove">×</button>';
+                matrix.appendChild(row);
+                row.querySelector('.social-input').focus();
+                row.querySelector('.social-remove').addEventListener('click', function() { row.remove(); });
+                select.value = '';
+            });
+        }
+
+        document.querySelectorAll('#socialMatrix .social-remove').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                this.closest('.social-row').remove();
+            });
+        });
+
+        // Form submit
+        editorForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var data = {};
+            for (var pair of formData.entries()) {
+                var key = pair[0];
+                var value = pair[1];
+                if (key.endsWith('[]')) {
+                    var k = key.slice(0, -2);
+                    if (!data[k]) data[k] = [];
+                    data[k].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            console.log('Profile data:', data);
+            var btn = document.getElementById('profileEditorSubmitBtn');
+            var orig = btn.textContent;
+            btn.textContent = 'Saved!';
+            btn.style.background = '#6ABA8A';
+            setTimeout(function() {
+                btn.textContent = orig;
+                btn.style.background = '';
+            }, 2000);
         });
     }
 })();

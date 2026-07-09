@@ -56,8 +56,11 @@
                     <span class="sidebar-nav-icon">ᛝ</span>
                     <span class="sidebar-nav-label">Organization</span>
                 </a>
-                <div class="sidebar-flyout">
-                    <a href="{{ url_for('organization') }}" class="sidebar-flyout-item">Apply &amp; Join</a>
+                <div class="sidebar-subnav" id="orgSubnav">
+                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Monthly Prompt</a>
+                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Playlist</a>
+                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Club Plan</a>
+                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
                 </div>
             </div>
             <a href="{{ url_for('updates') }}" class="sidebar-nav-item" title="Updates">
@@ -115,313 +118,128 @@
         <div class="settings-panel">
             <div class="settings-header">
                 <div>
-                    <h2 class="settings-title">Profile &amp; Settings</h2>
-                    <p class="settings-subtitle">Manage your digital identity and canvas preferences</p>
+                    <h2 class="settings-title">Settings</h2>
+                    <p class="settings-subtitle">Notification preferences and canvas theme</p>
                 </div>
                 <button class="settings-close" id="settingsClose" aria-label="Close settings">&times;</button>
             </div>
 
             <div class="settings-body">
-                <!-- Left: Live Preview Card -->
-                <div class="settings-left">
-                    <div class="preview-card" id="previewCard">
-                        <div class="preview-card-inner">
-                            <div class="preview-image" id="previewImage">
-                                <span class="preview-initials" id="previewInitials">A</span>
-                                <div class="preview-lace"></div>
-                            </div>
-                            <div class="preview-banner" id="previewBanner">🎨 Creative</div>
-                            <div class="preview-body">
-                                <h3 class="preview-name" id="previewName">Artist</h3>
-                                <span class="preview-pronouns" id="previewPronouns">she/her</span>
-                                <p class="preview-bio" id="previewBio">Your mantra here</p>
+                <div class="settings-right" style="border-left: none;">
+
+                    <!-- Privacy, Visibility & Alerts -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Privacy, Visibility &amp; Alerts</h3>
+
+                        <div class="form-field">
+                            <label class="form-label">Notification Alerts</label>
+                            <div class="toggle-grid">
+                                <div class="toggle-row">
+                                    <span class="toggle-text">Co-Op Match Requests</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggleCoop" checked>
+                                        <span class="toggle-track"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-row">
+                                    <span class="toggle-text">Card Trade Offers</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggleTrades" checked>
+                                        <span class="toggle-track"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-row">
+                                    <span class="toggle-text">Community Event Reminders</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggleEvents">
+                                        <span class="toggle-track"></span>
+                                    </label>
+                                </div>
+                                <div class="toggle-row">
+                                    <span class="toggle-text">New Member Alerts</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggleMembers">
+                                        <span class="toggle-track"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Theme Customization (HSL Picker) -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">Theme Customization</h3>
+                        <div class="hsl-picker" id="hslPicker">
+                            <div class="hsl-bars">
+                                <div class="hsl-row">
+                                    <span class="moon-label">
+                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                            <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <div class="hsl-track" id="hueTrack">
+                                        <div class="hsl-knob" id="knobHue" data-axis="hue">
+                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
+                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hsl-row">
+                                    <span class="moon-label">
+                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                            <defs>
+                                                <clipPath id="satClip">
+                                                    <circle id="satClipCircle" cx="12" cy="12" r="10"/>
+                                                </clipPath>
+                                            </defs>
+                                            <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
+                                        </svg>
+                                    </span>
+                                    <div class="hsl-track" id="satTrack">
+                                        <div class="hsl-knob" id="knobSat" data-axis="sat">
+                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
+                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hsl-row">
+                                    <span class="moon-label" id="moonLabel">
+                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
+                                            <defs>
+                                                <mask id="yyMask">
+                                                    <rect width="24" height="24" fill="white"/>
+                                                    <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
+                                                    <circle cx="9" cy="7" r="2.5" fill="black"/>
+                                                </mask>
+                                            </defs>
+                                            <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
+                                            <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
+                                            <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                    <div class="hsl-track" id="lightTrack">
+                                        <div class="hsl-knob" id="knobLight" data-axis="light">
+                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
+                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hsl-apply-wrap">
+                                <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
+                                    <svg class="hsl-sparkle" viewBox="0 0 24 24" width="22" height="22">
+                                        <path d="M20.71 4.63l-1.34-1.34c-.78-.78-2.05-.78-2.83 0L9 10.83 6.76 13.59c-.12.16-.23.33-.32.51L3 22l7.9-3.44c.18-.09.35-.2.51-.32L20.71 7.46c.78-.78.78-2.05 0-2.83zM12.41 12L11 10.59l5-5L17.41 7l-5 5z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <span class="hsl-apply-label">Paint Theme</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Right: Data Editor Form -->
-                <div class="settings-right">
-                    <form id="profileForm" class="profile-form">
-
-                        <!-- Sub-section A: Identity Customization -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Identity Customization</h3>
-
-                            <div class="form-field avatar-field">
-                                <label class="form-label">Canvas Icon</label>
-                                <div class="avatar-upload" id="avatarUpload">
-                                    <div class="avatar-preview" id="avatarPreview">
-                                        <span class="avatar-initials" id="avatarInitials">A</span>
-                                        <div class="avatar-lace"></div>
-                                    </div>
-                                    <div class="avatar-overlay">Change Canvas Icon</div>
-                                    <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
-                                </div>
-                            </div>
-
-                            <div class="form-field">
-                                <label for="personaName" class="form-label">Display Name</label>
-                                <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="form-input" value="Artist" maxlength="30">
-                            </div>
-
-                            <div class="form-field">
-                                <label for="personaBio" class="form-label">Your Mantra / Bio</label>
-                                <textarea id="personaBio" name="bio" placeholder="Describe your creative journey in one sentence..." class="form-textarea" maxlength="150" rows="3"></textarea>
-                                <span class="char-count"><span id="bioCharCount">0</span>/150</span>
-                            </div>
-
-                            <div class="form-field">
-                                <label class="form-label">Preferred Pronouns</label>
-                                <div class="pronoun-picker">
-                                    <div class="pronoun-tag-input" id="pronounTagInput">
-                                        <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
-                                        <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add pronoun…" class="pronoun-text-input">
-                                    </div>
-                                    <datalist id="pronounOptions">
-                                        <option value="she/her">
-                                        <option value="they/them">
-                                        <option value="he/him">
-                                        <option value="she/they">
-                                        <option value="he/they">
-                                        <option value="fluid">
-                                        <option value="any/all">
-                                        <option value="Custom">
-                                    </datalist>
-                                    <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
-                                </div>
-                            </div>
-
-                            <div class="form-field">
-                                <label class="form-label">Aesthetic Tags <span class="tag-hint">(choose up to 3)</span></label>
-                                <div class="tag-grid" id="aestheticTags">
-                                    {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
-                                    {% for tag in tags %}
-                                    <label class="tag-chip">
-                                        <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
-                                        <span class="tag-label">{{ tag }}</span>
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sub-section B: The Gamified Stat Board -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Gamified Stat Board</h3>
-
-                            <div class="form-field">
-                                <label for="currentClass" class="form-label">Current Class <span class="tag-hint">(Actual Self)</span></label>
-                                <textarea id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Struggling with Public Speaking, Creative Block" class="form-textarea" rows="3"></textarea>
-                            </div>
-
-                            <div class="form-field">
-                                <label for="futureClass" class="form-label">Future Class <span class="tag-hint">(Ideal Self)</span></label>
-                                <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist, Concept Artist" class="form-input">
-                            </div>
-
-                            <div class="form-field">
-                                <label class="form-label">Strength Swap Matrix</label>
-                                <div class="swap-grid">
-                                    <div class="swap-column">
-                                        <span class="swap-heading strengths-heading">Strengths <span class="swap-hint">(offered for trades)</span></span>
-                                        <div class="swap-list" id="strengthsList">
-                                            <div class="swap-item">
-                                                <input type="text" name="strengths[]" placeholder="e.g. Writing" class="form-input swap-input">
-                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                            </div>
-                                            <div class="swap-item">
-                                                <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="form-input swap-input">
-                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
-                                    </div>
-                                    <div class="swap-column">
-                                        <span class="swap-heading weaknesses-heading">Weaknesses <span class="swap-hint">(skills to learn)</span></span>
-                                        <div class="swap-list" id="weaknessesList">
-                                            <div class="swap-item">
-                                                <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="form-input swap-input">
-                                                <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sub-section C: Privacy, Visibility & Alerts -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Privacy, Visibility &amp; Alerts</h3>
-
-
-
-                            <div class="form-field">
-                                <label class="form-label">Notification Alerts</label>
-                                <div class="toggle-grid">
-                                    <div class="toggle-row">
-                                        <span class="toggle-text">Co-Op Match Requests</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="toggleCoop" name="notify_coop" checked>
-                                            <span class="toggle-track"></span>
-                                        </label>
-                                    </div>
-                                    <div class="toggle-row">
-                                        <span class="toggle-text">Card Trade Offers</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="toggleTrades" name="notify_trades" checked>
-                                            <span class="toggle-track"></span>
-                                        </label>
-                                    </div>
-                                    <div class="toggle-row">
-                                        <span class="toggle-text">Community Event Reminders</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="toggleEvents" name="notify_events">
-                                            <span class="toggle-track"></span>
-                                        </label>
-                                    </div>
-                                    <div class="toggle-row">
-                                        <span class="toggle-text">New Member Alerts</span>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="toggleMembers" name="notify_members">
-                                            <span class="toggle-track"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sub-section D: Digital Footprint -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Digital Footprint <span class="tag-hint">(social links)</span></h3>
-                            <div class="social-matrix" id="socialMatrix">
-                                <div class="social-row" data-platform="instagram">
-                                    <div class="social-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                            <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                            <circle cx="17" cy="7" r="1.2" fill="currentColor"/>
-                                        </svg>
-                                    </div>
-                                    <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="form-input social-input">
-                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                </div>
-                                <div class="social-row" data-platform="pinterest">
-                                    <div class="social-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                            <path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/>
-                                        </svg>
-                                    </div>
-                                    <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="form-input social-input">
-                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                </div>
-                                <div class="social-row" data-platform="discord">
-                                    <div class="social-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon">
-                                            <path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/>
-                                        </svg>
-                                    </div>
-                                    <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="form-input social-input">
-                                    <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                </div>
-                            </div>
-                            <div class="social-controls">
-                                <select class="social-add-select" id="socialPlatformSelect">
-                                    <option value="">Add a platform…</option>
-                                    <option value="instagram">Instagram</option>
-                                    <option value="pinterest">Pinterest</option>
-                                    <option value="discord">Discord</option>
-                                    <option value="spotify">Spotify</option>
-                                    <option value="youtube">YouTube</option>
-                                    <option value="tiktok">TikTok</option>
-                                    <option value="github">GitHub</option>
-                                    <option value="other">Other</option>
-                                </select>
-                                <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
-                            </div>
-                            <p class="social-hint">Each URL is validated — broken links will be rejected on save.</p>
-                        </div>
-
-                        <!-- Sub-section E: Theme Customization (HSL Picker) -->
-                        <div class="form-section">
-                            <h3 class="form-section-title">Theme Customization</h3>
-                            <div class="hsl-picker" id="hslPicker">
-                                <div class="hsl-bars">
-                                    <div class="hsl-row">
-                                        <span class="moon-label">
-                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                                <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
-                                            </svg>
-                                        </span>
-                                        <div class="hsl-track" id="hueTrack">
-                                            <div class="hsl-knob" id="knobHue" data-axis="hue">
-                                                <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                    <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hsl-row">
-                                        <span class="moon-label">
-                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                                <defs>
-                                                    <clipPath id="satClip">
-                                                        <circle id="satClipCircle" cx="12" cy="12" r="10"/>
-                                                    </clipPath>
-                                                </defs>
-                                                <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
-                                            </svg>
-                                        </span>
-                                        <div class="hsl-track" id="satTrack">
-                                            <div class="hsl-knob" id="knobSat" data-axis="sat">
-                                                <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                    <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="hsl-row">
-                                        <span class="moon-label" id="moonLabel">
-                                            <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                                <defs>
-                                                    <mask id="yyMask">
-                                                        <rect width="24" height="24" fill="white"/>
-                                                        <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
-                                                        <circle cx="9" cy="7" r="2.5" fill="black"/>
-                                                    </mask>
-                                                </defs>
-                                                <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
-                                                <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
-                                                <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
-                                            </svg>
-                                        </span>
-                                        <div class="hsl-track" id="lightTrack">
-                                            <div class="hsl-knob" id="knobLight" data-axis="light">
-                                                <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                    <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="hsl-apply-wrap">
-                                    <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
-                                        <svg class="hsl-sparkle" viewBox="0 0 24 24" width="22" height="22">
-                                            <path d="M20.71 4.63l-1.34-1.34c-.78-.78-2.05-.78-2.83 0L9 10.83 6.76 13.59c-.12.16-.23.33-.32.51L3 22l7.9-3.44c.18-.09.35-.2.51-.32L20.71 7.46c.78-.78.78-2.05 0-2.83zM12.41 12L11 10.59l5-5L17.41 7l-5 5z" fill="currentColor"/>
-                                        </svg>
-                                    </div>
-                                    <span class="hsl-apply-label">Paint Theme</span>
-                                </div>
-                            </div>
-                        </div>
-
-                    </form>
-                </div>
-            </div>
-
-            <div class="settings-footer">
-                <button type="submit" form="profileForm" class="settings-submit-btn" id="profileSubmitBtn">Update Profile &amp; Canvas</button>
             </div>
         </div>
     </div>
@@ -453,7 +271,6 @@
                 light: document.getElementById('knobLight')
             };
             const swatch = document.getElementById('hslSwatch');
-            const sparkle = document.querySelector('.hsl-sparkle');
             const sparkle = document.querySelector('.hsl-sparkle');
 
             function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
@@ -743,6 +560,9 @@
                 overlay.classList.remove('open');
             }
 
+            window.openSettings = openSettings;
+            window.closeSettings = closeSettings;
+
             settingsTriggers.forEach(el => {
                 if (el) el.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -770,11 +590,11 @@
                 });
             }
 
-            // Organization dropdown toggle
+            // Organization subnav toggle
             const orgWrapper = document.getElementById('orgWrapper');
             if (orgWrapper) {
                 orgWrapper.addEventListener('click', function(e) {
-                    if (e.target.closest('.sidebar-flyout-item')) return;
+                    if (e.target.closest('.sidebar-subnav-item')) return;
                     this.classList.toggle('open');
                 });
                 document.addEventListener('click', function(e) {
@@ -784,19 +604,8 @@
                 });
             }
 
-            // ── Live Profile Preview ──
-            const previewName = document.getElementById('previewName');
-            const previewBio = document.getElementById('previewBio');
-            const previewPronouns = document.getElementById('previewPronouns');
-            const previewBanner = document.getElementById('previewBanner');
-            const previewInitials = document.getElementById('previewInitials');
-            const avatarInitials = document.getElementById('avatarInitials');
-            const hudName = document.getElementById('hudName');
-            const hudPronouns = document.getElementById('hudPronouns');
-            const hudInitials = document.getElementById('hudInitials');
-            const hudAvatar = document.getElementById('hudAvatar');
+            // ── Game Clock ──
             const gameClock = document.getElementById('gameClock');
-
             function updateClock() {
                 if (!gameClock) return;
                 const now = new Date();
@@ -804,227 +613,6 @@
             }
             updateClock();
             setInterval(updateClock, 1000);
-
-            const personaName = document.getElementById('personaName');
-            const personaBio = document.getElementById('personaBio');
-            const pronounInput = document.getElementById('pronounInput');
-            const pronounTagInput = document.getElementById('pronounTagInput');
-            const pronounsHidden = document.getElementById('pronounsHidden');
-            const bioCharCount = document.getElementById('bioCharCount');
-            const tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
-
-            function getPronouns() {
-                const chips = pronounTagInput.querySelectorAll('.pronoun-chip');
-                return Array.from(chips).map(c => c.textContent.replace('×', '').trim());
-            }
-
-            function updatePronounsHidden() {
-                const vals = getPronouns();
-                pronounsHidden.value = vals.join(', ');
-                previewPronouns.textContent = vals.length ? vals.join(' · ') : 'she/her';
-                if (hudPronouns) hudPronouns.textContent = vals.length ? vals.join(' · ') : 'she/her';
-            }
-
-            function addPronounChip(val) {
-                val = val.trim();
-                if (!val) return;
-                const existing = getPronouns();
-                if (existing.includes(val)) return;
-                const chip = document.createElement('span');
-                chip.className = 'pronoun-chip';
-                chip.innerHTML = val + '<span class="pronoun-chip-remove" data-value="' + val.replace(/"/g, '&quot;') + '">&times;</span>';
-                chip.querySelector('.pronoun-chip-remove').addEventListener('click', function() {
-                    chip.remove();
-                    updatePronounsHidden();
-                });
-                pronounTagInput.insertBefore(chip, pronounInput);
-                updatePronounsHidden();
-            }
-
-            pronounInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addPronounChip(this.value);
-                    this.value = '';
-                } else if (e.key === 'Backspace' && !this.value) {
-                    const chips = pronounTagInput.querySelectorAll('.pronoun-chip');
-                    const last = chips[chips.length - 1];
-                    if (last) last.remove();
-                    updatePronounsHidden();
-                }
-            });
-
-            pronounInput.addEventListener('input', function() {
-                const val = this.value.trim();
-                const chips = getPronouns();
-                const display = val ? (chips.length ? chips.join(' · ') + ' · ' + val : val) : (chips.length ? chips.join(' · ') : 'she/her');
-                previewPronouns.textContent = display;
-                if (hudPronouns) hudPronouns.textContent = display;
-            });
-
-            function updatePreview() {
-                const name = personaName.value.trim() || 'Artist';
-                previewName.textContent = name;
-                hudName.textContent = name;
-
-                const initial = name.charAt(0).toUpperCase() || 'A';
-                previewInitials.textContent = initial;
-                avatarInitials.textContent = initial;
-                hudInitials.textContent = initial;
-
-                const bio = personaBio.value;
-                previewBio.textContent = bio || 'Your mantra here';
-                bioCharCount.textContent = bio.length;
-            }
-
-            personaName.addEventListener('input', updatePreview);
-            personaBio.addEventListener('input', updatePreview);
-            tagInputs.forEach(cb => cb.addEventListener('change', function() {
-                const checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
-                if (checked.length > 3) this.checked = false;
-                updatePreview();
-            }));
-            updatePreview();
-            // Init pronoun hidden + preview + static chip remove handlers
-            pronounTagInput.querySelectorAll('.pronoun-chip-remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.pronoun-chip').remove();
-                    updatePronounsHidden();
-                });
-            });
-            updatePronounsHidden();
-
-            // ── Avatar upload preview ──
-            const avatarInput = document.getElementById('avatarInput');
-            avatarInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    const preview = document.getElementById('avatarPreview');
-                    preview.style.backgroundImage = 'url(' + ev.target.result + ')';
-                    preview.style.backgroundSize = 'cover';
-                    preview.style.backgroundPosition = 'center';
-                    preview.querySelector('.avatar-initials').style.display = 'none';
-                    // Also update the preview card
-                    const pi = document.getElementById('previewImage');
-                    pi.style.backgroundImage = 'url(' + ev.target.result + ')';
-                    pi.style.backgroundSize = 'cover';
-                    pi.style.backgroundPosition = 'center';
-                    pi.querySelector('.preview-initials').style.display = 'none';
-                    // Also update the HUD avatar
-                    if (hudAvatar) {
-                        hudAvatar.style.backgroundImage = 'url(' + ev.target.result + ')';
-                        hudAvatar.style.backgroundSize = 'cover';
-                        hudAvatar.style.backgroundPosition = 'center';
-                        const hudInit = hudAvatar.querySelector('.game-hud-initials');
-                        if (hudInit) hudInit.style.display = 'none';
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-
-            // ── Dynamic Swap Lists ──
-            document.querySelectorAll('.swap-add').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const listId = this.dataset.list;
-                    const name = this.dataset.name;
-                    const placeholder = this.dataset.placeholder;
-                    const list = document.getElementById(listId);
-                    const item = document.createElement('div');
-                    item.className = 'swap-item';
-                    item.innerHTML =
-                        '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="form-input swap-input">' +
-                        '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
-                    list.appendChild(item);
-
-                    item.querySelector('.swap-remove').addEventListener('click', function() {
-                        item.remove();
-                    });
-
-                    item.querySelector('.swap-input').focus();
-                });
-            });
-
-            document.querySelectorAll('.swap-remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.swap-item').remove();
-                });
-            });
-
-            // ── Social Link Matrix ──
-            const socialIcons = {
-                instagram: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>',
-                pinterest: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>',
-                discord: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>',
-                spotify: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.2-.7-.5 0-.4.2-.6.5-.7 4-.9 7.4-.5 10.1 1.1.3.1.4.5.3.9zm1.5-3.3c-.3.4-.8.5-1.2.2-2.8-1.7-7.1-2.2-10.5-1.2-.5.1-1-.2-1.1-.7 0-.5.3-.9.8-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.8.3 1.3zm.1-3.4c-3.4-2-9-2.2-12.2-1.2-.6.2-1.2-.1-1.4-.7-.2-.6.1-1.2.7-1.4 3.7-1.1 9.9-.9 13.8 1.5.5.3.7 1 .4 1.5-.3.4-.9.6-1.3.3z" fill="currentColor"/></svg>',
-                youtube: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M23.5 6.2a2.9 2.9 0 0 0-2-2C19.8 3.7 12 3.7 12 3.7s-7.8 0-9.5.5a2.9 2.9 0 0 0-2 2C0 7.9 0 12 0 12s0 4.1.5 5.8a2.9 2.9 0 0 0 2 2c1.7.5 9.5.5 9.5.5s7.8 0 9.5-.5a2.9 2.9 0 0 0 2-2c.5-1.7.5-5.8.5-5.8s0-4.1-.5-5.8zM9.6 15.5V8.5l6.4 3.5-6.4 3.5z" fill="currentColor"/></svg>',
-                tiktok: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12.5 0h3.7v3.7A4.5 4.5 0 0 0 20 7.5h-3.7v6.2a4.4 4.4 0 1 1-3.8-4.4V3.7h-2.8a4.5 4.5 0 0 0 0 9h.1v3.8a8.2 8.2 0 1 1 2.7-16z" fill="currentColor"/></svg>',
-                github: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.4 3.5 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg>',
-                other: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="currentColor"/></svg>'
-            };
-            const socialPlaceholders = {
-                instagram: 'https://instagram.com/yourhandle',
-                pinterest: 'https://pinterest.com/yourhandle',
-                discord: 'https://discord.com/users/yourid',
-                spotify: 'https://open.spotify.com/user/yourid',
-                youtube: 'https://youtube.com/@yourchannel',
-                tiktok: 'https://tiktok.com/@yourhandle',
-                github: 'https://github.com/yourhandle',
-                other: 'https://yourlink.com/yourhandle'
-            };
-
-            document.getElementById('addSocialBtn').addEventListener('click', function() {
-                const select = document.getElementById('socialPlatformSelect');
-                const platform = select.value;
-                if (!platform) return;
-                const matrix = document.getElementById('socialMatrix');
-                const row = document.createElement('div');
-                row.className = 'social-row';
-                row.dataset.platform = platform;
-                row.innerHTML =
-                    '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' +
-                    '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="form-input social-input">' +
-                    '<button type="button" class="social-remove" aria-label="Remove">×</button>';
-                matrix.appendChild(row);
-                row.querySelector('.social-input').focus();
-                row.querySelector('.social-remove').addEventListener('click', function() {
-                    row.remove();
-                });
-                select.value = '';
-            });
-
-            document.querySelectorAll('#socialMatrix .social-remove').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.social-row').remove();
-                });
-            });
-
-            // ── Form submit ──
-            document.getElementById('profileForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const data = {};
-                for (const [key, value] of formData.entries()) {
-                    if (key.endsWith('[]')) {
-                        const k = key.slice(0, -2);
-                        if (!data[k]) data[k] = [];
-                        data[k].push(value);
-                    } else {
-                        data[key] = value;
-                    }
-                }
-                console.log('Profile data:', data);
-                // Visual feedback on button
-                const btn = document.getElementById('profileSubmitBtn');
-                const orig = btn.textContent;
-                btn.textContent = 'Saved!';
-                btn.style.background = '#6ABA8A';
-                setTimeout(() => {
-                    btn.textContent = orig;
-                    btn.style.background = '';
-                }, 2000);
-            });
         })();
     </script>
 </body>
