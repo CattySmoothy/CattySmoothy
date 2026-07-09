@@ -48,6 +48,10 @@ def register_routes(app):
             shown = [d for d in donors if d.get('public')]
         return render_template('donors.html', title="Supporters", donors=shown)
 
+    @app.route('/commissions')
+    def commissions():
+        return render_template('commissions.html', title="Commissions")
+
     @app.route('/collections')
     def collections():
         return render_template('collections.html', title="Collections")
@@ -62,7 +66,7 @@ def register_routes(app):
 
     @app.route('/profile')
     def profile():
-        return render_template('profile.html', title="Profile")
+        return redirect(url_for('home'))
 
     @app.route('/join')
     def join():

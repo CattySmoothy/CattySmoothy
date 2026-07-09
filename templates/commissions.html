@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-content">
+    <div class="content-container" style="max-width: 640px; margin: 0 auto;">
+        <h1 class="page-title">Commissions</h1>
+        <p class="page-subtitle">Commission status, offerings, and how to reach me</p>
+
+        <div class="content-block" style="margin-top: 32px;">
+            <div class="commission-status" id="commissionStatus">
+                <span class="status-dot"></span>
+                <span class="status-label" id="statusLabel">Commissions are currently closed</span>
+                <span class="status-moon">Full Moon</span>
+            </div>
+        </div>
+
+        <div class="content-block">
+            <p id="commissionText" style="font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 16px;">
+                I'm currently accepting commission requests for digital paintings, character art, and illustrations.
+            </p>
+        </div>
+
+        <div class="content-block">
+            <h2>Services</h2>
+            <ul class="simple-list">
+                <li>Character Illustrations</li>
+                <li>Portrait Art</li>
+                <li>Concept Art</li>
+                <li>Custom Wallpapers</li>
+            </ul>
+        </div>
+
+        <div class="content-block">
+            <h2>Get in Touch</h2>
+            <div class="email-display">
+                <span class="email-address">raichuuxxofficial@gmail.com</span>
+                <button class="copy-btn" onclick="copyCommissionEmail()" title="Copy email">Copy</button>
+            </div>
+            <div class="copy-feedback" id="commissionCopyFeedback"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+function copyCommissionEmail() {
+    const email = 'raichuuxxofficial@gmail.com';
+    const feedback = document.getElementById('commissionCopyFeedback');
+    navigator.clipboard.writeText(email).then(function() {
+        feedback.textContent = 'Copied!';
+        feedback.className = 'copy-feedback show';
+        setTimeout(function() {
+            feedback.textContent = '';
+            feedback.className = 'copy-feedback';
+        }, 2000);
+    });
+}
+</script>
+{% endblock %}

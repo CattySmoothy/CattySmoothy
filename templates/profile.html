@@ -73,7 +73,7 @@
 <section class="page-content">
     <div class="content-container">
             <!-- Owner Card -->
-            <div class="owner-card" id="ownerCard">
+            <div class="owner-card" id="ownerCard" onclick="if(event.target.closest('a')) return; window.location.href='{{ url_for('commissions') }}'" style="cursor: pointer;">
                 <div class="owner-card-image">
                     <span class="owner-initials">CR</span>
                 </div>
