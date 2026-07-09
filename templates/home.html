@@ -69,16 +69,53 @@
     }
 ] %}
 
-{% block content_class %}game-dashboard-wrap{% endblock %}
+{% block content_class %}realm-explorer-wrap{% endblock %}
 
 {% block content %}
-<div class="game-dashboard">
-    <!-- Column 1: Community / World -->
-    <div class="game-column">
-        <div class="game-panel">
-            <div class="game-panel-header">
-                <span class="game-panel-header-icon">♄</span>
-                Community Members
+<div class="realm-explorer">
+    <div class="realm-sidebar" id="realmSidebar">
+        <div class="realm-bubble custom-cursor-on-hover" data-realm="community" title="Community">
+            <span class="bubble-icon custom-cursor-on-hover">♄</span>
+            <span class="bubble-tooltip">Community</span>
+        </div>
+        <div class="realm-bubble custom-cursor-on-hover active" data-realm="profile" title="Profile">
+            <span class="bubble-icon custom-cursor-on-hover">ᥫ᭡</span>
+            <span class="bubble-tooltip">Profile</span>
+        </div>
+    </div>
+
+    <div class="realm-canvas">
+        <div class="realm-canvas-bg"></div>
+
+        <!-- Community view -->
+        <div class="realm-view" data-realm="community">
+            <div class="game-dashboard-content">
+                <div class="game-column">
+                    <div class="game-panel">
+                        <div class="game-panel-header">
+                            <span class="game-panel-header-icon">♄</span>
+                            Community Members
+                        </div>
+            <div class="discord-chat-box" id="discordChatBox">
+                <div class="discord-chat-header">
+                    <svg class="discord-hash" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 5h16v2H4V5zm0 4h16v2H4V9zm0 4h16v2H4v-2zm0 4h16v2H4v-2z"/></svg>
+                    <span class="discord-chat-name">general</span>
+                    <span class="discord-chat-topic">Welcome to the CattySmoothy community!</span>
+                </div>
+                <div class="discord-member-list" id="discordMemberList">
+                    {% for m in members %}
+                    <div class="discord-member" data-member-idx="{{ loop.index0 }}">
+                        <div class="discord-member-avatar" style="background: {{ m.gradient }}">
+                            <span class="discord-member-initial">{{ m.initials }}</span>
+                        </div>
+                        <div class="discord-member-info">
+                            <span class="discord-member-name">{{ m.name }}</span>
+                            <span class="discord-member-status">online</span>
+                        </div>
+                        <div class="discord-member-status-dot"></div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
             <div class="community-controls-inline">
                 <div class="community-search">
@@ -94,194 +131,494 @@
                 </select>
             </div>
             <div class="community-grid" id="memberGrid">
-                {% for m in members %}
-                <div class="profile-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-image" style="background: {{ m.gradient }}">
-                                <span class="card-initial">{{ m.initials }}</span>
-                                <div class="lace-border"></div>
-                            </div>
-                            <div class="card-banner">{{ m.tags }}</div>
-                            <div class="card-body">
-                                <h3 class="card-name">{{ m.name }}</h3>
-                                <span class="card-username">{{ m.username }}</span>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading current-heading">Current Class</h4>
-                                <p class="card-back-text">{{ m.vulnerabilities }}</p>
-                            </div>
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading future-heading">Future Class</h4>
-                                <p class="card-back-text">{{ m.aspiration }}</p>
-                            </div>
-                            <div class="card-back-section">
-                                <h4 class="card-back-heading stats-heading">Stat Swap</h4>
-                                <div class="card-stats">
-                                    <div class="card-strengths">
-                                        <span class="stat-label strengths-label">Strengths</span>
-                                        <ul class="stat-list">
-                                            {% for s in m.strengths %}
-                                            <li>{{ s }}</li>
-                                            {% endfor %}
-                                        </ul>
+                            {% for m in members %}
+                            <div class="profile-card">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <div class="card-image" style="background: {{ m.gradient }}">
+                                            <span class="card-initial">{{ m.initials }}</span>
+                                            <div class="lace-border"></div>
+                                        </div>
+                                        <div class="card-banner">{{ m.tags }}</div>
+                                        <div class="card-body">
+                                            <h3 class="card-name">{{ m.name }}</h3>
+                                            <span class="card-username">{{ m.username }}</span>
+                                        </div>
                                     </div>
-                                    <div class="card-weaknesses">
-                                        <span class="stat-label weaknesses-label">Weaknesses</span>
-                                        <ul class="stat-list">
-                                            {% for w in m.weaknesses %}
-                                            <li>{{ w }}</li>
-                                            {% endfor %}
-                                        </ul>
+                                    <div class="card-back">
+                                        <div class="card-back-section">
+                                            <h4 class="card-back-heading current-heading">Current Class</h4>
+                                            <p class="card-back-text">{{ m.vulnerabilities }}</p>
+                                        </div>
+                                        <div class="card-back-section">
+                                            <h4 class="card-back-heading future-heading">Future Class</h4>
+                                            <p class="card-back-text">{{ m.aspiration }}</p>
+                                        </div>
+                                        <div class="card-back-section">
+                                            <h4 class="card-back-heading stats-heading">Stat Swap</h4>
+                                            <div class="card-stats">
+                                                <div class="card-strengths">
+                                                    <span class="stat-label strengths-label">Strengths</span>
+                                                    <ul class="stat-list">
+                                                        {% for s in m.strengths %}
+                                                        <li>{{ s }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="card-weaknesses">
+                                                    <span class="stat-label weaknesses-label">Weaknesses</span>
+                                                    <ul class="stat-list">
+                                                        {% for w in m.weaknesses %}
+                                                        <li>{{ w }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
 
-    <!-- Column 2: Activity / Feed -->
-    <div class="game-column">
-        <div class="game-panel">
-            <div class="game-panel-header">
-                <span class="game-panel-header-icon">✦</span>
-                Selected Works
-            </div>
-            <div class="feed-works">
-                <div class="feed-work-card">
-                    <div class="feed-work-thumb">🎨</div>
-                    <span class="feed-work-label">Digital Illustration</span>
-                </div>
-                <div class="feed-work-card">
-                    <div class="feed-work-thumb">✏️</div>
-                    <span class="feed-work-label">Character Design</span>
-                </div>
-                <div class="feed-work-card">
-                    <div class="feed-work-thumb">🖌️</div>
-                    <span class="feed-work-label">Concept Art</span>
-                </div>
-            </div>
-        </div>
+                <div class="game-column">
+                    <div class="game-panel player-card">
+                        <div class="player-avatar" id="dashAvatar">
+                            <span class="player-initials">CR</span>
+                            <div class="lace-border"></div>
+                        </div>
+                        <h2 class="player-name">Catty Smoothy</h2>
+                        <span class="player-username">@cattysmoothy</span>
+                        <p class="player-bio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
+                        <div class="player-social">
+                            <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" title="Instagram" class="player-social-link">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                            </a>
+                            <a href="https://www.youtube.com/@cattysmoothy" target="_blank" rel="noopener" title="YouTube" class="player-social-link">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                            </a>
+                        </div>
+                        <div class="player-commission" id="dashCommissionPill">
+                            <span class="commission-dot"></span>
+                            <span>Commissions Open</span>
+                        </div>
+                        <div class="commission-status-inline" id="commissionStatus">
+                            <span class="status-dot"></span>
+                            <span class="status-label" id="statusLabel">Commissions are currently closed</span>
+                            <span class="status-moon">Full Moon</span>
+                        </div>
+                    </div>
 
-        <div class="game-panel">
-            <div class="game-panel-header">
-                <span class="game-panel-header-icon">.ᐟ</span>
-                Recent Updates
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">✦</div>
-                <div class="activity-body">
-                    <div class="activity-title">New Season Started</div>
-                    <div class="activity-desc">Welcome to the new season of creativity and growth.</div>
-                    <div class="activity-time">Just now</div>
-                </div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">♄</div>
-                <div class="activity-body">
-                    <div class="activity-title">Community Growing</div>
-                    <div class="activity-desc">New members are joining the community every day.</div>
-                    <div class="activity-time">Today</div>
-                </div>
-            </div>
-            <div class="activity-item">
-                <div class="activity-icon">⌂︎</div>
-                <div class="activity-body">
-                    <div class="activity-title">Welcome</div>
-                    <div class="activity-desc">The new home page dashboard is now live.</div>
-                    <div class="activity-time">Today</div>
+                    <div class="game-panel about-mini">
+                        <h3>About</h3>
+                        <ul>
+                            <li>Digital Paintings</li>
+                            <li>Process Videos</li>
+                            <li>Tutorials</li>
+                            <li>Wallpapers</li>
+                            <li>Sketches & Studies</li>
+                        </ul>
+                        <a href="{{ url_for('commissions') }}" class="email-link">Commission Info →</a>
+                        <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted);">
+                            <span>raichuuxxofficial@gmail.com</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Column 3: Player Profile -->
-    <div class="game-column">
-        <div class="game-panel player-card">
-            <div class="player-avatar" id="dashAvatar">
-                <span class="player-initials">CR</span>
-                <div class="lace-border"></div>
-            </div>
-            <h2 class="player-name">Catty Smoothy</h2>
-            <span class="player-username">@cattysmoothy</span>
-            <p class="player-bio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
-            <div class="player-social">
-                <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" title="Instagram" class="player-social-link">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </a>
-                <a href="https://www.youtube.com/@cattysmoothy" target="_blank" rel="noopener" title="YouTube" class="player-social-link">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                </a>
-            </div>
-            <div class="player-commission" id="dashCommissionPill">
-                <span class="commission-dot"></span>
-                <span>Commissions Open</span>
-            </div>
-            <div class="commission-status-inline" id="commissionStatus">
-                <span class="status-dot"></span>
-                <span class="status-label" id="statusLabel">Commissions are currently closed</span>
-                <span class="status-moon">Full Moon</span>
-            </div>
-        </div>
-
-        <div class="game-panel about-mini">
-            <h3>About</h3>
-            <ul>
-                <li>Digital Paintings</li>
-                <li>Process Videos</li>
-                <li>Tutorials</li>
-                <li>Wallpapers</li>
-                <li>Sketches & Studies</li>
-            </ul>
-            <a href="{{ url_for('commissions') }}" class="email-link">Commission Info →</a>
-            <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted);">
-                <span>raichuuxxofficial@gmail.com</span>
+        <!-- Profile view -->
+        <div class="realm-view active" data-realm="profile">
+            <div class="profile-layout">
+                <div class="game-panel player-card">
+                    <div class="player-avatar" id="dashAvatar">
+                        <span class="player-initials">CR</span>
+                        <div class="lace-border"></div>
+                    </div>
+                    <h2 class="player-name">Catty Smoothy</h2>
+                    <span class="player-username">@cattysmoothy</span>
+                    <p class="player-bio">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</p>
+                    <div class="player-social">
+                        <a href="https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" title="Instagram" class="player-social-link">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@cattysmoothy" target="_blank" rel="noopener" title="YouTube" class="player-social-link">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </a>
+                    </div>
+                    <div class="player-commission" id="dashCommissionPill">
+                        <span class="commission-dot"></span>
+                        <span>Commissions Open</span>
+                    </div>
+                    <div class="commission-status-inline" id="commissionStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-label" id="statusLabel">Commissions are currently closed</span>
+                        <span class="status-moon">Full Moon</span>
+                    </div>
+                </div>
+                <div class="game-panel about-mini">
+                    <h3>About</h3>
+                    <ul>
+                        <li>Digital Paintings</li>
+                        <li>Process Videos</li>
+                        <li>Tutorials</li>
+                        <li>Wallpapers</li>
+                        <li>Sketches & Studies</li>
+                    </ul>
+                    <a href="{{ url_for('commissions') }}" class="email-link">Commission Info →</a>
+                    <div style="margin-top:10px;font-size:11px;color:var(--color-text-muted);">
+                        <span>raichuuxxofficial@gmail.com</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{% block dashboard_scripts %}
+<!-- ── Blog-style Profile Overlay ── -->
+<div class="profile-overlay" id="profileOverlay">
+    <div class="profile-overlay-bg"></div>
+    <div class="profile-window">
+        <div class="profile-window-title">
+            <span class="profile-window-title-text" id="profileTitle">Profile</span>
+            <button class="profile-window-close" id="profileClose">&times;</button>
+        </div>
+        <div class="profile-window-body">
+            <div class="profile-left">
+                <div class="profile-section bio-section">
+                    <div class="profile-pfp" id="profilePfp">
+                        <span class="profile-pfp-initials" id="profilePfpInitials">?</span>
+                    </div>
+                    <h2 class="profile-display-name" id="profileDisplayName">Artist</h2>
+                    <div class="profile-details">
+                        <div class="profile-detail-row"><span class="detail-label">pronouns: </span><span id="profilePronouns">she/her</span></div>
+                        <div class="profile-detail-row"><span class="detail-label">age: </span><span id="profileAge">25</span></div>
+                        <div class="profile-detail-row"><span class="detail-label">nationality: </span><span id="profileNationality">unknown</span></div>
+                    </div>
+                    <p class="profile-bio-text" id="profileBioText">Your mantra here</p>
+                    <div class="profile-tags" id="profileTags"></div>
+                </div>
+
+                <div class="profile-section contact-section">
+                    <div class="profile-section-header">contact</div>
+                    <div class="profile-contact-item">
+                        <span class="detail-label">mail: </span>
+                        <span id="profileEmail">raichuuxxofficial@gmail.com</span>
+                    </div>
+                    <div class="profile-social-links" id="profileSocialLinks"></div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-section-header">commission</div>
+                    <div class="commission-status-inline toggleable" id="profileCommissionStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-label" id="profileCommLabel">Commissions are currently closed</span>
+                        <span class="status-moon" id="profileCommMoon">Full Moon</span>
+                        <button class="comm-toggle-btn" id="commToggleBtn" title="Toggle commission status">✎</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-middle">
+                <div class="profile-section">
+                    <div class="profile-section-header">blog</div>
+                    <div class="profile-blog-feed" id="profileBlogFeed">
+                        <div class="blog-post">
+                            <div class="blog-post-title">Welcome to my profile!</div>
+                            <div class="blog-post-date">Just now</div>
+                            <div class="blog-post-body">This is my creative corner. I share my artistic journey, recent works, and thoughts here.</div>
+                        </div>
+                        <div class="blog-post">
+                            <div class="blog-post-title">New Season Started</div>
+                            <div class="blog-post-date">Today</div>
+                            <div class="blog-post-body">Excited to start a new season of creativity and growth. Stay tuned for new projects!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="profile-section-header">gallery</div>
+                    <div class="profile-gallery-carousel" id="profileGallery">
+                        <div class="gallery-track" id="galleryTrack">
+                            <div class="gallery-item">🎨</div>
+                            <div class="gallery-item">✏️</div>
+                            <div class="gallery-item">🖌️</div>
+                            <div class="gallery-item">🌸</div>
+                            <div class="gallery-item">✨</div>
+                            <div class="gallery-item">🌙</div>
+                        </div>
+                        <button class="gallery-arrow gallery-arrow-left" id="galleryPrev">‹</button>
+                        <button class="gallery-arrow gallery-arrow-right" id="galleryNext">›</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-right">
+                <div class="profile-section">
+                    <div class="profile-section-header">strengths</div>
+                    <div class="profile-stat-list" id="profileStrengths"></div>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-header">weaknesses</div>
+                    <div class="profile-stat-list" id="profileWeaknesses"></div>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-header">current class</div>
+                    <p class="profile-class-text" id="profileCurrentClass">—</p>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-section-header">future class</div>
+                    <p class="profile-class-text" id="profileFutureClass">—</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% set current_user = {
+    'name': 'Catty Smoothy',
+    'username': '@cattysmoothy',
+    'initials': 'CR',
+    'gradient': 'linear-gradient(135deg, #f093fb, #f5576c)',
+    'tags': '🎨 Digital · 🖌️ Art · 🌟 Creative',
+    'vulnerabilities': '—',
+    'aspiration': 'Aspiring digital artist',
+    'strengths': ['Digital Painting', 'Illustration', 'Creativity'],
+    'weaknesses': ['—']
+} %}
+
 <script>
 (function() {
+    const bubbles = document.querySelectorAll('.realm-bubble');
+    const views = document.querySelectorAll('.realm-view');
+
+    bubbles.forEach(b => {
+        b.addEventListener('click', function() {
+            const realm = this.dataset.realm;
+            bubbles.forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+            views.forEach(v => {
+                v.classList.toggle('active', v.dataset.realm === realm);
+            });
+        });
+    });
+
     const searchInput = document.getElementById('memberSearch');
     const sortSelect = document.getElementById('sortFilter');
     const grid = document.getElementById('memberGrid');
-    if (!grid) return;
-    const cards = Array.from(grid.querySelectorAll('.profile-card'));
+    if (grid) {
+        const cards = Array.from(grid.querySelectorAll('.profile-card'));
 
-    function filterAndSort() {
-        const query = (searchInput.value || '').toLowerCase().trim();
-        const sortBy = sortSelect.value;
+        function filterAndSort() {
+            const query = (searchInput.value || '').toLowerCase().trim();
+            const sortBy = sortSelect.value;
 
-        let visible = cards.filter(card => {
-            if (!query) return true;
-            const name = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
-            const username = (card.querySelector('.card-username')?.textContent || '').toLowerCase();
-            const tags = (card.querySelector('.card-banner')?.textContent || '').toLowerCase();
-            return name.includes(query) || username.includes(query) || tags.includes(query);
-        });
+            let visible = cards.filter(card => {
+                if (!query) return true;
+                const name = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
+                const username = (card.querySelector('.card-username')?.textContent || '').toLowerCase();
+                const tags = (card.querySelector('.card-banner')?.textContent || '').toLowerCase();
+                return name.includes(query) || username.includes(query) || tags.includes(query);
+            });
 
-        visible.sort((a, b) => {
-            const aVal = (a.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
-            const bVal = (b.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
-            return aVal.localeCompare(bVal);
-        });
+            visible.sort((a, b) => {
+                const aVal = (a.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
+                const bVal = (b.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
+                return aVal.localeCompare(bVal);
+            });
 
-        cards.forEach(c => c.style.display = 'none');
-        visible.forEach(c => c.style.display = '');
-        visible.forEach(c => grid.appendChild(c));
+            cards.forEach(c => c.style.display = 'none');
+            visible.forEach(c => c.style.display = '');
+            visible.forEach(c => grid.appendChild(c));
+        }
+
+        if (searchInput) searchInput.addEventListener('input', filterAndSort);
+        if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
     }
 
-    if (searchInput) searchInput.addEventListener('input', filterAndSort);
-    if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
+    // ── Profile overlay ──
+    const membersData = {{ members | tojson }};
+    const currentUser = {{ current_user | tojson }};
+
+    const overlay = document.getElementById('profileOverlay');
+    const closeBtn = document.getElementById('profileClose');
+
+    function populateProfile(data, isOwn) {
+        document.getElementById('profilePfpInitials').textContent = data.initials || '?';
+        document.getElementById('profilePfp').style.background = data.gradient || 'var(--color-accent)';
+        document.getElementById('profileDisplayName').textContent = data.name || 'Artist';
+        document.getElementById('profileTitle').textContent = data.name ? data.name + "'s Profile" : 'Profile';
+        document.getElementById('profilePronouns').textContent = data.pronouns || 'she/her';
+        document.getElementById('profileAge').textContent = data.age || '—';
+        document.getElementById('profileNationality').textContent = data.nationality || '—';
+        document.getElementById('profileBioText').textContent = data.bio || data.aspiration || '—';
+        document.getElementById('profileEmail').textContent = data.email || 'raichuuxxofficial@gmail.com';
+        document.getElementById('profileCurrentClass').textContent = data.vulnerabilities || '—';
+        document.getElementById('profileFutureClass').textContent = data.aspiration || '—';
+
+        // Tags
+        const tagsEl = document.getElementById('profileTags');
+        tagsEl.innerHTML = '';
+        if (data.tags) {
+            data.tags.split('·').forEach(function(t) {
+                var span = document.createElement('span');
+                span.className = 'profile-tag';
+                span.textContent = t.trim();
+                tagsEl.appendChild(span);
+            });
+        }
+
+        // Social links
+        const socialEl = document.getElementById('profileSocialLinks');
+        socialEl.innerHTML = '';
+        if (data.social) {
+            data.social.forEach(function(s) {
+                var a = document.createElement('a');
+                a.href = s.url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+                a.className = 'player-social-link';
+                a.innerHTML = s.icon;
+                socialEl.appendChild(a);
+            });
+        }
+
+        // Strengths
+        const strengthsEl = document.getElementById('profileStrengths');
+        strengthsEl.innerHTML = '';
+        (data.strengths || []).forEach(function(s) {
+            var div = document.createElement('div');
+            div.className = 'profile-stat-item';
+            div.textContent = s;
+            strengthsEl.appendChild(div);
+        });
+
+        // Weaknesses
+        const weaknessesEl = document.getElementById('profileWeaknesses');
+        weaknessesEl.innerHTML = '';
+        (data.weaknesses || []).forEach(function(w) {
+            var div = document.createElement('div');
+            div.className = 'profile-stat-item';
+            div.textContent = w;
+            weaknessesEl.appendChild(div);
+        });
+
+        // Commission status
+        var commEl = document.getElementById('profileCommissionStatus');
+        if (data.isOpen !== undefined) {
+            commEl.classList.toggle('open', data.isOpen);
+        }
+    }
+
+    function openProfile(data, isOwn) {
+        populateProfile(data, isOwn);
+        overlay.classList.add('open');
+    }
+
+    function closeProfile() {
+        overlay.classList.remove('open');
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeProfile);
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeProfile();
+    });
+
+    // Member card clicks
+    document.querySelectorAll('.profile-card').forEach(function(card, idx) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.card-back')) return;
+            var data = membersData[idx] || {};
+            openProfile(data, false);
+        });
+    });
+
+    // Discord member clicks
+    document.querySelectorAll('.discord-member').forEach(function(el) {
+        el.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.memberIdx);
+            var data = membersData[idx] || {};
+            openProfile(data, false);
+        });
+    });
+
+    // HUD avatar click (your own profile)
+    var hudAvatar = document.getElementById('hudAvatar') || document.querySelector('.game-hud-avatar');
+    if (hudAvatar) {
+        hudAvatar.addEventListener('click', function(e) {
+            e.preventDefault();
+            var name = (document.getElementById('hudName') || {}).textContent || 'Artist';
+            var pronouns = (document.getElementById('hudPronouns') || {}).textContent || 'she/her';
+            openProfile(Object.assign({}, currentUser, {
+                name: name,
+                pronouns: pronouns,
+                bio: document.getElementById('previewBio') ? document.getElementById('previewBio').textContent : currentUser.aspiration
+            }), true);
+        });
+        hudAvatar.style.cursor = 'pointer';
+    }
+
+    // Commission toggle
+    var commToggleBtn = document.getElementById('commToggleBtn');
+    var commOpen = localStorage.getItem('commissionsOpen') === 'true';
+    function updateCommUI() {
+        var el = document.getElementById('profileCommissionStatus');
+        var label = document.getElementById('profileCommLabel');
+        var moon = document.getElementById('profileCommMoon');
+        if (commOpen) {
+            el.classList.add('open');
+            el.classList.remove('closed');
+            if (label) label.textContent = 'Commissions are currently open';
+            if (moon) moon.textContent = 'New Moon';
+        } else {
+            el.classList.remove('open');
+            el.classList.add('closed');
+            if (label) label.textContent = 'Commissions are currently closed';
+            if (moon) moon.textContent = 'Full Moon';
+        }
+        // Sync main page elements
+        var mainStatus = document.getElementById('commissionStatus');
+        var mainLabel = document.getElementById('statusLabel');
+        if (mainStatus) {
+            mainStatus.classList.toggle('open', commOpen);
+            mainStatus.classList.toggle('closed', !commOpen);
+        }
+        if (mainLabel) {
+            mainLabel.textContent = commOpen
+                ? 'Commissions are currently open'
+                : 'Commissions are currently closed';
+        }
+        localStorage.setItem('commissionsOpen', commOpen);
+    }
+    updateCommUI();
+    if (commToggleBtn) {
+        commToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            commOpen = !commOpen;
+            updateCommUI();
+        });
+    }
+
+    // Gallery carousel
+    var track = document.getElementById('galleryTrack');
+    var prevBtn = document.getElementById('galleryPrev');
+    var nextBtn = document.getElementById('galleryNext');
+    var scrollPos = 0;
+    if (track && nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            scrollPos = Math.min(scrollPos + 120, track.scrollWidth - track.parentElement.offsetWidth);
+            track.style.transform = 'translateX(-' + scrollPos + 'px)';
+        });
+    }
+    if (track && prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            scrollPos = Math.max(scrollPos - 120, 0);
+            track.style.transform = 'translateX(-' + scrollPos + 'px)';
+        });
+    }
 })();
 </script>
-{% endblock %}
 {% endblock %}
