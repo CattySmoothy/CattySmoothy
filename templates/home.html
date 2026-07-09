@@ -279,14 +279,6 @@
             <div class="os-desktop" id="osDesktop">
 
                 <!-- Desktop Icons (scattered) -->
-                <div class="desktop-icon di-mail" title="Notifications">
-                    <span class="di-icon">✉</span>
-                    <span class="di-label">Mail</span>
-                </div>
-                <div class="desktop-icon di-star" title="Milestones">
-                    <span class="di-icon">✦</span>
-                    <span class="di-label">Stars</span>
-                </div>
                 <div class="desktop-icon di-cloud" title="Mood">
                     <span class="di-icon">☁</span>
                     <span class="di-label">Mood</span>
@@ -469,9 +461,53 @@
                                             <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
                                         </div>
                                     </div>
-                                </div>
+                        </div>
 
+                        <!-- Window: Gallery -->
+                        <div class="os-window os-window-gallery">
+                            <div class="os-titlebar">
+                                <div class="os-titlebar-dots">
+                                    <span class="os-dot os-dot-close"></span>
+                                    <span class="os-dot os-dot-min"></span>
+                                    <span class="os-dot os-dot-max"></span>
+                                </div>
+                                <span class="os-titlebar-text">🖼 Gallery</span>
+                                <div class="os-titlebar-ornament">~</div>
                             </div>
+                            <div class="os-window-body">
+                                <div class="gallery-folder-set">
+                                    <div class="gallery-folder-tabs" id="galleryFolders"></div>
+                                    <div class="gallery-folder-body">
+                                        <div class="gallery-grid" id="galleryGrid"></div>
+                                        <div class="gallery-controls">
+                                            <button type="button" class="gallery-add-folder-btn" id="galleryAddFolder">+ New Folder</button>
+                                            <label class="gallery-upload-label">
+                                                + Add Photos
+                                                <input type="file" id="galleryUpload" accept="image/*" multiple class="gallery-upload-input">
+                                            </label>
+                                        </div>
+                                        <div class="gallery-folder-footer">
+                                            <div class="gallery-privacy">
+                                                <span class="gallery-privacy-label">Visible to</span>
+                                                <select class="gallery-privacy-select" id="galleryPrivacy">
+                                                    <option value="public">Everyone</option>
+                                                    <option value="members">Selected members</option>
+                                                    <option value="private">Only me</option>
+                                                </select>
+                                            </div>
+                                            <div class="gallery-member-access" id="galleryMemberAccess"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">gallery.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+
+                    </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
                                 <span class="os-footer-text">editor.exe</span>
@@ -606,6 +642,9 @@
 
                     </div>
 
+                    <!-- Desktop ejected folders container -->
+                    <div id="galleryDesktopFolders"></div>
+
                 </div>
 
                 <!-- Taskbar with Save -->
@@ -622,6 +661,15 @@
                 </div>
 
                 </form>
+
+                <!-- Gallery Display -->
+                <div class="gallery-display" id="galleryDisplay"></div>
+
+                <!-- Photo Viewer -->
+                <div class="gallery-photo-viewer" id="galleryPhotoViewer">
+                    <button class="gallery-photo-viewer-close" id="galleryViewerClose">&times;</button>
+                    <img id="galleryViewerImg" src="" alt="">
+                </div>
 
             </div>
         </div>
@@ -1445,20 +1493,14 @@
             }
         }
 
-        // Level-up save animation
+        // Save button feedback
         var saveBtn = document.getElementById('profileEditorSubmitBtn');
         if (saveBtn) {
             var origSave = saveBtn.textContent;
             saveBtn.addEventListener('click', function(e) {
-                var xp = calcProfileXP();
-                var rank = getRank(xp);
-                saveBtn.textContent = '✦ Level Up! ✦';
-                saveBtn.classList.add('os-save-levelup');
                 setTimeout(function() {
-                    saveBtn.textContent = origSave;
-                    saveBtn.classList.remove('os-save-levelup');
                     updateGamifiedUI();
-                }, 1200);
+                }, 100);
             });
         }
 
@@ -1477,6 +1519,559 @@
         });
 
         updateGamifiedUI();
+
+        // ── Freeform Desktop (drag, resize, persist windows) ──
+        (function initFreeformDesktop() {
+          var osDesktop = document.querySelector('.os-desktop');
+          var osGrid = document.querySelector('.os-grid');
+          if (!osDesktop || !osGrid) return;
+
+          var desktopStateKey = 'osDesktopState';
+          var gridRect = osGrid.getBoundingClientRect();
+          var isZero = gridRect.width === 0 || gridRect.height === 0;
+
+          function getWindowId(win) {
+            for (var i = 0; i < win.classList.length; i++) {
+              var m = win.classList[i].match(/^os-window-(.+)/);
+              if (m) return m[1];
+            }
+            var titleEl = win.querySelector('.os-titlebar-text');
+            if (titleEl) return titleEl.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return 'window-' + Math.random().toString(36).slice(2, 8);
+          }
+
+          function loadState() {
+            try { return JSON.parse(localStorage.getItem(desktopStateKey)); } catch(e) { return null; }
+          }
+
+          function saveState() {
+            var state = {};
+            osGrid.querySelectorAll('.os-window').forEach(function(w) {
+              var id = w.dataset.windowId || getWindowId(w);
+              state[id] = { x: parseInt(w.style.left) || 0, y: parseInt(w.style.top) || 0, w: w.offsetWidth, h: w.offsetHeight };
+            });
+            localStorage.setItem(desktopStateKey, JSON.stringify(state));
+          }
+
+          var windows = osGrid.querySelectorAll('.os-window');
+          if (!windows.length) return;
+          var savedState = loadState();
+          var windowData = [];
+
+          windows.forEach(function(win) {
+            var id = win.dataset.windowId || getWindowId(win);
+            var rect = win.getBoundingClientRect();
+            windowData.push({ el: win, id: id, x: rect.left - gridRect.left, y: rect.top - gridRect.top, w: rect.width || 320, h: rect.height || 200 });
+          });
+
+          // Fallback defaults if grid was hidden
+          if (isZero) {
+            var cw = osGrid.clientWidth || 900;
+            windowData.forEach(function(d, i) {
+              if (i < 2) { d.x = 0; d.y = i * 340; d.w = 360; }
+              else if (i === 2) { d.x = 380; d.y = 0; d.w = cw - 760 > 320 ? cw - 760 : 400; }
+              else { d.x = cw - 340; d.y = (i - 3) * 340; d.w = 320; }
+            });
+          }
+
+          // Apply saved positions over defaults
+          if (savedState) {
+            windowData.forEach(function(d) {
+              var s = savedState[d.id];
+              if (s) { d.x = s.x; d.y = s.y; d.w = s.w || d.w; d.h = s.h || d.h; }
+            });
+          }
+
+          // Move windows to be direct children of grid, apply absolute positioning
+          windowData.forEach(function(d) {
+            var win = d.el;
+            osGrid.appendChild(win);
+            win.style.position = 'absolute';
+            win.style.left = d.x + 'px';
+            win.style.top = d.y + 'px';
+            win.style.width = d.w + 'px';
+            if (d.h) win.style.height = d.h + 'px';
+            win.style.zIndex = 10;
+            win.dataset.windowId = d.id;
+
+            // Resize handle
+            var handle = document.createElement('div');
+            handle.className = 'os-resize-handle';
+            win.appendChild(handle);
+          });
+
+          // Hide columns
+          osGrid.querySelectorAll('.os-col').forEach(function(c) { c.style.display = 'none'; });
+
+          osDesktop.classList.add('os-desktop-freeform');
+
+          if (!savedState) saveState();
+
+          // ── Drag ──
+          windowData.forEach(function(d) {
+            var win = d.el;
+            var titlebar = win.querySelector('.os-titlebar');
+            if (!titlebar) return;
+            titlebar.addEventListener('mousedown', function(e) {
+              if (e.target.closest('.os-titlebar-dots, .os-dot, button, input, select, textarea, .os-resize-handle')) return;
+              e.preventDefault();
+              var gridRect = osGrid.getBoundingClientRect();
+              var offsetX = e.clientX - gridRect.left - (parseInt(win.style.left) || 0);
+              var offsetY = e.clientY - gridRect.top - (parseInt(win.style.top) || 0);
+              osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
+              win.style.zIndex = 100;
+              win.classList.add('dragging');
+              function onMove(ev) {
+                win.style.left = Math.max(0, ev.clientX - gridRect.left - offsetX) + 'px';
+                win.style.top = Math.max(0, ev.clientY - gridRect.top - offsetY) + 'px';
+              }
+              function onUp() {
+                win.classList.remove('dragging');
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+                saveState();
+              }
+              document.addEventListener('mousemove', onMove);
+              document.addEventListener('mouseup', onUp);
+            });
+          });
+
+          // ── Resize ──
+          windowData.forEach(function(d) {
+            var win = d.el;
+            var handle = win.querySelector('.os-resize-handle');
+            if (!handle) return;
+            handle.addEventListener('mousedown', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              var startX = e.clientX, startY = e.clientY;
+              var startW = win.offsetWidth, startH = win.offsetHeight;
+              osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
+              win.style.zIndex = 100;
+              function onMove(ev) {
+                win.style.width = Math.max(280, startW + ev.clientX - startX) + 'px';
+                win.style.height = Math.max(100, startH + ev.clientY - startY) + 'px';
+              }
+              function onUp() {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+                saveState();
+              }
+              document.addEventListener('mousemove', onMove);
+              document.addEventListener('mouseup', onUp);
+            });
+          });
+        })();
+
+        // ── Gallery (photos, folders, privacy) ──
+        (function initGallery() {
+          var galleryKey = 'galleryData';
+          var currentFolder = null;
+
+          function loadGallery() {
+            try {
+              var d = JSON.parse(localStorage.getItem(galleryKey));
+              if (d && d.folders) return d;
+            } catch(e) {}
+            return { folders: [] };
+          }
+
+          function saveGallery(g) {
+            localStorage.setItem(galleryKey, JSON.stringify(g));
+          }
+
+          function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+          function renderFolders(data) {
+            var container = document.getElementById('galleryFolders');
+            if (!container) return;
+            container.innerHTML = '';
+            var inbox = data.folders.filter(function(f) { return !f.ejected; });
+            inbox.forEach(function(f) {
+              var tab = document.createElement('div');
+              tab.className = 'gallery-folder-tab' + (currentFolder === f.id ? ' active' : '');
+              tab.innerHTML = '<span>' + f.name.replace(/</g, '&lt;') + '</span><span class="gallery-folder-tab-del" data-id="' + f.id + '">&times;</span>';
+              tab.addEventListener('click', function(e) {
+                if (e.target.classList.contains('gallery-folder-tab-del')) {
+                  if (!confirm('Delete folder "' + f.name + '" and all its photos?')) return;
+                  data.folders = data.folders.filter(function(x) { return x.id !== f.id; });
+                  if (currentFolder === f.id) currentFolder = data.folders.length ? data.folders[0].id : null;
+                  saveGallery(data);
+                  renderAll(data);
+                  return;
+                }
+                currentFolder = f.id;
+                renderAll(data);
+              });
+
+              // Drag tab out to desktop
+              tab.addEventListener('mousedown', function(ev) {
+                if (ev.target.classList.contains('gallery-folder-tab-del')) return;
+                var startX = ev.clientX, startY = ev.clientY;
+                var moved = false;
+                var ghost = null;
+
+                function onMove(e) {
+                  var dx = e.clientX - startX, dy = e.clientY - startY;
+                  if (!moved && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+                    moved = true;
+                    ghost = document.createElement('div');
+                    ghost.className = 'gallery-desktop-folder gallery-drag-ghost';
+                    ghost.innerHTML = '<div class="gallery-desktop-folder-icon"><div class="gdf-tab"></div><div class="gdf-body"></div></div><div class="gallery-desktop-folder-label">' + f.name.replace(/</g, '&lt;') + '</div>';
+                    document.body.appendChild(ghost);
+                  }
+                  if (ghost) {
+                    ghost.style.left = (e.clientX - 32) + 'px';
+                    ghost.style.top = (e.clientY - 24) + 'px';
+                  }
+                }
+                function onUp(e) {
+                  document.removeEventListener('mousemove', onMove);
+                  document.removeEventListener('mouseup', onUp);
+                  if (ghost) { ghost.remove(); ghost = null; }
+                  if (!moved) return;
+                  // Check if dropped on the folder-body area (tab area) → reinsert, else eject
+                  var fb = document.querySelector('.gallery-folder-body');
+                  if (fb) {
+                    var r = fb.getBoundingClientRect();
+                    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+                      // Dropped back in the folder body → keep in tabs
+                      if (f.ejected) { f.ejected = false; f.desktopPos = null; saveGallery(data); renderAll(data); }
+                      return;
+                    }
+                  }
+                  // Check if dropped on another desktop folder → combine
+                  var targets = document.querySelectorAll('.gallery-desktop-folder');
+                  for (var i = 0; i < targets.length; i++) {
+                    var t = targets[i];
+                    if (t.dataset.folderId === f.id) continue;
+                    var tr = t.getBoundingClientRect();
+                    if (e.clientX >= tr.left && e.clientX <= tr.right && e.clientY >= tr.top && e.clientY <= tr.bottom) {
+                      var targetId = t.dataset.folderId;
+                      var targetFolder = data.folders.find(function(x) { return x.id === targetId; });
+                      if (targetFolder && confirm('Combine "' + f.name + '" into "' + targetFolder.name + '"?')) {
+                        targetFolder.photos = (targetFolder.photos || []).concat(f.photos || []);
+                        if (currentFolder === f.id) currentFolder = targetFolder.id;
+                        data.folders = data.folders.filter(function(x) { return x.id !== f.id; });
+                        saveGallery(data);
+                        renderAll(data);
+                        return;
+                      }
+                    }
+                  }
+                  // Eject to desktop
+                  f.ejected = true;
+                  var osGrid = document.querySelector('.os-grid');
+                  if (osGrid) {
+                    var gr = osGrid.getBoundingClientRect();
+                    f.desktopPos = {
+                      x: Math.max(0, Math.min(gr.width - 100, e.clientX - gr.left - 32)),
+                      y: Math.max(0, Math.min(gr.height - 80, e.clientY - gr.top - 24))
+                    };
+                  } else {
+                    f.desktopPos = { x: 40, y: 40 };
+                  }
+                  if (currentFolder === f.id) {
+                    var remaining = data.folders.filter(function(x) { return !x.ejected; });
+                    currentFolder = remaining.length ? remaining[0].id : null;
+                  }
+                  saveGallery(data);
+                  renderAll(data);
+                }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+              });
+
+              container.appendChild(tab);
+            });
+            if (!currentFolder && inbox.length) currentFolder = inbox[0].id;
+          }
+
+          function renderPhotos(data) {
+            var grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            var folder = data.folders.find(function(f) { return f.id === currentFolder; });
+            if (!folder || !folder.photos || !folder.photos.length) {
+              grid.innerHTML = '<div class="gallery-empty">No photos in this folder</div>';
+              return;
+            }
+            folder.photos.forEach(function(p) {
+              var div = document.createElement('div');
+              div.className = 'gallery-photo';
+              div.style.backgroundImage = 'url(' + p.data + ')';
+              div.innerHTML = '<button class="gallery-photo-del" data-id="' + p.id + '">&times;</button>';
+              div.addEventListener('click', function(e) {
+                if (e.target.classList.contains('gallery-photo-del')) {
+                  folder.photos = folder.photos.filter(function(x) { return x.id !== p.id; });
+                  saveGallery(data);
+                  renderPhotos(data);
+                  renderDisplay(data);
+                  return;
+                }
+                openViewer(p.data);
+              });
+              grid.appendChild(div);
+            });
+          }
+
+          function renderPrivacy(data) {
+            var select = document.getElementById('galleryPrivacy');
+            var access = document.getElementById('galleryMemberAccess');
+            if (!select || !access) return;
+            var folder = data.folders.find(function(f) { return f.id === currentFolder; });
+            if (!folder) { select.style.display = 'none'; access.style.display = 'none'; return; }
+            select.style.display = '';
+            select.value = folder.privacy || 'public';
+            // Member chips
+            access.style.display = folder.privacy === 'members' ? '' : 'none';
+            access.innerHTML = '';
+            if (folder.privacy === 'members') {
+              var allMembers = {{ members | tojson }};
+              allMembers.forEach(function(m, idx) {
+                var chip = document.createElement('span');
+                chip.className = 'gallery-member-chip' + ((folder.memberAccess || []).indexOf(m.username) !== -1 ? ' selected' : '');
+                chip.textContent = m.name;
+                chip.addEventListener('click', function() {
+                  if (!folder.memberAccess) folder.memberAccess = [];
+                  var i = folder.memberAccess.indexOf(m.username);
+                  if (i === -1) folder.memberAccess.push(m.username);
+                  else folder.memberAccess.splice(i, 1);
+                  saveGallery(data);
+                  renderPrivacy(data);
+                });
+                access.appendChild(chip);
+              });
+            }
+          }
+
+          function renderDisplay(data) {
+            var container = document.getElementById('galleryDisplay');
+            if (!container) return;
+            container.innerHTML = '';
+            var visible = data.folders.filter(function(f) { return f.privacy === 'public' && !f.ejected && f.photos && f.photos.length; });
+            if (!visible.length) return;
+            visible.forEach(function(f) {
+              var section = document.createElement('div');
+              section.className = 'gallery-display-folder';
+              section.innerHTML = '<div class="gallery-display-header">' + f.name.replace(/</g, '&lt;') + '</div><div class="gallery-display-sub">' + f.photos.length + ' photo' + (f.photos.length > 1 ? 's' : '') + '</div>';
+              var grid = document.createElement('div');
+              grid.className = 'gallery-display-grid';
+              f.photos.forEach(function(p) {
+                var item = document.createElement('div');
+                item.className = 'gallery-display-item';
+                item.style.backgroundImage = 'url(' + p.data + ')';
+                item.addEventListener('click', function() { openViewer(p.data); });
+                grid.appendChild(item);
+              });
+              section.appendChild(grid);
+              container.appendChild(section);
+            });
+          }
+
+          function openViewer(dataUrl) {
+            var viewer = document.getElementById('galleryPhotoViewer');
+            var img = document.getElementById('galleryViewerImg');
+            if (!viewer || !img) return;
+            img.src = dataUrl;
+            viewer.classList.add('open');
+          }
+
+          function renderAll(data) {
+            renderFolders(data);
+            renderPhotos(data);
+            renderPrivacy(data);
+            renderDisplay(data);
+            renderDesktopIcons(data);
+          }
+
+          // ── Ejected desktop folder icons (Apple-style) ──
+          function renderDesktopIcons(data) {
+            var container = document.getElementById('galleryDesktopFolders');
+            if (!container) return;
+            container.innerHTML = '';
+            var ejected = data.folders.filter(function(f) { return f.ejected; });
+            if (!ejected.length) return;
+
+            var osGrid = document.querySelector('.os-grid');
+            if (!osGrid) return;
+
+            ejected.forEach(function(f) {
+              var icon = document.createElement('div');
+              icon.className = 'gallery-desktop-folder';
+              icon.dataset.folderId = f.id;
+              var pos = f.desktopPos || { x: 40, y: 40 };
+              icon.style.left = pos.x + 'px';
+              icon.style.top = pos.y + 'px';
+              icon.innerHTML = '<div class="gallery-desktop-folder-icon"><div class="gdf-tab"></div><div class="gdf-body"></div></div><div class="gallery-desktop-folder-label">' + f.name.replace(/</g, '&lt;') + '</div>';
+
+              // Double-click → expand into tab (pull back into box)
+              icon.addEventListener('dblclick', function() {
+                f.ejected = false;
+                f.desktopPos = null;
+                currentFolder = f.id;
+                saveGallery(data);
+                renderAll(data);
+              });
+
+              // Drag to move, drag to gallery box to reinsert, drag to combine
+              icon.addEventListener('mousedown', function(ev) {
+                ev.preventDefault();
+                var startX = ev.clientX, startY = ev.clientY;
+                var offsetX = ev.clientX - icon.getBoundingClientRect().left;
+                var offsetY = ev.clientY - icon.getBoundingClientRect().top;
+                var gridRect = osGrid.getBoundingClientRect();
+                var moved = false;
+                var origPos = { x: pos.x, y: pos.y };
+
+                icon.classList.add('dragging');
+
+                function onMove(e) {
+                  moved = true;
+                  var nx = Math.max(0, e.clientX - gridRect.left - offsetX);
+                  var ny = Math.max(0, e.clientY - gridRect.top - offsetY);
+                  icon.style.left = nx + 'px';
+                  icon.style.top = ny + 'px';
+
+                  // Check proximity to other folders for combine highlight
+                  document.querySelectorAll('.gallery-desktop-folder').forEach(function(other) {
+                    if (other === icon) return;
+                    var or = other.getBoundingClientRect();
+                    var icr = icon.getBoundingClientRect();
+                    var cx = icr.left + icr.width / 2, cy = icr.top + icr.height / 2;
+                    var inside = cx >= or.left && cx <= or.right && cy >= or.top && cy <= or.bottom;
+                    other.classList.toggle('drop-target', inside);
+                  });
+                }
+                function onUp(e) {
+                  document.removeEventListener('mousemove', onMove);
+                  document.removeEventListener('mouseup', onUp);
+                  icon.classList.remove('dragging');
+                  document.querySelectorAll('.gallery-desktop-folder').forEach(function(other) { other.classList.remove('drop-target'); });
+
+                  // Check if dropped back into folder-body → reinsert
+                  var fb = document.querySelector('.gallery-folder-body');
+                  var reinserted = false;
+                  if (fb) {
+                    var r = fb.getBoundingClientRect();
+                    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+                      f.ejected = false;
+                      f.desktopPos = null;
+                      currentFolder = f.id;
+                      reinserted = true;
+                    }
+                  }
+
+                  if (!reinserted) {
+                    // Check drop on another folder → combine
+                    var targets = document.querySelectorAll('.gallery-desktop-folder');
+                    for (var i = 0; i < targets.length; i++) {
+                      var t = targets[i];
+                      if (t === icon) continue;
+                      var tr = t.getBoundingClientRect();
+                      if (e.clientX >= tr.left && e.clientX <= tr.right && e.clientY >= tr.top && e.clientY <= tr.bottom) {
+                        var targetId = t.dataset.folderId;
+                        var targetFolder = data.folders.find(function(x) { return x.id === targetId; });
+                        if (targetFolder && confirm('Combine "' + f.name + '" into "' + targetFolder.name + '"?')) {
+                          targetFolder.photos = (targetFolder.photos || []).concat(f.photos || []);
+                          if (currentFolder === f.id) currentFolder = targetFolder.id;
+                          data.folders = data.folders.filter(function(x) { return x.id !== f.id; });
+                          saveGallery(data);
+                          renderAll(data);
+                          return;
+                        }
+                      }
+                    }
+
+                    // Save new position
+                    if (moved) {
+                      f.desktopPos = {
+                        x: parseInt(icon.style.left) || pos.x,
+                        y: parseInt(icon.style.top) || pos.y
+                      };
+                    }
+                  }
+
+                  saveGallery(data);
+                  renderAll(data);
+                }
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', onUp);
+              });
+
+              container.appendChild(icon);
+            });
+          }
+
+          // Init
+          var data = loadGallery();
+          if (!data.folders.length) {
+            data.folders.push({ id: genId(), name: 'My Photos', privacy: 'public', memberAccess: [], photos: [] });
+            saveGallery(data);
+            currentFolder = data.folders[0].id;
+          } else {
+            currentFolder = data.folders[0].id;
+          }
+          renderAll(data);
+
+          // Add folder
+          var addBtn = document.getElementById('galleryAddFolder');
+          if (addBtn) {
+            addBtn.addEventListener('click', function() {
+              var name = prompt('Folder name:');
+              if (!name || !name.trim()) return;
+              data.folders.push({ id: genId(), name: name.trim(), privacy: 'public', memberAccess: [], photos: [] });
+              currentFolder = data.folders[data.folders.length - 1].id;
+              saveGallery(data);
+              renderAll(data);
+            });
+          }
+
+          // Upload photos
+          var uploadInput = document.getElementById('galleryUpload');
+          if (uploadInput) {
+            uploadInput.addEventListener('change', function(e) {
+              var folder = data.folders.find(function(f) { return f.id === currentFolder; });
+              if (!folder) return;
+              var files = Array.from(e.target.files);
+              if (!files.length) return;
+              var pending = files.length;
+              files.forEach(function(file) {
+                if (!file.type.startsWith('image/')) { pending--; if (!pending) { saveGallery(data); renderAll(data); } return; }
+                var reader = new FileReader();
+                reader.onload = function(ev) {
+                  folder.photos.push({ id: genId(), data: ev.target.result, name: file.name, uploadedAt: Date.now() });
+                  pending--;
+                  if (!pending) { saveGallery(data); renderAll(data); }
+                };
+                reader.readAsDataURL(file);
+              });
+              this.value = '';
+            });
+          }
+
+          // Privacy select
+          var privacySelect = document.getElementById('galleryPrivacy');
+          if (privacySelect) {
+            privacySelect.addEventListener('change', function() {
+              var folder = data.folders.find(function(f) { return f.id === currentFolder; });
+              if (!folder) return;
+              folder.privacy = this.value;
+              saveGallery(data);
+              renderPrivacy(data);
+              renderDisplay(data);
+            });
+          }
+
+          // Viewer close
+          var closeBtn = document.getElementById('galleryViewerClose');
+          var viewer = document.getElementById('galleryPhotoViewer');
+          if (closeBtn && viewer) {
+            closeBtn.addEventListener('click', function() { viewer.classList.remove('open'); });
+            viewer.addEventListener('click', function(e) { if (e.target === viewer) viewer.classList.remove('open'); });
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') viewer.classList.remove('open'); });
+          }
+        })();
     }
 })();
 </script>
