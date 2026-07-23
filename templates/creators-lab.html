@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="lab-page">
+  <section class="lab-hero">
+    <span class="lab-hero-spark">✦</span>
+    <h1 class="lab-title">The Creator's Lab</h1>
+    <p class="lab-subtitle">A guided creative workshop — bring your character concept to life, one step at a time.</p>
+  </section>
+
+  <div class="lab-progress-wrap">
+    <div class="lab-progress-track">
+      <div class="lab-progress-fill" id="labProgressFill" style="width:12.5%"></div>
+    </div>
+    <div class="lab-progress-steps">
+      <button class="lab-step-dot active" data-step="1"><span>1</span><small>Spark</small></button>
+      <button class="lab-step-dot" data-step="2"><span>2</span><small>Colors</small></button>
+      <button class="lab-step-dot" data-step="3"><span>3</span><small>Form</small></button>
+      <button class="lab-step-dot" data-step="4"><span>4</span><small>Identity</small></button>
+      <button class="lab-step-dot" data-step="5"><span>5</span><small>Story</small></button>
+      <button class="lab-step-dot" data-step="6"><span>6</span><small>Sources</small></button>
+      <button class="lab-step-dot" data-step="7"><span>7</span><small>Soundtrack</small></button>
+      <button class="lab-step-dot" data-step="8"><span>8</span><small>Gallery</small></button>
+    </div>
+  </div>
+
+  <form class="lab-form" id="labForm">
+    <!-- Step 1 — The Spark -->
+    <div class="lab-step active" data-lab-step="1">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 1 — The Spark</h2>
+        <p class="lab-step-desc">What emotion, moment, or story inspired this character? There are no wrong answers — just honest ones.</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">What feeling or experience sparked this character?</label>
+        <textarea class="lab-textarea" id="labInspiration" rows="4" placeholder="e.g. I created this character after a week of exam stress — they represent the part of me that wants to break free and just breathe..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Is there a specific moment or memory tied to this?</label>
+        <textarea class="lab-textarea" id="labMoment" rows="3" placeholder="e.g. Sitting on my bedroom floor at 2am, staring at a cracked mug, realizing I was stronger than I thought..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 2 — Color Palette -->
+    <div class="lab-step" data-lab-step="2">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 2 — Color Palette</h2>
+        <p class="lab-step-desc">Choose up to 5 colors that represent your character's energy. Each color adds a layer to their story.</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Select up to 5 colors <span class="lab-hint" id="colorCount">0 / 5</span></label>
+        <div class="lab-color-palette" id="colorPalette">
+          <button type="button" class="lab-color-chip" data-color="#E85D3A" style="background:#E85D3A" title="Vibrant Orange"></button>
+          <button type="button" class="lab-color-chip" data-color="#D4652A" style="background:#D4652A" title="Burnt Orange"></button>
+          <button type="button" class="lab-color-chip" data-color="#D4A843" style="background:#D4A843" title="Gold"></button>
+          <button type="button" class="lab-color-chip" data-color="#C2B53A" style="background:#C2B53A" title="Olive Gold"></button>
+          <button type="button" class="lab-color-chip" data-color="#6B8E3A" style="background:#6B8E3A" title="Moss Green"></button>
+          <button type="button" class="lab-color-chip" data-color="#2D8C6F" style="background:#2D8C6F" title="Teal Green"></button>
+          <button type="button" class="lab-color-chip" data-color="#3A9EBF" style="background:#3A9EBF" title="Sky Blue"></button>
+          <button type="button" class="lab-color-chip" data-color="#3A6BE8" style="background:#3A6BE8" title="Deep Blue"></button>
+          <button type="button" class="lab-color-chip" data-color="#5B4ABF" style="background:#5B4ABF" title="Indigo"></button>
+          <button type="button" class="lab-color-chip" data-color="#6B3FA0" style="background:#6B3FA0" title="Deep Purple"></button>
+          <button type="button" class="lab-color-chip" data-color="#9B4DCA" style="background:#9B4DCA" title="Violet"></button>
+          <button type="button" class="lab-color-chip" data-color="#C23B8E" style="background:#C23B8E" title="Magenta"></button>
+          <button type="button" class="lab-color-chip" data-color="#C23B5E" style="background:#C23B5E" title="Rose"></button>
+          <button type="button" class="lab-color-chip" data-color="#E84A6A" style="background:#E84A6A" title="Pink"></button>
+          <button type="button" class="lab-color-chip" data-color="#8B6F5C" style="background:#8B6F5C" title="Warm Brown"></button>
+          <button type="button" class="lab-color-chip" data-color="#5C6B7A" style="background:#5C6B7A" title="Slate"></button>
+          <button type="button" class="lab-color-chip" data-color="#2D2A26" style="background:#2D2A26" title="Charcoal"></button>
+          <button type="button" class="lab-color-chip" data-color="#4A3F35" style="background:#4A3F35" title="Dark Earth"></button>
+          <button type="button" class="lab-color-chip" data-color="#F0E6D8" style="background:#F0E6D8;border:1px solid #d4c4b0" title="Soft Cream"></button>
+          <button type="button" class="lab-color-chip" data-color="#FFFFFF" style="background:#FFFFFF;border:1px solid #d4c4b0" title="White"></button>
+        </div>
+        <div class="lab-color-selected-strip" id="colorStrip"></div>
+        <div class="lab-color-custom">
+          <label class="lab-label-small">Or add a custom color</label>
+          <div class="lab-color-custom-row">
+            <input type="color" id="labCustomColor" value="#E85D3A" class="lab-color-native">
+            <input type="text" class="lab-input lab-input-hex" id="labHexInput" placeholder="#hex" maxlength="7">
+            <button type="button" class="lab-btn lab-btn-small" id="labAddColor">Add</button>
+          </div>
+        </div>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">What do these colors mean to your character?</label>
+        <textarea class="lab-textarea" id="labColorNote" rows="3" placeholder="e.g. The deep blue represents their quiet sadness, while the gold is the hope they carry underneath..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 3 — Character Form -->
+    <div class="lab-step" data-lab-step="3">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 3 — Character Form</h2>
+        <p class="lab-step-desc">Describe the physical shape and presence of your character — how do they move through the world?</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Describe their silhouette and physical form</label>
+        <textarea class="lab-textarea" id="labSilhouette" rows="4" placeholder="e.g. Small and rounded, with soft edges — like a pebble smoothed by the ocean. They wobble when they walk but never fall over..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">What textures, patterns, or details define their look?</label>
+        <textarea class="lab-textarea" id="labTextures" rows="3" placeholder="e.g. Fuzzy like moss, with tiny cracks that glow when they're happy. One ear is slightly bigger than the other..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 4 — Character Identity -->
+    <div class="lab-step" data-lab-step="4">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 4 — Character Identity</h2>
+        <p class="lab-step-desc">Give your character a name and a personality — who are they when no one is watching?</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Character Name <span class="lab-optional">(optional)</span></label>
+        <input type="text" class="lab-input" id="labName" placeholder="e.g. Pebble, Anxious Robot, The Quiet One">
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Describe their personality</label>
+        <textarea class="lab-textarea" id="labPersonality" rows="4" placeholder="e.g. Quietly determined, stubbornly optimistic, speaks in metaphors, afraid of loud noises but loves thunderstorms..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">What are their quirks and habits?</label>
+        <textarea class="lab-textarea" id="labQuirks" rows="3" placeholder="e.g. Collects broken things and fixes them. hums when nervous. always sits facing the door..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 5 — Story Arc -->
+    <div class="lab-step" data-lab-step="5">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 5 — Story Arc</h2>
+        <p class="lab-step-desc">Every character is on a journey. What challenges do they face and how do they grow?</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">What is their main challenge or internal conflict?</label>
+        <textarea class="lab-textarea" id="labConflict" rows="4" placeholder="e.g. They want to connect with others but are terrified of being seen for who they really are. Every friendship feels like a risk..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">How do they grow or change?</label>
+        <textarea class="lab-textarea" id="labGrowth" rows="3" placeholder="e.g. Over the story, they learn that vulnerability isn't weakness — it's the only door to real connection..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Is there a turning point or defining moment?</label>
+        <textarea class="lab-textarea" id="labTurningPoint" rows="3" placeholder="e.g. The moment they finally ask for help — and someone actually shows up..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 6 — Inspiration Sources -->
+    <div class="lab-step" data-lab-step="6">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 6 — Inspiration Sources</h2>
+        <p class="lab-step-desc">What animals, objects, plants, or places inspired this character? Everything counts.</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">List your inspiration sources</label>
+        <input type="text" class="lab-input" id="labSources" placeholder="e.g. Tardigrade, Cracked Mug, Moss on concrete, My grandmother's garden">
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Are there any artworks, books, or media that influenced this character?</label>
+        <textarea class="lab-textarea" id="labMediaInfluence" rows="3" placeholder="e.g. Howl's Moving Castle, the album In Rainbows, that one Monet painting of water lilies..."></textarea>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Any other details, feelings, or ideas you want to capture?</label>
+        <textarea class="lab-textarea" id="labExtraDetails" rows="3" placeholder="e.g. The way afternoon light looks through dirty windows. The sound of a city waking up. That feeling after crying when everything is quiet..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 7 — Soundtrack -->
+    <div class="lab-step" data-lab-step="7">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 7 — The Soundtrack</h2>
+        <p class="lab-step-desc">What songs does this character listen to? Share a playlist that captures their inner world.</p>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Playlist URL <span class="lab-hint">(Spotify or Apple Music)</span></label>
+        <div class="lab-playlist-input">
+          <span class="lab-playlist-icon">♫</span>
+          <input type="url" class="lab-input lab-input-playlist" id="labPlaylist" placeholder="https://open.spotify.com/playlist/...">
+        </div>
+        <div class="lab-playlist-preview" id="playlistPreview"></div>
+      </div>
+      <div class="lab-field">
+        <label class="lab-label">Why does this playlist fit your character?</label>
+        <textarea class="lab-textarea" id="labPlaylistNote" rows="3" placeholder="e.g. The lyrics mirror their internal monologue — quiet longing, small victories, the ache of wanting to be known..."></textarea>
+      </div>
+    </div>
+
+    <!-- Step 8 — Reference Gallery -->
+    <div class="lab-step" data-lab-step="8">
+      <div class="lab-step-header">
+        <h2 class="lab-step-title">Step 8 — Reference Gallery</h2>
+        <p class="lab-step-desc">Upload images of your inspirations — plants, animals, objects, sketches, mood boards. Anything that helps tell the story.</p>
+      </div>
+      <div class="lab-dropzone" id="labDropzone">
+        <div class="lab-dropzone-content">
+          <div class="lab-dropzone-icon">⬆</div>
+          <p class="lab-dropzone-text">Drag &amp; drop files here</p>
+          <p class="lab-dropzone-hint">or click to browse</p>
+          <input type="file" id="labFiles" multiple accept="image/*" class="lab-dropzone-input">
+        </div>
+      </div>
+      <div class="lab-file-preview" id="labFilePreview"></div>
+      <div class="lab-field">
+        <label class="lab-label">Notes on your references</label>
+        <textarea class="lab-textarea" id="labRefNotes" rows="3" placeholder="e.g. The cracked mug reminds me of how my character was once broken but still holds warmth. The moss photo is from my morning walk — it grows in the most unlikely places..."></textarea>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="lab-nav">
+      <button type="button" class="lab-btn lab-btn-secondary" id="labPrev" disabled>← Back</button>
+      <button type="button" class="lab-btn lab-btn-primary" id="labNext">Next →</button>
+      <button type="submit" class="lab-btn lab-btn-submit" id="labSubmit" style="display:none"><span>✦ Submit My Concept</span></button>
+    </div>
+  </form>
+
+  <!-- Creative Director Reflection -->
+  <section class="lab-reflection">
+    <div class="lab-reflection-inner">
+      <div class="lab-reflection-avatar">✦</div>
+      <div class="lab-reflection-text">
+        <h3>A Note from the Creative Director</h3>
+        <p>Every character you create is a mirror — a way to understand a part of yourself you haven't met yet. The Creator's Lab exists because I believe art therapy and inclusive character design are stronger when they're collaborative. Your stories, your colors, your silhouettes — they all weave into something bigger than any one of us could make alone.</p>
+        <p>There are no wrong answers here. Only honest ones.</p>
+        <small>— Raichuu, Creative Director</small>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var currentStep = 1;
+  var totalSteps = 8;
+  var maxColors = 5;
+  var selectedColors = [];
+
+  function goToStep(step) {
+    if (step < 1 || step > totalSteps) return;
+    currentStep = step;
+    document.querySelectorAll('.lab-step').forEach(function(el) { el.classList.toggle('active', parseInt(el.dataset.labStep) === step); });
+    document.querySelectorAll('.lab-step-dot').forEach(function(el) {
+      var s = parseInt(el.dataset.step);
+      el.classList.toggle('active', s === step);
+      el.classList.toggle('completed', s < step);
+    });
+    document.getElementById('labProgressFill').style.width = (step / totalSteps * 100) + '%';
+    document.getElementById('labPrev').disabled = step === 1;
+    if (step === totalSteps) { document.getElementById('labNext').style.display = 'none'; document.getElementById('labSubmit').style.display = ''; }
+    else { document.getElementById('labNext').style.display = ''; document.getElementById('labSubmit').style.display = 'none'; }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  document.getElementById('labNext').addEventListener('click', function() { goToStep(currentStep + 1); });
+  document.getElementById('labPrev').addEventListener('click', function() { goToStep(currentStep - 1); });
+  document.querySelectorAll('.lab-step-dot').forEach(function(d) { d.addEventListener('click', function() { goToStep(parseInt(this.dataset.step)); }); });
+
+  // ── Color Palette (multi-select up to 5) ──
+  var palette = document.getElementById('colorPalette');
+  var colorStrip = document.getElementById('colorStrip');
+  var colorCountEl = document.getElementById('colorCount');
+
+  function updateColorCount() {
+    colorCountEl.textContent = selectedColors.length + ' / ' + maxColors;
+    colorStrip.innerHTML = '';
+    selectedColors.forEach(function(c, i) {
+      var swatch = document.createElement('div');
+      swatch.className = 'lab-strip-swatch';
+      swatch.style.background = c;
+      if (c === '#F0E6D8' || c === '#FFFFFF') swatch.style.border = '1px solid #d4c4b0';
+      swatch.title = c;
+      swatch.innerHTML = '<span class="lab-strip-remove" data-idx="'+i+'">&times;</span>';
+      colorStrip.appendChild(swatch);
+    });
+    colorStrip.querySelectorAll('.lab-strip-remove').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = parseInt(this.dataset.idx);
+        var removed = selectedColors.splice(idx, 1)[0];
+        palette.querySelectorAll('.lab-color-chip').forEach(function(ch) {
+          if (ch.dataset.color === removed) ch.classList.remove('selected');
+        });
+        updateColorCount();
+      });
+    });
+    palette.querySelectorAll('.lab-color-chip').forEach(function(ch) {
+      ch.style.opacity = selectedColors.length >= maxColors && !ch.classList.contains('selected') ? '0.35' : '1';
+    });
+  }
+
+  palette.addEventListener('click', function(e) {
+    var chip = e.target.closest('.lab-color-chip');
+    if (!chip) return;
+    var color = chip.dataset.color;
+    var idx = selectedColors.indexOf(color);
+    if (idx > -1) {
+      selectedColors.splice(idx, 1);
+      chip.classList.remove('selected');
+    } else if (selectedColors.length < maxColors) {
+      selectedColors.push(color);
+      chip.classList.add('selected');
+    }
+    updateColorCount();
+  });
+
+  var customColor = document.getElementById('labCustomColor');
+  var hexInput = document.getElementById('labHexInput');
+  var addColorBtn = document.getElementById('labAddColor');
+
+  customColor.addEventListener('input', function() { hexInput.value = customColor.value; });
+  hexInput.addEventListener('input', function() {
+    var v = hexInput.value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(v)) customColor.value = v;
+  });
+
+  function addCustomColor() {
+    var c = customColor.value;
+    if (selectedColors.length >= maxColors || selectedColors.indexOf(c) > -1) return;
+    selectedColors.push(c);
+    var chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'lab-color-chip selected';
+    chip.dataset.color = c;
+    chip.style.background = c;
+    chip.title = c;
+    if (c === '#F0E6D8' || c === '#FFFFFF') chip.style.border = '1px solid #d4c4b0';
+    palette.appendChild(chip);
+    updateColorCount();
+  }
+  addColorBtn.addEventListener('click', addCustomColor);
+  hexInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); addCustomColor(); } });
+
+  // ── File Upload ──
+  var dz = document.getElementById('labDropzone');
+  var fi = document.getElementById('labFiles');
+  var fp = document.getElementById('labFilePreview');
+  var uploadedFiles = [];
+  dz.addEventListener('click', function() { fi.click(); });
+  dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', function() { dz.classList.remove('drag-over'); });
+  dz.addEventListener('drop', function(e) { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+  fi.addEventListener('change', function(e) { handleFiles(e.target.files); });
+
+  function handleFiles(files) {
+    Array.from(files).forEach(function(file) {
+      if (!file.type.startsWith('image/')) return;
+      var r = new FileReader();
+      r.onload = function(ev) { uploadedFiles.push({name:file.name,data:ev.target.result}); renderPreviews(); };
+      r.readAsDataURL(file);
+    });
+  }
+  function renderPreviews() {
+    fp.innerHTML = '';
+    uploadedFiles.forEach(function(f, i) {
+      var c = document.createElement('div');
+      c.className = 'lab-file-card';
+      c.innerHTML = '<div class="lab-file-thumb" style="background-image:url('+f.data+')"></div><span class="lab-file-name">'+f.name.replace(/</g,'&lt;')+'</span><button type="button" class="lab-file-remove" data-idx="'+i+'">&times;</button>';
+      fp.appendChild(c);
+    });
+    fp.querySelectorAll('.lab-file-remove').forEach(function(b) {
+      b.addEventListener('click', function() { uploadedFiles.splice(parseInt(this.dataset.idx),1); renderPreviews(); });
+    });
+  }
+
+  // ── Playlist Preview ──
+  document.getElementById('labPlaylist').addEventListener('input', function(e) {
+    var u = e.target.value;
+    var pp = document.getElementById('playlistPreview');
+    if (u && (u.includes('open.spotify.com') || u.includes('music.apple.com'))) { pp.innerHTML = '<div class="lab-playlist-embed">Playlist linked ✓</div>'; }
+    else { pp.innerHTML = ''; }
+  });
+
+  // ── Submit ──
+  document.getElementById('labForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var data = {
+      inspiration: document.getElementById('labInspiration').value,
+      moment: document.getElementById('labMoment').value,
+      colors: selectedColors.slice(),
+      colorNote: document.getElementById('labColorNote').value,
+      silhouette: document.getElementById('labSilhouette').value,
+      textures: document.getElementById('labTextures').value,
+      name: document.getElementById('labName').value,
+      personality: document.getElementById('labPersonality').value,
+      quirks: document.getElementById('labQuirks').value,
+      conflict: document.getElementById('labConflict').value,
+      growth: document.getElementById('labGrowth').value,
+      turningPoint: document.getElementById('labTurningPoint').value,
+      sources: document.getElementById('labSources').value,
+      mediaInfluence: document.getElementById('labMediaInfluence').value,
+      extraDetails: document.getElementById('labExtraDetails').value,
+      playlist: document.getElementById('labPlaylist').value,
+      playlistNote: document.getElementById('labPlaylistNote').value,
+      files: uploadedFiles,
+      refNotes: document.getElementById('labRefNotes').value
+    };
+    var subs = JSON.parse(localStorage.getItem('labSubmissions') || '[]');
+    subs.push(data);
+    localStorage.setItem('labSubmissions', JSON.stringify(subs));
+    var btn = document.getElementById('labSubmit');
+    btn.innerHTML = '<span>✓ Submitted!</span>';
+    btn.classList.add('submitted');
+    setTimeout(function() { btn.innerHTML = '<span>✦ Submit My Concept</span>'; btn.classList.remove('submitted'); }, 3000);
+  });
+})();
+</script>
+{% endblock %}

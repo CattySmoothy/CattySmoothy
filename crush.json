@@ -1,0 +1,10 @@
+{
+  "$schema": "https://charm.land/crush.json",
+  "mcp": {
+    "flask-inspector": {
+      "type": "stdio",
+      "command": "python3",
+      "args": [".crush/mcp/flask-inspector.py"]
+    }
+  }
+}
