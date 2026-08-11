@@ -371,6 +371,23 @@
 
 <script>
 (function() {
+    // Collapses a fast-firing handler (e.g. mousemove) down to at most one
+    // call per animation frame, so drag/resize updates don't force a
+    // synchronous layout recalc more often than the screen can paint.
+    function rafThrottle(fn) {
+        var scheduled = false;
+        var lastArgs = null;
+        return function() {
+            lastArgs = arguments;
+            if (scheduled) return;
+            scheduled = true;
+            requestAnimationFrame(function() {
+                scheduled = false;
+                fn.apply(null, lastArgs);
+            });
+        };
+    }
+
     const bubbles = document.querySelectorAll('.realm-bubble');
     const views = document.querySelectorAll('.realm-view');
 
@@ -632,8 +649,6 @@
           if (!osDesktop || !osGrid) return;
 
           var desktopStateKey = 'osDesktopState';
-          var gridRect = osGrid.getBoundingClientRect();
-          var isZero = gridRect.width === 0 || gridRect.height === 0;
 
           function getWindowId(win) {
             for (var i = 0; i < win.classList.length; i++) {
@@ -666,21 +681,23 @@
           var savedState = loadState();
           var windowData = [];
 
-          windows.forEach(function(win) {
+          // Deterministic default layout (3 columns: left/center/right, matching
+          // the original .os-col grouping in the markup) — computed purely from
+          // index, never from measuring the DOM, since .os-grid's rendered size
+          // isn't reliable at this point (its CSS Grid rows haven't settled yet,
+          // and measuring here would also force an extra synchronous layout pass).
+          var cw = osGrid.clientWidth || 1200;
+          var rightX = Math.max(cw - 340, 720);
+          windows.forEach(function(win, i) {
             var id = win.dataset.windowId || getWindowId(win);
-            var rect = win.getBoundingClientRect();
-            windowData.push({ el: win, id: id, x: rect.left - gridRect.left, y: rect.top - gridRect.top, w: rect.width || 320, h: rect.height || 200 });
+            var d;
+            if (i < 3) { d = { x: 0, y: i * 300, w: 340, h: 200 }; }
+            else if (i < 5) { d = { x: 360, y: (i - 3) * 360, w: 340, h: 200 }; }
+            else { d = { x: rightX, y: (i - 5) * 300, w: 340, h: 200 }; }
+            d.el = win;
+            d.id = id;
+            windowData.push(d);
           });
-
-          // Fallback defaults if grid was hidden
-          if (isZero) {
-            var cw = osGrid.clientWidth || 900;
-            windowData.forEach(function(d, i) {
-              if (i < 3) { d.x = 0; d.y = i * 280; d.w = 320; }
-              else if (i < 5) { d.x = 340; d.y = (i - 3) * 340; d.w = cw - 700 > 320 ? cw - 700 : 380; }
-              else { d.x = cw - 340; d.y = (i - 5) * 280; d.w = 320; }
-            });
-          }
 
           // Apply saved positions over defaults
           if (savedState) {
@@ -733,13 +750,14 @@
                 win.style.left = Math.max(0, ev.clientX - gridRect.left - offsetX) + 'px';
                 win.style.top = Math.max(0, ev.clientY - gridRect.top - offsetY) + 'px';
               }
+              var throttledMove = rafThrottle(onMove);
               function onUp() {
                 win.classList.remove('dragging');
-                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
                 saveState();
               }
-              document.addEventListener('mousemove', onMove);
+              document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
             });
           });
@@ -760,12 +778,13 @@
                 win.style.width = Math.max(280, startW + ev.clientX - startX) + 'px';
                 win.style.height = Math.max(100, startH + ev.clientY - startY) + 'px';
               }
+              var throttledMove = rafThrottle(onMove);
               function onUp() {
-                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
                 saveState();
               }
-              document.addEventListener('mousemove', onMove);
+              document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
             });
           });
@@ -842,16 +861,17 @@
                   ic.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
                   ic.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
                 }
+                var throttledMv = rafThrottle(mv);
                 function up() {
                   ic.classList.remove('dragging');
-                  document.removeEventListener('mousemove', mv);
+                  document.removeEventListener('mousemove', throttledMv);
                   document.removeEventListener('mouseup', up);
                   if (!moved) return;
                   var p = iconPositions;
                   p[d.id] = { x: parseInt(ic.style.left) || 0, y: parseInt(ic.style.top) || 0 };
                   localStorage.setItem(iconPosKey, JSON.stringify(p));
                 }
-                document.addEventListener('mousemove', mv);
+                document.addEventListener('mousemove', throttledMv);
                 document.addEventListener('mouseup', up);
               });
               iconContainer.appendChild(ic);
@@ -978,8 +998,9 @@
                   }
                 }
 
+                var throttledMv = rafThrottle(mv);
                 function up(ev) {
-                  document.removeEventListener('mousemove', mv);
+                  document.removeEventListener('mousemove', throttledMv);
                   document.removeEventListener('mouseup', up);
                   t.classList.remove('dragging-out');
                   if (ghost) ghost.remove();
@@ -1005,7 +1026,7 @@
                   sv(); renderAll();
                 }
 
-                document.addEventListener('mousemove', mv);
+                document.addEventListener('mousemove', throttledMv);
                 document.addEventListener('mouseup', up);
               });
               t.addEventListener('click', function(e) {
@@ -1095,14 +1116,15 @@
                   icon.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
                   icon.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
                 }
+                var throttledMv = rafThrottle(mv);
                 function up() {
                   icon.classList.remove('dragging');
-                  document.removeEventListener('mousemove', mv);
+                  document.removeEventListener('mousemove', throttledMv);
                   document.removeEventListener('mouseup', up);
                   data.dp = { x: parseInt(icon.style.left) || p.x, y: parseInt(icon.style.top) || p.y };
                   sv();
                 }
-                document.addEventListener('mousemove', mv);
+                document.addEventListener('mousemove', throttledMv);
                 document.addEventListener('mouseup', up);
               });
               c.appendChild(icon);
@@ -1225,9 +1247,10 @@
                 view.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
                 view.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
               }
+              var throttledMv = rafThrottle(mv);
               function up() {
                 view.classList.remove('gallery-dragging');
-                document.removeEventListener('mousemove', mv);
+                document.removeEventListener('mousemove', throttledMv);
                 document.removeEventListener('mouseup', up);
                 if (!moved) return;
                 var vr = view.getBoundingClientRect();
@@ -1239,7 +1262,7 @@
                 data.vp = { x: parseInt(view.style.left) || data.vp.x, y: parseInt(view.style.top) || data.vp.y };
                 sv();
               }
-              document.addEventListener('mousemove', mv);
+              document.addEventListener('mousemove', throttledMv);
               document.addEventListener('mouseup', up);
             });
           }
@@ -1256,11 +1279,12 @@
                 view.style.width = Math.max(280, startW + e.clientX - startX) + 'px';
                 view.style.height = Math.max(200, startH + e.clientY - startY) + 'px';
               }
+              var throttledMv = rafThrottle(mv);
               function up() {
-                document.removeEventListener('mousemove', mv);
+                document.removeEventListener('mousemove', throttledMv);
                 document.removeEventListener('mouseup', up);
               }
-              document.addEventListener('mousemove', mv);
+              document.addEventListener('mousemove', throttledMv);
               document.addEventListener('mouseup', up);
             });
           }
@@ -1458,9 +1482,10 @@
                 el.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
                 el.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
               }
+              var throttledMv = rafThrottle(mv);
               function up() {
                 el.classList.remove('dragging');
-                document.removeEventListener('mousemove', mv);
+                document.removeEventListener('mousemove', throttledMv);
                 document.removeEventListener('mouseup', up);
                 var all = ld();
                 for (var i = 0; i < all.length; i++) {
@@ -1468,7 +1493,7 @@
                 }
                 sv(all);
               }
-              document.addEventListener('mousemove', mv);
+              document.addEventListener('mousemove', throttledMv);
               document.addEventListener('mouseup', up);
             });
 
