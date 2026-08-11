@@ -18,12 +18,6 @@
         <div class="realm-view active" data-realm="profile">
             <div class="os-desktop" id="osDesktop">
 
-                <!-- Desktop Icons (scattered) -->
-                <div class="desktop-icon di-cloud" title="Mood">
-                    <span class="di-icon">☁</span>
-                    <span class="di-label">Mood</span>
-                </div>
-
                 <form id="profileFormEditor" class="profile-form">
 
                 <!-- 3-Column Window Grid -->
@@ -261,60 +255,22 @@
                             </div>
                         </div>
 
-                        <!-- Window: Webring -->
-                        <div class="os-window os-window-webring">
+                        <!-- Window: Organization -->
+                        <div class="os-window os-window-org">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-webring" aria-hidden="true">✦</span>
-                                <span class="os-titlebar-text">Webring</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-org" aria-hidden="true">📋</span>
+                                <span class="os-titlebar-text">Organization</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Webring">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Organization">×</button>
                             </div>
                             <div class="os-window-body">
-                                <div class="os-webring-badges" id="webringBadges">
-                                    <label class="os-webring-badge">
-                                        <input type="checkbox" name="webring_art" checked>
-                                        <span class="os-badge-label">🎨 Art Webring</span>
-                                    </label>
-                                    <label class="os-webring-badge">
-                                        <input type="checkbox" name="webring_music">
-                                        <span class="os-badge-label">🎵 Music Webring</span>
-                                    </label>
-                                    <label class="os-webring-badge">
-                                        <input type="checkbox" name="webring_writing">
-                                        <span class="os-badge-label">✍ Writing Webring</span>
-                                    </label>
-                                    <label class="os-webring-badge">
-                                        <input type="checkbox" name="webring_dev">
-                                        <span class="os-badge-label">💻 Dev Webring</span>
-                                    </label>
-                                </div>
-                                <p class="os-webring-hint">display badges on your profile</p>
+                                <p style="margin-bottom:12px;">Lunar Bloom — Bridging the gap between creative expression and psychological healing globally.</p>
+                                <a href="/organization" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">webring.exe</span>
+                                <span class="os-footer-text">lunarbloom.exe</span>
                                 <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
-                        <!-- Window: Profile Rank -->
-                        <div class="os-window os-window-rank">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-rank" aria-hidden="true">★</span>
-                                <span class="os-titlebar-text">Profile Rank</span>
-                                <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Profile Rank">×</button>
-                            </div>
-                            <div class="os-window-body os-window-body-center">
-                                <div class="os-rank-display">
-                                    <span class="os-rank-big-star">★</span>
-                                    <div class="os-rank-level" id="rankLevel">Lv.1</div>
-                                    <div class="os-rank-title" id="rankTitle">Novice</div>
-                                    <div class="os-rank-xp-bar">
-                                        <div class="os-rank-xp-fill" id="osXpFill" style="width:0%"></div>
-                                    </div>
-                                    <div class="os-rank-xp-text" id="osXpText">0 / 20 XP</div>
-                                </div>
                             </div>
                         </div>
 
@@ -394,41 +350,7 @@
         });
     });
 
-    const searchInput = document.getElementById('memberSearch');
-    const sortSelect = document.getElementById('sortFilter');
-    const grid = document.getElementById('memberGrid');
-    if (grid) {
-        const cards = Array.from(grid.querySelectorAll('.profile-card'));
-
-        function filterAndSort() {
-            const query = (searchInput.value || '').toLowerCase().trim();
-            const sortBy = sortSelect.value;
-
-            let visible = cards.filter(card => {
-                if (!query) return true;
-                const name = (card.querySelector('.card-name')?.textContent || '').toLowerCase();
-                const username = (card.querySelector('.card-username')?.textContent || '').toLowerCase();
-                const tags = (card.querySelector('.card-banner')?.textContent || '').toLowerCase();
-                return name.includes(query) || username.includes(query) || tags.includes(query);
-            });
-
-            visible.sort((a, b) => {
-                const aVal = (a.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
-                const bVal = (b.querySelector(sortBy === 'name' ? '.card-name' : '.card-username')?.textContent || '').toLowerCase();
-                return aVal.localeCompare(bVal);
-            });
-
-            cards.forEach(c => c.style.display = 'none');
-            visible.forEach(c => c.style.display = '');
-            visible.forEach(c => grid.appendChild(c));
-        }
-
-        if (searchInput) searchInput.addEventListener('input', filterAndSort);
-        if (sortSelect) sortSelect.addEventListener('change', filterAndSort);
-    }
-
-
-    // Commission toggle
+    // ── Commission toggle ──
     var commToggleBtn = document.getElementById('commToggleBtn');
     if (!commToggleBtn) commToggleBtn = document.querySelector('.comm-toggle-btn');
     var commOpen = localStorage.getItem('commissionsOpen') === 'true';
@@ -471,7 +393,6 @@
             updateCommUI();
         });
     }
-
 
     // ── Profile Editor ──
     var editorForm = document.getElementById('profileFormEditor');
@@ -761,9 +682,6 @@
             // Social links
             var socialInputs = document.querySelectorAll('#socialMatrix .social-input');
             socialInputs.forEach(function(s) { if (s.value.trim()) xp += 3; });
-            // Webring
-            var webringChecked = document.querySelectorAll('#webringBadges input:checked');
-            webringChecked.forEach(function() { xp += 3; });
             return Math.min(xp, 130);
         }
 
@@ -842,12 +760,6 @@
                 sitesBadge.textContent = sc + '/3';
                 sitesBadge.className = 'os-footer-badge' + (sc >= 3 ? ' badge-complete' : '');
             }
-            var webringBadge = document.getElementById('webringBadge');
-            if (webringBadge) {
-                var wc = document.querySelectorAll('#webringBadges input:checked').length;
-                webringBadge.textContent = wc + '/4';
-                webringBadge.className = 'os-footer-badge' + (wc === 4 ? ' badge-complete' : '');
-            }
         }
 
         // Save button feedback
@@ -870,9 +782,6 @@
         });
         document.querySelectorAll('.swap-add, .swap-remove, .os-nav-add, .os-nav-remove, .social-add-btn, .social-remove').forEach(function(el) {
             el.addEventListener('click', function() { setTimeout(updateGamifiedUI, 50); });
-        });
-        document.querySelectorAll('#webringBadges input').forEach(function(el) {
-            el.addEventListener('change', updateGamifiedUI);
         });
 
         updateGamifiedUI();
@@ -1028,8 +937,7 @@
             'os-window-webcam': { emoji: '\u25c9', label: 'Webcam' },
             'os-window-main': { emoji: '\u270e', label: 'Editor' },
             'os-window-sites': { emoji: '\u2301', label: 'Sites' },
-            'os-window-webring': { emoji: '\u2726', label: 'Webring' },
-            'os-window-rank': { emoji: '\u2605', label: 'Rank' }
+            'os-window-org': { emoji: '\uD83D\uDCCB', label: 'Organization' }
           };
           var iconPosKey = 'osDesktopIconPos';
           var iconContainer = document.getElementById('osDesktopIcons');

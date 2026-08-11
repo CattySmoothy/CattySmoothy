@@ -128,7 +128,10 @@ document.getElementById('donateForm').addEventListener('submit', function(e) {
 
     fetch('/create-checkout-session', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+        },
         body: JSON.stringify({
             amount: amt,
             name: name,
@@ -137,12 +140,14 @@ document.getElementById('donateForm').addEventListener('submit', function(e) {
             visibility: vis
         })
     })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-        if (data.url) {
-            window.location.href = data.url;
+    .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+    .then(function(res) {
+        if (res.data.url) {
+            window.location.href = res.data.url;
+        } else if (res.status === 401 && res.data.login_url) {
+            window.location.href = res.data.login_url;
         } else {
-            alert('Error: ' + (data.error || 'Something went wrong'));
+            alert('Error: ' + (res.data.error || 'Something went wrong'));
             btn.textContent = 'Complete Donation';
             btn.disabled = false;
         }

@@ -1,10 +1,23 @@
 import os
 from flask import render_template, request, jsonify, redirect, url_for
+from flask_login import login_required, current_user
 import stripe
+
+from extensions import db, csrf
+from models import Purchase
 
 PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 
 DOMAIN = os.getenv('DOMAIN', 'http://localhost:5001')
+
+
+def ensure_stripe_customer(user):
+    if user.stripe_customer_id:
+        return user.stripe_customer_id
+    customer = stripe.Customer.create(email=user.email, metadata={'user_id': str(user.id)})
+    user.stripe_customer_id = customer.id
+    db.session.commit()
+    return customer.id
 
 donors = [
     {"name": "Luna", "message": "Love your art!", "amount": 10.00, "public": True},
@@ -35,6 +48,7 @@ def register_routes(app):
         return render_template('support.html', title="Support", publishable_key=PUBLISHABLE_KEY)
 
     @app.route('/donate')
+    @login_required
     def donate():
         amount = request.args.get('amount', '5.00')
         return render_template('donate.html', title="Donate", amount=amount, publishable_key=PUBLISHABLE_KEY)
@@ -77,6 +91,7 @@ def register_routes(app):
         return render_template('join.html', title="Join Discord")
 
     @app.route('/create-checkout-session', methods=['POST'])
+    @login_required
     def create_checkout_session():
         data = request.get_json()
         amount = data.get('amount', 5.00)
@@ -86,8 +101,11 @@ def register_routes(app):
         visibility = data.get('visibility', 'public')
 
         try:
+            customer_id = ensure_stripe_customer(current_user)
             session = stripe.checkout.Session.create(
                 mode='payment',
+                customer=customer_id,
+                client_reference_id=str(current_user.id),
                 line_items=[{
                     'price_data': {
                         'currency': 'usd',
@@ -107,19 +125,31 @@ def register_routes(app):
                 success_url=DOMAIN + '/success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=DOMAIN + '/cancel',
             )
+            db.session.add(Purchase(
+                user_id=current_user.id,
+                stripe_session_id=session.id,
+                type='donation',
+                amount=amount,
+                status='pending',
+            ))
+            db.session.commit()
             return jsonify({'url': session.url})
         except Exception as e:
             return jsonify({'error': str(e)}), 400
 
     @app.route('/create-subscription-session', methods=['POST'])
+    @login_required
     def create_subscription_session():
         data = request.get_json()
         amount = data.get('amount', 1.99)
         plan_name = data.get('planName', '')
 
         try:
+            customer_id = ensure_stripe_customer(current_user)
             session = stripe.checkout.Session.create(
                 mode='subscription',
+                customer=customer_id,
+                client_reference_id=str(current_user.id),
                 line_items=[{
                     'price_data': {
                         'currency': 'usd',
@@ -137,6 +167,15 @@ def register_routes(app):
                 success_url=DOMAIN + '/success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url=DOMAIN + '/cancel',
             )
+            db.session.add(Purchase(
+                user_id=current_user.id,
+                stripe_session_id=session.id,
+                type='membership',
+                amount=amount,
+                plan_name=plan_name,
+                status='pending',
+            ))
+            db.session.commit()
             return jsonify({'url': session.url})
         except Exception as e:
             return jsonify({'error': str(e)}), 400
@@ -148,3 +187,28 @@ def register_routes(app):
     @app.route('/cancel')
     def cancel():
         return render_template('cancel.html', title="Payment Cancelled")
+
+    @app.route('/webhook/stripe', methods=['POST'])
+    @csrf.exempt
+    def stripe_webhook():
+        webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
+        if not webhook_secret:
+            return jsonify({'error': 'webhook not configured'}), 500
+
+        payload = request.get_data()
+        sig_header = request.headers.get('Stripe-Signature', '')
+        try:
+            event = stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+        except (ValueError, stripe.error.SignatureVerificationError):
+            return jsonify({'error': 'invalid signature'}), 400
+
+        if event['type'] == 'checkout.session.completed':
+            session_obj = event['data']['object']
+            purchase = Purchase.query.filter_by(stripe_session_id=session_obj['id']).first()
+            if purchase:
+                purchase.status = 'completed'
+                purchase.stripe_payment_intent_id = session_obj.get('payment_intent')
+                purchase.stripe_subscription_id = session_obj.get('subscription')
+                db.session.commit()
+
+        return jsonify({'received': True}), 200

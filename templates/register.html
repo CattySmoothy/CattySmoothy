@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-layout" style="justify-content: center;">
+    <div class="about-box" style="max-width: 420px;">
+        <section class="support-header">
+            <div class="content-container">
+                <h1 class="page-title">Create Account</h1>
+                <p class="page-subtitle">Join to donate or become a member</p>
+            </div>
+        </section>
+
+        <form class="donate-form" id="registerForm">
+            <div class="donate-field">
+                <label class="donate-label" for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" class="donate-input" placeholder="you@example.com" required>
+            </div>
+
+            <div class="donate-field">
+                <label class="donate-label" for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" class="donate-input" placeholder="At least 8 characters" minlength="8" required>
+            </div>
+
+            <div class="donate-field">
+                <label class="donate-label" for="registerConfirmPassword">Confirm Password</label>
+                <input type="password" id="registerConfirmPassword" class="donate-input" placeholder="Repeat your password" minlength="8" required>
+            </div>
+
+            <div id="registerError" style="display:none; color:#c0392b; font-size:0.85em; margin-bottom:12px;"></div>
+
+            <button type="submit" class="plan-button donate-submit">Create Account</button>
+            <p class="donate-note" style="margin-top:14px; text-align:center;">
+                Already have an account? <a href="{{ url_for('login', next=next) }}">Log in</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var email = document.getElementById('registerEmail').value;
+    var password = document.getElementById('registerPassword').value;
+    var confirmPassword = document.getElementById('registerConfirmPassword').value;
+    var errorBox = document.getElementById('registerError');
+    errorBox.style.display = 'none';
+
+    var btn = this.querySelector('.donate-submit');
+    btn.textContent = 'Creating Account...';
+    btn.disabled = true;
+
+    fetch('/register{{ ('?next=' + next) if next else '' }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password,
+            confirm_password: confirmPassword
+        })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        } else {
+            errorBox.textContent = data.error || 'Something went wrong';
+            errorBox.style.display = '';
+            btn.textContent = 'Create Account';
+            btn.disabled = false;
+        }
+    })
+    .catch(function() {
+        errorBox.textContent = 'Could not connect to the server.';
+        errorBox.style.display = '';
+        btn.textContent = 'Create Account';
+        btn.disabled = false;
+    });
+});
+</script>
+{% endblock %}

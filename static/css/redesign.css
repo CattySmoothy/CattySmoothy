@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&family=Quicksand:wght@400;500;600&display=swap');
 
+@font-face {
+    font-family: 'AFL Typewriter';
+    src: url('../fonts/aflfont.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --color-bg: #FAF8F5;
     --color-surface: #FFFFFF;
@@ -11,9 +19,17 @@
     --font-display: 'Playfair Display', serif;
     --font-body: 'DM Sans', sans-serif;
     --font-sub: 'Quicksand', sans-serif;
-    
+    --font-ticket: 'AFL Typewriter', 'Courier New', monospace;
+
     --radius-sm: 4px;
     --radius-md: 8px;
+
+    /* Receipt-ticket sidebar */
+    --ticket-bg: #F1E9D8;
+    --ticket-ink: #382C20;
+    --ticket-ink-muted: #8A7A62;
+    --ticket-line: rgba(56, 44, 32, 0.28);
+    --ticket-icon-bg: rgba(255, 255, 255, 0.55);
 }
 
 [data-theme="ocean"] {
@@ -196,7 +212,8 @@ body {
     align-items: center;
     padding: 24px 0 0;
     width: 80px;
-    background: var(--color-header-start);
+    background: var(--ticket-bg);
+    box-shadow: 1px 0 0 var(--ticket-line), 2px 0 12px rgba(0, 0, 0, 0.12);
     transition: width 0.35s ease;
     overflow: hidden;
 }
@@ -210,7 +227,7 @@ body {
     flex-shrink: 0;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--ticket-ink-muted);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -218,7 +235,7 @@ body {
     width: auto;
     height: auto;
     padding: 4px 8px;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
     transition: color 0.2s ease;
 }
 
@@ -244,9 +261,9 @@ body {
 }
 
 .sidebar-toggle:hover {
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+    color: var(--ticket-ink);
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: none;
 }
 
 /* ── Profile Badge (top-right avatar circle) ── */
@@ -298,24 +315,66 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: 28px;
+    gap: 18px;
     flex: 1;
     width: 100%;
-    padding-top: 24px;
+    padding-top: 12px;
+}
+
+.sidebar-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: calc(100% - 28px);
+    margin: 0 0 0;
+    padding: 0 0 6px;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    border-bottom: 1px solid var(--ticket-line);
+    transition: height 0.3s ease, opacity 0.2s ease, margin 0.3s ease;
+}
+
+.site-sidebar:hover .sidebar-section-header,
+.site-sidebar.expanded .sidebar-section-header {
+    height: 20px;
+    opacity: 1;
+    margin: 0 0 6px;
+}
+
+.sidebar-section-title {
+    font-family: var(--font-ticket);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ticket-ink-muted);
+    white-space: nowrap;
+}
+
+.sidebar-section-count {
+    font-family: var(--font-ticket);
+    font-size: 12px;
+    color: var(--ticket-ink-muted);
+    white-space: nowrap;
 }
 
 .sidebar-nav-icon {
-    font-size: 22px;
+    font-size: 15px;
     flex-shrink: 0;
     text-align: center;
-    color: inherit;
+    color: var(--ticket-ink);
     line-height: 1;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ticket-line);
+    border-radius: 5px;
+    background: var(--ticket-icon-bg);
+    box-sizing: border-box;
 }
-
-a[title="Home"] .sidebar-nav-icon { font-size: 28px; }
-a[title="Updates"] .sidebar-nav-icon { font-size: 30px; }
-a[title="Organization"] .sidebar-nav-icon { font-size: 24px; }
-a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .sidebar-nav-item {
     display: flex;
@@ -323,7 +382,7 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     justify-content: center;
     gap: 0;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.82);
+    color: var(--ticket-ink);
     transition: color 0.2s ease;
     white-space: nowrap;
     padding: 0 10px;
@@ -335,17 +394,17 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 .site-sidebar:hover .sidebar-nav-item,
 .site-sidebar.expanded .sidebar-nav-item {
     justify-content: flex-start;
-    gap: 10px;
+    gap: 12px;
 }
 
 .sidebar-nav-label {
-    font-family: var(--font-body);
+    font-family: var(--font-ticket);
     font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
     color: inherit;
     position: absolute;
-    left: 44px;
+    left: 48px;
     white-space: nowrap;
     opacity: 0;
     transform: translateX(8px);
@@ -358,12 +417,16 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .sidebar-nav-item:hover {
-    color: #FFFFFF;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    color: var(--primary-warm, #E8756A);
+}
+
+.sidebar-nav-item:hover .sidebar-nav-icon {
+    border-color: var(--primary-warm, #E8756A);
+    color: var(--primary-warm, #E8756A);
 }
 
 /* Settings at bottom with divider */
@@ -374,51 +437,28 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 12px 0 20px;
+    gap: 10px;
+    padding: 10px 0 20px;
     box-sizing: border-box;
-    background: var(--color-sidebar-bottom);
+    background: var(--ticket-bg);
     margin-top: auto;
 }
 
 .sidebar-divider {
-    width: calc(100% - 20px);
-    height: 14px;
-    line-height: 14px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-divider::before {
-    content: "┆┆┆┆┆┆┆┆┆┆┆┆";
-    letter-spacing: 3px;
-    white-space: nowrap;
+    display: none;
 }
 
 .settings-nav-link {
     cursor: pointer;
     width: 100%;
     border-radius: 0;
-    padding: 10px 0;
+    padding: 8px 0;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
-.settings-nav-link .sidebar-nav-icon {
-    font-size: 26px;
-}
-
-.settings-nav-link .sidebar-nav-label {
-    font-size: 15px;
-}
-
 .settings-nav-link:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #FFFFFF;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary-warm, #E8756A);
 }
 
 /* Main area offset for sidebar */
@@ -2812,21 +2852,21 @@ a[title="Community"] .sidebar-nav-icon { font-size: 20px; }
 
 .sidebar-subnav-item {
     display: block;
-    font-family: var(--font-body);
+    font-family: var(--font-ticket);
     font-size: 12px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--ticket-ink-muted);
     text-decoration: none;
-    padding: 6px 16px 6px 44px;
+    padding: 6px 16px 6px 48px;
     white-space: nowrap;
     transition: background 0.15s ease, color 0.15s ease;
     border-left: 2px solid transparent;
 }
 
 .sidebar-subnav-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.9);
-    border-left-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--primary-warm, #E8756A);
+    border-left-color: var(--primary-warm, #E8756A);
 }
 
 /* ── Owner Card ── */

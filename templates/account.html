@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-layout" style="justify-content: center;">
+    <div class="about-box" style="max-width: 560px;">
+        <section class="support-header">
+            <div class="content-container">
+                <h1 class="page-title">My Account</h1>
+                <p class="page-subtitle">{{ current_user.email }}</p>
+            </div>
+        </section>
+
+        <div class="form-section">
+            <div class="form-section-title">Purchase History</div>
+            {% if purchases %}
+                {% for p in purchases %}
+                <div class="donate-field" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                    <div>
+                        <div class="donate-label" style="margin-bottom:2px;">
+                            {{ p.plan_name if p.plan_name else (p.type|capitalize) }}
+                        </div>
+                        <div class="donate-note">{{ p.created_at.strftime('%b %d, %Y') }} &middot; {{ p.type|capitalize }}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="donate-label" style="margin-bottom:2px;">${{ "%.2f"|format(p.amount) }}</div>
+                        <div class="donate-note">{{ p.status|capitalize }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="donate-note">No purchases yet. <a href="{{ url_for('support') }}">Become a member</a> or <a href="{{ url_for('donate') }}">send some stardust</a>.</p>
+            {% endif %}
+        </div>
+
+        <p class="donate-note" style="margin-top:14px; text-align:center;">
+            <a href="{{ url_for('logout') }}">Log Out</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Raichuu - Creating digital art, process videos, tutorials, wallpapers and more">
     <meta name="author" content="Raichuu">
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -43,6 +44,10 @@
             </span>
         </button>
         <nav class="sidebar-nav">
+            <div class="sidebar-section-header">
+                <span class="sidebar-section-title">Menu</span>
+                <span class="sidebar-section-count">(5)</span>
+            </div>
             <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Home">
                 <span class="sidebar-nav-icon">⌂︎</span>
                 <span class="sidebar-nav-label">Home</span>
@@ -71,7 +76,25 @@
             </a>
         </nav>
         <div class="sidebar-bottom">
-            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-header">
+                <span class="sidebar-section-title">Account</span>
+                <span class="sidebar-section-count">({{ 3 if current_user.is_authenticated else 2 }})</span>
+            </div>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('account') }}" class="sidebar-nav-item" title="Account">
+                <span class="sidebar-nav-icon">✦</span>
+                <span class="sidebar-nav-label">Account</span>
+            </a>
+            <a href="{{ url_for('logout') }}" class="sidebar-nav-item" title="Log Out">
+                <span class="sidebar-nav-icon">⏻</span>
+                <span class="sidebar-nav-label">Log Out</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="sidebar-nav-item" title="Log In">
+                <span class="sidebar-nav-icon">✦</span>
+                <span class="sidebar-nav-label">Log In</span>
+            </a>
+            {% endif %}
             <a href="#" id="settingsNavLink" class="sidebar-nav-item settings-nav-link" title="Settings">
                 <span class="sidebar-nav-icon">⫶☰</span>
                 <span class="sidebar-nav-label">Settings</span>
