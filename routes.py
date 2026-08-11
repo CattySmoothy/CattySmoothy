@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 import stripe
 
 from extensions import db, csrf
-from models import Purchase
+from models import Purchase, GuestbookEntry
 
 PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 
@@ -37,7 +37,13 @@ donors = [
 def register_routes(app):
     @app.route('/')
     def home():
-        return render_template('home.html', title="Home")
+        guestbook_entries = GuestbookEntry.query.order_by(GuestbookEntry.created_at.desc()).limit(50).all()
+        return render_template(
+            'home.html',
+            title="Home",
+            guestbook_entries=guestbook_entries,
+            guest_view_only=not current_user.is_authenticated,
+        )
 
     @app.route('/about')
     def about():

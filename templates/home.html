@@ -3,20 +3,72 @@
 {% block content_class %}realm-explorer-wrap{% endblock %}
 
 {% block content %}
-<div class="realm-explorer">
-    <div class="realm-sidebar" id="realmSidebar">
-        <div class="realm-bubble custom-cursor-on-hover active" data-realm="profile" title="Profile">
-            <span class="bubble-icon custom-cursor-on-hover">✎</span>
-            <span class="bubble-tooltip">Profile</span>
+<!-- Boot Screen -->
+<div class="cs-boot-screen" id="csBootScreen">
+    <div class="cs-boot-lines" id="csBootLines"></div>
+    <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
+</div>
+
+<!-- Welcome Gate -->
+{% if not current_user.is_authenticated %}
+<div class="cs-welcome-gate" id="csWelcomeGate">
+    <div class="cs-welcome-panel">
+        <h2 class="cs-welcome-title">Welcome to CattySmoothy</h2>
+        <p class="cs-welcome-copy">Log in for full access, or look around as a guest.</p>
+        <div class="cs-welcome-actions">
+            <a href="{{ url_for('login', next='/') }}" class="cs-welcome-btn cs-welcome-login">Log In</a>
+            <button type="button" class="cs-welcome-btn cs-welcome-guest" id="csGuestBtn">Continue as Guest</button>
         </div>
     </div>
+</div>
+{% endif %}
 
+<div class="realm-explorer">
     <div class="realm-canvas">
         <div class="realm-canvas-bg"></div>
 
         <!-- Profile view -->
         <div class="realm-view active" data-realm="profile">
-            <div class="os-desktop" id="osDesktop">
+            <div class="os-desktop{% if guest_view_only %} view-only{% endif %}" id="osDesktop">
+
+                <!-- Menu Bar -->
+                <div class="os-menubar" id="osMenuBar">
+                    <div class="os-menu">
+                        <button type="button" class="os-menu-label">File</button>
+                        <div class="os-menu-dropdown">
+                            {% if guest_view_only %}
+                            <a href="{{ url_for('login', next='/') }}" class="os-menu-item">Log In</a>
+                            {% else %}
+                            <button type="button" class="os-menu-item" id="menuSaveProfile">Save Profile</button>
+                            <a href="{{ url_for('logout') }}" class="os-menu-item">Log Out</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="os-menu">
+                        <button type="button" class="os-menu-label">Edit</button>
+                        <div class="os-menu-dropdown">
+                            <button type="button" class="os-menu-item" id="menuResetLayout">Reset Layout</button>
+                        </div>
+                    </div>
+                    <div class="os-menu">
+                        <button type="button" class="os-menu-label">View</button>
+                        <div class="os-menu-dropdown">
+                            {% if guest_view_only %}<span class="os-menu-item os-menu-item-static">☑ View-Only Mode</span>{% else %}<span class="os-menu-item os-menu-item-static">☑ Full Access</span>{% endif %}
+                        </div>
+                    </div>
+                    <div class="os-menu">
+                        <button type="button" class="os-menu-label">Window</button>
+                        <div class="os-menu-dropdown" id="osMenuWindowDropdown"></div>
+                    </div>
+                    <div class="os-menu">
+                        <button type="button" class="os-menu-label">Help</button>
+                        <div class="os-menu-dropdown">
+                            <a href="{{ url_for('about') }}" class="os-menu-item">About</a>
+                            <a href="{{ url_for('support') }}" class="os-menu-item">Support</a>
+                        </div>
+                    </div>
+                    <div class="os-menubar-clock" id="osMenuClock">00:00</div>
+                </div>
 
                 <form id="profileFormEditor" class="profile-form">
 
@@ -26,64 +78,38 @@
                     <!-- LEFT COLUMN -->
                     <div class="os-col os-col-left">
 
-                        <!-- Window: Bio / Identity -->
-                        <div class="os-window os-window-bio">
+                        <!-- Window: My Computer -->
+                        <div class="os-window os-window-mycomputer">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-bio" aria-hidden="true">❀</span>
-                                <span class="os-titlebar-text">Bio / Identity</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-mycomputer" aria-hidden="true">🖥</span>
+                                <span class="os-titlebar-text">My Computer</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Bio / Identity">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close My Computer">×</button>
                             </div>
                             <div class="os-window-body">
-                                <div class="os-field">
-                                    <label class="os-label">Display Name</label>
-                                    <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="os-input" value="Catty Smoothy" maxlength="30">
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Age</label>
-                                    <input type="text" id="personaAge" name="age" placeholder="e.g. 22" class="os-input" maxlength="3">
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Pronouns</label>
-                                    <div class="pronoun-picker">
-                                        <div class="pronoun-tag-input" id="pronounTagInput">
-                                            <span class="pronoun-chip">she/her<span class="pronoun-chip-remove" data-value="she/her">&times;</span></span>
-                                            <input type="text" id="pronounInput" list="pronounOptions" placeholder="Add…" class="pronoun-text-input os-input">
-                                        </div>
-                                        <datalist id="pronounOptions">
-                                            <option value="she/her"><option value="they/them"><option value="he/him"><option value="she/they"><option value="he/they"><option value="fluid"><option value="any/all"><option value="Custom">
-                                        </datalist>
-                                        <input type="hidden" id="pronounsHidden" name="pronouns" value="she/her">
-                                    </div>
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Aesthetic Tags <span class="os-hint">(up to 3)</span></label>
-                                    <div class="tag-grid" id="aestheticTags">
-                                        {% set tags = ['Coquette', 'Ethereal', 'Dark Angel', 'Sweetheart', 'Soft', 'Night Owl', 'Pastel Goth', 'Stargazer', 'Whimsigoth', 'Cottagecore', 'Cyber', 'Mermaid'] %}
-                                        {% for tag in tags %}
-                                        <label class="tag-chip">
-                                            <input type="checkbox" name="aesthetic_tags" value="{{ tag }}" class="tag-input">
-                                            <span class="tag-label">{{ tag }}</span>
-                                        </label>
-                                        {% endfor %}
-                                    </div>
-                                </div>
+                                <div class="os-info-row"><span class="os-info-label">System</span><span class="os-info-value">CattySmoothy OS</span></div>
+                                <div class="os-info-row"><span class="os-info-label">User</span><span class="os-info-value">{{ current_user.email if current_user.is_authenticated else 'Guest' }}</span></div>
+                                {% if current_user.is_authenticated %}
+                                <div class="os-info-row"><span class="os-info-label">Stardust</span><span class="os-info-value">✦ {{ current_user.stardust_balance }}</span></div>
+                                {% endif %}
+                                <div class="os-info-row"><span class="os-info-label">Access</span><span class="os-info-value">{{ 'Guest (view-only)' if guest_view_only else 'Full Access' }}</span></div>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">identity.exe</span>
+                                <span class="os-footer-text">mycomputer.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
 
-                        <!-- Window: Webcam Profile Picture -->
-                        <div class="os-window os-window-webcam">
+                        <!-- Window: About -->
+                        <div class="os-window os-window-about">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-webcam" aria-hidden="true">◉</span>
-                                <span class="os-titlebar-text">Webcam Profile</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-about" aria-hidden="true">❀</span>
+                                <span class="os-titlebar-text">About</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Webcam Profile">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close About">×</button>
                             </div>
+                            {% if guest_view_only %}<fieldset disabled>{% endif %}
                             <div class="os-window-body os-window-body-center">
                                 <div class="avatar-upload" id="avatarUpload">
                                     <div class="avatar-preview" id="avatarPreview">
@@ -93,11 +119,48 @@
                                     <div class="avatar-overlay">✧ drag &amp; drop ✧</div>
                                     <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
                                 </div>
-                                <p class="os-webcam-hint">drop your icon here ✦</p>
+                                <div class="os-field">
+                                    <label class="os-label">Display Name</label>
+                                    <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="os-input" value="Catty Smoothy" maxlength="30">
+                                </div>
+                                <div class="os-field">
+                                    <label class="os-label">Pronouns</label>
+                                    <input type="text" id="personaPronouns" name="pronouns" placeholder="e.g. she/her" class="os-input" value="she/her" maxlength="30">
+                                </div>
+                                <div class="os-field">
+                                    <label class="os-label">Short Bio</label>
+                                    <textarea id="personaShortBio" name="short_bio" placeholder="A little about you..." class="os-textarea" maxlength="150" rows="3">Digital artist making paintings, wallpapers, and sketches.</textarea>
+                                </div>
+                                <div class="os-field">
+                                    <label class="os-label">Links</label>
+                                    <input type="url" name="social_instagram" placeholder="Instagram URL" class="os-input" style="margin-bottom:6px;">
+                                    <input type="url" name="social_discord" placeholder="Discord URL" class="os-input" style="margin-bottom:6px;">
+                                    <input type="url" name="social_other" placeholder="Another link" class="os-input">
+                                </div>
+                            </div>
+                            {% if guest_view_only %}</fieldset>{% endif %}
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">about.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+
+                        <!-- Window: Settings -->
+                        <div class="os-window os-window-settings">
+                            <div class="os-titlebar">
+                                <span class="os-titlebar-icon os-titlebar-icon-settings" aria-hidden="true">⚙</span>
+                                <span class="os-titlebar-text">Settings</span>
+                                <div class="os-titlebar-ornament">~</div>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Settings">×</button>
+                            </div>
+                            <div class="os-window-body os-window-body-center">
+                                <p class="os-settings-copy">Themes, accent colors, and display preferences.</p>
+                                <button type="button" class="os-settings-open-btn" id="openSettingsFromWindow">Open Settings</button>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">webcam.exe</span>
+                                <span class="os-footer-text">settings.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -107,91 +170,56 @@
                     <!-- CENTER COLUMN -->
                     <div class="os-col os-col-center">
 
-                        <!-- Window: Main Editor -->
-                        <div class="os-window os-window-main">
+                        <!-- Window: Document -->
+                        <div class="os-window os-window-document">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-main" aria-hidden="true">✎</span>
-                                <span class="os-titlebar-text">Profile Editor</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-document" aria-hidden="true">✎</span>
+                                <span class="os-titlebar-text">Document</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Profile Editor">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Document">×</button>
                             </div>
+                            {% if guest_view_only %}<fieldset disabled>{% endif %}
                             <div class="os-window-body">
                                 <div class="os-field">
-                                    <label class="os-label">Site Bio</label>
-                                    <textarea id="personaBio" name="bio" placeholder="Describe your creative journey..." class="os-textarea" maxlength="250" rows="3">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches & studies.</textarea>
-                                    <span class="char-count"><span id="bioCharCount">0</span>/250</span>
+                                    <label class="os-label">Notes</label>
+                                    <textarea id="documentText" name="document_text" placeholder="Write something..." class="os-textarea os-document-textarea" maxlength="2000" rows="14">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches &amp; studies.</textarea>
+                                    <span class="char-count"><span id="documentCharCount">0</span>/2000</span>
                                 </div>
-
-                                <div class="os-field">
-                                    <label class="os-label">Current Class <span class="os-hint">(vulnerabilities)</span></label>
-                                    <input type="text" id="currentClass" name="current_class" placeholder="e.g. Exam Burnout, Creative Block" class="os-input" value="Struggling with Grade 10 Math · Exam Burnout">
-                                </div>
-
-                                <div class="os-field">
-                                    <label class="os-label">Future Class <span class="os-hint">(aspiration)</span></label>
-                                    <input type="text" id="futureClass" name="future_class" placeholder="e.g. Aspiring Art Therapist" class="os-input" value="Aspiring Digital Artist">
-                                </div>
-
-                                <div class="os-field">
-                                    <label class="os-label">Custom Nav Links</label>
-                                    <div class="os-nav-links" id="osNavLinks">
-                                        <div class="os-nav-row">
-                                            <input type="text" name="nav_label[]" placeholder="Label" class="os-input os-input-sm">
-                                            <input type="url" name="nav_url[]" placeholder="https://" class="os-input os-input-sm">
-                                            <button type="button" class="os-nav-remove" aria-label="Remove">×</button>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="os-nav-add" id="osNavAdd">+ Add Link</button>
-                                </div>
-
-                                <div class="os-field">
-                                    <label class="os-label">Showcase Widgets</label>
-                                    <div class="os-widgets">
-                                        <div class="os-widget-row">
-                                            <span class="os-widget-icon">🎵</span>
-                                            <input type="text" name="favorite_track" placeholder="Favorite track (e.g. Lana Del Rey – Video Games)" class="os-input os-widget-input" id="favTrack">
-                                        </div>
-                                        <div class="os-widget-row">
-                                            <span class="os-widget-icon">🌐</span>
-                                            <input type="text" name="status_update" placeholder="Status update..." class="os-input os-widget-input" id="statusUpdate">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="os-field">
-                                    <label class="os-label">Strength Swap Matrix</label>
-                                    <div class="swap-grid">
-                                        <div class="swap-column">
-                                            <span class="swap-heading strengths-heading">Strengths</span>
-                                            <div class="swap-list" id="strengthsList">
-                                                <div class="swap-item">
-                                                    <input type="text" name="strengths[]" placeholder="e.g. Writing" class="os-input swap-input">
-                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                                </div>
-                                                <div class="swap-item">
-                                                    <input type="text" name="strengths[]" placeholder="e.g. Fine Art" class="os-input swap-input">
-                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="swap-add" data-list="strengthsList" data-name="strengths[]" data-placeholder="e.g. Empathy">+ Add Strength</button>
-                                        </div>
-                                        <div class="swap-column">
-                                            <span class="swap-heading weaknesses-heading">Weaknesses</span>
-                                            <div class="swap-list" id="weaknessesList">
-                                                <div class="swap-item">
-                                                    <input type="text" name="weaknesses[]" placeholder="e.g. Coding" class="os-input swap-input">
-                                                    <button type="button" class="swap-remove" aria-label="Remove">×</button>
-                                                </div>
-                                            </div>
-                                            <button type="button" class="swap-add" data-list="weaknessesList" data-name="weaknesses[]" data-placeholder="e.g. Public Speaking">+ Add Weakness</button>
-                                        </div>
-                                    </div>
-                        </div>
-
-                    </div>
+                            </div>
+                            {% if guest_view_only %}</fieldset>{% endif %}
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">editor.exe</span>
+                                <span class="os-footer-text">document.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+
+                        <!-- Window: Paint -->
+                        <div class="os-window os-window-paint">
+                            <div class="os-titlebar">
+                                <span class="os-titlebar-icon os-titlebar-icon-paint" aria-hidden="true">🎨</span>
+                                <span class="os-titlebar-text">Paint</span>
+                                <div class="os-titlebar-ornament">~</div>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Paint">×</button>
+                            </div>
+                            <div class="os-window-body os-window-body-center">
+                                <div class="os-paint-canvas-wrap">
+                                    <canvas id="paintCanvas" width="360" height="220"></canvas>
+                                </div>
+                                <div class="os-paint-toolbar">
+                                    <div class="os-paint-swatches">
+                                        <button type="button" class="os-paint-swatch active" data-color="#382C20" style="background:#382C20;" aria-label="Ink"></button>
+                                        <button type="button" class="os-paint-swatch" data-color="#E8756A" style="background:#E8756A;" aria-label="Coral"></button>
+                                        <button type="button" class="os-paint-swatch" data-color="#7A9E7E" style="background:#7A9E7E;" aria-label="Sage"></button>
+                                        <button type="button" class="os-paint-swatch" data-color="#6A8FE8" style="background:#6A8FE8;" aria-label="Blue"></button>
+                                        <button type="button" class="os-paint-swatch" data-color="#F1E9D8" style="background:#F1E9D8;" aria-label="Cream"></button>
+                                    </div>
+                                    <button type="button" class="os-paint-clear" id="paintClear">Clear</button>
+                                </div>
+                            </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">paint.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -201,56 +229,62 @@
                     <!-- RIGHT COLUMN -->
                     <div class="os-col os-col-right">
 
-                        <!-- Window: Other Sites -->
-                        <div class="os-window os-window-sites">
+                        <!-- Window: Music -->
+                        <div class="os-window os-window-music">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-sites" aria-hidden="true">⌁</span>
-                                <span class="os-titlebar-text">Other Sites</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-music" aria-hidden="true">🎵</span>
+                                <span class="os-titlebar-text">Music</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Other Sites">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Music">×</button>
+                            </div>
+                            {% if guest_view_only %}<fieldset disabled>{% endif %}
+                            <div class="os-window-body">
+                                <p class="os-music-now-playing">Now Playing</p>
+                                <div class="os-field">
+                                    <input type="text" id="favTrack" name="favorite_track" placeholder="Favorite track" class="os-input" value="">
+                                </div>
+                            </div>
+                            {% if guest_view_only %}</fieldset>{% endif %}
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">music.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+
+                        <!-- Window: Guestbook -->
+                        <div class="os-window os-window-guestbook">
+                            <div class="os-titlebar">
+                                <span class="os-titlebar-icon os-titlebar-icon-guestbook" aria-hidden="true">✒</span>
+                                <span class="os-titlebar-text">Guestbook</span>
+                                <div class="os-titlebar-ornament">~</div>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Guestbook">×</button>
                             </div>
                             <div class="os-window-body">
-                                <div class="social-matrix" id="socialMatrix">
-                                    <div class="social-row" data-platform="instagram">
-                                        <div class="social-icon-wrap">
-                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>
-                                        </div>
-                                        <input type="url" name="social_instagram" placeholder="https://instagram.com/yourhandle" class="os-input social-input">
-                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                    </div>
-                                    <div class="social-row" data-platform="pinterest">
-                                        <div class="social-icon-wrap">
-                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>
-                                        </div>
-                                        <input type="url" name="social_pinterest" placeholder="https://pinterest.com/yourhandle" class="os-input social-input">
-                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                    </div>
-                                    <div class="social-row" data-platform="discord">
-                                        <div class="social-icon-wrap">
-                                            <svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>
-                                        </div>
-                                        <input type="url" name="social_discord" placeholder="https://discord.com/users/yourid" class="os-input social-input">
-                                        <button type="button" class="social-remove" aria-label="Remove">×</button>
-                                    </div>
+                                {% if guest_view_only %}
+                                <p class="os-guestbook-locked"><a href="{{ url_for('login', next='/') }}">Log in</a> to sign the guestbook.</p>
+                                {% else %}
+                                <div id="guestbookSignForm" class="os-guestbook-form">
+                                    <input type="text" id="guestbookName" name="display_name" maxlength="50" placeholder="Display name" class="os-input" required>
+                                    <textarea id="guestbookMessage" name="message" maxlength="300" rows="3" placeholder="Leave a message..." class="os-textarea" required></textarea>
+                                    <button type="button" id="guestbookSubmitBtn" class="os-guestbook-submit">Sign Guestbook ✎</button>
                                 </div>
-                                <div class="social-controls">
-                                    <select class="social-add-select" id="socialPlatformSelect">
-                                        <option value="">Add platform…</option>
-                                        <option value="instagram">Instagram</option>
-                                        <option value="pinterest">Pinterest</option>
-                                        <option value="discord">Discord</option>
-                                        <option value="spotify">Spotify</option>
-                                        <option value="youtube">YouTube</option>
-                                        <option value="tiktok">TikTok</option>
-                                        <option value="github">GitHub</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <button type="button" class="social-add-btn" id="addSocialBtn">+ Add Link</button>
+                                {% endif %}
+                                <div class="os-guestbook-entries" id="guestbookEntries">
+                                    {% for entry in guestbook_entries %}
+                                    <div class="os-guestbook-entry">
+                                        <span class="os-guestbook-entry-name">{{ entry.display_name }}</span>
+                                        <span class="os-guestbook-entry-date">{{ entry.created_at.strftime('%b %d, %Y') }}</span>
+                                        <p class="os-guestbook-entry-message">{{ entry.message }}</p>
+                                    </div>
+                                    {% else %}
+                                    <p class="os-guestbook-empty">No entries yet — be the first to sign!</p>
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">sites.exe</span>
+                                <span class="os-footer-text">guestbook.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -276,11 +310,11 @@
 
                     </div>
 
-                    <!-- Desktop ejected folders container -->
-                    <div id="galleryDesktopFolders"></div>
-
                     <!-- Desktop window icons (minimized windows) -->
                     <div id="osDesktopIcons"></div>
+
+                    <!-- Desktop ejected folders container -->
+                    <div id="galleryDesktopFolders"></div>
 
                     <!-- Desktop dropped photo files -->
                     <div id="osDesktopPhotos"></div>
@@ -295,6 +329,7 @@
                             <div class="gallery-folder-contents">
                                 <div class="gallery-grid" id="galleryGrid"></div>
                             </div>
+                            {% if guest_view_only %}<fieldset disabled>{% endif %}
                             <div class="gallery-folder-actions">
                                 <button type="button" class="gallery-tool-btn" id="galleryAddFolder">+ Folder</button>
                                 <label class="gallery-tool-btn">
@@ -302,22 +337,22 @@
                                     <input type="file" id="galleryUpload" accept="image/*" multiple class="gallery-upload-input">
                                 </label>
                             </div>
+                            {% if guest_view_only %}</fieldset>{% endif %}
                         </div>
                         <div class="gallery-resize-handle" id="galleryResizeHandle"></div>
                     </div>
 
                 </div>
 
-                <!-- Taskbar with Save -->
+                <!-- Taskbar -->
                 <div class="os-taskbar">
                     <div class="os-taskbar-left">
                         <span class="os-taskbar-item os-taskbar-start">✦ Start</span>
-                        <span class="os-taskbar-divider">|</span>
-                        <span class="os-taskbar-item" id="osTaskClock">00:00</span>
                     </div>
                     <div class="os-taskbar-right">
-                        <span class="os-taskbar-item os-taskbar-dismiss" id="osDismissHUD" title="Dismiss HUD">✕ dismiss</span>
+                        {% if not guest_view_only %}
                         <button type="submit" class="os-taskbar-save" id="profileEditorSubmitBtn">💾 Save Profile</button>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -350,49 +385,63 @@
         });
     });
 
-    // ── Commission toggle ──
-    var commToggleBtn = document.getElementById('commToggleBtn');
-    if (!commToggleBtn) commToggleBtn = document.querySelector('.comm-toggle-btn');
-    var commOpen = localStorage.getItem('commissionsOpen') === 'true';
-    function updateCommUI() {
-        // Sync side panel
-        var sideStatus = document.getElementById('sideCommissionStatus');
-        var sideLabel = document.getElementById('sideStatusLabel');
-        var sideMoon = document.getElementById('sideMoon');
-        if (sideStatus) {
-            sideStatus.classList.toggle('open', commOpen);
-            sideStatus.classList.toggle('closed', !commOpen);
+    // ── Boot Screen + Welcome Gate ──
+    (function initBootAndGate() {
+        var bootScreen = document.getElementById('csBootScreen');
+        var bootLines = document.getElementById('csBootLines');
+        var bootFill = document.getElementById('csBootFill');
+        var gate = document.getElementById('csWelcomeGate');
+
+        function showGateIfNeeded() {
+            if (!gate) return;
+            if (sessionStorage.getItem('cs_guest_entered')) return;
+            gate.style.display = 'flex';
         }
-        if (sideLabel) {
-            sideLabel.textContent = commOpen
-                ? 'Commissions are currently open'
-                : 'Commissions are currently closed';
+
+        function finishBoot() {
+            sessionStorage.setItem('cs_booted', '1');
+            if (bootScreen) {
+                bootScreen.classList.add('cs-boot-fade');
+                setTimeout(function() {
+                    bootScreen.remove();
+                    showGateIfNeeded();
+                }, 400);
+            } else {
+                showGateIfNeeded();
+            }
         }
-        if (sideMoon) {
-            sideMoon.textContent = commOpen ? 'New Moon' : 'Full Moon';
+
+        if (!bootScreen) {
+            showGateIfNeeded();
+        } else if (sessionStorage.getItem('cs_booted')) {
+            bootScreen.remove();
+            showGateIfNeeded();
+        } else {
+            var lines = ['CATTYSMOOTHY OS v2.0', 'Loading gallery...', 'Loading profile...', 'Loading guestbook...', 'Ready.'];
+            var i = 0;
+            var interval = setInterval(function() {
+                if (bootLines && i < lines.length) {
+                    var line = document.createElement('div');
+                    line.textContent = lines[i];
+                    bootLines.appendChild(line);
+                }
+                i++;
+                if (bootFill) bootFill.style.width = Math.min(100, (i / lines.length) * 100) + '%';
+                if (i >= lines.length) {
+                    clearInterval(interval);
+                    setTimeout(finishBoot, 400);
+                }
+            }, 350);
         }
-        // Sync Profile view
-        var mainStatus = document.getElementById('commissionStatus');
-        var mainLabel = document.getElementById('statusLabel');
-        if (mainStatus) {
-            mainStatus.classList.toggle('open', commOpen);
-            mainStatus.classList.toggle('closed', !commOpen);
+
+        var guestBtn = document.getElementById('csGuestBtn');
+        if (guestBtn) {
+            guestBtn.addEventListener('click', function() {
+                sessionStorage.setItem('cs_guest_entered', '1');
+                if (gate) gate.style.display = 'none';
+            });
         }
-        if (mainLabel) {
-            mainLabel.textContent = commOpen
-                ? 'Commissions are currently open'
-                : 'Commissions are currently closed';
-        }
-        localStorage.setItem('commissionsOpen', commOpen);
-    }
-    updateCommUI();
-    if (commToggleBtn) {
-        commToggleBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            commOpen = !commOpen;
-            updateCommUI();
-        });
-    }
+    })();
 
     // ── Profile Editor ──
     var editorForm = document.getElementById('profileFormEditor');
@@ -402,87 +451,27 @@
         var hudInitials = document.getElementById('hudInitials');
         var hudAvatar = document.getElementById('hudAvatar');
         var personaName = document.getElementById('personaName');
-        var personaBio = document.getElementById('personaBio');
-        var bioCharCount = document.getElementById('bioCharCount');
-        var pronounInput = document.getElementById('pronounInput');
-        var pronounTagInput = document.getElementById('pronounTagInput');
-        var pronounsHidden = document.getElementById('pronounsHidden');
-        var tagInputs = document.querySelectorAll('#aestheticTags .tag-input');
-
-        function getPronouns() {
-            var chips = pronounTagInput.querySelectorAll('.pronoun-chip');
-            return Array.from(chips).map(function(c) { return c.textContent.replace('×', '').trim(); });
-        }
-
-        function updatePronounsHidden() {
-            var vals = getPronouns();
-            pronounsHidden.value = vals.join(', ');
-            if (hudPronouns) hudPronouns.textContent = vals.length ? vals.join(' · ') : 'she/her';
-        }
-
-        function addPronounChip(val) {
-            val = val.trim();
-            if (!val) return;
-            var existing = getPronouns();
-            if (existing.includes(val)) return;
-            var chip = document.createElement('span');
-            chip.className = 'pronoun-chip';
-            chip.innerHTML = val + '<span class="pronoun-chip-remove" data-value="' + val.replace(/"/g, '&quot;') + '">&times;</span>';
-            chip.querySelector('.pronoun-chip-remove').addEventListener('click', function() {
-                chip.remove();
-                updatePronounsHidden();
-            });
-            pronounTagInput.insertBefore(chip, pronounInput);
-            updatePronounsHidden();
-        }
-
-        pronounInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addPronounChip(this.value);
-                this.value = '';
-            } else if (e.key === 'Backspace' && !this.value) {
-                var chips = pronounTagInput.querySelectorAll('.pronoun-chip');
-                var last = chips[chips.length - 1];
-                if (last) last.remove();
-                updatePronounsHidden();
-            }
-        });
-
-        pronounInput.addEventListener('input', function() {
-            var val = this.value.trim();
-            var chips = getPronouns();
-            var display = val ? (chips.length ? chips.join(' · ') + ' · ' + val : val) : (chips.length ? chips.join(' · ') : 'she/her');
-            if (hudPronouns) hudPronouns.textContent = display;
-        });
+        var personaPronouns = document.getElementById('personaPronouns');
+        var documentText = document.getElementById('documentText');
+        var documentCharCount = document.getElementById('documentCharCount');
 
         function updatePreview() {
-            var name = personaName.value.trim() || 'Artist';
-            hudName.textContent = name;
-            var initial = name.charAt(0).toUpperCase() || 'A';
-            hudInitials.textContent = initial;
-            var bio = personaBio.value;
-            bioCharCount.textContent = bio.length;
+            if (personaName) {
+                var name = personaName.value.trim() || 'Artist';
+                if (hudName) hudName.textContent = name;
+                if (hudInitials) hudInitials.textContent = name.charAt(0).toUpperCase() || 'A';
+            }
+            if (personaPronouns && hudPronouns) {
+                hudPronouns.textContent = personaPronouns.value.trim() || 'she/her';
+            }
+            if (documentText && documentCharCount) {
+                documentCharCount.textContent = documentText.value.length;
+            }
         }
-
-        personaName.addEventListener('input', updatePreview);
-        personaBio.addEventListener('input', updatePreview);
-        tagInputs.forEach(function(cb) {
-            cb.addEventListener('change', function() {
-                var checked = document.querySelectorAll('#aestheticTags .tag-input:checked');
-                if (checked.length > 3) this.checked = false;
-                updatePreview();
-            });
-        });
+        if (personaName) personaName.addEventListener('input', updatePreview);
+        if (personaPronouns) personaPronouns.addEventListener('input', updatePreview);
+        if (documentText) documentText.addEventListener('input', updatePreview);
         updatePreview();
-
-        pronounTagInput.querySelectorAll('.pronoun-chip-remove').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                this.closest('.pronoun-chip').remove();
-                updatePronounsHidden();
-            });
-        });
-        updatePronounsHidden();
 
         // Avatar upload
         var avatarInput = document.getElementById('avatarInput');
@@ -505,288 +494,138 @@
                         var hudInit = hudAvatar.querySelector('.game-hud-initials');
                         if (hudInit) hudInit.style.display = 'none';
                     }
-                    if (typeof updateGamifiedUI === 'function') updateGamifiedUI();
                 };
                 reader.readAsDataURL(file);
             });
         }
 
-        // Dynamic swap lists
-        document.querySelectorAll('.swap-add').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var listId = this.dataset.list;
-                var name = this.dataset.name;
-                var placeholder = this.dataset.placeholder;
-                var list = document.getElementById(listId);
-                var item = document.createElement('div');
-                item.className = 'swap-item';
-                item.innerHTML = '<input type="text" name="' + name + '" placeholder="' + placeholder + '" class="os-input swap-input">' + '<button type="button" class="swap-remove" aria-label="Remove">×</button>';
-                list.appendChild(item);
-                item.querySelector('.swap-remove').addEventListener('click', function() { item.remove(); });
-                item.querySelector('.swap-input').focus();
-            });
-        });
-        document.querySelectorAll('.swap-remove').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                this.closest('.swap-item').remove();
-            });
-        });
+        // Paint canvas
+        var paintCanvas = document.getElementById('paintCanvas');
+        if (paintCanvas) {
+            var ctx = paintCanvas.getContext('2d');
+            ctx.fillStyle = '#FAF8F5';
+            ctx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+            ctx.lineCap = 'round';
+            ctx.lineWidth = 3;
+            var paintColor = '#382C20';
+            var painting = false;
+            var lastX, lastY;
 
-        // Social link matrix
-        var socialIcons = {
-            instagram: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="7" r="1.2" fill="currentColor"/></svg>',
-            pinterest: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.1 3.2 9.4 7.6 11.2-.1-.9-.2-2.4 0-3.4l1.4-6.1s-.4-.7-.4-1.8c0-1.7 1-3 2.2-3 .8 0 1.6.6 1.6 1.9 0 1.2-.7 2.9-1.1 4.5-.3 1.4.7 2.5 2 2.5 2.4 0 4.3-2.5 4.3-6.2 0-3.2-2.3-5.5-5.6-5.5-3.8 0-6 2.9-6 5.8 0 1.2.4 2.4 1 3.1.1.1.1.3-.1.5l-.4 1.4c-.1.2-.2.3-.4.2-1.5-.7-2.4-2.9-2.4-4.7 0-3.8 2.8-7.3 8-7.3 4.2 0 7.5 3 7.5 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 3c-.3 1.1-1 2.5-1.6 3.4C9.6 23.8 10.8 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z" fill="currentColor"/></svg>',
-            discord: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M20.3 4.8A19 19 0 0 0 15.8 3c-.2.4-.5 1-.7 1.5a17.5 17.5 0 0 0-5.3 0C9.4 4 9.1 3.4 8.9 3a19 19 0 0 0-4.5 1.8C1.6 9.6.9 14.3 1.2 18.9a19 19 0 0 0 5.8 3c.5-.7 1-1.5 1.3-2.3a12.4 12.4 0 0 1-2.1-1 9.7 9.7 0 0 0 .9-.7 13 13 0 0 0 11.7 0c.3.3.6.5.9.7a12.4 12.4 0 0 1-2.1 1c.4.8.8 1.6 1.3 2.3a19 19 0 0 0 5.8-3c.4-5.2-.6-9.9-2.5-14.1zM8.7 16c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3zm6.6 0c-1.1 0-2.1-1-2.1-2.3s.9-2.3 2.1-2.3 2.1 1 2.1 2.3-.9 2.3-2.1 2.3z" fill="currentColor"/></svg>',
-            spotify: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.3c-.2.3-.6.4-.9.2-2.5-1.5-5.6-1.9-9.3-1-.4.1-.7-.2-.7-.5 0-.4.2-.6.5-.7 4-.9 7.4-.5 10.1 1.1.3.1.4.5.3.9zm1.5-3.3c-.3.4-.8.5-1.2.2-2.8-1.7-7.1-2.2-10.5-1.2-.5.1-1-.2-1.1-.7 0-.5.3-.9.8-1 3.8-1.1 8.5-.6 11.7 1.4.4.2.5.8.3 1.3zm.1-3.4c-3.4-2-9-2.2-12.2-1.2-.6.2-1.2-.1-1.4-.7-.2-.6.1-1.2.7-1.4 3.7-1.1 9.9-.9 13.8 1.5.5.3.7 1 .4 1.5-.3.4-.9.6-1.3.3z" fill="currentColor"/></svg>',
-            youtube: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M23.5 6.2a2.9 2.9 0 0 0-2-2C19.8 3.7 12 3.7 12 3.7s-7.8 0-9.5.5a2.9 2.9 0 0 0-2 2C0 7.9 0 12 0 12s0 4.1.5 5.8a2.9 2.9 0 0 0 2 2c1.7.5 9.5.5 9.5.5s7.8 0 9.5-.5a2.9 2.9 0 0 0 2-2c.5-1.7.5-5.8.5-5.8s0-4.1-.5-5.8zM9.6 15.5V8.5l6.4 3.5-6.4 3.5z" fill="currentColor"/></svg>',
-            tiktok: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12.5 0h3.7v3.7A4.5 4.5 0 0 0 20 7.5h-3.7v6.2a4.4 4.4 0 1 1-3.8-4.4V3.7h-2.8a4.5 4.5 0 0 0 0 9h.1v3.8a8.2 8.2 0 1 1 2.7-16z" fill="currentColor"/></svg>',
-            github: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 0C5.4 0 0 5.4 0 12c0 5.3 3.4 9.8 8.2 11.4.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.4 3.5 1.1.1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6C20.6 21.8 24 17.3 24 12 24 5.4 18.6 0 12 0z" fill="currentColor"/></svg>',
-            other: '<svg viewBox="0 0 24 24" width="18" height="18" class="social-icon"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="currentColor"/></svg>'
-        };
-        var socialPlaceholders = {
-            instagram: 'https://instagram.com/yourhandle',
-            pinterest: 'https://pinterest.com/yourhandle',
-            discord: 'https://discord.com/users/yourid',
-            spotify: 'https://open.spotify.com/user/yourid',
-            youtube: 'https://youtube.com/@yourchannel',
-            tiktok: 'https://tiktok.com/@yourhandle',
-            github: 'https://github.com/yourhandle',
-            other: 'https://yourlink.com/yourhandle'
-        };
+            function getPos(e) {
+                var rect = paintCanvas.getBoundingClientRect();
+                var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
 
-        var addSocialBtn = document.getElementById('addSocialBtn');
-        if (addSocialBtn) {
-            addSocialBtn.addEventListener('click', function() {
-                var select = document.getElementById('socialPlatformSelect');
-                var platform = select.value;
-                if (!platform) return;
-                var matrix = document.getElementById('socialMatrix');
-                var row = document.createElement('div');
-                row.className = 'social-row';
-                row.dataset.platform = platform;
-                row.innerHTML = '<div class="social-icon-wrap">' + socialIcons[platform] + '</div>' + '<input type="url" name="social_' + platform + '" placeholder="' + socialPlaceholders[platform] + '" class="os-input social-input">' + '<button type="button" class="social-remove" aria-label="Remove">×</button>';
-                matrix.appendChild(row);
-                row.querySelector('.social-input').focus();
-                row.querySelector('.social-remove').addEventListener('click', function() { row.remove(); });
-                select.value = '';
+            paintCanvas.addEventListener('mousedown', function(e) {
+                painting = true;
+                var p = getPos(e);
+                lastX = p.x; lastY = p.y;
+            });
+            paintCanvas.addEventListener('mousemove', function(e) {
+                if (!painting) return;
+                var p = getPos(e);
+                ctx.strokeStyle = paintColor;
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+                lastX = p.x; lastY = p.y;
+            });
+            document.addEventListener('mouseup', function() { painting = false; });
+
+            document.querySelectorAll('.os-paint-swatch').forEach(function(sw) {
+                sw.addEventListener('click', function() {
+                    document.querySelectorAll('.os-paint-swatch').forEach(function(s) { s.classList.remove('active'); });
+                    sw.classList.add('active');
+                    paintColor = sw.dataset.color;
+                });
+            });
+
+            var paintClear = document.getElementById('paintClear');
+            if (paintClear) {
+                paintClear.addEventListener('click', function() {
+                    ctx.fillStyle = '#FAF8F5';
+                    ctx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+                });
+            }
+        }
+
+        // Settings window opener
+        var openSettingsBtn = document.getElementById('openSettingsFromWindow');
+        if (openSettingsBtn) {
+            openSettingsBtn.addEventListener('click', function() {
+                if (typeof window.openSettings === 'function') window.openSettings();
             });
         }
 
-        document.querySelectorAll('#socialMatrix .social-remove').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                this.closest('.social-row').remove();
-            });
-        });
-
-        // Form submit
+        // Form submit (still decorative — no server persistence)
         editorForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            var formData = new FormData(this);
-            var data = {};
-            for (var pair of formData.entries()) {
-                var key = pair[0];
-                var value = pair[1];
-                if (key.endsWith('[]')) {
-                    var k = key.slice(0, -2);
-                    if (!data[k]) data[k] = [];
-                    data[k].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            console.log('Profile data:', data);
             var btn = document.getElementById('profileEditorSubmitBtn');
+            if (!btn) return;
             var orig = btn.textContent;
             btn.textContent = 'Saved!';
             btn.style.background = '#6ABA8A';
             setTimeout(function() {
                 btn.textContent = orig;
                 btn.style.background = '';
-                updateGamifiedUI();
             }, 1200);
         });
 
-        // Custom nav links
-        var osNavAdd = document.getElementById('osNavAdd');
-        if (osNavAdd) {
-            osNavAdd.addEventListener('click', function() {
-                var container = document.getElementById('osNavLinks');
-                var row = document.createElement('div');
-                row.className = 'os-nav-row';
-                row.innerHTML = '<input type="text" name="nav_label[]" placeholder="Label" class="os-input os-input-sm">' +
-                    '<input type="url" name="nav_url[]" placeholder="https://" class="os-input os-input-sm">' +
-                    '<button type="button" class="os-nav-remove" aria-label="Remove">×</button>';
-                container.appendChild(row);
-                row.querySelector('.os-nav-remove').addEventListener('click', function() { row.remove(); });
-                row.querySelector('input').focus();
+        // Guestbook sign form (a <div>, not a <form> — it lives inside the outer
+        // profileFormEditor form, and HTML doesn't allow nested forms)
+        var guestbookForm = document.getElementById('guestbookSignForm');
+        var guestbookSubmitBtn = document.getElementById('guestbookSubmitBtn');
+        if (guestbookForm && guestbookSubmitBtn) {
+            guestbookSubmitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var btn = guestbookSubmitBtn;
+                btn.disabled = true;
+                fetch('/guestbook', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        display_name: document.getElementById('guestbookName').value,
+                        message: document.getElementById('guestbookMessage').value
+                    })
+                })
+                .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+                .then(function(res) {
+                    btn.disabled = false;
+                    if (res.status === 201) {
+                        var entries = document.getElementById('guestbookEntries');
+                        var empty = entries.querySelector('.os-guestbook-empty');
+                        if (empty) empty.remove();
+                        var el = document.createElement('div');
+                        el.className = 'os-guestbook-entry';
+                        var nameSpan = document.createElement('span');
+                        nameSpan.className = 'os-guestbook-entry-name';
+                        nameSpan.textContent = res.data.entry.display_name;
+                        var dateSpan = document.createElement('span');
+                        dateSpan.className = 'os-guestbook-entry-date';
+                        dateSpan.textContent = res.data.entry.created_at;
+                        var msgP = document.createElement('p');
+                        msgP.className = 'os-guestbook-entry-message';
+                        msgP.textContent = res.data.entry.message;
+                        el.appendChild(nameSpan); el.appendChild(dateSpan); el.appendChild(msgP);
+                        entries.insertBefore(el, entries.firstChild);
+                        document.getElementById('guestbookName').value = '';
+                        document.getElementById('guestbookMessage').value = '';
+                    } else {
+                        alert(res.data.error || 'Could not sign the guestbook.');
+                    }
+                })
+                .catch(function() { btn.disabled = false; alert('Network error — please try again.'); });
             });
         }
-        document.querySelectorAll('.os-nav-remove').forEach(function(btn) {
-            btn.addEventListener('click', function() { this.closest('.os-nav-row').remove(); });
-        });
-
-        // Taskbar clock
-        var osTaskClock = document.getElementById('osTaskClock');
-        if (osTaskClock) {
-            function updateTaskClock() {
-                var now = new Date();
-                osTaskClock.textContent = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-            }
-            updateTaskClock();
-            setInterval(updateTaskClock, 10000);
-        }
-
-        // Dismiss HUD
-        var osDismiss = document.getElementById('osDismissHUD');
-        if (osDismiss) {
-            osDismiss.addEventListener('click', function() {
-                document.body.classList.toggle('os-hud-hidden');
-                osDismiss.textContent = document.body.classList.contains('os-hud-hidden') ? '✕ show hud' : '✕ dismiss';
-            });
-        }
-
-        // ── Gamified Profile Tracker ──
-        var ranks = [
-            { level: 1, title: 'Novice', xp: 0 },
-            { level: 2, title: 'Apprentice', xp: 20 },
-            { level: 3, title: 'Dreamer', xp: 40 },
-            { level: 4, title: 'Artisan', xp: 60 },
-            { level: 5, title: 'Visionary', xp: 80 },
-            { level: 6, title: 'Starlight', xp: 100 },
-            { level: 7, title: 'Celestial', xp: 120 }
-        ];
-
-        function calcProfileXP() {
-            var xp = 0;
-            // Bio fields: name, age, pronouns, tags → 4
-            if (document.getElementById('personaName').value.trim()) xp += 5;
-            if (document.getElementById('personaAge').value.trim()) xp += 5;
-            var pronounChips = document.querySelectorAll('#pronounTagInput .pronoun-chip');
-            if (pronounChips.length > 0) xp += 5;
-            var checkedTags = document.querySelectorAll('#aestheticTags .tag-input:checked');
-            if (checkedTags.length > 0) xp += 5;
-            // Webcam: avatar uploaded?
-            var avatarPreview = document.getElementById('avatarPreview');
-            if (avatarPreview && avatarPreview.style.backgroundImage) xp += 5;
-            // Editor fields: bio, current class, future class, fav track, status → 5
-            if (document.getElementById('personaBio').value.trim()) xp += 5;
-            if (document.getElementById('currentClass').value.trim()) xp += 5;
-            if (document.getElementById('futureClass').value.trim()) xp += 5;
-            if (document.getElementById('favTrack').value.trim()) xp += 5;
-            if (document.getElementById('statusUpdate').value.trim()) xp += 5;
-            // Strengths + weaknesses
-            var strengths = document.querySelectorAll('#strengthsList .swap-input');
-            strengths.forEach(function(s) { if (s.value.trim()) xp += 3; });
-            var weaknesses = document.querySelectorAll('#weaknessesList .swap-input');
-            weaknesses.forEach(function(s) { if (s.value.trim()) xp += 3; });
-            // Social links
-            var socialInputs = document.querySelectorAll('#socialMatrix .social-input');
-            socialInputs.forEach(function(s) { if (s.value.trim()) xp += 3; });
-            return Math.min(xp, 130);
-        }
-
-        function getRank(xp) {
-            var r = ranks[0];
-            for (var i = ranks.length - 1; i >= 0; i--) {
-                if (xp >= ranks[i].xp) { r = ranks[i]; break; }
-            }
-            return r;
-        }
-
-        function xpForNextLevel(xp) {
-            for (var i = 0; i < ranks.length - 1; i++) {
-                if (xp >= ranks[i].xp && xp < ranks[i + 1].xp) return ranks[i + 1].xp;
-            }
-            return ranks[ranks.length - 1].xp;
-        }
-
-        function updateGamifiedUI() {
-            var xp = calcProfileXP();
-            var rank = getRank(xp);
-            var nextXp = xpForNextLevel(xp);
-            var prevXp = rank.xp;
-            var xpInLevel = xp - prevXp;
-            var xpForLevel = nextXp - prevXp;
-            var pct = xpForLevel > 0 ? (xpInLevel / xpForLevel) * 100 : 100;
-
-            var rankEl = document.getElementById('rankLevel');
-            var titleEl = document.getElementById('rankTitle');
-            var xpFill = document.getElementById('osXpFill');
-            var xpText = document.getElementById('osXpText');
-            if (rankEl) rankEl.textContent = 'Lv.' + rank.level;
-            if (titleEl) titleEl.textContent = rank.title;
-            if (xpFill) xpFill.style.width = Math.min(pct, 100) + '%';
-            if (xpText) xpText.textContent = xp + ' XP';
-
-            // Badges
-            var bioBadge = document.getElementById('bioBadge');
-            if (bioBadge) {
-                var count = 0;
-                if (document.getElementById('personaName').value.trim()) count++;
-                if (document.getElementById('personaAge').value.trim()) count++;
-                if (document.querySelectorAll('#pronounTagInput .pronoun-chip').length > 0) count++;
-                if (document.querySelectorAll('#aestheticTags .tag-input:checked').length > 0) count++;
-                bioBadge.textContent = count + '/4';
-                bioBadge.className = 'os-footer-badge' + (count === 4 ? ' badge-complete' : '');
-            }
-            var webcamBadge = document.getElementById('webcamBadge');
-            if (webcamBadge) {
-                var hasAvatar = avatarPreview && avatarPreview.style.backgroundImage;
-                webcamBadge.textContent = hasAvatar ? '1/1' : '0/1';
-                webcamBadge.className = 'os-footer-badge' + (hasAvatar ? ' badge-complete' : '');
-            }
-            var editorBadge = document.getElementById('editorBadge');
-            if (editorBadge) {
-                var ec = 0;
-                if (document.getElementById('personaBio').value.trim()) ec++;
-                if (document.getElementById('currentClass').value.trim()) ec++;
-                if (document.getElementById('futureClass').value.trim()) ec++;
-                if (document.getElementById('favTrack').value.trim()) ec++;
-                if (document.getElementById('statusUpdate').value.trim()) ec++;
-                var sCount = document.querySelectorAll('#strengthsList .swap-input');
-                sCount.forEach(function(s) { if (s.value.trim()) ec++; });
-                var wCount = document.querySelectorAll('#weaknessesList .swap-input');
-                wCount.forEach(function(s) { if (s.value.trim()) ec++; });
-                var navCount = document.querySelectorAll('#osNavLinks .os-nav-row');
-                navCount.forEach(function() { ec++; });
-                editorBadge.textContent = ec + '/8';
-                editorBadge.className = 'os-footer-badge' + (ec === 8 ? ' badge-complete' : '');
-            }
-            var sitesBadge = document.getElementById('sitesBadge');
-            if (sitesBadge) {
-                var sc = 0;
-                var si = document.querySelectorAll('#socialMatrix .social-input');
-                si.forEach(function(s) { if (s.value.trim()) sc++; });
-                sitesBadge.textContent = sc + '/3';
-                sitesBadge.className = 'os-footer-badge' + (sc >= 3 ? ' badge-complete' : '');
-            }
-        }
-
-        // Save button feedback
-        var saveBtn = document.getElementById('profileEditorSubmitBtn');
-        if (saveBtn) {
-            var origSave = saveBtn.textContent;
-            saveBtn.addEventListener('click', function(e) {
-                setTimeout(function() {
-                    updateGamifiedUI();
-                }, 100);
-            });
-        }
-
-        // Recalc badges on input changes
-        document.querySelectorAll('.os-input, .os-textarea').forEach(function(el) {
-            el.addEventListener('input', updateGamifiedUI);
-        });
-        document.querySelectorAll('.tag-input').forEach(function(el) {
-            el.addEventListener('change', updateGamifiedUI);
-        });
-        document.querySelectorAll('.swap-add, .swap-remove, .os-nav-add, .os-nav-remove, .social-add-btn, .social-remove').forEach(function(el) {
-            el.addEventListener('click', function() { setTimeout(updateGamifiedUI, 50); });
-        });
-
-        updateGamifiedUI();
 
         // ── Freeform Desktop (drag, resize, persist windows) ──
+        var __csWindowRegistry = {};
         (function initFreeformDesktop() {
           var osDesktop = document.querySelector('.os-desktop');
           var osGrid = document.querySelector('.os-grid');
@@ -837,9 +676,9 @@
           if (isZero) {
             var cw = osGrid.clientWidth || 900;
             windowData.forEach(function(d, i) {
-              if (i < 2) { d.x = 0; d.y = i * 340; d.w = 360; }
-              else if (i === 2) { d.x = 380; d.y = 0; d.w = cw - 760 > 320 ? cw - 760 : 400; }
-              else { d.x = cw - 340; d.y = (i - 3) * 340; d.w = 320; }
+              if (i < 3) { d.x = 0; d.y = i * 280; d.w = 320; }
+              else if (i < 5) { d.x = 340; d.y = (i - 3) * 340; d.w = cw - 700 > 320 ? cw - 700 : 380; }
+              else { d.x = cw - 340; d.y = (i - 5) * 280; d.w = 320; }
             });
           }
 
@@ -933,11 +772,14 @@
 
           // ── Minimize / Desktop Icons ──
           var iconDefs = {
-            'os-window-bio': { emoji: '\u2740', label: 'Bio' },
-            'os-window-webcam': { emoji: '\u25c9', label: 'Webcam' },
-            'os-window-main': { emoji: '\u270e', label: 'Editor' },
-            'os-window-sites': { emoji: '\u2301', label: 'Sites' },
-            'os-window-org': { emoji: '\uD83D\uDCCB', label: 'Organization' }
+            'os-window-mycomputer': { emoji: '🖥', label: 'My Computer' },
+            'os-window-about': { emoji: '❀', label: 'About' },
+            'os-window-settings': { emoji: '⚙', label: 'Settings' },
+            'os-window-document': { emoji: '✎', label: 'Document' },
+            'os-window-paint': { emoji: '🎨', label: 'Paint' },
+            'os-window-music': { emoji: '🎵', label: 'Music' },
+            'os-window-guestbook': { emoji: '✒', label: 'Guestbook' },
+            'os-window-org': { emoji: '📋', label: 'Organization' }
           };
           var iconPosKey = 'osDesktopIconPos';
           var iconContainer = document.getElementById('osDesktopIcons');
@@ -966,8 +808,8 @@
               } else {
                 ic.style.display = 'none';
               }
-              // Restore (dblclick)
-              ic.addEventListener('dblclick', function() {
+
+              function restoreWindow() {
                 win.style.display = '';
                 ic.style.display = 'none';
                 osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
@@ -975,15 +817,28 @@
                 var st = JSON.parse(localStorage.getItem(desktopStateKey) || '{}');
                 if (st[d.id]) st[d.id].minimized = false;
                 localStorage.setItem(desktopStateKey, JSON.stringify(st));
-              });
+              }
+              function minimizeWindow() {
+                win.style.display = 'none';
+                ic.style.display = '';
+                var st = JSON.parse(localStorage.getItem(desktopStateKey) || '{}');
+                if (!st[d.id]) st[d.id] = { x: parseInt(win.style.left) || 0, y: parseInt(win.style.top) || 0, w: win.offsetWidth, h: win.offsetHeight };
+                st[d.id].minimized = true;
+                localStorage.setItem(desktopStateKey, JSON.stringify(st));
+              }
+
+              ic.addEventListener('dblclick', restoreWindow);
+
               // Drag icon
               ic.addEventListener('mousedown', function(ev) {
                 ev.preventDefault();
                 var gr = osGrid.getBoundingClientRect();
                 var ox = ev.clientX - ic.getBoundingClientRect().left;
                 var oy = ev.clientY - ic.getBoundingClientRect().top;
+                var moved = false;
                 ic.classList.add('dragging');
                 function mv(e) {
+                  moved = true;
                   ic.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
                   ic.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
                 }
@@ -991,6 +846,7 @@
                   ic.classList.remove('dragging');
                   document.removeEventListener('mousemove', mv);
                   document.removeEventListener('mouseup', up);
+                  if (!moved) return;
                   var p = iconPositions;
                   p[d.id] = { x: parseInt(ic.style.left) || 0, y: parseInt(ic.style.top) || 0 };
                   localStorage.setItem(iconPosKey, JSON.stringify(p));
@@ -999,27 +855,30 @@
                 document.addEventListener('mouseup', up);
               });
               iconContainer.appendChild(ic);
-              // Close to desktop icon
+
               var cd = win.querySelector('.os-dot-close');
-              if (cd) {
-                cd.addEventListener('click', function(e) {
-                  e.stopPropagation();
-                  win.style.display = 'none';
-                  ic.style.display = '';
-                  var st = JSON.parse(localStorage.getItem(desktopStateKey) || '{}');
-                  if (!st[d.id]) st[d.id] = { x: parseInt(win.style.left) || 0, y: parseInt(win.style.top) || 0, w: win.offsetWidth, h: win.offsetHeight };
-                  st[d.id].minimized = true;
-                  localStorage.setItem(desktopStateKey, JSON.stringify(st));
-                });
-              }
+              if (cd) cd.addEventListener('click', function(e) { e.stopPropagation(); minimizeWindow(); });
+
+              __csWindowRegistry[d.id] = {
+                label: def.label,
+                minimize: minimizeWindow,
+                restore: restoreWindow,
+                isMinimized: function() { return win.style.display === 'none'; }
+              };
               idx++;
             });
           }
+
+          window.__csWindowRegistry = __csWindowRegistry;
+          window.__csToggleWindow = function(id) {
+            var entry = __csWindowRegistry[id];
+            if (!entry) return;
+            if (entry.isMinimized()) entry.restore(); else entry.minimize();
+          };
         })();
 
         // ── Gallery (folder view + Apple icon) ──
         (function initGallery() {
-          console.log('Gallery v2 loaded');
           var gk = 'galleryData';
           var cur = null;
           var data, view, grid, tabsC, closeBtn, addBtn, uploadIn, handle;
@@ -1169,22 +1028,6 @@
             if (!cur) selectFirstVisibleFolder();
           }
 
-          function ejectFolder(fid) {
-            var folder = data.folders.find(function(f) { return f.id === fid; });
-            if (!folder) return;
-            if (!data.ejected) data.ejected = [];
-            if (data.ejected.some(function(ef) { return ef.folderId === fid; })) return;
-            var og = document.querySelector('.os-grid');
-            if (!og) return;
-            var viewRect = view ? view.getBoundingClientRect() : null;
-            var gr = og.getBoundingClientRect();
-            var x = viewRect ? Math.max(0, viewRect.left - gr.left + 20) : 120;
-            var y = viewRect ? Math.max(0, viewRect.bottom - gr.top + 10) : 80;
-            data.ejected.push({ folderId: fid, x: x, y: y });
-            if (cur === fid) selectFirstVisibleFolder();
-            sv(); renderAll();
-          }
-
           function renderPhotos() {
             grid.innerHTML = '';
             if (cur && isEjected(cur)) selectFirstVisibleFolder();
@@ -1227,7 +1070,7 @@
             var c = document.getElementById('galleryDesktopFolders');
             if (!c) return;
             c.innerHTML = '';
-            // Main gallery icon (only when minimized)
+            // Main gallery icon (only when minimized) — sits on the main desktop
             if (data.minimized) {
               var og = document.querySelector('.os-grid');
               if (!og) return;
@@ -1350,6 +1193,11 @@
           }
           cur = data.folders[0] ? data.folders[0].id : null;
           renderAll();
+
+          window.__csGalleryController = {
+            toggle: function() { data.minimized = !data.minimized; sv(); renderAll(); },
+            isMinimized: function() { return data.minimized; }
+          };
 
           // Close
           if (closeBtn) {
@@ -1627,6 +1475,97 @@
             if (animate) { el.style.opacity = '0'; setTimeout(function() { el.style.transition = 'opacity 0.25s'; el.style.opacity = '1'; }, 10); }
             container.appendChild(el);
           }
+        })();
+
+        // ── Menu Bar ──
+        (function initMenuBar() {
+          var menuBar = document.getElementById('osMenuBar');
+          if (!menuBar) return;
+
+          menuBar.querySelectorAll('.os-menu').forEach(function(menu) {
+            var label = menu.querySelector('.os-menu-label');
+            if (!label) return;
+            label.addEventListener('click', function(e) {
+              e.stopPropagation();
+              var wasOpen = menu.classList.contains('open');
+              menuBar.querySelectorAll('.os-menu').forEach(function(m) { m.classList.remove('open'); });
+              if (!wasOpen) menu.classList.add('open');
+            });
+          });
+          document.addEventListener('click', function(e) {
+            if (!menuBar.contains(e.target)) {
+              menuBar.querySelectorAll('.os-menu').forEach(function(m) { m.classList.remove('open'); });
+            }
+          });
+
+          var menuSave = document.getElementById('menuSaveProfile');
+          if (menuSave) {
+            menuSave.addEventListener('click', function() {
+              var form = document.getElementById('profileFormEditor');
+              if (form) form.requestSubmit();
+            });
+          }
+
+          var menuReset = document.getElementById('menuResetLayout');
+          if (menuReset) {
+            menuReset.addEventListener('click', function() {
+              if (!confirm('Reset window positions and sizes to default?')) return;
+              localStorage.removeItem('osDesktopState');
+              try {
+                var g = JSON.parse(localStorage.getItem('galleryData'));
+                if (g) {
+                  g.dp = { x: 40, y: 40 };
+                  g.vp = { x: 120, y: 80 };
+                  g.minimized = true;
+                  localStorage.setItem('galleryData', JSON.stringify(g));
+                }
+              } catch(e) {}
+              location.reload();
+            });
+          }
+
+          var windowDropdown = document.getElementById('osMenuWindowDropdown');
+          function renderWindowMenu() {
+            if (!windowDropdown) return;
+            windowDropdown.innerHTML = '';
+            Object.keys(window.__csWindowRegistry || {}).forEach(function(id) {
+              var entry = window.__csWindowRegistry[id];
+              var btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = 'os-menu-item';
+              btn.textContent = (entry.isMinimized() ? '☐ ' : '☑ ') + entry.label;
+              btn.addEventListener('click', function() {
+                window.__csToggleWindow(id);
+                renderWindowMenu();
+              });
+              windowDropdown.appendChild(btn);
+            });
+            if (window.__csGalleryController) {
+              var gbtn = document.createElement('button');
+              gbtn.type = 'button';
+              gbtn.className = 'os-menu-item';
+              gbtn.textContent = (window.__csGalleryController.isMinimized() ? '☐ ' : '☑ ') + 'Gallery';
+              gbtn.addEventListener('click', function() {
+                window.__csGalleryController.toggle();
+                renderWindowMenu();
+              });
+              windowDropdown.appendChild(gbtn);
+            }
+          }
+          var windowMenuParent = windowDropdown ? windowDropdown.closest('.os-menu') : null;
+          if (windowMenuParent) {
+            windowMenuParent.querySelector('.os-menu-label').addEventListener('click', renderWindowMenu);
+          }
+
+          // Menu bar clock
+          function updateMenuClock() {
+            var el = document.getElementById('osMenuClock');
+            if (!el) return;
+            var now = new Date();
+            el.textContent = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+          }
+          updateMenuClock();
+          setInterval(updateMenuClock, 10000);
         })();
     }
 })();

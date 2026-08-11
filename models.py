@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
 
     purchases = db.relationship('Purchase', backref='user', lazy='dynamic')
     redemptions = db.relationship('Redemption', backref='user', lazy='dynamic')
+    guestbook_entries = db.relationship('GuestbookEntry', backref='user', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -59,3 +60,13 @@ class Redemption(db.Model):
     cost = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')  # pending|fulfilled
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+
+class GuestbookEntry(db.Model):
+    __tablename__ = 'guestbook_entries'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    display_name = db.Column(db.String(50), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)

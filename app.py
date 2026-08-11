@@ -9,6 +9,7 @@ from models import User
 from routes import register_routes
 from auth import register_auth_routes
 from shop import register_shop_routes
+from guestbook import register_guestbook_routes
 
 load_dotenv()
 
@@ -45,6 +46,7 @@ def unauthorized():
 register_routes(app)
 register_auth_routes(app)
 register_shop_routes(app)
+register_guestbook_routes(app)
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5001)

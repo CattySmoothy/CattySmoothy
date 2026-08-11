@@ -3369,6 +3369,26 @@ button, input, textarea, select {
     margin-left: 0;
 }
 
+/* Home page - retro OS fills the whole page, no sitewide header */
+.home-active .game-hud {
+    display: none;
+}
+
+.home-active .realm-explorer {
+    height: 100vh;
+}
+
+.home-active .realm-canvas {
+    padding: 0;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.home-active .os-desktop {
+    padding: 0;
+    min-height: 100%;
+}
+
 .donors-page {
     min-height: 100vh;
     position: relative;
@@ -5774,6 +5794,62 @@ button, input, textarea, select {
     --window-icon-border: #bd9340;
     --window-icon-ink: #806025;
 }
+.os-titlebar-icon-mycomputer,
+.os-window-mycomputer {
+    --window-icon-main: #d7edf8;
+    --window-icon-dark: #abd4e9;
+    --window-icon-tab: #c3e2f1;
+    --window-icon-border: #7fb1ca;
+    --window-icon-ink: #3f6f86;
+}
+.os-titlebar-icon-about,
+.os-window-about {
+    --window-icon-main: #f8d8e6;
+    --window-icon-dark: #efb8cf;
+    --window-icon-tab: #f3c6d9;
+    --window-icon-border: #c98da7;
+    --window-icon-ink: #7d4460;
+}
+.os-titlebar-icon-settings,
+.os-window-settings {
+    --window-icon-main: #e2e2ea;
+    --window-icon-dark: #c4c4d4;
+    --window-icon-tab: #d3d3e0;
+    --window-icon-border: #9797ac;
+    --window-icon-ink: #55556b;
+}
+.os-titlebar-icon-document,
+.os-window-document {
+    --window-icon-main: #e9dfc8;
+    --window-icon-dark: #d8c49c;
+    --window-icon-tab: #e1d0ad;
+    --window-icon-border: #aa8d5d;
+    --window-icon-ink: #665438;
+}
+.os-titlebar-icon-paint,
+.os-window-paint {
+    --window-icon-main: #f5d8c8;
+    --window-icon-dark: #eab48f;
+    --window-icon-tab: #f0c6a9;
+    --window-icon-border: #c4855a;
+    --window-icon-ink: #825030;
+}
+.os-titlebar-icon-music,
+.os-window-music {
+    --window-icon-main: #e7dcf5;
+    --window-icon-dark: #c8b1e3;
+    --window-icon-tab: #d8c6ee;
+    --window-icon-border: #9c7ab8;
+    --window-icon-ink: #654882;
+}
+.os-titlebar-icon-guestbook,
+.os-window-guestbook {
+    --window-icon-main: #f5e6b8;
+    --window-icon-dark: #eed49a;
+    --window-icon-tab: #f0dcab;
+    --window-icon-border: #c9a066;
+    --window-icon-ink: #7a5730;
+}
 .os-dot {
     border: none;
     font: inherit;
@@ -7609,6 +7685,17 @@ body.os-hud-hidden .realm-canvas {
   font-style: italic;
 }
 
+/* ── Home Page: Retro OS ── */
+
+.realm-explorer-wrap {
+    --font-ticket: var(--font-dos);
+}
+
+.os-desktop fieldset[disabled] {
+    all: unset;
+    display: contents;
+}
+
 /* ── Shop ── */
 
 .shop-wrap {
@@ -7819,4 +7906,451 @@ body.os-hud-hidden .realm-canvas {
     .shop-item:nth-child(odd) {
         border-right: none;
     }
+}
+
+/* ── Home Page: Menu Bar ── */
+
+.os-menubar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 10px;
+    background: var(--ticket-bg, #F1E9D8);
+    border-bottom: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
+    font-family: var(--font-ticket);
+    position: relative;
+    z-index: 500;
+}
+
+.os-menu {
+    position: relative;
+}
+
+.os-menu-label {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: var(--ticket-ink, #382C20);
+    border-radius: 3px;
+}
+
+.os-menu-label:hover,
+.os-menu.open .os-menu-label {
+    background: color-mix(in srgb, var(--primary-warm, #E8756A) 20%, transparent);
+}
+
+.os-menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 170px;
+    background: var(--color-surface);
+    border: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    z-index: 501;
+    padding: 4px 0;
+}
+
+.os-menu.open .os-menu-dropdown {
+    display: block;
+}
+
+.os-menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 12px;
+    padding: 7px 14px;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.os-menu-item:hover {
+    background: color-mix(in srgb, var(--primary-warm, #E8756A) 15%, transparent);
+}
+
+.os-menu-item-static {
+    color: var(--color-text-muted);
+    cursor: default;
+}
+
+.os-menu-item-static:hover {
+    background: none;
+}
+
+.os-menubar-clock {
+    margin-left: auto;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ticket-ink, #382C20);
+    padding: 6px 10px;
+}
+
+/* ── Home Page: Dock ── */
+
+.os-dock {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.os-dock .os-desktop-icon,
+.os-taskbar-left .os-desktop-icon {
+    position: static;
+    width: auto;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+.os-dock .os-desktop-icon-icon {
+    width: 28px;
+    height: 22px;
+    margin: 0;
+}
+
+.os-dock .os-desktop-icon-glyph {
+    font-size: 13px;
+}
+
+.os-dock .os-desktop-icon-label {
+    display: none;
+}
+
+/* ── Home Page: Boot Screen ── */
+
+.cs-boot-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: var(--ticket-ink, #1a140d);
+    color: #d8cdb8;
+    font-family: var(--font-ticket);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    transition: opacity 0.4s ease;
+}
+
+.cs-boot-screen.cs-boot-fade {
+    opacity: 0;
+}
+
+.cs-boot-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    min-height: 120px;
+    text-align: left;
+}
+
+.cs-boot-progress {
+    width: 260px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.cs-boot-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-warm, #E8756A);
+    transition: width 0.3s ease;
+}
+
+/* ── Home Page: Welcome Gate ── */
+
+.cs-welcome-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    background: rgba(26, 20, 13, 0.75);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.cs-welcome-panel {
+    background: var(--ticket-bg, #F1E9D8);
+    border: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
+    border-radius: var(--radius-md);
+    padding: 40px;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+
+.cs-welcome-title {
+    font-family: var(--font-ticket);
+    font-size: 22px;
+    color: var(--ticket-ink, #382C20);
+    margin: 0 0 10px;
+}
+
+.cs-welcome-copy {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ticket-ink-muted, #8A7A62);
+    margin: 0 0 24px;
+}
+
+.cs-welcome-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cs-welcome-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+    border: 1px solid var(--primary-warm, #E8756A);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cs-welcome-login {
+    background: var(--primary-warm, #E8756A);
+    color: #FFFFFF;
+}
+
+.cs-welcome-login:hover {
+    background: color-mix(in srgb, var(--primary-warm, #E8756A) 80%, #000);
+}
+
+.cs-welcome-guest {
+    background: transparent;
+    color: var(--primary-warm, #E8756A);
+}
+
+.cs-welcome-guest:hover {
+    background: color-mix(in srgb, var(--primary-warm, #E8756A) 15%, transparent);
+}
+
+/* ── Home Page: My Computer info rows ── */
+
+.os-info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    font-size: 13px;
+}
+
+.os-info-row:last-child {
+    border-bottom: none;
+}
+
+.os-info-label {
+    color: var(--color-text-muted);
+}
+
+.os-info-value {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+/* ── Home Page: Paint ── */
+
+.os-paint-canvas-wrap {
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#paintCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    cursor: crosshair;
+    background: var(--color-bg);
+}
+
+.os-paint-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.os-paint-swatches {
+    display: flex;
+    gap: 6px;
+}
+
+.os-paint-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.os-paint-swatch.active {
+    border-color: var(--color-text-primary);
+}
+
+.os-paint-clear {
+    font-family: var(--font-body);
+    font-size: 12px;
+    background: none;
+    border: 1px solid var(--color-text-muted);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+.os-paint-clear:hover {
+    background: color-mix(in srgb, var(--color-text-muted) 12%, transparent);
+}
+
+/* ── Home Page: Music ── */
+
+.os-music-now-playing {
+    font-family: var(--font-ticket);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    margin: 0 0 10px;
+    text-transform: uppercase;
+}
+
+/* ── Home Page: Settings window ── */
+
+.os-settings-copy {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0 0 14px;
+    text-align: center;
+}
+
+.os-settings-open-btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--primary-warm, #E8756A);
+    background: transparent;
+    color: var(--primary-warm, #E8756A);
+    cursor: pointer;
+}
+
+.os-settings-open-btn:hover {
+    background: var(--primary-warm, #E8756A);
+    color: #FFFFFF;
+}
+
+/* ── Home Page: Guestbook ── */
+
+.os-guestbook-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+}
+
+.os-guestbook-submit {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: var(--primary-warm, #E8756A);
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.os-guestbook-submit:hover {
+    background: color-mix(in srgb, var(--primary-warm, #E8756A) 80%, #000);
+}
+
+.os-guestbook-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.os-guestbook-locked {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 14px;
+}
+
+.os-guestbook-locked a {
+    color: var(--primary-warm, #E8756A);
+}
+
+.os-guestbook-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.os-guestbook-entry {
+    padding: 8px 10px;
+    background: color-mix(in srgb, var(--color-bg) 92%, black 8%);
+    border-radius: var(--radius-sm);
+}
+
+.os-guestbook-entry-name {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--color-text-primary);
+}
+
+.os-guestbook-entry-date {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-left: 8px;
+}
+
+.os-guestbook-entry-message {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin: 4px 0 0;
+    line-height: 1.5;
+}
+
+.os-guestbook-empty {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: 12px 0;
+}
+
+.os-document-textarea {
+    min-height: 260px;
+}
+
+.os-taskbar-save-link {
+    display: inline-block;
+    text-decoration: none;
 }
