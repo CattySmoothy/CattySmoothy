@@ -8,6 +8,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Perfect DOS VGA 437';
+    src: url('../fonts/dos-vga-437.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --color-bg: #FAF8F5;
     --color-surface: #FFFFFF;
@@ -16,10 +24,11 @@
     --color-text-muted: #9B9590;
     --color-accent: #2D2A26;
 
-    --font-display: 'Playfair Display', serif;
+    --font-display: 'AFL Typewriter', 'Courier New', monospace;
     --font-body: 'DM Sans', sans-serif;
     --font-sub: 'Quicksand', sans-serif;
     --font-ticket: 'AFL Typewriter', 'Courier New', monospace;
+    --font-dos: 'Perfect DOS VGA 437', 'Courier New', monospace;
 
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -7596,4 +7605,216 @@ body.os-hud-hidden .realm-canvas {
   font-size: 12px;
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+/* ── Shop ── */
+
+.shop-wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+    --font-ticket: var(--font-dos);
+}
+
+.shop-page {
+    padding: 56px 0 80px;
+}
+
+.shop-intro {
+    margin-bottom: 40px;
+}
+
+.shop-balance {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 18px 0 6px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--ticket-bg, #F1E9D8);
+    border: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
+}
+
+.shop-balance-icon {
+    color: var(--primary-warm, #E8756A);
+    font-size: 15px;
+}
+
+.shop-balance-amount {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ticket-ink, #382C20);
+}
+
+.shop-balance-label {
+    font-family: var(--font-ticket);
+    font-size: 13px;
+    color: var(--ticket-ink-muted, #8A7A62);
+}
+
+.shop-balance-label a {
+    color: var(--primary-warm, #E8756A);
+}
+
+.shop-balance-guest {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 14px 0;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.shop-balance-guest a {
+    color: var(--primary-warm, #E8756A);
+    font-weight: 600;
+}
+
+.shop-earn-note {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    margin: 0 0 28px;
+}
+
+.shop-earn-note a {
+    color: var(--primary-warm, #E8756A);
+}
+
+.shop-filter {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+}
+
+.shop-filter-label {
+    font-family: var(--font-ticket);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+.shop-filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+}
+
+.shop-filter-btn {
+    font-family: var(--font-ticket);
+    font-size: 13px;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.shop-filter-btn.active {
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--primary-warm) 25%, transparent);
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.shop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+}
+
+.shop-item {
+    padding: 28px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+}
+
+.shop-item:nth-child(odd) {
+    border-right: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+}
+
+.shop-item-title {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: var(--font-ticket);
+    font-size: 14px;
+    font-weight: 500;
+    color: #FFFFFF;
+    background: var(--color-text-primary);
+    padding: 3px 8px;
+    margin-bottom: 16px;
+}
+
+.shop-item-image {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    background: color-mix(in srgb, var(--color-bg) 92%, black 8%);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+}
+
+.shop-item-desc {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 20px;
+    flex: 1;
+}
+
+.shop-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.shop-item-price {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ticket-ink, #382C20);
+}
+
+.shop-redeem-btn {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--primary-warm, #E8756A);
+    background: transparent;
+    color: var(--primary-warm, #E8756A);
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.shop-redeem-btn:hover:not(:disabled) {
+    background: var(--primary-warm, #E8756A);
+    color: #FFFFFF;
+}
+
+.shop-redeem-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+    .shop-grid {
+        grid-template-columns: 1fr;
+    }
+    .shop-item:nth-child(odd) {
+        border-right: none;
+    }
 }

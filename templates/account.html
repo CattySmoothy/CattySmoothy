@@ -10,6 +10,12 @@
             </div>
         </section>
 
+        <div class="shop-balance" style="margin: 0 auto 24px;">
+            <span class="shop-balance-icon">✦</span>
+            <span class="shop-balance-amount">{{ current_user.stardust_balance }}</span>
+            <span class="shop-balance-label">stardust &mdash; <a href="{{ url_for('shop') }}">spend in the shop</a></span>
+        </div>
+
         <div class="form-section">
             <div class="form-section-title">Purchase History</div>
             {% if purchases %}
@@ -29,6 +35,26 @@
                 {% endfor %}
             {% else %}
                 <p class="donate-note">No purchases yet. <a href="{{ url_for('support') }}">Become a member</a> or <a href="{{ url_for('donate') }}">send some stardust</a>.</p>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+            <div class="form-section-title">Redemptions</div>
+            {% if redemptions %}
+                {% for r in redemptions %}
+                <div class="donate-field" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                    <div>
+                        <div class="donate-label" style="margin-bottom:2px;">{{ r.item_name }}</div>
+                        <div class="donate-note">{{ r.created_at.strftime('%b %d, %Y') }}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div class="donate-label" style="margin-bottom:2px;">✦ {{ r.cost }}</div>
+                        <div class="donate-note">{{ r.status|capitalize }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="donate-note">Nothing redeemed yet. Visit the <a href="{{ url_for('shop') }}">shop</a> to spend your stardust.</p>
             {% endif %}
         </div>
 

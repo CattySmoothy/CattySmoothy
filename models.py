@@ -14,8 +14,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     stripe_customer_id = db.Column(db.String(255), nullable=True)
+    stardust_balance = db.Column(db.Integer, default=0, nullable=False)
 
     purchases = db.relationship('Purchase', backref='user', lazy='dynamic')
+    redemptions = db.relationship('Redemption', backref='user', lazy='dynamic')
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -45,3 +47,15 @@ class Purchase(db.Model):
     plan_name = db.Column(db.String(50), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+
+class Redemption(db.Model):
+    __tablename__ = 'redemptions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    item_slug = db.Column(db.String(50), nullable=False)
+    item_name = db.Column(db.String(100), nullable=False)
+    cost = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='pending')  # pending|fulfilled
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

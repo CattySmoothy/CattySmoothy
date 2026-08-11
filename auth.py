@@ -4,7 +4,7 @@ from flask import render_template, request, jsonify, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 
 from extensions import db
-from models import User, Purchase
+from models import User, Purchase, Redemption
 from forms import RegisterForm, LoginForm
 
 
@@ -72,4 +72,5 @@ def register_auth_routes(app):
     @login_required
     def account():
         purchases = current_user.purchases.order_by(Purchase.created_at.desc()).all()
-        return render_template('account.html', title="Account", purchases=purchases)
+        redemptions = current_user.redemptions.order_by(Redemption.created_at.desc()).all()
+        return render_template('account.html', title="Account", purchases=purchases, redemptions=redemptions)

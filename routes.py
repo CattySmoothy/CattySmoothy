@@ -205,10 +205,12 @@ def register_routes(app):
         if event['type'] == 'checkout.session.completed':
             session_obj = event['data']['object']
             purchase = Purchase.query.filter_by(stripe_session_id=session_obj['id']).first()
-            if purchase:
+            if purchase and purchase.status != 'completed':
                 purchase.status = 'completed'
                 purchase.stripe_payment_intent_id = session_obj.get('payment_intent')
                 purchase.stripe_subscription_id = session_obj.get('subscription')
+                if purchase.type == 'donation':
+                    purchase.user.stardust_balance += int(purchase.amount)
                 db.session.commit()
 
         return jsonify({'received': True}), 200

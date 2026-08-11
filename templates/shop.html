@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content_class %}shop-wrap{% endblock %}
+
+{% block content %}
+<div class="shop-page">
+    <div class="shop-intro">
+        <h1 class="page-title">Designed for the Community</h1>
+        <p class="page-subtitle">A little store for stardust &mdash; part thank-you, part playground.</p>
+
+        {% if current_user.is_authenticated %}
+        <div class="shop-balance">
+            <span class="shop-balance-icon">✦</span>
+            <span class="shop-balance-amount">{{ current_user.stardust_balance }}</span>
+            <span class="shop-balance-label">stardust</span>
+        </div>
+        {% else %}
+        <div class="shop-balance shop-balance-guest">
+            <a href="{{ url_for('login', next='/shop') }}">Log in</a> to see your stardust balance
+        </div>
+        {% endif %}
+
+        <p class="shop-earn-note">Earn 1 stardust for every $1 you <a href="{{ url_for('donate') }}">donate</a>.</p>
+
+        <div class="shop-filter">
+            <span class="shop-filter-label">Filter</span>
+            <div class="shop-filter-options">
+                <button type="button" class="shop-filter-btn active" data-filter="all">Shop All</button>
+                <button type="button" class="shop-filter-btn" data-filter="Digital">Digital</button>
+                <button type="button" class="shop-filter-btn" data-filter="Flair">Flair</button>
+                <button type="button" class="shop-filter-btn" data-filter="Commissions">Commissions</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="shop-grid" id="shopGrid">
+        {% for item in items %}
+        <div class="shop-item" data-category="{{ item.category }}">
+            <span class="shop-item-title">{{ item.name }}</span>
+            <div class="shop-item-image">{{ item.emoji }}</div>
+            <p class="shop-item-desc">{{ item.description }}</p>
+            <div class="shop-item-footer">
+                <span class="shop-item-price">✦ {{ item.cost }}</span>
+                {% if current_user.is_authenticated %}
+                <button type="button"
+                        class="shop-redeem-btn"
+                        data-slug="{{ item.slug }}"
+                        data-cost="{{ item.cost }}"
+                        {% if current_user.stardust_balance < item.cost %}disabled{% endif %}>
+                    Redeem
+                </button>
+                {% else %}
+                <a href="{{ url_for('login', next='/shop') }}" class="shop-redeem-btn shop-redeem-link">Log in to redeem</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var filterBtns = document.querySelectorAll('.shop-filter-btn');
+    var items = document.querySelectorAll('.shop-item');
+
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            var filter = btn.dataset.filter;
+            items.forEach(function(item) {
+                item.style.display = (filter === 'all' || item.dataset.category === filter) ? '' : 'none';
+            });
+        });
+    });
+
+    document.querySelectorAll('.shop-redeem-btn[data-slug]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (btn.disabled) return;
+            var slug = btn.dataset.slug;
+            var originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Redeeming...';
+
+            fetch('/redeem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ slug: slug })
+            })
+            .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+            .then(function(res) {
+                if (res.status === 200) {
+                    btn.textContent = 'Redeemed ✦';
+                    var balanceEl = document.querySelector('.shop-balance-amount');
+                    if (balanceEl) balanceEl.textContent = res.data.balance;
+                    document.querySelectorAll('.shop-redeem-btn[data-slug]').forEach(function(b) {
+                        if (parseInt(b.dataset.cost, 10) > res.data.balance) b.disabled = true;
+                    });
+                } else {
+                    alert('Error: ' + (res.data.error || 'Something went wrong'));
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            })
+            .catch(function() {
+                alert('Could not connect to the server.');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
