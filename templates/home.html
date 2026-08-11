@@ -93,55 +93,11 @@
                                 <div class="os-info-row"><span class="os-info-label">Stardust</span><span class="os-info-value">✦ {{ current_user.stardust_balance }}</span></div>
                                 {% endif %}
                                 <div class="os-info-row"><span class="os-info-label">Access</span><span class="os-info-value">{{ 'Guest (view-only)' if guest_view_only else 'Full Access' }}</span></div>
+                                <a href="{{ url_for('profile') }}" style="display:block; margin-top:14px; color:var(--color-accent); text-decoration:underline; font-weight:500; font-size:13px;">Edit Profile →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
                                 <span class="os-footer-text">mycomputer.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
-                        <!-- Window: About -->
-                        <div class="os-window os-window-about">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-about" aria-hidden="true">❀</span>
-                                <span class="os-titlebar-text">About</span>
-                                <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close About">×</button>
-                            </div>
-                            {% if guest_view_only %}<fieldset disabled>{% endif %}
-                            <div class="os-window-body os-window-body-center">
-                                <div class="avatar-upload" id="avatarUpload">
-                                    <div class="avatar-preview" id="avatarPreview">
-                                        <span class="avatar-initials" id="avatarInitials">C</span>
-                                        <div class="avatar-lace"></div>
-                                    </div>
-                                    <div class="avatar-overlay">✧ drag &amp; drop ✧</div>
-                                    <input type="file" id="avatarInput" name="avatar" accept="image/*" class="avatar-input">
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Display Name</label>
-                                    <input type="text" id="personaName" name="display_name" placeholder="e.g. Lunar Dreamer" class="os-input" value="Catty Smoothy" maxlength="30">
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Pronouns</label>
-                                    <input type="text" id="personaPronouns" name="pronouns" placeholder="e.g. she/her" class="os-input" value="she/her" maxlength="30">
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Short Bio</label>
-                                    <textarea id="personaShortBio" name="short_bio" placeholder="A little about you..." class="os-textarea" maxlength="150" rows="3">Digital artist making paintings, wallpapers, and sketches.</textarea>
-                                </div>
-                                <div class="os-field">
-                                    <label class="os-label">Links</label>
-                                    <input type="url" name="social_instagram" placeholder="Instagram URL" class="os-input" style="margin-bottom:6px;">
-                                    <input type="url" name="social_discord" placeholder="Discord URL" class="os-input" style="margin-bottom:6px;">
-                                    <input type="url" name="social_other" placeholder="Another link" class="os-input">
-                                </div>
-                            </div>
-                            {% if guest_view_only %}</fieldset>{% endif %}
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">about.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -792,7 +748,6 @@
           // ── Minimize / Desktop Icons ──
           var iconDefs = {
             'os-window-mycomputer': { emoji: '🖥', label: 'My Computer' },
-            'os-window-about': { emoji: '❀', label: 'About' },
             'os-window-settings': { emoji: '⚙', label: 'Settings' },
             'os-window-document': { emoji: '✎', label: 'Document' },
             'os-window-paint': { emoji: '🎨', label: 'Paint' },

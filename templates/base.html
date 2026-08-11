@@ -63,7 +63,7 @@
                 </a>
                 <div class="sidebar-subnav" id="orgSubnav">
                     <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Club Plan</a>
-                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
+                    <a href="{{ url_for('apply_and_join') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
                 </div>
             </div>
             <a href="{{ url_for('updates') }}" class="sidebar-nav-item" title="Updates">
@@ -320,11 +320,12 @@
                 knobs.sat.style.left = (satPct * 100) + '%';
                 knobs.light.style.left = (lightPct * 100) + '%';
 
-                // Swatch — preview the actual accent color that will be applied
-                const accentS = Math.max(8, Math.min(65, sat));
+                // Swatch — preview the actual primary/accent color that will be applied
+                // (kept in sync with generateTheme()'s primaryS/primaryL formula)
+                const accentS = Math.max(20, Math.min(85, sat));
                 const accentL = light > 50
                     ? Math.max(28, Math.min(50, 28 + (light - 50) * 0.45))
-                    : Math.max(20, Math.min(50, light * 0.8));
+                    : Math.max(22, Math.min(50, light * 0.8));
                 swatch.style.background = hslStr(hue, accentS, accentL);
 
                 // Star pathway dots glow in current hue
@@ -410,83 +411,109 @@
                 label.textContent = phaseName;
             }
 
-            // Generate full theme from HSL — background stays primarily white,
-            // theme affects accent elements.
+            // ── Theme generation: a 3-part color system built from the single
+            // hue/sat/light the user picks, applied via the 60-30-10 rule.
+            //
+            //   1. PRIMARY    — the exact color the user selected. Used sparingly
+            //                   (~10%) as the accent: buttons, links, highlights.
+            //   2. CONTRAST   — a low-contrast (light, desaturated) and a
+            //                   high-contrast (dark, richer) variant of that same
+            //                   hue. Used for ~30% of the design: structural
+            //                   elements like the sidebar, cards, panels — enough
+            //                   presence to feel themed without competing with
+            //                   the accent.
+            //   3. COMPLEMENT — the true opposite hue (+180°), muted. Used only
+            //                   as a small secondary structural accent (e.g. the
+            //                   sidebar's bottom section) so the palette has one
+            //                   supporting color instead of a second competing
+            //                   focal hue.
+            //
+            // Backgrounds/surfaces/text are built from NEUTRALS (gray, barely
+            // hue-tinted) — the dominant ~60% — with contrast against them kept
+            // high on purpose (dark, low-saturation text on a near-white ground)
+            // regardless of what hue/sat/light the user picks.
             function generateTheme(h, s, l) {
+                const compH = ((h + 180) % 360 + 360) % 360;
+
+                // ── 1. Primary (the ~10% accent) ──
+                // Kept close to the user's raw pick, only clamped enough to stay
+                // legible against the neutral background.
+                const primaryS = clamp(s, 20, 85);
+                const primaryL = l > 50
+                    ? clamp(28 + (l - 50) * 0.45, 28, 50)
+                    : clamp(l * 0.8, 22, 50);
+
+                // ── 2. Contrast pair (the ~30% structure color) ──
+                const lowS = clamp(s * 0.45, 8, 32);
+                const lowL = clamp(48 + l * 0.28, 55, 74);      // light, airy — settings bg, light cards
+                const highS = clamp(s * 0.85, 14, 58);
+                const highL = clamp(l * 0.42, 22, 42);          // dark, rich — sidebar, dark cards
+
+                // ── 3. Complement (small secondary accent only) ──
+                const compS = clamp(s * 0.55, 8, 40);
+                const compL = clamp(l * 0.42, 24, 42);
+
+                // ── 60% Neutrals (backgrounds, surfaces, borders, body text) ──
+                // Saturation stays low no matter how vivid the user's pick is,
+                // so large surfaces read as calm neutrals, not tinted color.
                 const bgL = 96;
                 const surfL = 98;
-
-                const text1L = 22;
-                const text2L = 35;
+                const neutralS = clamp(s * 0.12, 2, 6);
+                const text1L = 20;   // primary text — high contrast on the near-white bg
+                const text2L = 34;
                 const text3L = 38;
-
-                const hdrH = ((h + 200) % 360 + 360) % 360;
-
-                // Sidebar uses the selected hue directly
-                const sideS = clamp(s * 1.0, 10, 55);
-                const side1L = clamp(l * 0.5, 28, 48);
-                const side2L = clamp(l * 0.7, 40, 65);
-
-                // Accent uses raw s/l as closely as possible while staying readable on white
-                const accentS = clamp(s, 8, 65);
-                const accentL = l > 50
-                    ? clamp(28 + (l - 50) * 0.45, 28, 50)
-                    : clamp(l * 0.8, 20, 50);
-
-                const cardDarkL = clamp(l * 0.4, 24, 42);
-                const featuredL = clamp(l * 0.3, 18, 34);
 
                 const onDarkL = 92;
                 const onLightL = 12;
 
                 return {
-                    '--color-bg': hslStr(h, clamp(s * 0.35, 3, 15), bgL),
-                    '--color-surface': hslStr(h, clamp(s * 0.2, 2, 10), surfL),
-                    '--color-text-primary': hslStr(h, clamp(s * 0.6, 15, 55), text1L),
-                    '--color-text-secondary': hslStr(h, clamp(s * 0.5, 12, 45), text2L),
-                    '--color-text-muted': hslStr(h, clamp(s * 0.4, 8, 35), text3L),
-                    '--color-accent': hslStr(h, accentS, accentL),
+                    // Neutrals — 60%
+                    '--color-bg': hslStr(h, neutralS, bgL),
+                    '--color-surface': hslStr(h, clamp(neutralS * 0.7, 1, 4), surfL),
+                    '--color-text-primary': hslStr(h, clamp(neutralS * 2.5, 4, 15), text1L),
+                    '--color-text-secondary': hslStr(h, clamp(neutralS * 2, 3, 12), text2L),
+                    '--color-text-muted': hslStr(h, clamp(neutralS * 1.5, 2, 9), text3L),
+                    '--color-nav-border': hslStr(h, neutralS, bgL - 10),
+                    '--color-footer-text': hslStr(h, clamp(neutralS * 1.5, 2, 9), text3L),
+                    '--color-work-card-bg': hslStr(h, neutralS, bgL - 8),
+                    '--color-list-border': hslStr(h, clamp(neutralS * 0.8, 1, 5), bgL - 4),
+                    '--color-surface-alt': hslStr(h, clamp(neutralS * 0.9, 1, 5), bgL - 2),
 
-                    // Sidebar: selected hue throughout, bottom section uses complementary
-                    '--color-header-start': hslStr(h, sideS, side1L),
-                    '--color-header-end': hslStr(h, clamp(sideS - 5, 5, 50), side2L),
-                    '--color-sidebar-bottom': hslStr(hdrH, sideS, clamp(side1L - 4, 24, 44)),
+                    // Accent — 10% (the primary color itself)
+                    '--color-accent': hslStr(h, primaryS, primaryL),
+                    '--primary-warm': hslStr(h, primaryS, primaryL),
+                    '--primary-warm-light': hslStr(h, clamp(primaryS - 5, 10, 60), clamp(primaryL + 18, 50, 75)),
 
-                    // Settings panel: light tint of the main hue
-                    '--color-settings-bg': hslStr(h, clamp(s * 0.2, 2, 10), surfL),
+                    // Structure — 30% (low/high contrast variants of the primary hue)
+                    '--color-header-start': hslStr(h, highS, highL),
+                    '--color-header-end': hslStr(h, clamp(highS - 5, 8, 55), clamp(highL + 12, 30, 55)),
+                    '--color-sidebar-bottom': hslStr(compH, compS, compL),
+                    '--color-settings-bg': hslStr(h, clamp(lowS * 0.4, 2, 10), surfL),
 
-                    '--color-card-light': hslaStr(h, clamp(s * 0.4, 5, 25), bgL - 2, 0.95),
-                    '--color-card-light-end': hslaStr(h, clamp(s * 0.3, 3, 18), bgL - 5, 0.95),
-                    '--color-card-light-border': hslaStr(h, clamp(s * 0.45, 6, 30), bgL - 12, 0.6),
-                    '--color-card-dark': hslaStr(h, clamp(s * 0.8, 10, 55), cardDarkL, 0.92),
-                    '--color-card-dark-end': hslaStr(h, clamp(s * 0.6, 7, 45), cardDarkL - 5, 0.92),
-                    '--color-card-dark-solid': hslStr(h, clamp(s * 0.8, 10, 55), cardDarkL),
-                    '--color-card-dark-solid-end': hslStr(h, clamp(s * 0.6, 7, 45), cardDarkL - 3),
-                    '--color-card-featured': hslaStr(h, clamp(s * 0.9, 12, 60), featuredL, 0.92),
-                    '--color-card-featured-end': hslaStr(h, clamp(s * 0.7, 8, 50), featuredL - 4, 0.92),
-                    '--color-card-featured-solid': hslStr(h, clamp(s * 0.9, 12, 60), featuredL),
-                    '--color-card-featured-solid-end': hslStr(h, clamp(s * 0.7, 8, 50), featuredL - 2),
+                    '--color-card-light': hslaStr(h, lowS, bgL - 2, 0.95),
+                    '--color-card-light-end': hslaStr(h, clamp(lowS - 3, 5, 28), bgL - 5, 0.95),
+                    '--color-card-light-border': hslaStr(h, clamp(lowS + 5, 8, 35), bgL - 12, 0.6),
+                    '--color-card-dark': hslaStr(h, highS, highL, 0.92),
+                    '--color-card-dark-end': hslaStr(h, clamp(highS - 8, 10, 50), clamp(highL - 4, 18, 38), 0.92),
+                    '--color-card-dark-solid': hslStr(h, highS, highL),
+                    '--color-card-dark-solid-end': hslStr(h, clamp(highS - 8, 10, 50), clamp(highL - 2, 18, 40)),
+                    // Featured card: complement, so it reads as a distinct secondary tier
+                    '--color-card-featured': hslaStr(compH, compS, compL, 0.92),
+                    '--color-card-featured-end': hslaStr(compH, clamp(compS - 8, 6, 35), clamp(compL - 4, 18, 38), 0.92),
+                    '--color-card-featured-solid': hslStr(compH, compS, compL),
+                    '--color-card-featured-solid-end': hslStr(compH, clamp(compS - 8, 6, 35), clamp(compL - 2, 18, 40)),
 
-                    '--color-email-bg': hslStr(h, sideS, side1L),
-                    '--color-email-text': hslStr(h, clamp(sideS + 10, 15, 65), clamp(side1L + 32, 65, 90)),
-                    '--color-email-btn-text': hslStr(h, sideS, side1L),
-                    '--color-email-btn-hover-bg': hslStr(h, clamp(sideS + 10, 15, 65), clamp(side1L + 35, 70, 95)),
-                    '--color-email-feedback': hslStr(h, clamp(sideS + 5, 8, 40), clamp(side1L + 10, 38, 60)),
+                    '--color-email-bg': hslStr(h, highS, highL),
+                    '--color-email-text': hslStr(h, clamp(highS + 10, 15, 65), clamp(highL + 32, 65, 90)),
+                    '--color-email-btn-text': hslStr(h, highS, highL),
+                    '--color-email-btn-hover-bg': hslStr(h, clamp(highS + 10, 15, 65), clamp(highL + 35, 70, 95)),
+                    '--color-email-feedback': hslStr(h, clamp(highS + 5, 8, 40), clamp(highL + 10, 38, 60)),
 
-                    '--color-nav-border': hslStr(h, clamp(s * 0.25, 3, 15), bgL - 10),
-                    '--color-footer-text': hslStr(h, clamp(s * 0.25, 5, 18), text3L),
-                    '--color-work-card-bg': hslStr(h, clamp(s * 0.25, 3, 15), bgL - 8),
-                    '--color-on-dark': hslStr(h, clamp(s * 0.2, 3, 12), onDarkL),
-                    '--color-on-light': hslStr(h, clamp(s * 0.4, 8, 28), onLightL),
+                    '--color-on-dark': hslStr(h, clamp(neutralS * 0.6, 1, 4), onDarkL),
+                    '--color-on-light': hslStr(h, clamp(neutralS * 3, 5, 20), onLightL),
                     '--color-card-dark-btn-bg': '#FFFFFF',
-                    '--color-card-featured-btn-bg': hslStr(h, clamp(s * 0.2, 3, 12), onDarkL),
-                    '--color-card-featured-btn-text': hslStr(h, clamp(s * 0.4, 8, 28), onLightL),
-                    '--color-list-border': hslStr(h, clamp(s * 0.2, 2, 10), bgL - 4),
-                    '--color-surface-alt': hslStr(h, clamp(s * 0.25, 3, 12), bgL - 2),
-
-                    // Sync --primary-warm so buttons/form-focus use the theme accent
-                    '--primary-warm': hslStr(h, accentS, accentL),
-                    '--primary-warm-light': hslStr(h, clamp(accentS - 5, 10, 50), clamp(accentL + 18, 50, 75)),
+                    '--color-card-featured-btn-bg': hslStr(compH, clamp(neutralS * 0.6, 1, 4), onDarkL),
+                    '--color-card-featured-btn-text': hslStr(compH, clamp(neutralS * 3, 5, 20), onLightL),
                 };
             }
 

@@ -1787,12 +1787,12 @@ button, input, textarea, select {
 }
 
 .pricing-card.dark {
-    background: linear-gradient(135deg, var(--color-card-featured-solid) 0%, var(--color-card-featured-solid-end) 100%);
+    background: linear-gradient(135deg, var(--color-card-dark-solid) 0%, var(--color-card-dark-solid-end) 100%);
 }
 
 .pricing-card.dark .plan-button {
-    background: var(--color-card-featured-btn-bg);
-    color: var(--color-card-featured-btn-text);
+    background: var(--color-card-dark-btn-bg);
+    color: var(--color-card-dark-btn-text);
 }
 
 .pricing-card.featured {
@@ -2646,6 +2646,22 @@ button, input, textarea, select {
 
 .club-header {
     margin-bottom: 32px;
+}
+
+.club-more-link {
+    margin-top: 28px;
+    font-family: var(--font-body);
+    font-size: 14px;
+}
+
+.club-more-link a {
+    color: var(--primary-warm, var(--color-accent));
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.club-more-link a:hover {
+    text-decoration: underline;
 }
 
 .club-name {

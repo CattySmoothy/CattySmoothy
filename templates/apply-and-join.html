@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-content">
+    <div class="content-container">
+        <div class="club-header">
+            <h1 class="club-name">Apply &amp; Join</h1>
+            <p class="club-tagline">Ready to become part of Lunar Bloom?</p>
+        </div>
+
+        <div class="club-cta">
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Sign Up to Join Lunar Bloom</h2>
+                <p class="club-cta-text">Becoming a member and gaining volunteer hours as well as experience.</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMGHncxT6ZqT5BdbCZpv2N0CEwapPL007bw0tqFcP4IHFhjg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="club-join-btn">Sign Up</a>
+            </div>
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Join Community</h2>
+                <p class="club-cta-text">Become part of a global family of creatives supporting each other through art.</p>
+                <a href="{{ url_for('join') }}" class="club-join-btn">Join Now</a>
+            </div>
+        </div>
+
+        <p class="club-more-link"><a href="{{ url_for('organization') }}">← Learn more about the club</a></p>
+    </div>
+</section>
+{% endblock %}

@@ -88,9 +88,13 @@ def register_routes(app):
     def organization():
         return render_template('organization.html', title="Organization")
 
+    @app.route('/apply-and-join')
+    def apply_and_join():
+        return render_template('apply-and-join.html', title="Apply & Join")
+
     @app.route('/profile')
     def profile():
-        return redirect(url_for('home'))
+        return render_template('profile.html', title="Profile")
 
     @app.route('/join')
     def join():
