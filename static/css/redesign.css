@@ -8403,22 +8403,22 @@ body.os-hud-hidden .realm-canvas {
     margin-bottom: 40px;
 }
 
-.portfolio-panel-list {
-    border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+.portfolio-panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
 }
 
 .portfolio-panel {
     position: relative;
     display: flex;
-    align-items: center;
-    gap: 40px;
-    padding: 48px 16px;
-    border-bottom: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+    flex-direction: column;
     text-decoration: none;
     color: inherit;
-    background-image: linear-gradient(90deg, transparent 0%, transparent 100%);
-    background-size: 200% 100%;
-    background-position: 100% 0;
+    background-image: linear-gradient(160deg, transparent 0%, transparent 100%);
+    background-size: 100% 200%;
+    background-position: 0 100%;
+    border-radius: 8px;
     opacity: 0;
     transform: translateY(28px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out, background-position 0.5s ease;
@@ -8430,13 +8430,12 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .portfolio-panel:hover {
-    background-image: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 14%, transparent) 100%);
+    background-image: linear-gradient(160deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 14%, transparent) 100%);
     background-position: 0 0;
 }
 
 .portfolio-panel-info {
-    flex: 1;
-    min-width: 0;
+    padding: 18px 14px 22px;
 }
 
 .portfolio-panel-num {
@@ -8459,25 +8458,32 @@ body.os-hud-hidden .realm-canvas {
 
 .portfolio-panel-title {
     font-family: var(--font-display);
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin: 0 0 8px;
+    margin: 0 0 6px;
     letter-spacing: 0.2px;
+}
+
+.portfolio-panel-author {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin: 0 0 8px;
 }
 
 .portfolio-panel-tag {
     font-family: var(--font-sub);
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-text-muted);
     margin: 0;
-    max-width: 46ch;
 }
 
 .portfolio-panel-visual {
-    width: 200px;
-    height: 150px;
-    border-radius: 8px;
+    width: 100%;
+    height: 170px;
+    border-radius: 8px 8px 0 0;
     flex-shrink: 0;
     background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 55%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 55%, transparent) 100%);
     transition: transform 0.3s ease;
@@ -8492,18 +8498,5 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .portfolio-panel:hover .portfolio-panel-visual {
-    transform: scale(1.03);
-}
-
-@media (max-width: 640px) {
-    .portfolio-panel {
-        flex-direction: column-reverse;
-        align-items: stretch;
-        gap: 20px;
-        padding: 32px 8px;
-    }
-    .portfolio-panel-visual {
-        width: 100%;
-        height: 140px;
-    }
+    transform: scale(1.02);
 }
