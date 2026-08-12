@@ -47,6 +47,7 @@
                     <div class="os-menu">
                         <button type="button" class="os-menu-label">Edit</button>
                         <div class="os-menu-dropdown">
+                            <button type="button" class="os-menu-item" id="menuCustomize">Customize...</button>
                             <button type="button" class="os-menu-item" id="menuResetLayout">Reset Layout</button>
                         </div>
                     </div>
@@ -1434,6 +1435,13 @@
             menuSave.addEventListener('click', function() {
               var form = document.getElementById('profileFormEditor');
               if (form) form.requestSubmit();
+            });
+          }
+
+          var menuCustomize = document.getElementById('menuCustomize');
+          if (menuCustomize) {
+            menuCustomize.addEventListener('click', function() {
+              if (window.openSettings) window.openSettings();
             });
           }
 

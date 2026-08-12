@@ -207,69 +207,29 @@
                         <div class="hsl-picker" id="hslPicker">
                             <div class="hsl-bars">
                                 <div class="hsl-row">
-                                    <span class="moon-label">
-                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                            <path d="M12 2A10 10 0 1 0 22 12A7 7 0 1 1 12 2Z" fill="currentColor"/>
-                                        </svg>
-                                    </span>
+                                    <span class="hsl-label">Hue</span>
                                     <div class="hsl-track" id="hueTrack">
-                                        <div class="hsl-knob" id="knobHue" data-axis="hue">
-                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                            </svg>
-                                        </div>
+                                        <div class="hsl-knob" id="knobHue" data-axis="hue"></div>
                                     </div>
                                 </div>
                                 <div class="hsl-row">
-                                    <span class="moon-label">
-                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                            <defs>
-                                                <clipPath id="satClip">
-                                                    <circle id="satClipCircle" cx="12" cy="12" r="10"/>
-                                                </clipPath>
-                                            </defs>
-                                            <circle cx="12" cy="12" r="10" fill="currentColor" clip-path="url(#satClip)"/>
-                                        </svg>
-                                    </span>
+                                    <span class="hsl-label">Sat</span>
                                     <div class="hsl-track" id="satTrack">
-                                        <div class="hsl-knob" id="knobSat" data-axis="sat">
-                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                            </svg>
-                                        </div>
+                                        <div class="hsl-knob" id="knobSat" data-axis="sat"></div>
                                     </div>
                                 </div>
                                 <div class="hsl-row">
-                                    <span class="moon-label" id="moonLabel">
-                                        <svg class="moon-icon" viewBox="0 0 24 24" width="16" height="16">
-                                            <defs>
-                                                <mask id="yyMask">
-                                                    <rect width="24" height="24" fill="white"/>
-                                                    <path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>
-                                                    <circle cx="9" cy="7" r="2.5" fill="black"/>
-                                                </mask>
-                                            </defs>
-                                            <circle cx="12" cy="12" r="10" fill="var(--moon-dark, #666)"/>
-                                            <circle cx="12" cy="12" r="10" fill="currentColor" mask="url(#yyMask)"/>
-                                            <circle cx="15" cy="17" r="2.5" fill="currentColor"/>
-                                        </svg>
-                                    </span>
+                                    <span class="hsl-label">Lum</span>
                                     <div class="hsl-track" id="lightTrack">
-                                        <div class="hsl-knob" id="knobLight" data-axis="light">
-                                            <svg class="knob-sparkle" viewBox="0 0 24 24" width="18" height="18">
-                                                <path d="M12 0l1.5 8.5L12 10l-1.5-1.5L12 0zm0 24l-1.5-8.5L12 14l1.5 1.5L12 24zM0 12l8.5-1.5L10 12l-1.5 1.5L0 12zm24 0l-8.5 1.5L14 12l1.5-1.5L24 12z" fill="currentColor"/>
-                                            </svg>
-                                        </div>
+                                        <div class="hsl-knob" id="knobLight" data-axis="light"></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="hsl-apply-wrap">
                                 <div class="hsl-swatch" id="hslSwatch" title="Apply theme">
-                                    <svg class="hsl-sparkle" viewBox="0 0 24 24" width="22" height="22">
-                                        <path d="M20.71 4.63l-1.34-1.34c-.78-.78-2.05-.78-2.83 0L9 10.83 6.76 13.59c-.12.16-.23.33-.32.51L3 22l7.9-3.44c.18-.09.35-.2.51-.32L20.71 7.46c.78-.78.78-2.05 0-2.83zM12.41 12L11 10.59l5-5L17.41 7l-5 5z" fill="currentColor"/>
-                                    </svg>
+                                    <span class="hsl-sparkle" aria-hidden="true">&#10022;</span>
                                 </div>
-                                <span class="hsl-apply-label">Paint Theme</span>
+                                <span class="hsl-apply-label">Apply Theme</span>
                             </div>
                         </div>
                     </div>
@@ -345,42 +305,6 @@
                 // Track glow matches current color
                 const glowColor = hslaStr(hue, sat, Math.min(light + 5, 70), 0.12);
                 html.style.setProperty('--track-glow', glowColor);
-
-                // Moon icon — even yin-yang in middle, converges at both ends, uses theme hue
-                const moonIcon = document.querySelector('#moonLabel .moon-icon');
-                if (moonIcon) {
-                    var g = Math.round(255 * (1 - light / 100));
-                    var factor = 1 - 0.5 * Math.sin(Math.PI * light / 100);
-                    var d = Math.round(g * factor);
-
-                    const mL = Math.round(light * 0.5);
-                    const darkFill = hslStr(hue, clamp(sat + 10, 20, 60), Math.max(10, Math.round(50 - mL * 0.4)));
-                    const lightFill = hslStr(hue, clamp(sat + 10, 20, 60), Math.max(15, Math.round(85 - mL * 0.6)));
-
-                    moonIcon.innerHTML =
-                        '<defs><mask id="yyMask">' +
-                        '<rect width="24" height="24" fill="white"/>' +
-                        '<path d="M12 2 C18 6, 6 18, 12 22 A10 10 0 0 1 12 2 Z" fill="black"/>' +
-                        '<circle cx="9" cy="7" r="2.5" fill="black"/>' +
-                        '</mask></defs>' +
-                        '<circle cx="12" cy="12" r="10" fill="' + darkFill + '"/>' +
-                        '<circle cx="12" cy="12" r="10" fill="' + lightFill + '" mask="url(#yyMask)"/>' +
-                        '<circle cx="15" cy="17" r="2.5" fill="' + lightFill + '"/>';
-                    moonIcon.style.transform = 'rotate(' + (light * 3.6) + 'deg)';
-                }
-
-                // Hue crescent moon — rotate with hue value
-                const hueMoon = document.querySelector('.hsl-bars .hsl-row:first-child .moon-icon');
-                if (hueMoon) {
-                    hueMoon.style.transform = `rotate(${hue}deg)`;
-                }
-
-                // Saturation icon — clip circle sweeps across for moon-phase curved transition
-                const satClip = document.getElementById('satClipCircle');
-                if (satClip) {
-                    const cx = 2 + (sat / 100) * 20;
-                    satClip.setAttribute('cx', cx);
-                }
 
                 // Update commission status dot and phase text
                 updateMoonPhase(sat);
