@@ -7,31 +7,54 @@
         <p class="page-subtitle">An index of process, studies, and the community collection</p>
     </div>
 
-    <div class="portfolio-index-list">
-        <a href="#" class="portfolio-index-row">
-            <span class="portfolio-index-num">01</span>
-            <span class="portfolio-index-body">
-                <span class="portfolio-index-title">Process Videos</span>
-                <span class="portfolio-index-tag">Watch the creative process behind my digital art pieces.</span>
-            </span>
-            <span class="portfolio-index-arrow">&rarr;</span>
+    <div class="portfolio-panel-list">
+        <a href="#" class="portfolio-panel" data-panel>
+            <div class="portfolio-panel-info">
+                <p class="portfolio-panel-num">01</p>
+                <hr class="portfolio-panel-rule">
+                <h3 class="portfolio-panel-title">Process Videos</h3>
+                <p class="portfolio-panel-tag">Watch the creative process behind my digital art pieces.</p>
+            </div>
+            <div class="portfolio-panel-visual portfolio-panel-visual-1" aria-hidden="true"></div>
         </a>
-        <a href="#" class="portfolio-index-row">
-            <span class="portfolio-index-num">02</span>
-            <span class="portfolio-index-body">
-                <span class="portfolio-index-title">Sketches</span>
-                <span class="portfolio-index-tag">Quick sketches and studies that showcase my artistic process.</span>
-            </span>
-            <span class="portfolio-index-arrow">&rarr;</span>
+        <a href="#" class="portfolio-panel" data-panel>
+            <div class="portfolio-panel-info">
+                <p class="portfolio-panel-num">02</p>
+                <hr class="portfolio-panel-rule">
+                <h3 class="portfolio-panel-title">Sketches</h3>
+                <p class="portfolio-panel-tag">Quick sketches and studies that showcase my artistic process.</p>
+            </div>
+            <div class="portfolio-panel-visual portfolio-panel-visual-2" aria-hidden="true"></div>
         </a>
-        <a href="#" class="portfolio-index-row">
-            <span class="portfolio-index-num">03</span>
-            <span class="portfolio-index-body">
-                <span class="portfolio-index-title">Community</span>
-                <span class="portfolio-index-tag">Complete collection of my best work in one place.</span>
-            </span>
-            <span class="portfolio-index-arrow">&rarr;</span>
+        <a href="#" class="portfolio-panel" data-panel>
+            <div class="portfolio-panel-info">
+                <p class="portfolio-panel-num">03</p>
+                <hr class="portfolio-panel-rule">
+                <h3 class="portfolio-panel-title">Community</h3>
+                <p class="portfolio-panel-tag">Complete collection of my best work in one place.</p>
+            </div>
+            <div class="portfolio-panel-visual portfolio-panel-visual-3" aria-hidden="true"></div>
         </a>
     </div>
 </section>
+
+<script>
+(function() {
+    var panels = document.querySelectorAll('[data-panel]');
+    if (!panels.length) return;
+    if (!('IntersectionObserver' in window)) {
+        panels.forEach(function(p) { p.classList.add('in-view'); });
+        return;
+    }
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2, rootMargin: '0px 0px -60px 0px' });
+    panels.forEach(function(p) { observer.observe(p); });
+})();
+</script>
 {% endblock %}

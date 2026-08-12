@@ -8394,8 +8394,8 @@ body.os-hud-hidden .realm-canvas {
 /* ── Portfolio Index (Collections page) ── */
 
 .portfolio-index-section {
-    padding: 64px 24px 96px;
-    max-width: 760px;
+    padding: 64px 24px 120px;
+    max-width: 880px;
     margin: 0 auto;
 }
 
@@ -8403,84 +8403,107 @@ body.os-hud-hidden .realm-canvas {
     margin-bottom: 40px;
 }
 
-.portfolio-index-list {
+.portfolio-panel-list {
     border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
 }
 
-.portfolio-index-row {
+.portfolio-panel {
     position: relative;
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 22px 16px;
+    gap: 40px;
+    padding: 48px 16px;
     border-bottom: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
     text-decoration: none;
     color: inherit;
     background-image: linear-gradient(90deg, transparent 0%, transparent 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
-    transition: background-position 0.5s ease, color 0.2s ease;
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, background-position 0.5s ease;
 }
 
-.portfolio-index-row:hover {
+.portfolio-panel.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-panel:hover {
     background-image: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 14%, transparent) 100%);
     background-position: 0 0;
 }
 
-.portfolio-index-num {
-    font-family: var(--font-display);
-    font-size: 15px;
-    color: var(--color-text-muted);
-    width: 28px;
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-}
-
-.portfolio-index-row:hover .portfolio-index-num {
-    color: var(--color-accent);
-}
-
-.portfolio-index-body {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.portfolio-panel-info {
     flex: 1;
     min-width: 0;
 }
 
-.portfolio-index-title {
+.portfolio-panel-num {
     font-family: var(--font-display);
-    font-size: 19px;
+    font-size: 15px;
+    color: var(--color-text-muted);
+    margin: 0 0 10px;
+    transition: color 0.2s ease;
+}
+
+.portfolio-panel:hover .portfolio-panel-num {
+    color: var(--color-accent);
+}
+
+.portfolio-panel-rule {
+    border: none;
+    border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+    margin: 0 0 14px;
+}
+
+.portfolio-panel-title {
+    font-family: var(--font-display);
+    font-size: 26px;
     font-weight: 600;
     color: var(--color-text-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
+    margin: 0 0 8px;
+    letter-spacing: 0.2px;
 }
 
-.portfolio-index-tag {
+.portfolio-panel-tag {
     font-family: var(--font-sub);
-    font-size: 13px;
+    font-size: 14px;
     color: var(--color-text-muted);
+    margin: 0;
+    max-width: 46ch;
 }
 
-.portfolio-index-arrow {
-    font-family: var(--font-display);
-    font-size: 16px;
-    color: var(--color-accent);
+.portfolio-panel-visual {
+    width: 200px;
+    height: 150px;
+    border-radius: 8px;
     flex-shrink: 0;
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 55%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 55%, transparent) 100%);
+    transition: transform 0.3s ease;
 }
 
-.portfolio-index-row:hover .portfolio-index-arrow {
-    opacity: 1;
-    transform: translateX(0);
+.portfolio-panel-visual-2 {
+    filter: hue-rotate(35deg);
 }
 
-@media (max-width: 600px) {
-    .portfolio-index-row {
-        gap: 14px;
-        padding: 18px 8px;
+.portfolio-panel-visual-3 {
+    filter: hue-rotate(-35deg);
+}
+
+.portfolio-panel:hover .portfolio-panel-visual {
+    transform: scale(1.03);
+}
+
+@media (max-width: 640px) {
+    .portfolio-panel {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 20px;
+        padding: 32px 8px;
+    }
+    .portfolio-panel-visual {
+        width: 100%;
+        height: 140px;
     }
 }
