@@ -1,47 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="collections-section slide-up">
-    <div class="collections-hero">
-        <h1 class="collections-title">My Art Collections</h1>
-        <p class="collections-subtitle">Explore my digital art, tutorials, and creative content</p>
+<section class="portfolio-index-section slide-up">
+    <div class="portfolio-index-hero">
+        <h1 class="page-title">My Art Collections</h1>
+        <p class="page-subtitle">An index of process, studies, and the community collection</p>
     </div>
-    
-    <div class="collections-grid">
-        <div class="grid grid-cols-1 grid-cols-2 grid-cols-3">
-            <div class="collection-card card">
-                <div class="card-body">
-                    <div class="collection-icon">
-                        <ion-icon name="videocam-outline"></ion-icon>
-                    </div>
-                    <h3>Process Videos</h3>
-                    <p>Watch the creative process behind my digital art pieces.</p>
-                    <a href="#" class="btn btn-primary">Watch Videos</a>
-                </div>
-            </div>
-            
-            <div class="collection-card card">
-                <div class="card-body">
-                    <div class="collection-icon">
-                        <ion-icon name="pencil-outline"></ion-icon>
-                    </div>
-                    <h3>Sketches</h3>
-                    <p>Quick sketches and studies that showcase my artistic process.</p>
-                    <a href="#" class="btn btn-primary">Browse</a>
-                </div>
-            </div>
-            
-            <div class="collection-card card">
-                <div class="card-body">
-                    <div class="collection-icon">
-                        <ion-icon name="library-outline"></ion-icon>
-                    </div>
-                    <h3>Community</h3>
-                    <p>Complete collection of my best work in one place.</p>
-                    <a href="#" class="btn btn-primary">View Community</a>
-                </div>
-            </div>
-        </div>
+
+    <div class="portfolio-index-list">
+        <a href="#" class="portfolio-index-row">
+            <span class="portfolio-index-num">01</span>
+            <span class="portfolio-index-body">
+                <span class="portfolio-index-title">Process Videos</span>
+                <span class="portfolio-index-tag">Watch the creative process behind my digital art pieces.</span>
+            </span>
+            <ion-icon name="videocam-outline" class="portfolio-index-icon"></ion-icon>
+            <span class="portfolio-index-arrow">&rarr;</span>
+        </a>
+        <a href="#" class="portfolio-index-row">
+            <span class="portfolio-index-num">02</span>
+            <span class="portfolio-index-body">
+                <span class="portfolio-index-title">Sketches</span>
+                <span class="portfolio-index-tag">Quick sketches and studies that showcase my artistic process.</span>
+            </span>
+            <ion-icon name="pencil-outline" class="portfolio-index-icon"></ion-icon>
+            <span class="portfolio-index-arrow">&rarr;</span>
+        </a>
+        <a href="#" class="portfolio-index-row">
+            <span class="portfolio-index-num">03</span>
+            <span class="portfolio-index-body">
+                <span class="portfolio-index-title">Community</span>
+                <span class="portfolio-index-tag">Complete collection of my best work in one place.</span>
+            </span>
+            <ion-icon name="library-outline" class="portfolio-index-icon"></ion-icon>
+            <span class="portfolio-index-arrow">&rarr;</span>
+        </a>
     </div>
 </section>
 {% endblock %}

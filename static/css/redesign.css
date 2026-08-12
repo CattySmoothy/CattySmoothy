@@ -8431,3 +8431,111 @@ body.os-hud-hidden .realm-canvas {
     display: inline-block;
     text-decoration: none;
 }
+
+/* ── Portfolio Index (Collections page) ── */
+
+.portfolio-index-section {
+    padding: 64px 24px 96px;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.portfolio-index-hero {
+    margin-bottom: 40px;
+}
+
+.portfolio-index-list {
+    border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+}
+
+.portfolio-index-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 16px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+    text-decoration: none;
+    color: inherit;
+    background-image: linear-gradient(90deg, transparent 0%, transparent 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    transition: background-position 0.5s ease, color 0.2s ease;
+}
+
+.portfolio-index-row:hover {
+    background-image: linear-gradient(90deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 14%, transparent) 100%);
+    background-position: 0 0;
+}
+
+.portfolio-index-num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--color-text-muted);
+    width: 28px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.portfolio-index-row:hover .portfolio-index-num {
+    color: var(--color-accent);
+}
+
+.portfolio-index-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.portfolio-index-title {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.portfolio-index-tag {
+    font-family: var(--font-sub);
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.portfolio-index-icon {
+    font-size: 20px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.portfolio-index-row:hover .portfolio-index-icon {
+    color: var(--color-accent);
+}
+
+.portfolio-index-arrow {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--color-accent);
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.portfolio-index-row:hover .portfolio-index-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+@media (max-width: 600px) {
+    .portfolio-index-row {
+        gap: 14px;
+        padding: 18px 8px;
+    }
+    .portfolio-index-icon {
+        display: none;
+    }
+}
