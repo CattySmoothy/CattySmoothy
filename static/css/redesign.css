@@ -8243,7 +8243,108 @@ body.os-hud-hidden .realm-canvas {
     background: color-mix(in srgb, var(--color-text-muted) 12%, transparent);
 }
 
-/* ── Home Page: Music ── */
+/* ── Home Page: Music (record player) ── */
+
+.os-record-player {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: 4px auto 18px;
+}
+
+.os-record-disc {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #3a342c 0%, #16130f 72%);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+    animation: os-record-spin 7s linear infinite;
+}
+
+.os-record-grooves {
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 6px);
+}
+
+.os-record-label {
+    position: absolute;
+    inset: 58px;
+    border-radius: 50%;
+    background: var(--primary-warm, #E8756A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.os-record-label-note {
+    color: #FFFFFF;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.os-record-hole {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    background: #16130f;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.os-record-tonearm {
+    position: absolute;
+    top: -12px;
+    right: -20px;
+    width: 90px;
+    height: 90px;
+    pointer-events: none;
+}
+
+.os-record-tonearm-base {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #b0a080, #8a7a62);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.os-record-tonearm-arm {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 4px;
+    height: 76px;
+    background: linear-gradient(#b0a080, #8a7a62);
+    border-radius: 2px;
+    transform-origin: top center;
+    transform: rotate(30deg);
+    z-index: 1;
+}
+
+.os-record-tonearm-head {
+    position: absolute;
+    bottom: -3px;
+    left: -4px;
+    width: 12px;
+    height: 8px;
+    background: var(--ticket-ink, #382C20);
+    border-radius: 2px;
+}
+
+@keyframes os-record-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
 .os-music-now-playing {
     font-family: var(--font-ticket);

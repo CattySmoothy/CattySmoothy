@@ -150,36 +150,6 @@
                             </div>
                         </div>
 
-                        <!-- Window: Paint -->
-                        <div class="os-window os-window-paint">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-paint" aria-hidden="true">🎨</span>
-                                <span class="os-titlebar-text">Paint</span>
-                                <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Paint">×</button>
-                            </div>
-                            <div class="os-window-body os-window-body-center">
-                                <div class="os-paint-canvas-wrap">
-                                    <canvas id="paintCanvas" width="360" height="220"></canvas>
-                                </div>
-                                <div class="os-paint-toolbar">
-                                    <div class="os-paint-swatches">
-                                        <button type="button" class="os-paint-swatch active" data-color="#382C20" style="background:#382C20;" aria-label="Ink"></button>
-                                        <button type="button" class="os-paint-swatch" data-color="#E8756A" style="background:#E8756A;" aria-label="Coral"></button>
-                                        <button type="button" class="os-paint-swatch" data-color="#7A9E7E" style="background:#7A9E7E;" aria-label="Sage"></button>
-                                        <button type="button" class="os-paint-swatch" data-color="#6A8FE8" style="background:#6A8FE8;" aria-label="Blue"></button>
-                                        <button type="button" class="os-paint-swatch" data-color="#F1E9D8" style="background:#F1E9D8;" aria-label="Cream"></button>
-                                    </div>
-                                    <button type="button" class="os-paint-clear" id="paintClear">Clear</button>
-                                </div>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">paint.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
                     </div>
 
                     <!-- RIGHT COLUMN -->
@@ -193,14 +163,22 @@
                                 <div class="os-titlebar-ornament">~</div>
                                 <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Music">×</button>
                             </div>
-                            {% if guest_view_only %}<fieldset disabled>{% endif %}
-                            <div class="os-window-body">
-                                <p class="os-music-now-playing">Now Playing</p>
-                                <div class="os-field">
-                                    <input type="text" id="favTrack" name="favorite_track" placeholder="Favorite track" class="os-input" value="">
+                            <div class="os-window-body os-window-body-center">
+                                <div class="os-record-player" id="osRecordPlayer">
+                                    <div class="os-record-disc">
+                                        <div class="os-record-grooves"></div>
+                                        <div class="os-record-label">
+                                            <span class="os-record-label-note">♪</span>
+                                        </div>
+                                        <div class="os-record-hole"></div>
+                                    </div>
+                                    <div class="os-record-tonearm">
+                                        <div class="os-record-tonearm-base"></div>
+                                        <div class="os-record-tonearm-arm"></div>
+                                        <div class="os-record-tonearm-head"></div>
+                                    </div>
                                 </div>
                             </div>
-                            {% if guest_view_only %}</fieldset>{% endif %}
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
                                 <span class="os-footer-text">music.exe</span>
@@ -472,58 +450,6 @@
             });
         }
 
-        // Paint canvas
-        var paintCanvas = document.getElementById('paintCanvas');
-        if (paintCanvas) {
-            var ctx = paintCanvas.getContext('2d');
-            ctx.fillStyle = '#FAF8F5';
-            ctx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
-            ctx.lineCap = 'round';
-            ctx.lineWidth = 3;
-            var paintColor = '#382C20';
-            var painting = false;
-            var lastX, lastY;
-
-            function getPos(e) {
-                var rect = paintCanvas.getBoundingClientRect();
-                var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                return { x: clientX - rect.left, y: clientY - rect.top };
-            }
-
-            paintCanvas.addEventListener('mousedown', function(e) {
-                painting = true;
-                var p = getPos(e);
-                lastX = p.x; lastY = p.y;
-            });
-            paintCanvas.addEventListener('mousemove', function(e) {
-                if (!painting) return;
-                var p = getPos(e);
-                ctx.strokeStyle = paintColor;
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(p.x, p.y);
-                ctx.stroke();
-                lastX = p.x; lastY = p.y;
-            });
-            document.addEventListener('mouseup', function() { painting = false; });
-
-            document.querySelectorAll('.os-paint-swatch').forEach(function(sw) {
-                sw.addEventListener('click', function() {
-                    document.querySelectorAll('.os-paint-swatch').forEach(function(s) { s.classList.remove('active'); });
-                    sw.classList.add('active');
-                    paintColor = sw.dataset.color;
-                });
-            });
-
-            var paintClear = document.getElementById('paintClear');
-            if (paintClear) {
-                paintClear.addEventListener('click', function() {
-                    ctx.fillStyle = '#FAF8F5';
-                    ctx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
-                });
-            }
-        }
 
         // Settings window opener
         var openSettingsBtn = document.getElementById('openSettingsFromWindow');
@@ -642,14 +568,29 @@
           // index, never from measuring the DOM, since .os-grid's rendered size
           // isn't reliable at this point (its CSS Grid rows haven't settled yet,
           // and measuring here would also force an extra synchronous layout pass).
+          // Heights are per-window (not uniform) so content that needs more room
+          // — like Music's record player or Document's textarea — gets it, and
+          // columns stack cumulatively off each window's actual assigned height
+          // so windows never default-overlap.
           var cw = osGrid.clientWidth || 1200;
           var rightX = Math.max(cw - 340, 720);
+          var defaultHeights = {
+            mycomputer: 220,
+            settings: 190,
+            document: 340,
+            music: 230,
+            guestbook: 380,
+            org: 190
+          };
+          var gap = 24;
+          var colX = [0, 360, rightX];
+          var colY = [0, 0, 0];
           windows.forEach(function(win, i) {
             var id = win.dataset.windowId || getWindowId(win);
-            var d;
-            if (i < 3) { d = { x: 0, y: i * 300, w: 340, h: 200 }; }
-            else if (i < 5) { d = { x: 360, y: (i - 3) * 360, w: 340, h: 200 }; }
-            else { d = { x: rightX, y: (i - 5) * 300, w: 340, h: 200 }; }
+            var col = i < 3 ? 0 : (i < 5 ? 1 : 2);
+            var h = defaultHeights[id] || 220;
+            var d = { x: colX[col], y: colY[col], w: 340, h: h };
+            colY[col] += h + gap;
             d.el = win;
             d.id = id;
             windowData.push(d);
@@ -750,7 +691,6 @@
             'os-window-mycomputer': { emoji: '🖥', label: 'My Computer' },
             'os-window-settings': { emoji: '⚙', label: 'Settings' },
             'os-window-document': { emoji: '✎', label: 'Document' },
-            'os-window-paint': { emoji: '🎨', label: 'Paint' },
             'os-window-music': { emoji: '🎵', label: 'Music' },
             'os-window-guestbook': { emoji: '✒', label: 'Guestbook' },
             'os-window-org': { emoji: '📋', label: 'Organization' }
@@ -776,7 +716,7 @@
               var sp = iconPositions[d.id];
               ic.style.left = (sp ? sp.x : 40 + (idx % 3) * 100) + 'px';
               ic.style.top = (sp ? sp.y : 40 + Math.floor(idx / 3) * 90) + 'px';
-              ic.innerHTML = '<div class="os-desktop-icon-icon"><span class="os-desktop-icon-tab"></span><span class="os-desktop-icon-glyph">' + def.emoji + '</span></div><div class="os-desktop-icon-label">' + def.label + '</div>';
+              ic.innerHTML = '<div class="os-desktop-icon-icon"><span class="os-desktop-icon-glyph">' + def.emoji + '</span></div><div class="os-desktop-icon-label">' + def.label + '</div>';
               if (savedState && savedState[d.id] && savedState[d.id].minimized) {
                 win.style.display = 'none';
               } else {
