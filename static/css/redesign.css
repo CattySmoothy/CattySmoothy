@@ -3362,7 +3362,7 @@ button, input, textarea, select {
 
 .home-active .os-desktop {
     padding: 0;
-    min-height: 100%;
+    min-height: 1200px;
 }
 
 .donors-page {
