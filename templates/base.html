@@ -46,7 +46,7 @@
         <nav class="sidebar-nav">
             <div class="sidebar-section-header">
                 <span class="sidebar-section-title">Menu</span>
-                <span class="sidebar-section-count">(5)</span>
+                <span class="sidebar-section-count">(6)</span>
             </div>
             <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Home">
                 <span class="sidebar-nav-icon">⌂︎</span>
@@ -64,6 +64,16 @@
                 <div class="sidebar-subnav" id="orgSubnav">
                     <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Club Plan</a>
                     <a href="{{ url_for('apply_and_join') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
+                </div>
+            </div>
+            <div class="sidebar-nav-item-wrapper" id="portfolioWrapper">
+                <a href="#" class="sidebar-nav-item" title="Portfolio" id="portfolioToggle">
+                    <span class="sidebar-nav-icon">✎</span>
+                    <span class="sidebar-nav-label">Portfolio</span>
+                </a>
+                <div class="sidebar-subnav" id="portfolioSubnav">
+                    <a href="{{ url_for('commissions') }}" class="sidebar-subnav-item">Commissions</a>
+                    <a href="{{ url_for('collections') }}" class="sidebar-subnav-item">Collections</a>
                 </div>
             </div>
             <a href="{{ url_for('updates') }}" class="sidebar-nav-item" title="Updates">
@@ -652,6 +662,20 @@
                 document.addEventListener('click', function(e) {
                     if (!orgWrapper.contains(e.target)) {
                         orgWrapper.classList.remove('open');
+                    }
+                });
+            }
+
+            // Portfolio subnav toggle
+            const portfolioWrapper = document.getElementById('portfolioWrapper');
+            if (portfolioWrapper) {
+                portfolioWrapper.addEventListener('click', function(e) {
+                    if (e.target.closest('.sidebar-subnav-item')) return;
+                    this.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!portfolioWrapper.contains(e.target)) {
+                        portfolioWrapper.classList.remove('open');
                     }
                 });
             }

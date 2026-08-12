@@ -80,10 +80,6 @@ def register_routes(app):
     def updates():
         return render_template('updates.html', title="Updates")
 
-    @app.route('/creators-lab')
-    def creators_lab():
-        return render_template('creators-lab.html', title="The Creator's Lab")
-
     @app.route('/organization')
     def organization():
         return render_template('organization.html', title="Organization")
