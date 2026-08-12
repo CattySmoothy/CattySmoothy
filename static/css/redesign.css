@@ -8504,17 +8504,6 @@ body.os-hud-hidden .realm-canvas {
     color: var(--color-text-muted);
 }
 
-.portfolio-index-icon {
-    font-size: 20px;
-    color: var(--color-text-muted);
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-}
-
-.portfolio-index-row:hover .portfolio-index-icon {
-    color: var(--color-accent);
-}
-
 .portfolio-index-arrow {
     font-family: var(--font-display);
     font-size: 16px;
@@ -8534,8 +8523,5 @@ body.os-hud-hidden .realm-canvas {
     .portfolio-index-row {
         gap: 14px;
         padding: 18px 8px;
-    }
-    .portfolio-index-icon {
-        display: none;
     }
 }
