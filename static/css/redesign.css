@@ -8259,24 +8259,31 @@ body.os-hud-hidden .realm-canvas {
 
 .portfolio-panel-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 0;
+}
+
+@media (max-width: 720px) {
+    .portfolio-panel-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .portfolio-panel {
     position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    min-height: 50vh;
     text-decoration: none;
     color: inherit;
-    background-image: linear-gradient(160deg, transparent 0%, transparent 100%);
-    background-size: 100% 200%;
-    background-position: 0 100%;
+    overflow: hidden;
+    background-color: var(--color-surface);
     border: 1px dashed color-mix(in srgb, var(--color-text-muted) 30%, transparent);
     margin: -1px 0 0 -1px;
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out, background-position 0.5s ease;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .portfolio-panel.in-view {
@@ -8284,13 +8291,41 @@ body.os-hud-hidden .realm-canvas {
     transform: translateY(0);
 }
 
-.portfolio-panel:hover {
-    background-image: linear-gradient(160deg, color-mix(in srgb, var(--color-accent) 16%, transparent) 0%, color-mix(in srgb, var(--color-sidebar-bottom) 14%, transparent) 100%);
-    background-position: 0 0;
+.portfolio-panel-info {
+    position: relative;
+    z-index: 1;
+    padding: 28px 26px 34px;
 }
 
-.portfolio-panel-info {
-    padding: 18px 14px 22px;
+.portfolio-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    opacity: 0.22;
+    pointer-events: none;
+    background-color: var(--color-accent);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-blend-mode: overlay;
+    background-repeat: repeat;
+    background-size: 180px 180px;
+    transition: opacity 0.3s ease;
+}
+
+.portfolio-panel-1::after {
+    filter: hue-rotate(0deg);
+}
+
+.portfolio-panel-2::after {
+    filter: hue-rotate(35deg);
+}
+
+.portfolio-panel-3::after {
+    filter: hue-rotate(-35deg);
+}
+
+.portfolio-panel:hover::after {
+    opacity: 0.32;
 }
 
 .portfolio-panel-num {
@@ -8335,35 +8370,3 @@ body.os-hud-hidden .realm-canvas {
     margin: 0;
 }
 
-.portfolio-panel-visual {
-    width: 100%;
-    height: 170px;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    background-color: var(--color-accent);
-    transition: transform 0.3s ease;
-}
-
-.portfolio-panel-visual::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.3;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 180px 180px;
-}
-
-.portfolio-panel-visual-2 {
-    filter: hue-rotate(35deg);
-}
-
-.portfolio-panel-visual-3 {
-    filter: hue-rotate(-35deg);
-}
-
-.portfolio-panel:hover .portfolio-panel-visual {
-    transform: scale(1.02);
-}
