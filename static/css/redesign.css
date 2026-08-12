@@ -3305,10 +3305,6 @@ button, input, textarea, select {
 }
 
 /* Home page - retro OS fills the whole page, no sitewide header */
-.home-active .game-hud {
-    display: none;
-}
-
 .home-active .realm-explorer {
     height: 100vh;
 }
@@ -3867,91 +3863,6 @@ button, input, textarea, select {
 
 /* ── Game Dashboard (Home Page RPG HUD) ──────────────────────────── */
 
-.game-hud {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    padding: 0 24px;
-    background: color-mix(in srgb, var(--color-surface) 85%, var(--color-header-start) 15%);
-    border-bottom: 1px solid color-mix(in srgb, var(--color-text-muted) 12%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-}
-
-.game-hud-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.game-hud-avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: var(--color-header-start);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-    background-size: cover;
-    background-position: center;
-}
-
-.game-hud-avatar .lace-border {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 8px;
-    background: var(--color-surface);
-    -webkit-mask: radial-gradient(circle at 5px 4px, transparent 2.5px, black 2.5px);
-    mask: radial-gradient(circle at 5px 4px, transparent 2.5px, black 2.5px);
-    -webkit-mask-size: 10px 8px;
-    mask-size: 10px 8px;
-    -webkit-mask-repeat: repeat-x;
-    mask-repeat: repeat-x;
-    z-index: 1;
-}
-
-.game-hud-initials {
-    font-family: var(--font-display);
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-
-.game-hud-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-}
-
-.game-hud-name {
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--color-text-primary);
-}
-
-.game-hud-pronouns {
-    font-family: var(--font-sub);
-    font-size: 11px;
-    color: var(--color-text-muted);
-}
-
-.game-hud-right {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
 .game-hud-theme {
     display: flex;
     align-items: center;
@@ -4111,45 +4022,6 @@ button, input, textarea, select {
 
 .game-hud-theme .hsl-apply-wrap {
     display: none;
-}
-
-.game-clock {
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    letter-spacing: 0.5px;
-    min-width: 60px;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-}
-
-.game-bell {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-muted);
-    transition: color 0.2s ease;
-    cursor: pointer;
-}
-
-.game-bell:hover {
-    color: var(--color-text-primary);
-}
-
-.game-bell svg {
-    display: block;
-}
-
-.game-bell-dot {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--primary-warm, #E8756A);
 }
 
 /* ── Dashboard Grid ── */
@@ -4719,19 +4591,6 @@ button, input, textarea, select {
         grid-template-columns: 1fr;
     }
 
-    .game-hud {
-        padding: 0 12px;
-        height: 48px;
-    }
-
-    .game-hud-pronouns {
-        display: none;
-    }
-
-    .game-clock {
-        font-size: 11px;
-        min-width: 40px;
-    }
 }
 
 /* ── Realm Explorer (Home Page Server-Select UI) ─────────────────── */
