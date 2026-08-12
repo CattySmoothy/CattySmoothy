@@ -222,7 +222,7 @@ button, input, textarea, select {
     flex-direction: column;
     align-items: center;
     padding: 24px 0 0;
-    width: 80px;
+    width: 190px;
     background: var(--ticket-bg);
     box-shadow: 1px 0 0 var(--ticket-line), 2px 0 12px rgba(0, 0, 0, 0.12);
     transition: width 0.35s ease;
@@ -231,7 +231,7 @@ button, input, textarea, select {
 
 .site-sidebar:hover,
 .site-sidebar.expanded {
-    width: 180px;
+    width: 190px;
 }
 
 .sidebar-toggle {
@@ -337,10 +337,10 @@ button, input, textarea, select {
     align-items: baseline;
     justify-content: space-between;
     width: calc(100% - 28px);
-    margin: 0 0 0;
+    margin: 0 0 6px;
     padding: 0 0 6px;
-    height: 0;
-    opacity: 0;
+    height: 20px;
+    opacity: 1;
     overflow: hidden;
     border-bottom: 1px solid var(--ticket-line);
     transition: height 0.3s ease, opacity 0.2s ease, margin 0.3s ease;
@@ -370,27 +370,10 @@ button, input, textarea, select {
     white-space: nowrap;
 }
 
-.sidebar-nav-icon {
-    font-size: 15px;
-    flex-shrink: 0;
-    text-align: center;
-    color: var(--ticket-ink);
-    line-height: 1;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--ticket-line);
-    border-radius: 5px;
-    background: var(--ticket-icon-bg);
-    box-sizing: border-box;
-}
-
 .sidebar-nav-item {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0;
     text-decoration: none;
     color: var(--ticket-ink);
@@ -402,41 +385,17 @@ button, input, textarea, select {
     position: relative;
 }
 
-.site-sidebar:hover .sidebar-nav-item,
-.site-sidebar.expanded .sidebar-nav-item {
-    justify-content: flex-start;
-    gap: 12px;
-}
-
 .sidebar-nav-label {
     font-family: var(--font-ticket);
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
     letter-spacing: 0.3px;
     color: inherit;
-    position: absolute;
-    left: 48px;
     white-space: nowrap;
-    opacity: 0;
-    transform: translateX(8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    pointer-events: none;
-}
-
-.site-sidebar:hover .sidebar-nav-label,
-.site-sidebar.expanded .sidebar-nav-label {
     opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-    font-size: 15px;
 }
 
 .sidebar-nav-item:hover {
-    color: var(--primary-warm, #E8756A);
-}
-
-.sidebar-nav-item:hover .sidebar-nav-icon {
-    border-color: var(--primary-warm, #E8756A);
     color: var(--primary-warm, #E8756A);
 }
 
@@ -494,7 +453,7 @@ button, input, textarea, select {
 
 .main-area {
     flex: 1;
-    margin-left: 80px;
+    margin-left: 190px;
     transition: margin-left 0.35s ease;
 }
 
@@ -502,7 +461,7 @@ button, input, textarea, select {
 .site-sidebar:hover ~ .main-area,
 .site-sidebar.expanded + .main-area,
 .site-sidebar.expanded ~ .main-area {
-    margin-left: 180px;
+    margin-left: 190px;
 }
 
 .settings-overlay {
@@ -2844,7 +2803,7 @@ button, input, textarea, select {
     font-weight: 500;
     color: var(--ticket-ink-muted);
     text-decoration: none;
-    padding: 6px 16px 6px 48px;
+    padding: 6px 16px 6px 26px;
     white-space: nowrap;
     transition: background 0.15s ease, color 0.15s ease;
     border-left: 2px solid transparent;
