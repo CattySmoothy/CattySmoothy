@@ -8272,6 +8272,8 @@ body.os-hud-hidden .realm-canvas {
 .portfolio-index-section {
     padding: 0;
     margin: 0;
+    --font-display: var(--font-dos);
+    --font-sub: var(--font-dos);
 }
 
 .portfolio-panel-grid {
