@@ -1,111 +1,116 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="about-layout">
-    <div class="about-box">
-        <section class="support-header">
-            <div class="content-container">
-                <h1 class="page-title">hm? what's this...?</h1>
-            </div>
-        </section>
+<div class="support-page">
+    <header class="support-hero">
+        <div class="support-hero-pixels" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <h1 class="support-hero-title">hm? what's this...?</h1>
+        <p class="support-hero-sub">support the art, unlock a little something extra</p>
+    </header>
 
-        <section class="pricing-grid">
-                <div class="pricing-card light pricing-card-wide">
-                    <h3>Send Stardust</h3>
-                    <div class="price">
-                        <span class="donation-currency">$</span>
-                        <div class="donation-stepper">
-                            <input type="number" id="donationAmount" class="donation-input" value="5.00" min="0.50" step="0.50">
-                            <div class="donation-arrows">
-                                <button type="button" class="donation-arrow up" onclick="stepDonation(0.50)" aria-label="Increase">▲</button>
-                                <button type="button" class="donation-arrow down" onclick="stepDonation(-0.50)" aria-label="Decrease">▼</button>
-                            </div>
+    <section class="support-grid">
+        <div class="support-card support-card-wide">
+            <div class="support-card-inner">
+                <h3 class="support-card-title">✦ Send Stardust</h3>
+                <div class="support-price">
+                    <span class="support-currency">$</span>
+                    <div class="support-stepper">
+                        <input type="number" id="donationAmount" class="support-input" value="5.00" min="0.50" step="0.50">
+                        <div class="support-arrows">
+                            <button type="button" class="support-arrow" onclick="stepDonation(0.50)" aria-label="Increase">▲</button>
+                            <button type="button" class="support-arrow" onclick="stepDonation(-0.50)" aria-label="Decrease">▼</button>
                         </div>
-                        <span class="price-period">one-time</span>
                     </div>
-                    <ul class="pricing-features">
-                        <li>✓ Support the artist</li>
-                        <li>✓ Donate however much you like <3</li>
-                    </ul>
-                    <button class="plan-button" onclick="goDonate()">Donate</button>
+                    <span class="support-period">one-time</span>
                 </div>
+                <ul class="support-features">
+                    <li>✓ Support the artist</li>
+                    <li>✓ Donate however much you like &lt;3</li>
+                </ul>
+                <button class="support-btn support-btn-primary" onclick="goDonate()">Donate</button>
+            </div>
+        </div>
 
-                <script>
-                function goDonate() {
-                    var amt = document.getElementById('donationAmount').value;
-                    window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
-                }
-
-                function stepDonation(delta) {
-                    var input = document.getElementById('donationAmount');
-                    var val = parseFloat(input.value) || 0;
-                    var step = parseFloat(input.step) || 0.50;
-                    var min = parseFloat(input.min) || 0.50;
-                    val = Math.round((val + delta) / step) * step;
-                    if (val < min) val = min;
-                    input.value = val.toFixed(2);
-                }
-
-                function subscribe(amount, planName) {
-                    var btn = event.target;
-                    btn.textContent = 'Redirecting...';
-                    btn.disabled = true;
-                    fetch('/create-subscription-session', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({ amount: amount, planName: planName })
-                    })
-                    .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
-                    .then(function(res) {
-                        if (res.data.url) {
-                            window.location.href = res.data.url;
-                        } else if (res.status === 401 && res.data.login_url) {
-                            window.location.href = res.data.login_url;
-                        } else {
-                            alert('Error: ' + (res.data.error || 'Something went wrong'));
-                            btn.textContent = 'Choose ' + planName;
-                            btn.disabled = false;
-                        }
-                    })
-                    .catch(function() {
-                        alert('Could not connect to payment server.');
-                        btn.textContent = 'Choose ' + planName;
-                        btn.disabled = false;
-                    });
-                }
-                </script>
-
-            <div class="pricing-card dark">
-                <h3>Basic</h3>
-                <div class="price">$1.99<span class="price-period">/mo</span></div>
-                <ul class="pricing-features">
+        <div class="support-card">
+            <div class="support-card-inner">
+                <h3 class="support-card-title">Basic</h3>
+                <div class="support-price"><span class="support-amount">$1.99</span><span class="support-period">/mo</span></div>
+                <ul class="support-features">
                     <li>✓ All Free features</li>
                     <li>✓ Premium tutorials</li>
-                    <li>✓ Live Q&A sessions</li>
+                    <li>✓ Live Q&amp;A sessions</li>
                 </ul>
-                <button class="plan-button" onclick="subscribe(1.99, 'Basic')">Choose Basic</button>
+                <button class="support-btn" onclick="subscribe(1.99, 'Basic')">Choose Basic</button>
             </div>
-            
-            <div class="pricing-card featured">
-                <h3>Premium</h3>
-                <div class="price">$49.99<span class="price-period">/mo</span></div>
-                <ul class="pricing-features">
+        </div>
+
+        <div class="support-card support-card-featured">
+            <span class="support-badge">✦ Popular</span>
+            <div class="support-card-inner">
+                <h3 class="support-card-title">Premium</h3>
+                <div class="support-price"><span class="support-amount">$49.99</span><span class="support-period">/mo</span></div>
+                <ul class="support-features">
                     <li>✓ All Basic features</li>
                     <li>✓ Personal feedback</li>
                     <li>✓ Priority support</li>
                 </ul>
-                <button class="plan-button" onclick="subscribe(49.99, 'Premium')">Choose Premium</button>
+                <button class="support-btn support-btn-primary" onclick="subscribe(49.99, 'Premium')">Choose Premium</button>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="support-footer">
-            <div class="content-container">
-                <p>Questions? Reach out anytime.</p>
-            </div>
-        </section>
-    </div>
+    <footer class="support-footnote">
+        <p>Questions? Reach out anytime.</p>
+    </footer>
 </div>
+
+<script>
+function goDonate() {
+    var amt = document.getElementById('donationAmount').value;
+    window.location.href = "{{ url_for('donate') }}?amount=" + encodeURIComponent(amt);
+}
+
+function stepDonation(delta) {
+    var input = document.getElementById('donationAmount');
+    var val = parseFloat(input.value) || 0;
+    var step = parseFloat(input.step) || 0.50;
+    var min = parseFloat(input.min) || 0.50;
+    val = Math.round((val + delta) / step) * step;
+    if (val < min) val = min;
+    input.value = val.toFixed(2);
+}
+
+function subscribe(amount, planName) {
+    var btn = event.target;
+    btn.textContent = 'Redirecting...';
+    btn.disabled = true;
+    fetch('/create-subscription-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({ amount: amount, planName: planName })
+    })
+    .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+    .then(function(res) {
+        if (res.data.url) {
+            window.location.href = res.data.url;
+        } else if (res.status === 401 && res.data.login_url) {
+            window.location.href = res.data.login_url;
+        } else {
+            alert('Error: ' + (res.data.error || 'Something went wrong'));
+            btn.textContent = 'Choose ' + planName;
+            btn.disabled = false;
+        }
+    })
+    .catch(function() {
+        alert('Could not connect to payment server.');
+        btn.textContent = 'Choose ' + planName;
+        btn.disabled = false;
+    });
+}
+</script>
 {% endblock %}
