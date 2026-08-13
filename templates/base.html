@@ -354,6 +354,11 @@
                 const compS = clamp(s * 0.55, 8, 40);
                 const compL = clamp(l * 0.42, 24, 42);
 
+                // Featured pricing tier: same hue as the chosen color, just
+                // less saturated than the dark tier — not the complement hue.
+                const featuredS = clamp(highS * 0.5, 8, 28);
+                const featuredL = clamp(highL + 6, 24, 46);
+
                 // ── 60% Neutrals (backgrounds, surfaces, borders, body text) ──
                 // Saturation stays low no matter how vivid the user's pick is,
                 // so large surfaces read as calm neutrals, not tinted color.
@@ -407,11 +412,13 @@
                     '--color-card-dark-end': hslaStr(h, clamp(highS - 8, 10, 50), clamp(highL - 4, 18, 38), 0.92),
                     '--color-card-dark-solid': hslStr(h, highS, highL),
                     '--color-card-dark-solid-end': hslStr(h, clamp(highS - 8, 10, 50), clamp(highL - 2, 18, 40)),
-                    // Featured card: complement, so it reads as a distinct secondary tier
-                    '--color-card-featured': hslaStr(compH, compS, compL, 0.92),
-                    '--color-card-featured-end': hslaStr(compH, clamp(compS - 8, 6, 35), clamp(compL - 4, 18, 38), 0.92),
-                    '--color-card-featured-solid': hslStr(compH, compS, compL),
-                    '--color-card-featured-solid-end': hslStr(compH, clamp(compS - 8, 6, 35), clamp(compL - 2, 18, 40)),
+                    // Featured card: same hue as the chosen color, less saturated
+                    // than the dark tier, so it reads as a distinct secondary tier
+                    // without switching to the complement hue.
+                    '--color-card-featured': hslaStr(h, featuredS, featuredL, 0.92),
+                    '--color-card-featured-end': hslaStr(h, clamp(featuredS - 4, 6, 24), clamp(featuredL - 4, 18, 38), 0.92),
+                    '--color-card-featured-solid': hslStr(h, featuredS, featuredL),
+                    '--color-card-featured-solid-end': hslStr(h, clamp(featuredS - 4, 6, 24), clamp(featuredL - 2, 18, 40)),
 
                     '--color-email-bg': hslStr(h, highS, highL),
                     '--color-email-text': hslStr(h, clamp(highS + 10, 15, 65), clamp(highL + 32, 65, 90)),
@@ -422,8 +429,8 @@
                     '--color-on-dark': hslStr(h, clamp(neutralS * 0.6, 1, 4), onDarkL),
                     '--color-on-light': hslStr(h, clamp(neutralS * 3, 5, 20), onLightL),
                     '--color-card-dark-btn-bg': '#FFFFFF',
-                    '--color-card-featured-btn-bg': hslStr(compH, clamp(neutralS * 0.6, 1, 4), onDarkL),
-                    '--color-card-featured-btn-text': hslStr(compH, clamp(neutralS * 3, 5, 20), onLightL),
+                    '--color-card-featured-btn-bg': hslStr(h, clamp(neutralS * 0.6, 1, 4), onDarkL),
+                    '--color-card-featured-btn-text': hslStr(h, clamp(neutralS * 3, 5, 20), onLightL),
                 };
             }
 
