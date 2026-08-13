@@ -98,7 +98,7 @@
         </div>
     </aside>
     <div class="main-area">
-    {% if request.endpoint != 'home' %}
+    {% if request.endpoint not in ('home', 'support', 'shop') %}
     <div class="cs-boot-screen" id="csBootScreen">
         <div class="cs-boot-lines" id="csBootLines"></div>
         <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
