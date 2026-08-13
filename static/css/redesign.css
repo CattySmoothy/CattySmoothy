@@ -200,6 +200,11 @@ body {
     line-height: 1.6;
 }
 
+::selection {
+    background: var(--color-accent);
+    color: var(--color-on-dark, #fff);
+}
+
 button, input, textarea, select {
     font-family: inherit;
 }
