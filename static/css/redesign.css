@@ -6137,11 +6137,6 @@ button, input, textarea, select {
 
 /* Level-up save animation */
 
-/* ── Fixed taskbar offset ── */
-.os-desktop > .profile-form {
-  padding-bottom: 72px;
-}
-
 /* ── Freeform Desktop (drag & resize) ── */
 .os-desktop-freeform .os-grid {
   display: block;

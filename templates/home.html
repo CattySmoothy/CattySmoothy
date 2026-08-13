@@ -55,11 +55,6 @@
                         <div class="os-xp-bar"><div class="os-xp-fill" style="width:{{ player_xp_pct }}%;"></div></div>
                         <span class="os-xp-text">{{ player_xp }}/50</span>
                     </div>
-                    {% else %}
-                    <div class="os-taskbar-rank os-taskbar-rank-guest">
-                        <span class="rank-star">☆</span>
-                        <span class="rank-title">Guest Mode</span>
-                    </div>
                     {% endif %}
                     <a href="{{ url_for('shop') }}" class="os-menubar-shop">✦ Shop</a>
                     <div class="os-menubar-clock" id="osMenuClock">00:00</div>
@@ -88,7 +83,6 @@
                                 <span class="os-titlebar-icon os-titlebar-icon-collections" aria-hidden="true">🖼</span>
                                 <span class="os-titlebar-text">Collections</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Collections">×</button>
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
@@ -113,7 +107,6 @@
                                 <span class="os-titlebar-icon os-titlebar-icon-support" aria-hidden="true">✦</span>
                                 <span class="os-titlebar-text">Support</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Support">×</button>
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
@@ -145,7 +138,6 @@
                                 <span class="os-titlebar-icon os-titlebar-icon-shop" aria-hidden="true">✦</span>
                                 <span class="os-titlebar-text">Shop</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Shop">×</button>
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
@@ -170,46 +162,12 @@
                     <!-- RIGHT COLUMN -->
                     <div class="os-col os-col-right">
 
-                        <!-- Window: Music -->
-                        <div class="os-window os-window-music">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-music" aria-hidden="true">🎵</span>
-                                <span class="os-titlebar-text">Music</span>
-                                <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Music">×</button>
-                            </div>
-                            <div class="os-window-body os-window-body-center">
-                                <div class="os-record-player" id="osRecordPlayer">
-                                    <div class="os-record-disc">
-                                        <div class="os-record-grooves"></div>
-                                        <div class="os-record-label">
-                                            <span class="os-record-label-note">♪</span>
-                                        </div>
-                                        <div class="os-record-hole"></div>
-                                    </div>
-                                    <div class="os-record-tonearm">
-                                        <div class="os-record-tonearm-base"></div>
-                                        <div class="os-record-tonearm-arm"></div>
-                                        <div class="os-record-tonearm-head"></div>
-                                    </div>
-                                </div>
-                                <p class="os-now-playing">♪ Now Playing: <span>Nightbloom (Lo-fi Mix)</span></p>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">music.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
-
                         <!-- Window: Organization -->
                         <div class="os-window os-window-org">
                             <div class="os-titlebar">
                                 <span class="os-titlebar-icon os-titlebar-icon-org" aria-hidden="true">📋</span>
                                 <span class="os-titlebar-text">Organization</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Organization">×</button>
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
@@ -235,7 +193,6 @@
                                 <span class="os-titlebar-icon os-titlebar-icon-eclipsogate" aria-hidden="true">✦</span>
                                 <span class="os-titlebar-text">Eclipsogate</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Eclipsogate">×</button>
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
@@ -286,19 +243,6 @@
 
                 </div>
 
-                <!-- Taskbar -->
-                <div class="os-taskbar">
-                    <div class="os-taskbar-left">
-                        <span class="os-taskbar-item os-taskbar-start">✦ Start</span>
-                        <div class="os-dock" id="osDesktopIcons"></div>
-                    </div>
-                    <div class="os-taskbar-right">
-                        {% if not guest_view_only %}
-                        <button type="submit" class="os-taskbar-save" id="profileEditorSubmitBtn">💾 Save Profile</button>
-                        {% endif %}
-                    </div>
-                </div>
-
                 </form>
 
                 </div>
@@ -347,12 +291,13 @@
         });
     });
 
-    // ── Eclipsogate welcome window: "Continue as Guest" just minimizes it ──
+    // ── Eclipsogate welcome window: "Continue as Guest" dismisses it ──
     (function initGuestBtn() {
         var guestBtn = document.getElementById('csGuestBtn');
         if (!guestBtn) return;
         guestBtn.addEventListener('click', function() {
-            if (window.__csToggleWindow) window.__csToggleWindow('eclipsogate');
+            var win = document.querySelector('.os-window-eclipsogate');
+            if (win) win.style.display = 'none';
         });
     })();
 
@@ -488,7 +433,6 @@
         // ── Freeform Desktop (drag, resize — always resets to the default
         // aligned layout on reload; nothing about window position, size, or
         // minimized state is persisted) ──
-        var __csWindowRegistry = {};
         (function initFreeformDesktop() {
           var osDesktop = document.querySelector('.os-desktop');
           var osGrid = document.querySelector('.os-grid');
@@ -514,16 +458,14 @@
           // isn't reliable at this point (its CSS Grid rows haven't settled yet,
           // and measuring here would also force an extra synchronous layout pass).
           // Heights are per-window (not uniform) so content that needs more room
-          // — like Music's record player or Document's textarea — gets it, and
-          // columns stack cumulatively off each window's actual assigned height
-          // so windows never default-overlap.
+          // gets it, and columns stack cumulatively off each window's actual
+          // assigned height so windows never default-overlap.
           var cw = osGrid.clientWidth || 1200;
           var rightX = Math.max(cw - 340, 720);
           var defaultHeights = {
             collections: 260,
             support: 300,
             shop: 260,
-            music: 250,
             org: 300,
             eclipsogate: 200
           };
@@ -619,65 +561,6 @@
             });
           });
 
-          // ── Minimize / Dock Icons ── (dock lives in the taskbar: aligned,
-          // fixed position, not draggable — every window starts restored)
-          var iconDefs = {
-            'os-window-collections': { emoji: '🖼', label: 'Collections' },
-            'os-window-support': { emoji: '✦', label: 'Support' },
-            'os-window-shop': { emoji: '✦', label: 'Shop' },
-            'os-window-music': { emoji: '🎵', label: 'Music' },
-            'os-window-org': { emoji: '📋', label: 'Organization' },
-            'os-window-eclipsogate': { emoji: '✦', label: 'Eclipsogate' }
-          };
-          var iconContainer = document.getElementById('osDesktopIcons');
-          if (iconContainer) {
-            windowData.forEach(function(d) {
-              var win = d.el;
-              var cls = '';
-              for (var i = 0; i < win.classList.length; i++) {
-                if (win.classList[i] in iconDefs) { cls = win.classList[i]; break; }
-              }
-              if (!cls) return;
-              var def = iconDefs[cls];
-              var ic = document.createElement('div');
-              ic.className = 'os-desktop-icon ' + cls + '-icon';
-              ic.dataset.windowId = d.id;
-              ic.title = 'Open ' + def.label;
-              ic.innerHTML = '<div class="os-desktop-icon-icon"><span class="os-desktop-icon-glyph">' + def.emoji + '</span></div><div class="os-desktop-icon-label">' + def.label + '</div>';
-              ic.style.display = 'none';
-
-              function restoreWindow() {
-                win.style.display = '';
-                ic.style.display = 'none';
-                osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
-                win.style.zIndex = 100;
-              }
-              function minimizeWindow() {
-                win.style.display = 'none';
-                ic.style.display = '';
-              }
-
-              ic.addEventListener('click', restoreWindow);
-              iconContainer.appendChild(ic);
-
-              var cd = win.querySelector('.os-dot-close');
-              if (cd) cd.addEventListener('click', function(e) { e.stopPropagation(); minimizeWindow(); });
-
-              __csWindowRegistry[d.id] = {
-                label: def.label,
-                minimize: minimizeWindow,
-                restore: restoreWindow,
-                isMinimized: function() { return win.style.display === 'none'; }
-              };
-            });
-          }
-
-          window.__csWindowRegistry = __csWindowRegistry;
-          window.__csToggleWindow = function(id) {
-            var entry = __csWindowRegistry[id];
-            if (!entry) return;
-            if (entry.isMinimized()) entry.restore(); else entry.minimize();
-          };
         })();
 
         // ── Gallery (folder view + Apple icon) ──
