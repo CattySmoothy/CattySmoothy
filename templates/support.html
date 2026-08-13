@@ -2,18 +2,19 @@
 
 {% block content %}
 <div class="support-page">
+    <div class="support-scanlines" aria-hidden="true"></div>
+
     <header class="support-hero">
-        <div class="support-hero-pixels" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <h1 class="support-hero-title">hm? what's this...?</h1>
+        <div class="support-gem-wrap" aria-hidden="true"><span class="support-gem"></span></div>
+        <h1 class="support-hero-title">hm? what's this...?<span class="support-hero-cursor">▮</span></h1>
         <p class="support-hero-sub">support the art, unlock a little something extra</p>
     </header>
 
     <section class="support-grid">
         <div class="support-card support-card-wide">
+            {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <div class="support-card-inner">
-                <h3 class="support-card-title">✦ Send Stardust</h3>
+                <h3 class="support-card-title"><span class="support-cursor">▶</span>✦ Send Stardust</h3>
                 <div class="support-price">
                     <span class="support-currency">$</span>
                     <div class="support-stepper">
@@ -34,8 +35,9 @@
         </div>
 
         <div class="support-card">
+            {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <div class="support-card-inner">
-                <h3 class="support-card-title">Basic</h3>
+                <h3 class="support-card-title"><span class="support-cursor">▶</span>Basic</h3>
                 <div class="support-price"><span class="support-amount">$1.99</span><span class="support-period">/mo</span></div>
                 <ul class="support-features">
                     <li>✓ All Free features</li>
@@ -47,9 +49,10 @@
         </div>
 
         <div class="support-card support-card-featured">
+            {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <span class="support-badge">✦ Popular</span>
             <div class="support-card-inner">
-                <h3 class="support-card-title">Premium</h3>
+                <h3 class="support-card-title"><span class="support-cursor">▶</span>Premium</h3>
                 <div class="support-price"><span class="support-amount">$49.99</span><span class="support-period">/mo</span></div>
                 <ul class="support-features">
                     <li>✓ All Basic features</li>
