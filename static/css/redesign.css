@@ -7867,8 +7867,8 @@ body.os-hud-hidden .realm-canvas {
     right: 0;
     bottom: 0;
     z-index: 10000;
-    background: var(--ticket-ink, #1a140d);
-    color: #d8cdb8;
+    background: var(--color-header-start, #1a140d);
+    color: var(--color-on-dark, #d8cdb8);
     font-family: var(--font-ticket);
     display: flex;
     flex-direction: column;
@@ -7902,7 +7902,7 @@ body.os-hud-hidden .realm-canvas {
     width: 280px;
     height: 22px;
     background: rgba(255, 255, 255, 0.12);
-    border: 2px solid #d8cdb8;
+    border: 2px solid var(--color-on-dark, #d8cdb8);
     border-radius: 0;
     padding: 3px;
     box-sizing: border-box;
