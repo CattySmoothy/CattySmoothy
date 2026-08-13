@@ -7922,42 +7922,7 @@ body.os-hud-hidden .realm-canvas {
     transition: width 0.15s steps(4);
 }
 
-/* ── Home Page: Welcome Gate ── */
-
-.cs-welcome-gate {
-    position: fixed;
-    inset: 0;
-    z-index: 9000;
-    background: rgba(26, 20, 13, 0.75);
-    backdrop-filter: blur(6px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-}
-
-.cs-welcome-panel {
-    background: var(--ticket-bg, #F1E9D8);
-    border: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
-    border-radius: var(--radius-md);
-    padding: 40px;
-    max-width: 380px;
-    text-align: center;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
-}
-
-.cs-welcome-title {
-    font-family: var(--font-ticket);
-    font-size: 22px;
-    color: var(--ticket-ink, #382C20);
-    margin: 0 0 10px;
-}
-
-.cs-welcome-copy {
-    font-family: var(--font-body);
-    font-size: 14px;
-    color: var(--ticket-ink-muted, #8A7A62);
-    margin: 0 0 24px;
-}
+/* ── Home Page: Eclipsogate Welcome Window (pixel/game style) ── */
 
 .cs-welcome-actions {
     display: flex;
@@ -7965,37 +7930,30 @@ body.os-hud-hidden .realm-canvas {
     gap: 10px;
 }
 
-.cs-welcome-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border-radius: 999px;
-    font-family: var(--font-body);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    box-sizing: border-box;
-    border: 1px solid var(--primary-warm, #E8756A);
-    transition: background 0.2s ease, color 0.2s ease;
+.os-window-eclipsogate {
+    --font-display: var(--font-dos);
+    --font-sub: var(--font-dos);
+    border-radius: 0;
+    border: 2px solid var(--color-accent);
+    background: var(--color-surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+    animation: support-card-glow 2.6s ease-in-out infinite;
 }
 
-.cs-welcome-login {
-    background: var(--primary-warm, #E8756A);
-    color: #FFFFFF;
+.os-window-eclipsogate .os-titlebar,
+.os-window-eclipsogate .os-window-body,
+.os-window-eclipsogate .os-window-footer {
+    font-family: var(--font-dos);
 }
 
-.cs-welcome-login:hover {
-    background: color-mix(in srgb, var(--primary-warm, #E8756A) 80%, #000);
+.os-window-eclipsogate .os-window-body {
+    position: relative;
 }
 
-.cs-welcome-guest {
-    background: transparent;
-    color: var(--primary-warm, #E8756A);
-}
-
-.cs-welcome-guest:hover {
-    background: color-mix(in srgb, var(--primary-warm, #E8756A) 15%, transparent);
+.os-window-eclipsogate .support-corner {
+    opacity: 1;
 }
 
 /* ── Home Page: My Computer info rows ── */

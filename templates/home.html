@@ -3,20 +3,6 @@
 {% block content_class %}realm-explorer-wrap{% endblock %}
 
 {% block content %}
-<!-- Welcome Gate -->
-{% if not current_user.is_authenticated %}
-<div class="cs-welcome-gate" id="csWelcomeGate">
-    <div class="cs-welcome-panel">
-        <h2 class="cs-welcome-title">Welcome to CattySmoothy</h2>
-        <p class="cs-welcome-copy">Log in for full access, or look around as a guest.</p>
-        <div class="cs-welcome-actions">
-            <a href="{{ url_for('login', next='/') }}" class="cs-welcome-btn cs-welcome-login">Log In</a>
-            <button type="button" class="cs-welcome-btn cs-welcome-guest" id="csGuestBtn">Continue as Guest</button>
-        </div>
-    </div>
-</div>
-{% endif %}
-
 <div class="realm-explorer">
     <div class="realm-canvas">
         <div class="realm-canvas-bg"></div>
@@ -249,6 +235,31 @@
                             </div>
                         </div>
 
+                        {% if not current_user.is_authenticated %}
+                        <!-- Window: Eclipsogate Welcome -->
+                        <div class="os-window os-window-eclipsogate">
+                            <div class="os-titlebar">
+                                <span class="os-titlebar-icon os-titlebar-icon-eclipsogate" aria-hidden="true">✦</span>
+                                <span class="os-titlebar-text">Eclipsogate</span>
+                                <div class="os-titlebar-ornament">~</div>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Eclipsogate">×</button>
+                            </div>
+                            <div class="os-window-body">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+                                <p style="margin-bottom:14px;">Log in for full access, or look around as a guest.</p>
+                                <div class="cs-welcome-actions">
+                                    <a href="{{ url_for('login', next='/') }}" class="support-btn support-btn-primary">Log In</a>
+                                    <button type="button" class="support-btn" id="csGuestBtn">Continue as Guest</button>
+                                </div>
+                            </div>
+                            <div class="os-window-footer">
+                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-text">eclipsogate.exe</span>
+                                <span class="os-footer-dec">✧</span>
+                            </div>
+                        </div>
+                        {% endif %}
+
                     </div>
 
                     <!-- Desktop window icons (minimized windows) -->
@@ -345,28 +356,13 @@
         });
     });
 
-    // ── Welcome Gate (boot sequence itself runs sitewide, see base.html) ──
-    (function initGate() {
-        var gate = document.getElementById('csWelcomeGate');
-
-        function showGateIfNeeded() {
-            if (!gate) return;
-            if (sessionStorage.getItem('cs_guest_entered')) return;
-            gate.style.display = 'flex';
-        }
-
-        window.__csBootFinished = showGateIfNeeded;
-        if (!document.getElementById('csBootScreen')) {
-            showGateIfNeeded();
-        }
-
+    // ── Eclipsogate welcome window: "Continue as Guest" just minimizes it ──
+    (function initGuestBtn() {
         var guestBtn = document.getElementById('csGuestBtn');
-        if (guestBtn) {
-            guestBtn.addEventListener('click', function() {
-                sessionStorage.setItem('cs_guest_entered', '1');
-                if (gate) gate.style.display = 'none';
-            });
-        }
+        if (!guestBtn) return;
+        guestBtn.addEventListener('click', function() {
+            if (window.__csToggleWindow) window.__csToggleWindow('eclipsogate');
+        });
     })();
 
     // ── Profile Editor ──
@@ -555,7 +551,8 @@
             document: 340,
             music: 230,
             guestbook: 380,
-            org: 190
+            org: 190,
+            eclipsogate: 200
           };
           var gap = 24;
           var colX = [0, 360, rightX];
@@ -668,7 +665,8 @@
             'os-window-document': { emoji: '✎', label: 'Document' },
             'os-window-music': { emoji: '🎵', label: 'Music' },
             'os-window-guestbook': { emoji: '✒', label: 'Guestbook' },
-            'os-window-org': { emoji: '📋', label: 'Organization' }
+            'os-window-org': { emoji: '📋', label: 'Organization' },
+            'os-window-eclipsogate': { emoji: '✦', label: 'Eclipsogate' }
           };
           var iconPosKey = 'osDesktopIconPos';
           var iconContainer = document.getElementById('osDesktopIcons');
