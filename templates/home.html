@@ -69,6 +69,65 @@
                     <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
                 </div>
 
+                <!-- Character Select Carousel -->
+                <div class="char-select" id="charSelect" tabindex="0">
+                    <div class="support-scanlines" aria-hidden="true"></div>
+                    <div class="char-select-header">
+                        <span class="char-select-header-bracket">[</span>
+                        Select Your Path
+                        <span class="char-select-header-bracket">]</span>
+                        <span class="support-hero-cursor">▮</span>
+                    </div>
+
+                    <div class="char-select-stage">
+                        <button type="button" class="char-select-arrow char-select-arrow-prev" aria-label="Previous">◀</button>
+
+                        <div class="char-select-slides">
+                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-collections active" data-index="0">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+                                <span class="char-select-slide-icon">🖼</span>
+                                <span class="char-select-slide-class">The Archivist</span>
+                                <span class="char-select-slide-name">Collections</span>
+                                <span class="char-select-slide-tagline">Process videos, sketches, and the full community collection.</span>
+                                <span class="char-select-slide-enter">▶ Enter</span>
+                            </a>
+                            <a href="{{ url_for('support') }}" class="char-select-slide os-titlebar-icon-support" data-index="1">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+                                <span class="char-select-slide-icon">✦</span>
+                                <span class="char-select-slide-class">The Patron</span>
+                                <span class="char-select-slide-name">Support</span>
+                                <span class="char-select-slide-tagline">Send stardust, or pick a monthly plan to support the art.</span>
+                                <span class="char-select-slide-enter">▶ Enter</span>
+                            </a>
+                            <a href="{{ url_for('shop') }}" class="char-select-slide os-titlebar-icon-shop" data-index="2">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+                                <span class="char-select-slide-icon">✦</span>
+                                <span class="char-select-slide-class">The Collector</span>
+                                <span class="char-select-slide-name">Shop</span>
+                                <span class="char-select-slide-tagline">Redeem stardust for wallpapers, stickers, and more.</span>
+                                <span class="char-select-slide-enter">▶ Enter</span>
+                            </a>
+                            <a href="/organization" class="char-select-slide os-titlebar-icon-org" data-index="3">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+                                <span class="char-select-slide-icon">📋</span>
+                                <span class="char-select-slide-class">The Guide</span>
+                                <span class="char-select-slide-name">Organization</span>
+                                <span class="char-select-slide-tagline">Lunar Bloom — bridging creative expression and psychological healing.</span>
+                                <span class="char-select-slide-enter">▶ Enter</span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="char-select-arrow char-select-arrow-next" aria-label="Next">▶</button>
+                    </div>
+
+                    <div class="char-select-thumbs">
+                        <button type="button" class="char-select-thumb os-titlebar-icon-collections active" data-index="0" aria-label="Collections">🖼</button>
+                        <button type="button" class="char-select-thumb os-titlebar-icon-support" data-index="1" aria-label="Support">✦</button>
+                        <button type="button" class="char-select-thumb os-titlebar-icon-shop" data-index="2" aria-label="Shop">✦</button>
+                        <button type="button" class="char-select-thumb os-titlebar-icon-org" data-index="3" aria-label="Organization">📋</button>
+                    </div>
+                </div>
+
                 <form id="profileFormEditor" class="profile-form">
 
                 <!-- 3-Column Window Grid -->
@@ -299,6 +358,54 @@
             var win = document.querySelector('.os-window-eclipsogate');
             if (win) win.style.display = 'none';
         });
+    })();
+
+    // ── Character Select Carousel ──
+    (function initCharSelect() {
+        var root = document.getElementById('charSelect');
+        if (!root) return;
+        var slides = Array.prototype.slice.call(root.querySelectorAll('.char-select-slide'));
+        var thumbs = Array.prototype.slice.call(root.querySelectorAll('.char-select-thumb'));
+        var prevBtn = root.querySelector('.char-select-arrow-prev');
+        var nextBtn = root.querySelector('.char-select-arrow-next');
+        if (!slides.length) return;
+        var idx = 0;
+        var autoTimer = null;
+
+        function show(i) {
+            idx = (i + slides.length) % slides.length;
+            slides.forEach(function(s, si) { s.classList.toggle('active', si === idx); });
+            thumbs.forEach(function(t, ti) { t.classList.toggle('active', ti === idx); });
+        }
+
+        function stopAuto() {
+            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+        }
+
+        function startAuto() {
+            stopAuto();
+            autoTimer = setInterval(function() { show(idx + 1); }, 5000);
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function() { stopAuto(); show(idx - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function() { stopAuto(); show(idx + 1); });
+        thumbs.forEach(function(t, ti) {
+            t.addEventListener('click', function() { stopAuto(); show(ti); });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+            var hovered = false;
+            try { hovered = root.matches(':hover'); } catch (err) {}
+            var focused = document.activeElement && root.contains(document.activeElement);
+            if (!hovered && !focused) return;
+            e.preventDefault();
+            stopAuto();
+            show(idx + (e.key === 'ArrowRight' ? 1 : -1));
+        });
+
+        show(0);
+        startAuto();
     })();
 
     // ── Profile Editor ──
