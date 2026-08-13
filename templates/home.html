@@ -58,8 +58,11 @@
                         </div>
                     </div>
                     <div class="os-menu">
-                        <button type="button" class="os-menu-label">Window</button>
-                        <div class="os-menu-dropdown" id="osMenuWindowDropdown"></div>
+                        <button type="button" class="os-menu-label">Updates</button>
+                        <div class="os-menu-dropdown">
+                            <span class="os-menu-item os-menu-item-static">No updates yet</span>
+                            <a href="{{ url_for('updates') }}" class="os-menu-item">View Full Page →</a>
+                        </div>
                     </div>
                     <div class="os-menu">
                         <button type="button" class="os-menu-label">Help</button>
@@ -1462,39 +1465,6 @@
               } catch(e) {}
               location.reload();
             });
-          }
-
-          var windowDropdown = document.getElementById('osMenuWindowDropdown');
-          function renderWindowMenu() {
-            if (!windowDropdown) return;
-            windowDropdown.innerHTML = '';
-            Object.keys(window.__csWindowRegistry || {}).forEach(function(id) {
-              var entry = window.__csWindowRegistry[id];
-              var btn = document.createElement('button');
-              btn.type = 'button';
-              btn.className = 'os-menu-item';
-              btn.textContent = (entry.isMinimized() ? '☐ ' : '☑ ') + entry.label;
-              btn.addEventListener('click', function() {
-                window.__csToggleWindow(id);
-                renderWindowMenu();
-              });
-              windowDropdown.appendChild(btn);
-            });
-            if (window.__csGalleryController) {
-              var gbtn = document.createElement('button');
-              gbtn.type = 'button';
-              gbtn.className = 'os-menu-item';
-              gbtn.textContent = (window.__csGalleryController.isMinimized() ? '☐ ' : '☑ ') + 'Gallery';
-              gbtn.addEventListener('click', function() {
-                window.__csGalleryController.toggle();
-                renderWindowMenu();
-              });
-              windowDropdown.appendChild(gbtn);
-            }
-          }
-          var windowMenuParent = windowDropdown ? windowDropdown.closest('.os-menu') : null;
-          if (windowMenuParent) {
-            windowMenuParent.querySelector('.os-menu-label').addEventListener('click', renderWindowMenu);
           }
 
           // Menu bar clock
