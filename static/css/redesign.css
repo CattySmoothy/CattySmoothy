@@ -213,7 +213,7 @@ button, input, textarea, select {
 /* ── Site Sidebar (left, collapsible) ── */
 
 .site-sidebar {
-    --ticket-bg: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+    --ticket-bg: color-mix(in hsl, var(--color-accent) 14%, var(--color-surface));
     --ticket-ink: var(--color-text-primary);
     --ticket-ink-muted: var(--color-text-muted);
     --ticket-line: color-mix(in srgb, var(--color-text-muted) 25%, transparent);
@@ -7709,7 +7709,7 @@ body.os-hud-hidden .realm-canvas {
 /* ── Home Page: Menu Bar ── */
 
 .os-menubar {
-    --ticket-bg: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface));
+    --ticket-bg: color-mix(in hsl, var(--color-accent) 14%, var(--color-surface));
     --ticket-ink: var(--color-text-primary);
     --ticket-ink-muted: var(--color-text-muted);
     --ticket-line: color-mix(in srgb, var(--color-text-muted) 25%, transparent);
