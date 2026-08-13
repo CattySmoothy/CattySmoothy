@@ -45,11 +45,28 @@
                             <a href="{{ url_for('support') }}" class="os-menu-item">Support</a>
                         </div>
                     </div>
+                    {% if current_user.is_authenticated %}
+                    <div class="os-taskbar-rank" title="{{ player_xp }}/50 XP to next level">
+                        <span class="rank-star">★</span>
+                        <span class="rank-level">LV {{ player_level }}</span>
+                        <span class="rank-title">{{ player_rank_title }}</span>
+                    </div>
+                    <div class="os-xp-bar-wrap">
+                        <div class="os-xp-bar"><div class="os-xp-fill" style="width:{{ player_xp_pct }}%;"></div></div>
+                        <span class="os-xp-text">{{ player_xp }}/50</span>
+                    </div>
+                    {% else %}
+                    <div class="os-taskbar-rank os-taskbar-rank-guest">
+                        <span class="rank-star">☆</span>
+                        <span class="rank-title">Guest Mode</span>
+                    </div>
+                    {% endif %}
                     <a href="{{ url_for('shop') }}" class="os-menubar-shop">✦ Shop</a>
                     <div class="os-menubar-clock" id="osMenuClock">00:00</div>
                 </div>
 
                 <div class="os-desktop-content" id="osDesktopContent">
+                <div class="support-scanlines" aria-hidden="true"></div>
 
                 <!-- Boot Screen -->
                 <div class="cs-boot-screen cs-boot-screen-inline" id="csBootScreen" data-boot-lines='["Loading..."]'>
@@ -74,13 +91,19 @@
                                 <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Collections">×</button>
                             </div>
                             <div class="os-window-body">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <p style="margin-bottom:12px;">Process videos, sketches, and the full community collection.</p>
-                                <a href="{{ url_for('collections') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
+                                <div class="os-chip-row">
+                                    <span class="os-chip">🎬 Process Videos</span>
+                                    <span class="os-chip">✏️ Sketches</span>
+                                    <span class="os-chip">👥 Community</span>
+                                </div>
+                                <a href="{{ url_for('collections') }}" class="os-window-link">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
                                 <span class="os-footer-text">collections.exe</span>
-                                <span class="os-footer-dec">✧</span>
+                                <span class="os-footer-badge">3 sets</span>
                             </div>
                         </div>
 
@@ -93,8 +116,16 @@
                                 <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Support">×</button>
                             </div>
                             <div class="os-window-body">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <p style="margin-bottom:12px;">Send stardust, or pick a monthly plan to support the art.</p>
-                                <a href="{{ url_for('support') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
+                                <div class="os-chip-row">
+                                    <span class="os-chip">$1.99/mo Basic</span>
+                                    <span class="os-chip">$49.99/mo Premium</span>
+                                </div>
+                                {% if current_user.is_authenticated and current_user.active_membership %}
+                                <div class="os-achievement-badge">🏅 {{ current_user.active_membership.plan_name }} Supporter</div>
+                                {% endif %}
+                                <a href="{{ url_for('support') }}" class="os-window-link">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
@@ -117,8 +148,15 @@
                                 <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Shop">×</button>
                             </div>
                             <div class="os-window-body">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <p style="margin-bottom:12px;">Redeem stardust for wallpapers, stickers, and more.</p>
-                                <a href="{{ url_for('shop') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
+                                <div class="os-chip-row">
+                                    <span class="os-chip">🛍 {{ shop_item_count }} Items</span>
+                                    {% if current_user.is_authenticated %}
+                                    <span class="os-chip">✦ {{ current_user.stardust_balance }} Balance</span>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ url_for('shop') }}" class="os-window-link">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
@@ -155,6 +193,7 @@
                                         <div class="os-record-tonearm-head"></div>
                                     </div>
                                 </div>
+                                <p class="os-now-playing">♪ Now Playing: <span>Nightbloom (Lo-fi Mix)</span></p>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
@@ -173,8 +212,14 @@
                                 <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Organization">×</button>
                             </div>
                             <div class="os-window-body">
+                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <p style="margin-bottom:12px;">Lunar Bloom — Bridging the gap between creative expression and psychological healing globally.</p>
-                                <a href="/organization" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
+                                <div class="os-chip-row">
+                                    <span class="os-chip">📔 Memory Archive</span>
+                                    <span class="os-chip">🔁 Art Swaps</span>
+                                    <span class="os-chip">✉️ Postcards</span>
+                                </div>
+                                <a href="/organization" class="os-window-link">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
@@ -209,9 +254,6 @@
                         {% endif %}
 
                     </div>
-
-                    <!-- Desktop window icons (minimized windows) -->
-                    <div id="osDesktopIcons"></div>
 
                     <!-- Desktop ejected folders container -->
                     <div id="galleryDesktopFolders"></div>
@@ -248,6 +290,7 @@
                 <div class="os-taskbar">
                     <div class="os-taskbar-left">
                         <span class="os-taskbar-item os-taskbar-start">✦ Start</span>
+                        <div class="os-dock" id="osDesktopIcons"></div>
                     </div>
                     <div class="os-taskbar-right">
                         {% if not guest_view_only %}
@@ -442,14 +485,14 @@
             });
         }
 
-        // ── Freeform Desktop (drag, resize, persist windows) ──
+        // ── Freeform Desktop (drag, resize — always resets to the default
+        // aligned layout on reload; nothing about window position, size, or
+        // minimized state is persisted) ──
         var __csWindowRegistry = {};
         (function initFreeformDesktop() {
           var osDesktop = document.querySelector('.os-desktop');
           var osGrid = document.querySelector('.os-grid');
           if (!osDesktop || !osGrid) return;
-
-          var desktopStateKey = 'osDesktopState';
 
           function getWindowId(win) {
             for (var i = 0; i < win.classList.length; i++) {
@@ -461,25 +504,8 @@
             return 'window-' + Math.random().toString(36).slice(2, 8);
           }
 
-          function loadState() {
-            try { return JSON.parse(localStorage.getItem(desktopStateKey)); } catch(e) { return null; }
-          }
-
-          function saveState() {
-            var prev = {};
-            try { prev = JSON.parse(localStorage.getItem(desktopStateKey)) || {}; } catch(e) {}
-            var state = {};
-            osGrid.querySelectorAll('.os-window').forEach(function(w) {
-              var id = w.dataset.windowId || getWindowId(w);
-              var p = prev[id] || {};
-              state[id] = { x: parseInt(w.style.left) || 0, y: parseInt(w.style.top) || 0, w: w.offsetWidth, h: w.offsetHeight, minimized: p.minimized === true };
-            });
-            localStorage.setItem(desktopStateKey, JSON.stringify(state));
-          }
-
           var windows = osGrid.querySelectorAll('.os-window');
           if (!windows.length) return;
-          var savedState = loadState();
           var windowData = [];
 
           // Deterministic default layout (3 columns: left/center/right, matching
@@ -494,11 +520,11 @@
           var cw = osGrid.clientWidth || 1200;
           var rightX = Math.max(cw - 340, 720);
           var defaultHeights = {
-            collections: 190,
-            support: 190,
-            shop: 190,
-            music: 230,
-            org: 190,
+            collections: 260,
+            support: 300,
+            shop: 260,
+            music: 250,
+            org: 300,
             eclipsogate: 200
           };
           var gap = 24;
@@ -514,14 +540,6 @@
             d.id = id;
             windowData.push(d);
           });
-
-          // Apply saved positions over defaults
-          if (savedState) {
-            windowData.forEach(function(d) {
-              var s = savedState[d.id];
-              if (s) { d.x = s.x; d.y = s.y; d.w = s.w || d.w; d.h = s.h || d.h; }
-            });
-          }
 
           // Move windows to be direct children of grid, apply absolute positioning
           windowData.forEach(function(d) {
@@ -546,8 +564,6 @@
 
           osDesktop.classList.add('os-desktop-freeform');
 
-          if (!savedState) saveState();
-
           // ── Drag ──
           windowData.forEach(function(d) {
             var win = d.el;
@@ -571,7 +587,6 @@
                 win.classList.remove('dragging');
                 document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
-                saveState();
               }
               document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
@@ -598,14 +613,14 @@
               function onUp() {
                 document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
-                saveState();
               }
               document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
             });
           });
 
-          // ── Minimize / Desktop Icons ──
+          // ── Minimize / Dock Icons ── (dock lives in the taskbar: aligned,
+          // fixed position, not draggable — every window starts restored)
           var iconDefs = {
             'os-window-collections': { emoji: '🖼', label: 'Collections' },
             'os-window-support': { emoji: '✦', label: 'Support' },
@@ -614,12 +629,8 @@
             'os-window-org': { emoji: '📋', label: 'Organization' },
             'os-window-eclipsogate': { emoji: '✦', label: 'Eclipsogate' }
           };
-          var iconPosKey = 'osDesktopIconPos';
           var iconContainer = document.getElementById('osDesktopIcons');
           if (iconContainer) {
-            var iconPositions = {};
-            try { iconPositions = JSON.parse(localStorage.getItem(iconPosKey)) || {}; } catch(e) {}
-            var idx = 0;
             windowData.forEach(function(d) {
               var win = d.el;
               var cls = '';
@@ -632,62 +643,21 @@
               ic.className = 'os-desktop-icon ' + cls + '-icon';
               ic.dataset.windowId = d.id;
               ic.title = 'Open ' + def.label;
-              var sp = iconPositions[d.id];
-              ic.style.left = (sp ? sp.x : 40 + (idx % 3) * 100) + 'px';
-              ic.style.top = (sp ? sp.y : 40 + Math.floor(idx / 3) * 90) + 'px';
               ic.innerHTML = '<div class="os-desktop-icon-icon"><span class="os-desktop-icon-glyph">' + def.emoji + '</span></div><div class="os-desktop-icon-label">' + def.label + '</div>';
-              if (savedState && savedState[d.id] && savedState[d.id].minimized) {
-                win.style.display = 'none';
-              } else {
-                ic.style.display = 'none';
-              }
+              ic.style.display = 'none';
 
               function restoreWindow() {
                 win.style.display = '';
                 ic.style.display = 'none';
                 osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
                 win.style.zIndex = 100;
-                var st = JSON.parse(localStorage.getItem(desktopStateKey) || '{}');
-                if (st[d.id]) st[d.id].minimized = false;
-                localStorage.setItem(desktopStateKey, JSON.stringify(st));
               }
               function minimizeWindow() {
                 win.style.display = 'none';
                 ic.style.display = '';
-                var st = JSON.parse(localStorage.getItem(desktopStateKey) || '{}');
-                if (!st[d.id]) st[d.id] = { x: parseInt(win.style.left) || 0, y: parseInt(win.style.top) || 0, w: win.offsetWidth, h: win.offsetHeight };
-                st[d.id].minimized = true;
-                localStorage.setItem(desktopStateKey, JSON.stringify(st));
               }
 
-              ic.addEventListener('dblclick', restoreWindow);
-
-              // Drag icon
-              ic.addEventListener('mousedown', function(ev) {
-                ev.preventDefault();
-                var gr = osGrid.getBoundingClientRect();
-                var ox = ev.clientX - ic.getBoundingClientRect().left;
-                var oy = ev.clientY - ic.getBoundingClientRect().top;
-                var moved = false;
-                ic.classList.add('dragging');
-                function mv(e) {
-                  moved = true;
-                  ic.style.left = Math.max(0, e.clientX - gr.left - ox) + 'px';
-                  ic.style.top = Math.max(0, e.clientY - gr.top - oy) + 'px';
-                }
-                var throttledMv = rafThrottle(mv);
-                function up() {
-                  ic.classList.remove('dragging');
-                  document.removeEventListener('mousemove', throttledMv);
-                  document.removeEventListener('mouseup', up);
-                  if (!moved) return;
-                  var p = iconPositions;
-                  p[d.id] = { x: parseInt(ic.style.left) || 0, y: parseInt(ic.style.top) || 0 };
-                  localStorage.setItem(iconPosKey, JSON.stringify(p));
-                }
-                document.addEventListener('mousemove', throttledMv);
-                document.addEventListener('mouseup', up);
-              });
+              ic.addEventListener('click', restoreWindow);
               iconContainer.appendChild(ic);
 
               var cd = win.querySelector('.os-dot-close');
@@ -699,7 +669,6 @@
                 restore: restoreWindow,
                 isMinimized: function() { return win.style.display === 'none'; }
               };
-              idx++;
             });
           }
 
@@ -1367,7 +1336,6 @@
           if (menuReset) {
             menuReset.addEventListener('click', function() {
               if (!confirm('Reset window positions and sizes to default?')) return;
-              localStorage.removeItem('osDesktopState');
               try {
                 var g = JSON.parse(localStorage.getItem('galleryData'));
                 if (g) {

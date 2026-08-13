@@ -5,6 +5,9 @@ import stripe
 
 from extensions import db, csrf
 from models import Purchase, GuestbookEntry
+from shop import SHOP_ITEMS
+
+RANK_TITLES = ['Newcomer', 'Apprentice', 'Artisan', 'Luminary', 'Legend']
 
 PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY')
 
@@ -38,11 +41,19 @@ def register_routes(app):
     @app.route('/')
     def home():
         guestbook_entries = GuestbookEntry.query.order_by(GuestbookEntry.created_at.desc()).limit(50).all()
+        balance = current_user.stardust_balance if current_user.is_authenticated else 0
+        player_level = balance // 50 + 1
+        player_xp = balance % 50
         return render_template(
             'home.html',
             title="Home",
             guestbook_entries=guestbook_entries,
             guest_view_only=not current_user.is_authenticated,
+            shop_item_count=len(SHOP_ITEMS),
+            player_level=player_level,
+            player_xp=player_xp,
+            player_xp_pct=round(player_xp / 50 * 100),
+            player_rank_title=RANK_TITLES[min(player_level - 1, len(RANK_TITLES) - 1)],
         )
 
     @app.route('/about')

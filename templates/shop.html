@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="shop-page">
+    <div class="support-scanlines" aria-hidden="true"></div>
     <div class="shop-filmstrip" aria-hidden="true">
         <div class="shop-filmstrip-track">
             {% for i in range(20) %}<div class="shop-filmstrip-frame"></div>{% endfor %}
@@ -39,6 +40,7 @@
     <div class="shop-grid" id="shopGrid">
         {% for item in items %}
         <div class="shop-item" data-category="{{ item.category }}">
+            {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <span class="shop-item-title">{{ item.name }}</span>
             <div class="shop-item-image">{{ item.emoji }}</div>
             <p class="shop-item-desc">{{ item.description }}</p>

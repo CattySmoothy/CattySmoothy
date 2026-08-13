@@ -5482,25 +5482,29 @@ button, input, textarea, select {
     gap: 28px;
 }
 
-/* ── OS Window Card ── */
+/* ── OS Window Card (pixel/game panel treatment) ── */
 .os-window {
     background: color-mix(in srgb, var(--color-surface) 65%, transparent);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in srgb, #d4af80 30%, transparent);
-    border-radius: 12px;
-    box-shadow:
-        0 4px 24px rgba(0,0,0,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.5);
+    border: 1px solid color-mix(in srgb, var(--window-icon-border, #d4af80) 45%, transparent);
+    border-radius: 0;
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.25s;
+    position: relative;
+    transition: filter 0.2s ease, transform 0.1s ease;
 }
 .os-window:hover {
-    box-shadow:
-        0 8px 32px rgba(0,0,0,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.5);
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, transparent));
+}
+.os-window.dragging {
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 75%, transparent));
+}
+.os-window .support-corner {
+    opacity: 0.85;
+    border-color: var(--window-icon-border, var(--color-accent));
 }
 
 /* ── Title Bar ── */
@@ -5931,7 +5935,7 @@ button, input, textarea, select {
     justify-content: space-between;
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 190px;
     right: 0;
     z-index: 999;
     padding: 12px 24px;
@@ -6912,16 +6916,6 @@ button, input, textarea, select {
   transition: none;
 }
 
-/* ── OS Window Desktop Icons (minimized windows) ── */
-#osDesktopIcons {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 45;
-}
 
 .os-desktop-icon {
     position: absolute;
@@ -7540,6 +7534,7 @@ body.os-hud-hidden .realm-canvas {
 
 .shop-page {
     padding: 0 0 80px;
+    position: relative;
 }
 
 /* Full-bleed filmstrip: breaks out of .shop-wrap's centered max-width */
@@ -7603,18 +7598,20 @@ body.os-hud-hidden .realm-canvas {
     gap: 6px;
     margin: 18px 0 6px;
     padding: 10px 18px;
-    border-radius: 999px;
+    border-radius: 0;
     background: var(--ticket-bg, #F1E9D8);
-    border: 1px solid var(--ticket-line, rgba(56, 44, 32, 0.28));
+    border: 1px solid var(--color-accent);
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+    animation: os-badge-pulse 2.4s ease-in-out infinite;
 }
 
 .shop-balance-icon {
-    color: var(--primary-warm, #E8756A);
+    color: var(--color-accent);
     font-size: 15px;
 }
 
 .shop-balance-amount {
-    font-family: var(--font-display);
+    font-family: var(--font-ticket);
     font-size: 20px;
     font-weight: 600;
     color: var(--ticket-ink, #382C20);
@@ -7689,27 +7686,42 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .shop-filter-btn.active {
-    color: var(--color-text-primary);
-    background: color-mix(in srgb, var(--primary-warm) 25%, transparent);
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    border: 1px dashed var(--color-accent);
     padding: 2px 6px;
-    border-radius: 3px;
+    border-radius: 0;
 }
 
 .shop-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-top: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    gap: 20px;
+    border-top: none;
 }
 
 .shop-item {
-    padding: 28px 28px 32px;
+    padding: 24px 24px 28px;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
+    border-radius: 0;
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+    background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    transition: filter 0.2s ease;
+}
+
+.shop-item:hover {
+    filter: drop-shadow(0 0 12px color-mix(in srgb, var(--color-accent) 50%, transparent));
+}
+
+.shop-item .support-corner {
+    opacity: 0.85;
 }
 
 .shop-item:nth-child(odd) {
-    border-right: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    border-right: 1px solid color-mix(in srgb, var(--color-accent) 40%, transparent);
 }
 
 .shop-item-title {
@@ -7736,7 +7748,7 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .shop-item-desc {
-    font-family: var(--font-body);
+    font-family: var(--font-ticket);
     font-size: 13px;
     color: var(--color-text-secondary);
     line-height: 1.6;
@@ -7752,30 +7764,34 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .shop-item-price {
-    font-family: var(--font-display);
+    font-family: var(--font-ticket);
     font-size: 18px;
     font-weight: 600;
-    color: var(--ticket-ink, #382C20);
+    color: var(--color-accent);
 }
 
 .shop-redeem-btn {
-    font-family: var(--font-body);
+    font-family: var(--font-ticket);
     font-size: 13px;
     font-weight: 600;
     padding: 8px 18px;
-    border-radius: 999px;
-    border: 1px solid var(--primary-warm, #E8756A);
+    border-radius: 0;
+    border: 1px dashed var(--color-accent);
     background: transparent;
-    color: var(--primary-warm, #E8756A);
+    color: var(--color-accent);
     cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
     text-decoration: none;
     display: inline-block;
 }
 
 .shop-redeem-btn:hover:not(:disabled) {
-    background: var(--primary-warm, #E8756A);
-    color: #FFFFFF;
+    background: var(--color-accent);
+    color: var(--color-on-dark, #fff);
+}
+
+.shop-redeem-btn:active:not(:disabled) {
+    transform: scale(0.96);
 }
 
 .shop-redeem-btn:disabled {
@@ -8027,12 +8043,114 @@ body.os-hud-hidden .realm-canvas {
     font-family: var(--font-dos);
 }
 
-.os-window-eclipsogate .os-window-body {
-    position: relative;
-}
-
 .os-window-eclipsogate .support-corner {
     opacity: 1;
+}
+
+/* ── Home Page: pixel/game font + detail chips ── */
+
+.os-desktop .os-titlebar-text,
+.os-desktop .os-window-body,
+.os-desktop .os-window-footer,
+.os-desktop .os-desktop-icon-label {
+    font-family: var(--font-dos);
+}
+
+.os-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.os-chip {
+    font-family: var(--font-dos);
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    padding: 4px 8px;
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--window-icon-main, var(--color-accent)) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, transparent);
+}
+
+.os-window-link {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px dashed var(--color-accent);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.os-window-link:hover {
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+}
+
+.os-window-link:active {
+    transform: scale(0.96);
+}
+
+.os-achievement-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-dos);
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    padding: 5px 10px;
+    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    border: 1px solid var(--color-accent);
+    animation: os-badge-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes os-badge-pulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+    50% { box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent); }
+}
+
+.os-now-playing {
+    font-family: var(--font-dos);
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-top: 4px;
+}
+
+.os-now-playing span {
+    color: var(--color-accent);
+    font-weight: 600;
+}
+
+.os-window-close:active {
+    transform: scale(0.9);
+}
+
+/* ── Home Page: player rank/XP HUD (menu bar) ── */
+
+.os-menubar .os-taskbar-rank {
+    font-family: var(--font-dos);
+    padding: 5px 10px;
+    border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+}
+
+.os-menubar .os-taskbar-rank-guest {
+    color: var(--ticket-ink-muted);
+    border-style: dashed;
+}
+
+.os-menubar .os-xp-bar-wrap {
+    margin-right: 4px;
+}
+
+.os-menubar .os-xp-text {
+    font-family: var(--font-dos);
 }
 
 /* ── Home Page: My Computer info rows ── */
