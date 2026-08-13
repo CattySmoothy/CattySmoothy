@@ -4,8 +4,13 @@
 
 {% block content %}
 <div class="shop-page">
+    <div class="shop-filmstrip" aria-hidden="true">
+        <div class="shop-filmstrip-track">
+            {% for i in range(20) %}<div class="shop-filmstrip-frame"></div>{% endfor %}
+        </div>
+    </div>
+
     <div class="shop-intro">
-        <h1 class="page-title">Designed for the Community</h1>
         <p class="page-subtitle">A little store for stardust &mdash; part thank-you, part playground.</p>
 
         {% if current_user.is_authenticated %}

@@ -7508,10 +7508,65 @@ body.os-hud-hidden .realm-canvas {
     margin: 0 auto;
     padding: 0 24px;
     --font-ticket: var(--font-dos);
+    --ticket-bg: var(--color-surface);
+    --ticket-ink: var(--color-text-primary);
+    --ticket-ink-muted: var(--color-text-muted);
+    --ticket-line: color-mix(in srgb, var(--color-text-muted) 25%, transparent);
 }
 
 .shop-page {
-    padding: 56px 0 80px;
+    padding: 0 0 80px;
+}
+
+/* Full-bleed filmstrip: breaks out of .shop-wrap's centered max-width */
+.shop-filmstrip {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+    background: var(--color-header-start, #1c1c1c);
+    padding: 22px 0;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+}
+
+.shop-filmstrip::before,
+.shop-filmstrip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 2.5px, transparent 3px);
+    background-size: 22px 14px;
+    background-repeat: repeat-x;
+    background-position: 10px center;
+}
+
+.shop-filmstrip::before { top: 0; }
+.shop-filmstrip::after { bottom: 0; }
+
+.shop-filmstrip-track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    padding: 0 10px;
+    animation: shop-filmstrip-scroll 22s linear infinite;
+}
+
+.shop-filmstrip-frame {
+    width: 130px;
+    height: 90px;
+    background: var(--color-surface);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+@keyframes shop-filmstrip-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
 .shop-intro {
@@ -7639,7 +7694,7 @@ body.os-hud-hidden .realm-canvas {
     font-family: var(--font-ticket);
     font-size: 14px;
     font-weight: 500;
-    color: #FFFFFF;
+    color: var(--color-bg);
     background: var(--color-text-primary);
     padding: 3px 8px;
     margin-bottom: 16px;
