@@ -357,12 +357,19 @@
                 // ── 60% Neutrals (backgrounds, surfaces, borders, body text) ──
                 // Saturation stays low no matter how vivid the user's pick is,
                 // so large surfaces read as calm neutrals, not tinted color.
-                const bgL = 96;
-                const surfL = 98;
-                const neutralS = clamp(s * 0.12, 2, 6);
-                const text1L = 20;   // primary text — high contrast on the near-white bg
-                const text2L = 34;
-                const text3L = 38;
+                // Below the halfway point on the Lum slider, flip into a dark
+                // mode (dark bg, light text) so a dark pick actually renders dark
+                // instead of always landing on a near-white background.
+                const isDark = l < 50;
+                const bgL = isDark ? clamp(l * 0.24, 8, 16) : 96;
+                const surfL = isDark ? clamp(bgL + 5, 13, 21) : 98;
+                const neutralS = isDark ? clamp(s * 0.14, 3, 10) : clamp(s * 0.12, 2, 6);
+                const text1L = isDark ? 92 : 20;   // primary text — high contrast against the bg either way
+                const text2L = isDark ? 78 : 34;
+                const text3L = isDark ? 64 : 38;
+                // Borders/alt-surfaces read as a step away from the page bg —
+                // darker in light mode, lighter in dark mode.
+                const neutralStepDir = isDark ? 1 : -1;
 
                 const onDarkL = 92;
                 const onLightL = 12;
@@ -374,11 +381,11 @@
                     '--color-text-primary': hslStr(h, clamp(neutralS * 2.5, 4, 15), text1L),
                     '--color-text-secondary': hslStr(h, clamp(neutralS * 2, 3, 12), text2L),
                     '--color-text-muted': hslStr(h, clamp(neutralS * 1.5, 2, 9), text3L),
-                    '--color-nav-border': hslStr(h, neutralS, bgL - 10),
+                    '--color-nav-border': hslStr(h, neutralS, bgL + neutralStepDir * 10),
                     '--color-footer-text': hslStr(h, clamp(neutralS * 1.5, 2, 9), text3L),
-                    '--color-work-card-bg': hslStr(h, neutralS, bgL - 8),
-                    '--color-list-border': hslStr(h, clamp(neutralS * 0.8, 1, 5), bgL - 4),
-                    '--color-surface-alt': hslStr(h, clamp(neutralS * 0.9, 1, 5), bgL - 2),
+                    '--color-work-card-bg': hslStr(h, neutralS, bgL + neutralStepDir * 8),
+                    '--color-list-border': hslStr(h, clamp(neutralS * 0.8, 1, 5), bgL + neutralStepDir * 4),
+                    '--color-surface-alt': hslStr(h, clamp(neutralS * 0.9, 1, 5), bgL + neutralStepDir * 2),
 
                     // Accent — 10% (the primary color itself)
                     '--color-accent': hslStr(h, primaryS, primaryL),
@@ -391,9 +398,11 @@
                     '--color-sidebar-bottom': hslStr(compH, compS, compL),
                     '--color-settings-bg': hslStr(h, clamp(lowS * 0.4, 2, 10), surfL),
 
-                    '--color-card-light': hslaStr(h, lowS, bgL - 2, 0.95),
-                    '--color-card-light-end': hslaStr(h, clamp(lowS - 3, 5, 28), bgL - 5, 0.95),
-                    '--color-card-light-border': hslaStr(h, clamp(lowS + 5, 8, 35), bgL - 12, 0.6),
+                    // Deliberately always light — one fixed tier in the pricing
+                    // card's light/dark/featured contrast set, not tied to bgL.
+                    '--color-card-light': hslaStr(h, lowS, 94, 0.95),
+                    '--color-card-light-end': hslaStr(h, clamp(lowS - 3, 5, 28), 91, 0.95),
+                    '--color-card-light-border': hslaStr(h, clamp(lowS + 5, 8, 35), 84, 0.6),
                     '--color-card-dark': hslaStr(h, highS, highL, 0.92),
                     '--color-card-dark-end': hslaStr(h, clamp(highS - 8, 10, 50), clamp(highL - 4, 18, 38), 0.92),
                     '--color-card-dark-solid': hslStr(h, highS, highL),
