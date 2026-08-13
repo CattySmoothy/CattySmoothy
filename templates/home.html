@@ -72,7 +72,7 @@
                 <div class="os-desktop-content" id="osDesktopContent">
 
                 <!-- Boot Screen -->
-                <div class="cs-boot-screen" id="csBootScreen">
+                <div class="cs-boot-screen cs-boot-screen-inline" id="csBootScreen" data-boot-lines='["CATTYSMOOTHY OS v2.0", "Loading gallery...", "Loading profile...", "Loading guestbook...", "Ready."]'>
                     <div class="cs-boot-lines" id="csBootLines"></div>
                     <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
                 </div>
@@ -345,11 +345,8 @@
         });
     });
 
-    // ── Boot Screen + Welcome Gate ──
-    (function initBootAndGate() {
-        var bootScreen = document.getElementById('csBootScreen');
-        var bootLines = document.getElementById('csBootLines');
-        var bootFill = document.getElementById('csBootFill');
+    // ── Welcome Gate (boot sequence itself runs sitewide, see base.html) ──
+    (function initGate() {
         var gate = document.getElementById('csWelcomeGate');
 
         function showGateIfNeeded() {
@@ -358,40 +355,9 @@
             gate.style.display = 'flex';
         }
 
-        function finishBoot() {
-            sessionStorage.setItem('cs_booted', '1');
-            if (bootScreen) {
-                bootScreen.classList.add('cs-boot-fade');
-                setTimeout(function() {
-                    bootScreen.remove();
-                    showGateIfNeeded();
-                }, 400);
-            } else {
-                showGateIfNeeded();
-            }
-        }
-
-        if (!bootScreen) {
+        window.__csBootFinished = showGateIfNeeded;
+        if (!document.getElementById('csBootScreen')) {
             showGateIfNeeded();
-        } else if (sessionStorage.getItem('cs_booted')) {
-            bootScreen.remove();
-            showGateIfNeeded();
-        } else {
-            var lines = ['CATTYSMOOTHY OS v2.0', 'Loading gallery...', 'Loading profile...', 'Loading guestbook...', 'Ready.'];
-            var i = 0;
-            var interval = setInterval(function() {
-                if (bootLines && i < lines.length) {
-                    var line = document.createElement('div');
-                    line.textContent = lines[i];
-                    bootLines.appendChild(line);
-                }
-                i++;
-                if (bootFill) bootFill.style.width = Math.min(100, (i / lines.length) * 100) + '%';
-                if (i >= lines.length) {
-                    clearInterval(interval);
-                    setTimeout(finishBoot, 400);
-                }
-            }, 350);
         }
 
         var guestBtn = document.getElementById('csGuestBtn');

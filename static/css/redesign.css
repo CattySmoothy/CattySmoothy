@@ -7861,8 +7861,11 @@ body.os-hud-hidden .realm-canvas {
 }
 
 .cs-boot-screen {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 0;
+    left: 190px;
+    right: 0;
+    bottom: 0;
     z-index: 10000;
     background: var(--ticket-ink, #1a140d);
     color: #d8cdb8;
@@ -7873,6 +7876,13 @@ body.os-hud-hidden .realm-canvas {
     justify-content: center;
     gap: 24px;
     transition: opacity 0.4s ease;
+}
+
+/* Home page renders its own boot screen inside .os-desktop-content, below
+   its internal menu bar, instead of the sitewide fixed/sidebar-only version */
+.cs-boot-screen-inline {
+    position: absolute;
+    inset: 0;
 }
 
 .cs-boot-screen.cs-boot-fade {

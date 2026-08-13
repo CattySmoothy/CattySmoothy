@@ -98,6 +98,12 @@
         </div>
     </aside>
     <div class="main-area">
+    {% if request.endpoint != 'home' %}
+    <div class="cs-boot-screen" id="csBootScreen">
+        <div class="cs-boot-lines" id="csBootLines"></div>
+        <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
+    </div>
+    {% endif %}
     <main>
         <div class="{% block content_class %}container{% endblock %}">
         {% block content %}{% endblock %}
@@ -569,6 +575,40 @@
                     }
                 });
             }
+        })();
+    </script>
+
+    <script>
+        // ── Pixel Boot/Loading Screen (sitewide) ──
+        (function runBootSequence() {
+            var bootScreen = document.getElementById('csBootScreen');
+            if (!bootScreen) return;
+            var bootLines = document.getElementById('csBootLines');
+            var bootFill = document.getElementById('csBootFill');
+            var lines = ['CATTYSMOOTHY OS v2.0', 'Loading assets...', 'Almost there...', 'Ready.'];
+            if (bootScreen.dataset.bootLines) {
+                try { lines = JSON.parse(bootScreen.dataset.bootLines); } catch (e) {}
+            }
+            var i = 0;
+            var interval = setInterval(function() {
+                if (bootLines && i < lines.length) {
+                    var line = document.createElement('div');
+                    line.textContent = lines[i];
+                    bootLines.appendChild(line);
+                }
+                i++;
+                if (bootFill) bootFill.style.width = Math.min(100, (i / lines.length) * 100) + '%';
+                if (i >= lines.length) {
+                    clearInterval(interval);
+                    setTimeout(function() {
+                        bootScreen.classList.add('cs-boot-fade');
+                        setTimeout(function() {
+                            bootScreen.remove();
+                            if (window.__csBootFinished) window.__csBootFinished();
+                        }, 400);
+                    }, 400);
+                }
+            }, 350);
         })();
     </script>
 </body>
