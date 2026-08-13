@@ -5655,6 +5655,30 @@ button, input, textarea, select {
     --window-icon-border: #c9a066;
     --window-icon-ink: #7a5730;
 }
+.os-titlebar-icon-collections,
+.os-window-collections {
+    --window-icon-main: #d3ecd9;
+    --window-icon-dark: #a8d9b6;
+    --window-icon-tab: #bfe4cb;
+    --window-icon-border: #7ab890;
+    --window-icon-ink: #3f6e52;
+}
+.os-titlebar-icon-support,
+.os-window-support {
+    --window-icon-main: #f8d8d8;
+    --window-icon-dark: #efb4b4;
+    --window-icon-tab: #f3c6c6;
+    --window-icon-border: #c98a8a;
+    --window-icon-ink: #7d4444;
+}
+.os-titlebar-icon-shop,
+.os-window-shop {
+    --window-icon-main: #e0d8f5;
+    --window-icon-dark: #c2b0e8;
+    --window-icon-tab: #d2c2ef;
+    --window-icon-border: #9880c4;
+    --window-icon-ink: #5a4680;
+}
 .os-dot {
     border: none;
     font: inherit;

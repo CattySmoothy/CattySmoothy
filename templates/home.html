@@ -32,12 +32,6 @@
                         </div>
                     </div>
                     <div class="os-menu">
-                        <button type="button" class="os-menu-label">View</button>
-                        <div class="os-menu-dropdown">
-                            {% if guest_view_only %}<span class="os-menu-item os-menu-item-static">☑ View-Only Mode</span>{% else %}<span class="os-menu-item os-menu-item-static">☑ Full Access</span>{% endif %}
-                        </div>
-                    </div>
-                    <div class="os-menu">
                         <button type="button" class="os-menu-label">Updates</button>
                         <div class="os-menu-dropdown">
                             <span class="os-menu-item os-menu-item-static">No updates yet</span>
@@ -71,45 +65,40 @@
                     <!-- LEFT COLUMN -->
                     <div class="os-col os-col-left">
 
-                        <!-- Window: My Computer -->
-                        <div class="os-window os-window-mycomputer">
+                        <!-- Window: Collections -->
+                        <div class="os-window os-window-collections">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-mycomputer" aria-hidden="true">🖥</span>
-                                <span class="os-titlebar-text">My Computer</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-collections" aria-hidden="true">🖼</span>
+                                <span class="os-titlebar-text">Collections</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close My Computer">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Collections">×</button>
                             </div>
                             <div class="os-window-body">
-                                <div class="os-info-row"><span class="os-info-label">System</span><span class="os-info-value">CattySmoothy OS</span></div>
-                                <div class="os-info-row"><span class="os-info-label">User</span><span class="os-info-value">{{ current_user.email if current_user.is_authenticated else 'Guest' }}</span></div>
-                                {% if current_user.is_authenticated %}
-                                <div class="os-info-row"><span class="os-info-label">Stardust</span><span class="os-info-value">✦ {{ current_user.stardust_balance }}</span></div>
-                                {% endif %}
-                                <div class="os-info-row"><span class="os-info-label">Access</span><span class="os-info-value">{{ 'Guest (view-only)' if guest_view_only else 'Full Access' }}</span></div>
-                                <a href="{{ url_for('profile') }}" style="display:block; margin-top:14px; color:var(--color-accent); text-decoration:underline; font-weight:500; font-size:13px;">Edit Profile →</a>
+                                <p style="margin-bottom:12px;">Process videos, sketches, and the full community collection.</p>
+                                <a href="{{ url_for('collections') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">mycomputer.exe</span>
+                                <span class="os-footer-text">collections.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
 
-                        <!-- Window: Settings -->
-                        <div class="os-window os-window-settings">
+                        <!-- Window: Support -->
+                        <div class="os-window os-window-support">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-settings" aria-hidden="true">⚙</span>
-                                <span class="os-titlebar-text">Settings</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-support" aria-hidden="true">✦</span>
+                                <span class="os-titlebar-text">Support</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Settings">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Support">×</button>
                             </div>
-                            <div class="os-window-body os-window-body-center">
-                                <p class="os-settings-copy">Themes, accent colors, and display preferences.</p>
-                                <button type="button" class="os-settings-open-btn" id="openSettingsFromWindow">Open Settings</button>
+                            <div class="os-window-body">
+                                <p style="margin-bottom:12px;">Send stardust, or pick a monthly plan to support the art.</p>
+                                <a href="{{ url_for('support') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">settings.exe</span>
+                                <span class="os-footer-text">support.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -119,26 +108,21 @@
                     <!-- CENTER COLUMN -->
                     <div class="os-col os-col-center">
 
-                        <!-- Window: Document -->
-                        <div class="os-window os-window-document">
+                        <!-- Window: Shop -->
+                        <div class="os-window os-window-shop">
                             <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-document" aria-hidden="true">✎</span>
-                                <span class="os-titlebar-text">Document</span>
+                                <span class="os-titlebar-icon os-titlebar-icon-shop" aria-hidden="true">✦</span>
+                                <span class="os-titlebar-text">Shop</span>
                                 <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Document">×</button>
+                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Shop">×</button>
                             </div>
-                            {% if guest_view_only %}<fieldset disabled>{% endif %}
                             <div class="os-window-body">
-                                <div class="os-field">
-                                    <label class="os-label">Notes</label>
-                                    <textarea id="documentText" name="document_text" placeholder="Write something..." class="os-textarea os-document-textarea" maxlength="2000" rows="14">A self-taught digital artist creating paintings, process videos, tutorials, wallpapers, sketches &amp; studies.</textarea>
-                                    <span class="char-count"><span id="documentCharCount">0</span>/2000</span>
-                                </div>
+                                <p style="margin-bottom:12px;">Redeem stardust for wallpapers, stickers, and more.</p>
+                                <a href="{{ url_for('shop') }}" style="color:var(--color-accent);text-decoration:underline;font-weight:500;">View Full Page →</a>
                             </div>
-                            {% if guest_view_only %}</fieldset>{% endif %}
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">document.exe</span>
+                                <span class="os-footer-text">shop.exe</span>
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
@@ -179,42 +163,6 @@
                             </div>
                         </div>
 
-                        <!-- Window: Guestbook -->
-                        <div class="os-window os-window-guestbook">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-guestbook" aria-hidden="true">✒</span>
-                                <span class="os-titlebar-text">Guestbook</span>
-                                <div class="os-titlebar-ornament">~</div>
-                                <button type="button" class="os-dot os-dot-close os-window-close" title="Close to desktop" aria-label="Close Guestbook">×</button>
-                            </div>
-                            <div class="os-window-body">
-                                {% if guest_view_only %}
-                                <p class="os-guestbook-locked"><a href="{{ url_for('login', next='/') }}">Log in</a> to sign the guestbook.</p>
-                                {% else %}
-                                <div id="guestbookSignForm" class="os-guestbook-form">
-                                    <input type="text" id="guestbookName" name="display_name" maxlength="50" placeholder="Display name" class="os-input" required>
-                                    <textarea id="guestbookMessage" name="message" maxlength="300" rows="3" placeholder="Leave a message..." class="os-textarea" required></textarea>
-                                    <button type="button" id="guestbookSubmitBtn" class="os-guestbook-submit">Sign Guestbook ✎</button>
-                                </div>
-                                {% endif %}
-                                <div class="os-guestbook-entries" id="guestbookEntries">
-                                    {% for entry in guestbook_entries %}
-                                    <div class="os-guestbook-entry">
-                                        <span class="os-guestbook-entry-name">{{ entry.display_name }}</span>
-                                        <span class="os-guestbook-entry-date">{{ entry.created_at.strftime('%b %d, %Y') }}</span>
-                                        <p class="os-guestbook-entry-message">{{ entry.message }}</p>
-                                    </div>
-                                    {% else %}
-                                    <p class="os-guestbook-empty">No entries yet — be the first to sign!</p>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">guestbook.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
 
                         <!-- Window: Organization -->
                         <div class="os-window os-window-org">
@@ -546,11 +494,10 @@
           var cw = osGrid.clientWidth || 1200;
           var rightX = Math.max(cw - 340, 720);
           var defaultHeights = {
-            mycomputer: 220,
-            settings: 190,
-            document: 340,
+            collections: 190,
+            support: 190,
+            shop: 190,
             music: 230,
-            guestbook: 380,
             org: 190,
             eclipsogate: 200
           };
@@ -559,7 +506,7 @@
           var colY = [0, 0, 0];
           windows.forEach(function(win, i) {
             var id = win.dataset.windowId || getWindowId(win);
-            var col = i < 3 ? 0 : (i < 5 ? 1 : 2);
+            var col = i < 2 ? 0 : (i < 3 ? 1 : 2);
             var h = defaultHeights[id] || 220;
             var d = { x: colX[col], y: colY[col], w: 340, h: h };
             colY[col] += h + gap;
@@ -660,11 +607,10 @@
 
           // ── Minimize / Desktop Icons ──
           var iconDefs = {
-            'os-window-mycomputer': { emoji: '🖥', label: 'My Computer' },
-            'os-window-settings': { emoji: '⚙', label: 'Settings' },
-            'os-window-document': { emoji: '✎', label: 'Document' },
+            'os-window-collections': { emoji: '🖼', label: 'Collections' },
+            'os-window-support': { emoji: '✦', label: 'Support' },
+            'os-window-shop': { emoji: '✦', label: 'Shop' },
             'os-window-music': { emoji: '🎵', label: 'Music' },
-            'os-window-guestbook': { emoji: '✒', label: 'Guestbook' },
             'os-window-org': { emoji: '📋', label: 'Organization' },
             'os-window-eclipsogate': { emoji: '✦', label: 'Eclipsogate' }
           };
