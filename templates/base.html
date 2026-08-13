@@ -46,7 +46,7 @@
         <nav class="sidebar-nav">
             <div class="sidebar-section-header">
                 <span class="sidebar-section-title">Menu</span>
-                <span class="sidebar-section-count">(4)</span>
+                <span class="sidebar-section-count">(3)</span>
             </div>
             <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Home">
                 <span class="sidebar-nav-label">Home</span>
@@ -54,6 +54,14 @@
             <a href="{{ url_for('support') }}" class="sidebar-nav-item" title="Support">
                 <span class="sidebar-nav-label">Support</span>
             </a>
+            <a href="{{ url_for('shop') }}" class="sidebar-nav-item" title="Shop">
+                <span class="sidebar-nav-label">Shop</span>
+            </a>
+
+            <div class="sidebar-section-header">
+                <span class="sidebar-section-title">Portfolio</span>
+                <span class="sidebar-section-count">(2)</span>
+            </div>
             <div class="sidebar-nav-item-wrapper" id="orgWrapper">
                 <a href="#" class="sidebar-nav-item" title="Organization" id="orgToggle">
                     <span class="sidebar-nav-label">Organization</span>
@@ -62,14 +70,6 @@
                     <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Club Plan</a>
                     <a href="{{ url_for('apply_and_join') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
                 </div>
-            </div>
-            <a href="{{ url_for('shop') }}" class="sidebar-nav-item" title="Shop">
-                <span class="sidebar-nav-label">Shop</span>
-            </a>
-
-            <div class="sidebar-section-header">
-                <span class="sidebar-section-title">Portfolio</span>
-                <span class="sidebar-section-count">(1)</span>
             </div>
             <a href="{{ url_for('collections') }}" class="sidebar-nav-item" title="Collections">
                 <span class="sidebar-nav-label">Collections</span>
