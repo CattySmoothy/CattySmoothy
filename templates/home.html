@@ -3,12 +3,6 @@
 {% block content_class %}realm-explorer-wrap{% endblock %}
 
 {% block content %}
-<!-- Boot Screen -->
-<div class="cs-boot-screen" id="csBootScreen">
-    <div class="cs-boot-lines" id="csBootLines"></div>
-    <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
-</div>
-
 <!-- Welcome Gate -->
 {% if not current_user.is_authenticated %}
 <div class="cs-welcome-gate" id="csWelcomeGate">
@@ -73,6 +67,14 @@
                     </div>
                     <a href="{{ url_for('shop') }}" class="os-menubar-shop">✦ Shop</a>
                     <div class="os-menubar-clock" id="osMenuClock">00:00</div>
+                </div>
+
+                <div class="os-desktop-content" id="osDesktopContent">
+
+                <!-- Boot Screen -->
+                <div class="cs-boot-screen" id="csBootScreen">
+                    <div class="cs-boot-lines" id="csBootLines"></div>
+                    <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
                 </div>
 
                 <form id="profileFormEditor" class="profile-form">
@@ -296,6 +298,8 @@
                 </div>
 
                 </form>
+
+                </div>
 
                 <!-- Photo Viewer -->
                 <div class="gallery-photo-viewer" id="galleryPhotoViewer">
