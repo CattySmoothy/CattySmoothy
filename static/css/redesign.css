@@ -3313,20 +3313,25 @@ button, input, textarea, select {
     margin-left: 0;
 }
 
-/* Home page - retro OS fills the whole page, no sitewide header */
+/* Home page - retro OS fills the whole page, no sitewide header.
+   height:auto (not a fixed viewport height) so the page grows with its
+   content and scrolls normally instead of trapping overflow in a nested
+   scroll region. */
 .home-active .realm-explorer {
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
 }
 
 .home-active .realm-canvas {
     padding: 0;
     align-items: stretch;
     justify-content: flex-start;
+    overflow: visible;
 }
 
 .home-active .os-desktop {
     padding: 0;
-    min-height: 1200px;
+    min-height: 100vh;
 }
 
 .donors-page {
@@ -8132,6 +8137,137 @@ body.os-hud-hidden .realm-canvas {
 
 .os-window-close:active {
     transform: scale(0.9);
+}
+
+/* ── Home Page: Organization "newspaper folder" hover reveal ── */
+
+.org-folder {
+    position: relative;
+    flex: 1;
+    min-height: 150px;
+    cursor: pointer;
+}
+
+.org-folder-closed {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.org-folder:hover .org-folder-closed,
+.org-folder:focus-visible .org-folder-closed {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.85);
+}
+
+.org-folder-icon {
+    font-size: 40px;
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, transparent));
+}
+
+.org-folder-tab-label {
+    font-family: var(--font-dos);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--window-icon-ink, var(--color-text-primary));
+}
+
+.org-folder-hint {
+    font-family: var(--font-dos);
+    font-size: 10px;
+    font-style: italic;
+    color: var(--color-text-muted);
+}
+
+.org-paper {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 16px;
+    background: #f4ecd8;
+    border: 1px solid #3a2f1f;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(16px) scale(0.92) rotate(-2deg);
+    transform-origin: bottom center;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.org-folder:hover .org-paper,
+.org-folder:focus-visible .org-paper {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(-1deg);
+    pointer-events: auto;
+    z-index: 3;
+}
+
+.org-paper-masthead {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.org-paper-rule {
+    flex: 1;
+    height: 2px;
+    background: #3a2f1f;
+}
+
+.org-paper-title {
+    flex-shrink: 0;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #3a2f1f;
+    white-space: nowrap;
+}
+
+.org-paper-body {
+    font-family: var(--font-dos);
+    font-size: 11px;
+    line-height: 1.5;
+    color: #4a3d28;
+}
+
+.org-paper-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.org-paper-tag {
+    font-family: var(--font-dos);
+    font-size: 9px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    color: #3a2f1f;
+    border: 1px solid #3a2f1f;
+}
+
+.org-paper-link {
+    align-self: flex-start;
+    font-family: var(--font-dos);
+    font-size: 11px;
+    font-weight: 700;
+    color: #3a2f1f;
+    text-decoration: underline;
+    text-underline-offset: 2px;
 }
 
 /* ── Home Page: player rank/XP HUD (menu bar) ── */

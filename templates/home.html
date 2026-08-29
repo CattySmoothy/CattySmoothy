@@ -230,13 +230,27 @@
                             </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <p style="margin-bottom:12px;">Lunar Bloom — Bridging the gap between creative expression and psychological healing globally.</p>
-                                <div class="os-chip-row">
-                                    <span class="os-chip">📔 Memory Archive</span>
-                                    <span class="os-chip">🔁 Art Swaps</span>
-                                    <span class="os-chip">✉️ Postcards</span>
+                                <div class="org-folder" tabindex="0">
+                                    <div class="org-folder-closed">
+                                        <span class="org-folder-icon">🗂</span>
+                                        <span class="org-folder-tab-label">Lunar Bloom</span>
+                                        <span class="org-folder-hint">Hover to read ↗</span>
+                                    </div>
+                                    <div class="org-paper">
+                                        <div class="org-paper-masthead">
+                                            <span class="org-paper-rule"></span>
+                                            <span class="org-paper-title">The Lunar Bloom Times</span>
+                                            <span class="org-paper-rule"></span>
+                                        </div>
+                                        <p class="org-paper-body">Bridging the gap between creative expression and psychological healing globally.</p>
+                                        <div class="org-paper-tags">
+                                            <span class="org-paper-tag">Memory Archive</span>
+                                            <span class="org-paper-tag">Art Swaps</span>
+                                            <span class="org-paper-tag">Postcards</span>
+                                        </div>
+                                        <a href="/organization" class="org-paper-link">Read Full Story →</a>
+                                    </div>
                                 </div>
-                                <a href="/organization" class="os-window-link">View Full Page →</a>
                             </div>
                             <div class="os-window-footer">
                                 <span class="os-footer-dec">✧</span>
@@ -613,6 +627,21 @@
 
           osDesktop.classList.add('os-desktop-freeform');
 
+          // Absolutely-positioned windows don't contribute to their parent's
+          // height, so the grid (and the whole page) would collapse to zero
+          // height without this — computed after every layout change so the
+          // page always grows/scrolls to fit whatever's actually on screen.
+          function updateGridHeight() {
+            var maxBottom = 0;
+            osGrid.querySelectorAll('.os-window').forEach(function(w) {
+              if (w.style.display === 'none') return;
+              var bottom = (parseInt(w.style.top) || 0) + w.offsetHeight;
+              if (bottom > maxBottom) maxBottom = bottom;
+            });
+            osGrid.style.height = (maxBottom + 40) + 'px';
+          }
+          updateGridHeight();
+
           // ── Drag ──
           windowData.forEach(function(d) {
             var win = d.el;
@@ -630,12 +659,14 @@
               function onMove(ev) {
                 win.style.left = Math.max(0, ev.clientX - gridRect.left - offsetX) + 'px';
                 win.style.top = Math.max(0, ev.clientY - gridRect.top - offsetY) + 'px';
+                updateGridHeight();
               }
               var throttledMove = rafThrottle(onMove);
               function onUp() {
                 win.classList.remove('dragging');
                 document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
+                updateGridHeight();
               }
               document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
@@ -657,11 +688,13 @@
               function onMove(ev) {
                 win.style.width = Math.max(280, startW + ev.clientX - startX) + 'px';
                 win.style.height = Math.max(100, startH + ev.clientY - startY) + 'px';
+                updateGridHeight();
               }
               var throttledMove = rafThrottle(onMove);
               function onUp() {
                 document.removeEventListener('mousemove', throttledMove);
                 document.removeEventListener('mouseup', onUp);
+                updateGridHeight();
               }
               document.addEventListener('mousemove', throttledMove);
               document.addEventListener('mouseup', onUp);
@@ -679,14 +712,16 @@
           function ld() {
             try { var d = JSON.parse(localStorage.getItem(gk)); if (d && d.folders) {
               d.minimized = d.minimized !== false;
-              d.dp = d.dp || { x: 40, y: 40 };
+              // d.dp is left unset here on purpose when missing — renderIcon()
+              // picks a default that sits below the window grid instead of a
+              // fixed spot that could land on top of a window's content.
               d.vp = d.vp || { x: 120, y: 80 };
               d.ejected = d.ejected || [];
               // Migrate old folders without color
               d.folders.forEach(function(f) { if (!f.color) f.color = 'yellow'; });
               return d;
             } } catch(e) {}
-            return { folders: [], minimized: true, dp: { x: 40, y: 40 }, vp: { x: 120, y: 80 }, ejected: [] };
+            return { folders: [], minimized: true, dp: null, vp: { x: 120, y: 80 }, ejected: [] };
           }
           function sv() { localStorage.setItem(gk, JSON.stringify(data)); }
           function id() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
@@ -869,7 +904,10 @@
             if (data.minimized) {
               var og = document.querySelector('.os-grid');
               if (!og) return;
-              var p = data.dp || { x: 40, y: 40 };
+              // Default spot sits below the window grid (not baked into a
+              // fixed x/y) so it never lands on top of a window's content;
+              // once the user drags it, their placement is saved and used.
+              var p = data.dp || { x: 24, y: (og.offsetHeight || 600) + 24 };
               var icon = document.createElement('div');
               icon.className = 'gallery-desktop-folder';
               icon.style.left = p.x + 'px'; icon.style.top = p.y + 'px';
