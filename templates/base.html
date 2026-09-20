@@ -346,10 +346,14 @@
                 // ── 1. Primary (the ~10% accent) ──
                 // Kept close to the user's raw pick, only clamped enough to stay
                 // legible against the neutral background.
-                const primaryS = clamp(s, 20, 85);
-                const primaryL = l > 50
-                    ? clamp(28 + (l - 50) * 0.45, 28, 50)
-                    : clamp(l * 0.8, 22, 50);
+                // In dark mode the accent is lifted to a light tint: it is used
+                // for text, borders and glows against a near-black ground, where
+                // a dark accent would simply vanish.
+                const darkMode = l < 50;
+                const primaryS = darkMode ? clamp(s, 28, 70) : clamp(s, 20, 85);
+                const primaryL = darkMode
+                    ? clamp(62 + l * 0.12, 62, 68)
+                    : clamp(28 + (l - 50) * 0.45, 28, 50);
 
                 // ── 2. Contrast pair (the ~30% structure color) ──
                 const lowS = clamp(s * 0.45, 8, 32);
@@ -433,6 +437,11 @@
                     '--color-email-btn-hover-bg': hslStr(h, clamp(highS + 10, 15, 65), clamp(highL + 35, 70, 95)),
                     '--color-email-feedback': hslStr(h, clamp(highS + 5, 8, 40), clamp(highL + 10, 38, 60)),
 
+                    // Text that sits ON a --color-accent fill: white on the deep
+                    // light-mode accent, near-black on the pale dark-mode accent.
+                    '--color-on-accent': isDark ? hslStr(h, clamp(neutralS * 3, 8, 25), 9) : '#FFFFFF',
+                    // A readable variant of the accent for small text on dark surfaces.
+                    '--color-accent-text': isDark ? hslStr(h, clamp(primaryS + 10, 30, 80), 74) : hslStr(h, primaryS, clamp(primaryL - 10, 22, 36)),
                     '--color-on-dark': hslStr(h, clamp(neutralS * 0.6, 1, 4), onDarkL),
                     '--color-on-light': hslStr(h, clamp(neutralS * 3, 5, 20), onLightL),
                     '--color-card-dark-btn-bg': '#FFFFFF',

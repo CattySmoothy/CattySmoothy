@@ -44,8 +44,16 @@
 <div class="nv-stage">
 
     <!-- ══ the open book ══ -->
+    <div class="nv-desk">
+
+        <div class="nv-tilt" id="nvTilt">
+        <i class="nv-cast" aria-hidden="true"></i>
+        <div class="nv-cover">
     <div class="nv-book" style="--d:0s">
         <span class="nv-ribbon" aria-hidden="true"></span>
+        <span class="nv-ribbon nv-ribbon-2" aria-hidden="true"></span>
+        <button type="button" class="nv-corner nv-corner-prev" id="nvPrev" aria-label="Previous page" title="Previous page"></button>
+        <button type="button" class="nv-corner nv-corner-next" id="nvTurnNext" aria-label="Next page" title="Next page"></button>
 
         <!-- index tabs -->
         <div class="nv-tabs" role="tablist" aria-label="Chapters">
@@ -83,9 +91,6 @@
             </div>
 
             <button type="button" class="nv-chibi" id="nvChibi" aria-label="Pet the cat"><canvas id="nvChibiCanvas" width="16" height="16"></canvas></button>
-            <span class="nv-bubble" aria-hidden="true">♥</span>
-            <span class="nv-spark nv-spark-1" aria-hidden="true">✦</span>
-            <span class="nv-spark nv-spark-2" aria-hidden="true">✦</span>
         </section>
 
         <!-- right page: chapter content -->
@@ -118,7 +123,6 @@
 
             <div class="nv-pane" data-pane="2">
                 <div class="nv-todo">
-                    <span class="nv-hole" aria-hidden="true"></span>
                     <small>TO DO LIST</small>
                     <ul>
                         {% for c in creates %}
@@ -147,7 +151,6 @@
 
             <div class="nv-pane" data-pane="4">
                 <div class="nv-todo nv-todo-small">
-                    <span class="nv-hole" aria-hidden="true"></span>
                     <small>COMMISSIONS</small>
                     <p id="commissionText" class="nv-note-text">
                         I'm currently accepting commission requests for digital paintings, character art, and illustrations.
@@ -166,6 +169,9 @@
                 </div>
             </div>
         </section>
+    </div>
+        </div>
+        </div>
     </div>
 
     <!-- ══ visual-novel dialogue box ══ -->
@@ -249,34 +255,160 @@
         if (auto) autoTimer = setTimeout(advance, 3600);
     }
 
-    function setChapter(n) {
-        if (turning || n === idx) return;
-        turning = true;
-        right.classList.add('is-turning-out');
-        setTimeout(function () {
-            idx = n; lineIdx = 0;
-            panes.forEach(function (p, k) { p.classList.toggle('is-active', k === n); });
-            tabs.forEach(function (t, k) { t.classList.toggle('is-active', k === n); t.setAttribute('aria-selected', k === n); });
-            chapNum.textContent = n + 1;
-            chapName.textContent = chapters[n].name;
-            countEl.textContent = (n + 1) + ' / ' + chapters.length;
-            right.classList.remove('is-turning-out');
-            right.classList.add('is-turning-in');
-            setTimeout(function () { right.classList.remove('is-turning-in'); turning = false; }, 320);
-            say(lineText());
-            mood('happy', 700);
-        }, reduce ? 0 : 220);
+    // Pure DOM: which chapter the right-hand page shows.
+    function showChapter(n) {
+        panes.forEach(function (p, k) { p.classList.toggle('is-active', k === n); });
+        chapNum.textContent = n + 1;
+        chapName.textContent = chapters[n].name;
     }
+
+    var book = right.parentNode;
+    var narrow = window.matchMedia ? window.matchMedia('(max-width: 1000px)') : { matches: false };
+
+    // A leaf of paper is peeled off the right page and turned over the spine.
+    // It is cut into thin strips hinged to one another, so as it turns the
+    // strips fan out and the sheet bends like real paper. Forward: the leaf
+    // carries the old page while the new one is already underneath.
+    // Backward: the leaf carries the new page and lands on top.
+    var STRIPS = 8;
+    function makeLeaf(faceSource) {
+        var pw = faceSource.offsetWidth, w = pw / STRIPS;
+        var leaf = document.createElement('div');
+        leaf.className = 'nv-leaf';
+        leaf.setAttribute('aria-hidden', 'true');
+        leaf.style.setProperty('--w', w + 'px');
+        var parent = leaf;
+        for (var i = 0; i < STRIPS; i++) {
+            var strip = document.createElement('div');
+            strip.className = 'nv-strip';
+            var front = document.createElement('div');
+            front.className = 'nv-face nv-face-front';
+            var page = faceSource.cloneNode(true);
+            page.removeAttribute('id');
+            page.removeAttribute('aria-live');
+            page.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+            page.classList.add('nv-leaf-page');
+            page.style.left = (-i * w) + 'px';
+            page.style.width = pw + 'px';
+            front.appendChild(page);
+            var back = document.createElement('div');
+            back.className = 'nv-face nv-face-back';
+            back.style.backgroundPosition = (i * w) + 'px 0';
+            strip.appendChild(front);
+            strip.appendChild(back);
+            parent.appendChild(strip);
+            parent = strip;
+        }
+        return leaf;
+    }
+
+    // dir: 1 turns forward (right to left), -1 turns back. Defaults to
+    // whichever way the chosen chapter lies.
+    function setChapter(n, dir) {
+        if (turning || n === idx) return;
+        var forward = dir ? dir > 0 : n > idx;
+        var prev = idx;
+        var animate = !reduce && !narrow.matches;
+        turning = true;
+
+        var leaf = null;
+        if (animate) {
+            if (forward) {
+                leaf = makeLeaf(right);
+                showChapter(n);
+            } else {
+                showChapter(n);
+                leaf = makeLeaf(right);
+                showChapter(prev);
+            }
+            leaf.classList.add(forward ? 'is-forward' : 'is-backward');
+            book.appendChild(leaf);
+        } else {
+            showChapter(n);
+        }
+
+        idx = n; lineIdx = 0;
+        tabs.forEach(function (t, k) { t.classList.toggle('is-active', k === n); t.setAttribute('aria-selected', k === n); });
+        countEl.textContent = (n + 1) + ' / ' + chapters.length;
+        say(lineText());
+        mood('happy', 700);
+
+        if (!leaf) { turning = false; return; }
+        var done = false;
+        function finish() {
+            if (done) return;
+            done = true;
+            if (!forward) showChapter(n);
+            leaf.remove();
+            turning = false;
+        }
+        leaf.addEventListener('animationend', function (e) { if (e.target === leaf) finish(); });
+        setTimeout(finish, 1500);
+    }
+
+    function turnNext() { setChapter((idx + 1) % chapters.length, 1); }
+    function turnPrev() { setChapter((idx - 1 + chapters.length) % chapters.length, -1); }
 
     function advance() {
         if (typing) { finishTyping(); return; }
         if (lineIdx < lineCount() - 1) { lineIdx++; say(lineText()); }
-        else setChapter((idx + 1) % chapters.length);
+        else turnNext();
     }
 
     tabs.forEach(function (t) {
         t.addEventListener('click', function (e) { e.stopPropagation(); setChapter(parseInt(t.dataset.chapter, 10)); });
     });
+    // the book sits tilted on the desk and leans a little toward the pointer
+    var tilt = document.getElementById('nvTilt');
+    var stage = tilt.closest('.nv-stage');
+    if (!reduce) {
+        stage.addEventListener('pointermove', function (e) {
+            if (narrow.matches) return;
+            var r = stage.getBoundingClientRect();
+            var nx = (e.clientX - r.left) / r.width - 0.5;
+            var ny = (e.clientY - r.top) / r.height - 0.5;
+            tilt.style.setProperty('--ry', (-7 + nx * 4) + 'deg');
+            tilt.style.setProperty('--rx', (10 - ny * 3) + 'deg');
+        });
+        stage.addEventListener('pointerleave', function () {
+            tilt.style.removeProperty('--ry');
+            tilt.style.removeProperty('--rx');
+        });
+    }
+
+    // turn pages by clicking a page, its corner, swiping, or the arrow keys
+    var INTERACTIVE = 'a, button, input, textarea, select, .nv-frame';
+    var swipe = null, swiped = false;
+    book.addEventListener('pointerdown', function (e) {
+        swipe = e.target.closest(INTERACTIVE) ? null : { x: e.clientX, y: e.clientY };
+        swiped = false;
+    });
+    book.addEventListener('pointerup', function (e) {
+        if (!swipe) return;
+        var dx = e.clientX - swipe.x, dy = e.clientY - swipe.y;
+        swipe = null;
+        if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            swiped = true;
+            if (dx < 0) turnNext(); else turnPrev();
+        }
+    });
+    book.addEventListener('click', function (e) {
+        if (swiped) { swiped = false; return; }
+        if (e.target.closest(INTERACTIVE)) return;
+        var sel = window.getSelection && window.getSelection().toString();
+        if (sel) return;
+        var page = e.target.closest('.nv-page');
+        if (!page) return;
+        if (page.classList.contains('nv-right')) turnNext(); else turnPrev();
+    });
+    document.getElementById('nvPrev').addEventListener('click', function (e) { e.stopPropagation(); turnPrev(); });
+    document.getElementById('nvTurnNext').addEventListener('click', function (e) { e.stopPropagation(); turnNext(); });
+    document.addEventListener('keydown', function (e) {
+        if (e.target.closest && e.target.closest('input, textarea, select')) return;
+        if (e.key === 'ArrowRight') turnNext();
+        else if (e.key === 'ArrowLeft') turnPrev();
+    });
+
     var dlg = document.getElementById('nvDialogue');
     dlg.addEventListener('click', function (e) { if (!e.target.closest('.nv-controls')) advance(); });
     dlg.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); } });
