@@ -500,6 +500,14 @@
     x = rand(SIZE, Math.max(SIZE + 1, window.innerWidth - SIZE * 2));
     y = -SIZE * 2;
     vy = 0;
+    // Small public API (used by the About page's pet.exe window).
+    window.shimeji = {
+        sprites: { N: 16, palette: PALETTE, frames: SPRITES },
+        pet: function () { if (hidden) showCat(); else act('happy', 2200, '\u2665'); },
+        hop: function () { if (hidden) showCat(); else { stayPut = false; dir = Math.random() < 0.5 ? -1 : 1; act('walk', 6000, 'off we go!'); } },
+        say: function (text) { if (!hidden) say(text, 1600); }
+    };
+
     if (hidden) { root.style.display = 'none'; showSummon(); }
     requestAnimationFrame(function (n) { last = n; frame(n); });
 })();
