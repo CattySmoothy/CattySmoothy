@@ -41,7 +41,14 @@ def register_routes(app):
     @app.route('/')
     def home():
         guestbook_entries = GuestbookEntry.query.order_by(GuestbookEntry.created_at.desc()).limit(50).all()
-        balance = current_user.stardust_balance if current_user.is_authenticated else 0
+        display_name = None
+        if current_user.is_authenticated:
+            current_user.record_visit()
+            db.session.commit()
+            balance = current_user.stardust_balance
+            display_name = current_user.email.split('@')[0].replace('.', ' ').replace('_', ' ').title()
+        else:
+            balance = 0
         player_level = balance // 50 + 1
         player_xp = balance % 50
         return render_template(
@@ -54,6 +61,7 @@ def register_routes(app):
             player_xp=player_xp,
             player_xp_pct=round(player_xp / 50 * 100),
             player_rank_title=RANK_TITLES[min(player_level - 1, len(RANK_TITLES) - 1)],
+            display_name=display_name,
         )
 
     @app.route('/about')

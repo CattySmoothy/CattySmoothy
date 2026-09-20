@@ -15,6 +15,9 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     stripe_customer_id = db.Column(db.String(255), nullable=True)
     stardust_balance = db.Column(db.Integer, default=0, nullable=False)
+    login_streak = db.Column(db.Integer, default=0, nullable=False)
+    longest_login_streak = db.Column(db.Integer, default=0, nullable=False)
+    last_login_date = db.Column(db.Date, nullable=True)
 
     purchases = db.relationship('Purchase', backref='user', lazy='dynamic')
     redemptions = db.relationship('Redemption', backref='user', lazy='dynamic')
@@ -25,6 +28,19 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def record_visit(self):
+        """Update the login streak for today's visit. Safe to call on every
+        request while authenticated — a no-op if already recorded today."""
+        today = datetime.utcnow().date()
+        if self.last_login_date == today:
+            return
+        if self.last_login_date is not None and (today - self.last_login_date).days == 1:
+            self.login_streak += 1
+        else:
+            self.login_streak = 1
+        self.longest_login_streak = max(self.longest_login_streak, self.login_streak)
+        self.last_login_date = today
 
     @property
     def active_membership(self):
