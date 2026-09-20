@@ -8289,6 +8289,17 @@ body.os-hud-hidden .realm-canvas {
 .os-window-org .org-paper-tag { font-size: 13px; padding: 5px 12px; }
 .os-window-org .org-paper-link { font-size: 16px; }
 
+/* The Organization window is fixed in place (not draggable): a normal
+   full-width block in the page flow. */
+.home-active .os-grid { display: block; }
+.home-active .os-col { display: block; }
+.os-window-org {
+    width: 100%;
+    min-height: max(560px, calc(100vh - 440px));
+}
+.os-window-org .os-window-body { flex: 1; }
+.os-window-org .org-folder { min-height: 460px; }
+
 /* ── Home Page: player rank/XP HUD (menu bar) ── */
 
 .os-menubar .os-taskbar-rank {
@@ -8462,46 +8473,108 @@ body.os-hud-hidden .realm-canvas {
     transform: translateY(-1px);
 }
 
-.char-select-thumbs {
+/* File-folder treatment: index tabs on top, the selected one is "open" —
+   its folder body joins the tab and the front flap swings away. */
+.char-select-folder {
     position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 18px;
+    width: min(560px, 78vw);
 }
 
-.char-select-thumb {
-    width: 38px;
-    height: 34px;
-    font-size: 16px;
+.char-select-tabs {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-bottom: -1px;
+    padding-left: 10px;
+}
+
+.char-select-tab {
+    --folder-bg: color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 32%, var(--color-header-start, #1a140d));
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: color-mix(in srgb, var(--window-icon-main, var(--color-accent)) 16%, transparent);
-    border: 1px solid color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, transparent);
-    color: var(--window-icon-ink, var(--color-on-dark));
+    gap: 6px;
+    height: 32px;
+    padding: 0 22px;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    color: color-mix(in srgb, var(--color-on-dark, #f2ead9) 65%, transparent);
+    background: color-mix(in srgb, var(--folder-bg) 55%, var(--color-header-start, #1a140d));
+    border: 1px solid color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 50%, transparent);
+    border-bottom: none;
+    clip-path: polygon(0 100%, 10px 0, calc(100% - 10px) 0, 100% 100%);
     cursor: pointer;
-    opacity: 0.55;
-    transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    transition: height 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.char-select-thumb:hover {
-    opacity: 0.85;
+.char-select-tab:hover {
+    color: var(--color-on-dark, #f2ead9);
+    height: 36px;
 }
 
-.char-select-thumb.active {
+.char-select-tab.active {
+    height: 40px;
+    color: var(--color-on-dark, #f2ead9);
+    background: var(--folder-bg);
+    border-color: var(--window-icon-border, var(--color-accent));
+}
+
+.char-select-tab-icon { font-size: 15px; }
+
+.char-select .char-select-slides {
+    width: 100%;
+    height: 230px;
+    perspective: 700px;
+}
+
+.char-select .char-select-slide {
+    --folder-bg: color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 32%, var(--color-header-start, #1a140d));
+    background: var(--folder-bg);
+    border: 1px solid var(--window-icon-border, var(--color-accent));
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+/* Front cover of the folder: covers the page while closed, swings open
+   (transition, not animation, so it replays every time a tab is chosen). */
+.char-select .char-select-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: linear-gradient(180deg,
+        color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, #000),
+        color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 35%, #000));
+    transform-origin: bottom center;
+    transform: rotateX(0deg);
     opacity: 1;
-    transform: scale(1.12);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 70%, transparent);
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease 0.3s;
+}
+
+.char-select .char-select-slide.active::after {
+    transform: rotateX(-96deg);
+    opacity: 0;
+}
+
+/* Paper edges peeking out of the folder */
+.char-select .char-select-slide::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 10px;
+    height: 4px;
+    background: color-mix(in srgb, var(--color-on-dark, #f2ead9) 35%, transparent);
+    box-shadow: 0 5px 0 color-mix(in srgb, var(--color-on-dark, #f2ead9) 20%, transparent);
+    pointer-events: none;
 }
 
 @media (max-width: 700px) {
-    .char-select-slides {
-        width: min(320px, 68vw);
-        height: 260px;
-    }
+    .char-select-folder { width: min(320px, 68vw); }
+    .char-select .char-select-slides { height: 270px; }
+    .char-select-tab { padding: 0 14px; }
+    .char-select-tab-label { display: none; }
     .char-select-arrow {
         width: 38px;
         height: 38px;
@@ -9334,3 +9407,170 @@ body.os-hud-hidden .realm-canvas {
     }
 }
 
+
+
+/* ── Pixel cat shimeji (sitewide mascot) ── */
+
+#shimeji {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 64px;
+    z-index: 900;
+    pointer-events: none;   /* only the cat itself is grabbable */
+    will-change: transform;
+}
+
+.shimeji-sprite {
+    display: block;
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    transform-origin: 50% 100%;
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    filter: drop-shadow(0 0 0 transparent);
+}
+
+#shimeji.is-held .shimeji-sprite { cursor: grabbing; }
+
+.shimeji-shadow {
+    position: absolute;
+    left: 10px;
+    top: 58px;
+    width: 44px;
+    height: 8px;
+    border-radius: 50%;
+    background: #000;
+    opacity: 0.28;
+    pointer-events: none;
+}
+
+.shimeji-bubble {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 4px;
+    transform: translateX(-50%) translateY(4px);
+    padding: 3px 8px;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    white-space: nowrap;
+    color: #3b2a2e;
+    background: #fff;
+    border: 2px solid #3b2a2e;
+    clip-path: polygon(3px 0, calc(100% - 3px) 0, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 0 calc(100% - 3px), 0 3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.shimeji-bubble.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Shimeji right-click menu (pixel game-menu look) */
+.shimeji-menu {
+    position: fixed;
+    z-index: 9100;
+    min-width: 200px;
+    padding: 6px;
+    background: var(--color-header-start, #1a140d);
+    border: 2px solid color-mix(in srgb, var(--color-on-dark, #f2ead9) 45%, transparent);
+    clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+    font-family: var(--font-dos);
+    font-size: 13px;
+    color: var(--color-on-dark, #f2ead9);
+}
+
+.shimeji-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px 6px 8px;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.shimeji-menu-item::before {
+    content: '\25B6';
+    font-size: 9px;
+    visibility: hidden;
+}
+
+.shimeji-menu-item:hover,
+.shimeji-menu-item:focus-visible {
+    outline: none;
+    background: color-mix(in srgb, var(--color-on-dark, #f2ead9) 16%, transparent);
+}
+
+.shimeji-menu-item:hover::before,
+.shimeji-menu-item:focus-visible::before { visibility: visible; }
+
+.shimeji-menu-item.is-danger { color: #ff9db8; }
+
+.shimeji-menu-skins {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 0;
+    padding: 6px 10px 6px 26px;
+    border-top: 1px dashed color-mix(in srgb, var(--color-on-dark, #f2ead9) 30%, transparent);
+    border-bottom: 1px dashed color-mix(in srgb, var(--color-on-dark, #f2ead9) 30%, transparent);
+}
+
+.shimeji-menu-label {
+    margin-right: 4px;
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+.shimeji-swatch {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    padding: 0;
+    cursor: pointer;
+}
+
+.shimeji-swatch:hover,
+.shimeji-swatch:focus-visible {
+    outline: 2px solid var(--color-on-dark, #f2ead9);
+    outline-offset: 1px;
+}
+
+.shimeji-swatch.is-active {
+    outline: 2px solid var(--color-on-dark, #f2ead9);
+    outline-offset: 2px;
+}
+
+/* Small button that brings the cat back after it's been hidden */
+.shimeji-summon {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    z-index: 900;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    background: var(--color-header-start, #1a140d);
+    border: 2px solid color-mix(in srgb, var(--color-on-dark, #f2ead9) 45%, transparent);
+    clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+    opacity: 0.75;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.shimeji-summon:hover { opacity: 1; }
+.shimeji-summon:active { transform: scale(0.92); }

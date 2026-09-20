@@ -82,49 +82,41 @@
                     <div class="char-select-stage">
                         <button type="button" class="char-select-arrow char-select-arrow-prev" aria-label="Previous">◀</button>
 
-                        <div class="char-select-slides">
-                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-collections active" data-index="0">
+                        <div class="char-select-folder">
+                            <div class="char-select-tabs" role="tablist">
+                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-shop active" data-index="0" role="tab" aria-label="Process Videos"><span class="char-select-tab-icon">🎬</span><span class="char-select-tab-label">Process Videos</span></button>
+                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-collections" data-index="1" role="tab" aria-label="Sketches"><span class="char-select-tab-icon">✏️</span><span class="char-select-tab-label">Sketches</span></button>
+                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-org" data-index="2" role="tab" aria-label="Community"><span class="char-select-tab-icon">👥</span><span class="char-select-tab-label">Community</span></button>
+                            </div>
+                            <div class="char-select-slides">
+                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-shop active" data-index="0">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">🖼</span>
-                                <span class="char-select-slide-class">The Archivist</span>
-                                <span class="char-select-slide-name">Collections</span>
-                                <span class="char-select-slide-tagline">Process videos, sketches, and the full community collection.</span>
-                                <span class="char-select-slide-enter">▶ Enter</span>
+                                <span class="char-select-slide-icon">🎬</span>
+                                <span class="char-select-slide-class">Collection 01</span>
+                                <span class="char-select-slide-name">Process Videos</span>
+                                <span class="char-select-slide-tagline">Watch the creative process behind my digital art pieces.</span>
+                                <span class="char-select-slide-enter">▶ Open</span>
                             </a>
-                            <a href="{{ url_for('support') }}" class="char-select-slide os-titlebar-icon-support" data-index="1">
+                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-collections" data-index="1">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">✦</span>
-                                <span class="char-select-slide-class">The Patron</span>
-                                <span class="char-select-slide-name">Support</span>
-                                <span class="char-select-slide-tagline">Send stardust, or pick a monthly plan to support the art.</span>
-                                <span class="char-select-slide-enter">▶ Enter</span>
+                                <span class="char-select-slide-icon">✏️</span>
+                                <span class="char-select-slide-class">Collection 02</span>
+                                <span class="char-select-slide-name">Sketches</span>
+                                <span class="char-select-slide-tagline">Quick sketches and studies that showcase my artistic process.</span>
+                                <span class="char-select-slide-enter">▶ Open</span>
                             </a>
-                            <a href="{{ url_for('shop') }}" class="char-select-slide os-titlebar-icon-shop" data-index="2">
+                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-org" data-index="2">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">✦</span>
-                                <span class="char-select-slide-class">The Collector</span>
-                                <span class="char-select-slide-name">Shop</span>
-                                <span class="char-select-slide-tagline">Redeem stardust for wallpapers, stickers, and more.</span>
-                                <span class="char-select-slide-enter">▶ Enter</span>
+                                <span class="char-select-slide-icon">👥</span>
+                                <span class="char-select-slide-class">Collection 03</span>
+                                <span class="char-select-slide-name">Community</span>
+                                <span class="char-select-slide-tagline">Complete collection of my best work in one place.</span>
+                                <span class="char-select-slide-enter">▶ Open</span>
                             </a>
-                            <a href="/organization" class="char-select-slide os-titlebar-icon-org" data-index="3">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">📋</span>
-                                <span class="char-select-slide-class">The Guide</span>
-                                <span class="char-select-slide-name">Organization</span>
-                                <span class="char-select-slide-tagline">Lunar Bloom — bridging creative expression and psychological healing.</span>
-                                <span class="char-select-slide-enter">▶ Enter</span>
-                            </a>
+                            </div>
                         </div>
 
                         <button type="button" class="char-select-arrow char-select-arrow-next" aria-label="Next">▶</button>
-                    </div>
-
-                    <div class="char-select-thumbs">
-                        <button type="button" class="char-select-thumb os-titlebar-icon-collections active" data-index="0" aria-label="Collections">🖼</button>
-                        <button type="button" class="char-select-thumb os-titlebar-icon-support" data-index="1" aria-label="Support">✦</button>
-                        <button type="button" class="char-select-thumb os-titlebar-icon-shop" data-index="2" aria-label="Shop">✦</button>
-                        <button type="button" class="char-select-thumb os-titlebar-icon-org" data-index="3" aria-label="Organization">📋</button>
                     </div>
                 </div>
 
@@ -138,11 +130,6 @@
 
                         <!-- Window: Organization -->
                         <div class="os-window os-window-org">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-org" aria-hidden="true">📋</span>
-                                <span class="os-titlebar-text">Organization</span>
-                                <div class="os-titlebar-ornament">~</div>
-                            </div>
                             <div class="os-window-body">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <div class="org-folder" tabindex="0">
@@ -441,151 +428,6 @@
                 .catch(function() { btn.disabled = false; alert('Network error — please try again.'); });
             });
         }
-
-        // ── Freeform Desktop (drag, resize — always resets to the default
-        // aligned layout on reload; nothing about window position, size, or
-        // minimized state is persisted) ──
-        (function initFreeformDesktop() {
-          var osDesktop = document.querySelector('.os-desktop');
-          var osGrid = document.querySelector('.os-grid');
-          if (!osDesktop || !osGrid) return;
-
-          function getWindowId(win) {
-            for (var i = 0; i < win.classList.length; i++) {
-              var m = win.classList[i].match(/^os-window-(.+)/);
-              if (m) return m[1];
-            }
-            var titleEl = win.querySelector('.os-titlebar-text');
-            if (titleEl) return titleEl.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
-            return 'window-' + Math.random().toString(36).slice(2, 8);
-          }
-
-          var windows = osGrid.querySelectorAll('.os-window');
-          if (!windows.length) return;
-          var windowData = [];
-
-          // Deterministic default layout (3 columns: left/center/right, matching
-          // the original .os-col grouping in the markup) — computed purely from
-          // index, never from measuring the DOM, since .os-grid's rendered size
-          // isn't reliable at this point (its CSS Grid rows haven't settled yet,
-          // and measuring here would also force an extra synchronous layout pass).
-          // Heights are per-window (not uniform) so content that needs more room
-          // gets it, and columns stack cumulatively off each window's actual
-          // assigned height so windows never default-overlap.
-          // Single full-width window: fills the page width, stacked
-          // vertically if more windows are ever added back.
-          var cw = osGrid.clientWidth || 1200;
-          var defaultHeights = { org: 560 };
-          var gap = 24;
-          var nextY = 0;
-          windows.forEach(function(win) {
-            var id = win.dataset.windowId || getWindowId(win);
-            var h = defaultHeights[id] || 260;
-            var d = { x: 0, y: nextY, w: cw, h: h };
-            nextY += h + gap;
-            d.el = win;
-            d.id = id;
-            windowData.push(d);
-          });
-
-          // Move windows to be direct children of grid, apply absolute positioning
-          windowData.forEach(function(d) {
-            var win = d.el;
-            osGrid.appendChild(win);
-            win.style.position = 'absolute';
-            win.style.left = d.x + 'px';
-            win.style.top = d.y + 'px';
-            win.style.width = d.w + 'px';
-            if (d.h) win.style.height = d.h + 'px';
-            win.style.zIndex = 10;
-            win.dataset.windowId = d.id;
-
-            // Resize handle
-            var handle = document.createElement('div');
-            handle.className = 'os-resize-handle';
-            win.appendChild(handle);
-          });
-
-          // Hide columns
-          osGrid.querySelectorAll('.os-col').forEach(function(c) { c.style.display = 'none'; });
-
-          osDesktop.classList.add('os-desktop-freeform');
-
-          // Absolutely-positioned windows don't contribute to their parent's
-          // height, so the grid (and the whole page) would collapse to zero
-          // height without this — computed after every layout change so the
-          // page always grows/scrolls to fit whatever's actually on screen.
-          function updateGridHeight() {
-            var maxBottom = 0;
-            osGrid.querySelectorAll('.os-window').forEach(function(w) {
-              if (w.style.display === 'none') return;
-              var bottom = (parseInt(w.style.top) || 0) + w.offsetHeight;
-              if (bottom > maxBottom) maxBottom = bottom;
-            });
-            osGrid.style.height = (maxBottom + 40) + 'px';
-          }
-          updateGridHeight();
-
-          // ── Drag ──
-          windowData.forEach(function(d) {
-            var win = d.el;
-            var titlebar = win.querySelector('.os-titlebar');
-            if (!titlebar) return;
-            titlebar.addEventListener('mousedown', function(e) {
-              if (e.target.closest('.os-titlebar-dots, .os-dot, button, input, select, textarea, .os-resize-handle')) return;
-              e.preventDefault();
-              var gridRect = osGrid.getBoundingClientRect();
-              var offsetX = e.clientX - gridRect.left - (parseInt(win.style.left) || 0);
-              var offsetY = e.clientY - gridRect.top - (parseInt(win.style.top) || 0);
-              osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
-              win.style.zIndex = 100;
-              win.classList.add('dragging');
-              function onMove(ev) {
-                win.style.left = Math.max(0, ev.clientX - gridRect.left - offsetX) + 'px';
-                win.style.top = Math.max(0, ev.clientY - gridRect.top - offsetY) + 'px';
-                updateGridHeight();
-              }
-              var throttledMove = rafThrottle(onMove);
-              function onUp() {
-                win.classList.remove('dragging');
-                document.removeEventListener('mousemove', throttledMove);
-                document.removeEventListener('mouseup', onUp);
-                updateGridHeight();
-              }
-              document.addEventListener('mousemove', throttledMove);
-              document.addEventListener('mouseup', onUp);
-            });
-          });
-
-          // ── Resize ──
-          windowData.forEach(function(d) {
-            var win = d.el;
-            var handle = win.querySelector('.os-resize-handle');
-            if (!handle) return;
-            handle.addEventListener('mousedown', function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              var startX = e.clientX, startY = e.clientY;
-              var startW = win.offsetWidth, startH = win.offsetHeight;
-              osGrid.querySelectorAll('.os-window').forEach(function(w) { w.style.zIndex = 10; });
-              win.style.zIndex = 100;
-              function onMove(ev) {
-                win.style.width = Math.max(280, startW + ev.clientX - startX) + 'px';
-                win.style.height = Math.max(100, startH + ev.clientY - startY) + 'px';
-                updateGridHeight();
-              }
-              var throttledMove = rafThrottle(onMove);
-              function onUp() {
-                document.removeEventListener('mousemove', throttledMove);
-                document.removeEventListener('mouseup', onUp);
-                updateGridHeight();
-              }
-              document.addEventListener('mousemove', throttledMove);
-              document.addEventListener('mouseup', onUp);
-            });
-          });
-
-        })();
 
         // ── Gallery (folder view + Apple icon) ──
         (function initGallery() {
