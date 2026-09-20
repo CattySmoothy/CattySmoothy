@@ -47,6 +47,8 @@
     <div class="nv-desk">
 
         <div class="nv-tilt" id="nvTilt">
+        <i class="nv-under nv-under-1" aria-hidden="true"></i>
+        <i class="nv-under nv-under-2" aria-hidden="true"></i>
         <i class="nv-cast" aria-hidden="true"></i>
         <div class="nv-cover">
     <div class="nv-book" style="--d:0s">
@@ -63,7 +65,9 @@
         </div>
 
         <!-- left page: character sheet -->
-        <section class="nv-page nv-left" aria-label="Profile">
+        <!-- left page: one panel per chapter (the profile lives on the first) -->
+        <section class="nv-page nv-left" id="nvLeft" aria-label="Left page">
+            <div class="nv-lpane is-active" data-pane="0">
             <div class="nv-datetag"><small>BORN</small><b>3/01/2011</b></div>
 
             <figure class="nv-polaroid">
@@ -90,38 +94,40 @@
                 </dl>
             </div>
 
-            <button type="button" class="nv-chibi" id="nvChibi" aria-label="Pet the cat"><canvas id="nvChibiCanvas" width="16" height="16"></canvas></button>
-        </section>
+            <div class="nv-sketch" aria-hidden="true">
+                <span class="nv-tape nv-tape-4"></span>
+                <svg viewBox="0 0 240 130" preserveAspectRatio="xMidYMid meet">
+                    <path class="nv-pen" d="M40 92 C30 62 42 36 68 32 L78 12 L96 30 C108 27 122 27 134 30 L152 12 L160 32 C186 38 196 64 186 92 C170 116 56 116 40 92 Z"/>
+                    <path class="nv-pen" d="M78 68 q6 -9 13 0 M135 68 q6 -9 13 0"/>
+                    <path class="nv-pen nv-pen-a" d="M111 80 l7 0 l-3.5 5 z"/>
+                    <path class="nv-pen" d="M100 92 q8 7 14 0 q8 7 14 0"/>
+                    <path class="nv-pen nv-pen-thin" d="M58 82 l-24 -5 M58 90 l-24 6 M170 82 l24 -5 M170 90 l24 6"/>
+                    <path class="nv-pen nv-pen-thin" d="M56 98 l9 -9 M62 102 l9 -9 M158 98 l9 -9 M164 102 l9 -9"/>
+                    <path class="nv-pen nv-pen-a" d="M214 22 l4 10 l10 1 l-8 6 l3 10 l-9 -6 l-9 6 l3 -10 l-8 -6 l10 -1 z"/>
+                    <path class="nv-pen nv-pen-thin" d="M204 96 q22 -8 26 -34 M230 62 l-1 9 M230 62 l-8 4"/>
+                    <path class="nv-pen nv-pen-thin" d="M12 20 l10 6 M14 34 l12 2 M10 108 q6 -10 14 -2"/>
+                </svg>
+            </div>
 
-        <!-- right page: chapter content -->
-        <section class="nv-page nv-right" id="nvRight" aria-live="polite">
-            <div class="nv-chaptag"><b id="nvChapNum">1</b><span id="nvChapName">PROLOGUE</span></div>
+            <button type="button" class="nv-chibi" id="nvChibi" aria-label="Pet the cat"><canvas id="nvChibiCanvas" data-cat width="16" height="16"></canvas></button>
+            </div>
 
-            <div class="nv-pane is-active" data-pane="0">
-                <h2 class="nv-hello">hello, i'm <span>Raichuu</span></h2>
-                <p class="nv-lead">a self-taught digital artist. paintings, process videos, tutorials &amp; wallpapers.</p>
-                <div class="nv-stickers">
-                    <a class="nv-pill" href="{{ url_for('collections') }}">🖼 collections</a>
-                    <a class="nv-pill" href="{{ url_for('shop') }}">✦ shop</a>
-                    <a class="nv-pill" href="{{ url_for('organization') }}">🌙 lunar bloom</a>
+            <div class="nv-lpane" data-pane="1">
+                <div class="nv-viewer" id="nvViewer" data-i="0">
+                    <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
+                    <div class="nv-viewer-art" id="nvViewerArt">
+                        {% if inspirations[0].photo %}<img src="{{ url_for('static', filename='images/about/' ~ inspirations[0].photo) }}" alt="{{ inspirations[0].title }}">
+                        {% else %}<em>{{ inspirations[0].emoji }}</em>{% endif %}
+                    </div>
+                    <div class="nv-viewer-cap"><i></i><span id="nvViewerTitle">{{ inspirations[0].title }}</span><i></i></div>
+                </div>
+                <div class="nv-note-card">
+                    <small>ABOUT THIS ONE</small>
+                    <p id="nvViewerNote">{{ inspirations[0].note }}</p>
                 </div>
             </div>
 
-            <div class="nv-pane" data-pane="1">
-                <div class="nv-frames">
-                    {% for i in inspirations %}
-                    <button type="button" class="nv-frame{{ ' is-selected' if loop.first }}" style="--i:{{ loop.index0 }}" data-title="{{ i.title }}" data-note="{{ i.note }}">
-                        <span class="nv-frame-photo">
-                            {% if i.photo %}<img src="{{ url_for('static', filename='images/about/' ~ i.photo) }}" alt="{{ i.title }}">
-                            {% else %}<em>{{ i.emoji }}</em>{% endif %}
-                        </span>
-                        <span class="nv-frame-cap">{{ i.title }}</span>
-                    </button>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="nv-pane" data-pane="2">
+            <div class="nv-lpane" data-pane="2">
                 <div class="nv-todo">
                     <small>TO DO LIST</small>
                     <ul>
@@ -133,40 +139,98 @@
                 </div>
             </div>
 
-            <div class="nv-pane" data-pane="3">
-                <div class="nv-stickers">
+            <div class="nv-lpane" data-pane="3">
+                <div class="nv-socials">
                     {% for s in socials %}
                     <a class="nv-social" href="{{ s.url }}" target="_blank" rel="noopener" style="--i:{{ loop.index0 }}">
-                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{ s.path }}"/></svg>
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{ s.path }}"/></svg>
                         <span>{{ s.name }}</span>
+                        <em aria-hidden="true">↗</em>
                     </a>
                     {% endfor %}
                 </div>
+            </div>
+
+            <div class="nv-lpane" data-pane="4">
+                <div class="nv-todo nv-todo-small">
+                        <small>COMMISSIONS</small>
+                        <p id="commissionText" class="nv-note-text">
+                            I'm currently accepting commission requests for digital paintings, character art, and illustrations.
+                        </p>
+                        <ul class="nv-plain">
+                            <li>▸ Character illustrations</li>
+                            <li>▸ Portrait art</li>
+                            <li>▸ Concept art</li>
+                            <li>▸ Custom wallpapers</li>
+                        </ul>
+                        <div class="nv-status" id="commissionStatus">
+                            <span class="status-dot"></span>
+                            <span id="statusLabel">Commissions are currently closed</span>
+                            <span class="status-moon">Full Moon</span>
+                        </div>
+                    </div>
+            </div>
+        </section>
+
+        <!-- right page: one panel per chapter -->
+        <section class="nv-page nv-right" id="nvRight" aria-live="polite">
+            <div class="nv-chaptag"><b id="nvChapNum">1</b><span id="nvChapName">PROLOGUE</span></div>
+
+            <div class="nv-pane is-active" data-pane="0">
+                <h2 class="nv-hello">hello, i'm <span>Raichuu</span></h2>
+                <p class="nv-lead">a self-taught digital artist. paintings, process videos, tutorials &amp; wallpapers.</p>
+                <figure class="nv-snap" aria-hidden="true">
+                    <span class="nv-tape nv-tape-3"></span>
+                    <div class="nv-snap-art"><canvas data-cat width="16" height="16"></canvas></div>
+                    <div class="nv-snap-lines"><i></i><i></i><i></i></div>
+                </figure>
+            </div>
+
+            <div class="nv-pane" data-pane="1">
+                <div class="nv-pins" id="nvPins">
+                    <svg class="nv-string" id="nvString" aria-hidden="true"><polyline points=""/></svg>
+                    <div class="nv-frames">
+                        {% for i in inspirations %}
+                        <button type="button" class="nv-frame{{ ' is-selected' if loop.first }}" style="--i:{{ loop.index0 }}" data-i="{{ loop.index0 }}" data-title="{{ i.title }}" data-note="{{ i.note }}">
+                            <span class="nv-pin" aria-hidden="true"></span>
+                            <span class="nv-frame-photo">
+                                {% if i.photo %}<img src="{{ url_for('static', filename='images/about/' ~ i.photo) }}" alt="{{ i.title }}">
+                                {% else %}<em>{{ i.emoji }}</em>{% endif %}
+                            </span>
+                            <span class="nv-frame-cap">{{ i.title }}</span>
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="nv-pane" data-pane="2">
+                <a class="nv-viewer nv-reel" href="{{ url_for('collections') }}" data-i="2">
+                    <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
+                    <div class="nv-viewer-art"><em>🎬</em><i class="nv-play" aria-hidden="true"></i></div>
+                    <div class="nv-viewer-cap"><i></i><span>Process videos</span><i></i></div>
+                </a>
+                <div class="nv-stickers nv-links">
+                    <a class="nv-pill" href="{{ url_for('collections') }}">🖼 collections</a>
+                    <a class="nv-pill" href="{{ url_for('shop') }}">✦ shop</a>
+                    <a class="nv-pill" href="{{ url_for('organization') }}">🌙 lunar bloom</a>
+                </div>
+            </div>
+
+            <div class="nv-pane" data-pane="3">
                 <div class="nv-mail">
                     <small>OR WRITE TO ME</small>
                     <div><span id="nvMailAddress">raichuuxxofficial@gmail.com</span><button type="button" id="nvCopy">copy</button></div>
                     <em id="nvCopyFeedback" aria-live="polite"></em>
                 </div>
+                <div class="nv-postcard" aria-hidden="true">
+                    <div class="nv-postcard-lines"><i></i><i></i><i></i><i></i></div>
+                    <div class="nv-stamp"><canvas data-cat width="16" height="16"></canvas></div>
+                </div>
             </div>
 
             <div class="nv-pane" data-pane="4">
-                <div class="nv-todo nv-todo-small">
-                    <small>COMMISSIONS</small>
-                    <p id="commissionText" class="nv-note-text">
-                        I'm currently accepting commission requests for digital paintings, character art, and illustrations.
-                    </p>
-                    <ul class="nv-plain">
-                        <li>▸ Character illustrations</li>
-                        <li>▸ Portrait art</li>
-                        <li>▸ Concept art</li>
-                        <li>▸ Custom wallpapers</li>
-                    </ul>
-                    <div class="nv-status" id="commissionStatus">
-                        <span class="status-dot"></span>
-                        <span id="statusLabel">Commissions are currently closed</span>
-                        <span class="status-moon">Full Moon</span>
-                    </div>
-                </div>
+                <div class="nv-cal" id="nvCal" aria-hidden="true"></div>
             </div>
         </section>
     </div>
@@ -176,7 +240,7 @@
 
     <!-- ══ visual-novel dialogue box ══ -->
     <div class="nv-talk" style="--d:0.2s">
-        <button type="button" class="nv-portrait" id="nvPortrait" aria-label="Pet the cat"><canvas id="nvPortraitCanvas" width="16" height="16"></canvas></button>
+        <button type="button" class="nv-portrait" id="nvPortrait" aria-label="Pet the cat"><canvas id="nvPortraitCanvas" data-cat width="16" height="16"></canvas></button>
         <div class="nv-dialogue" id="nvDialogue" role="button" tabindex="0" aria-label="Advance dialogue">
             <span class="nv-nameplate">Raichuu</span>
             <div class="nv-controls">
@@ -255,24 +319,46 @@
         if (auto) autoTimer = setTimeout(advance, 3600);
     }
 
-    // Pure DOM: which chapter the right-hand page shows.
-    function showChapter(n) {
+    // Pure DOM: each chapter fills a whole spread, one panel per page.
+    var left = document.getElementById('nvLeft');
+    var lpanes = left.querySelectorAll('.nv-lpane');
+    function showLeft(n) {
+        lpanes.forEach(function (p, k) { p.classList.toggle('is-active', k === n); });
+    }
+    function showRight(n) {
         panes.forEach(function (p, k) { p.classList.toggle('is-active', k === n); });
         chapNum.textContent = n + 1;
         chapName.textContent = chapters[n].name;
+        if (n === 1) drawString();
     }
+    function showChapter(n) { showLeft(n); showRight(n); }
 
     var book = right.parentNode;
     var narrow = window.matchMedia ? window.matchMedia('(max-width: 1000px)') : { matches: false };
 
+    // A detached copy of a page (ids stripped, canvas pixels carried over).
+    function copyPage(src) {
+        var page = src.cloneNode(true);
+        page.removeAttribute('id');
+        page.removeAttribute('aria-live');
+        page.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+        var from = src.querySelectorAll('canvas'), to = page.querySelectorAll('canvas');
+        from.forEach(function (cv, k) {
+            to[k].width = cv.width; to[k].height = cv.height;
+            to[k].getContext('2d').drawImage(cv, 0, 0);
+        });
+        page.classList.add('nv-leaf-page');
+        return page;
+    }
+
     // A leaf of paper is peeled off the right page and turned over the spine.
     // It is cut into thin strips hinged to one another, so as it turns the
-    // strips fan out and the sheet bends like real paper. Forward: the leaf
-    // carries the old page while the new one is already underneath.
-    // Backward: the leaf carries the new page and lands on top.
+    // strips fan out and the sheet bends like real paper. Its front carries
+    // one right-hand page and its back carries a left-hand page, so it lands
+    // on the left already showing the page that belongs there.
     var STRIPS = 8;
-    function makeLeaf(faceSource) {
-        var pw = faceSource.offsetWidth, w = pw / STRIPS;
+    function makeLeaf(frontSnap, backSnap, pw) {
+        var w = pw / STRIPS;
         var leaf = document.createElement('div');
         leaf.className = 'nv-leaf';
         leaf.setAttribute('aria-hidden', 'true');
@@ -283,17 +369,16 @@
             strip.className = 'nv-strip';
             var front = document.createElement('div');
             front.className = 'nv-face nv-face-front';
-            var page = faceSource.cloneNode(true);
-            page.removeAttribute('id');
-            page.removeAttribute('aria-live');
-            page.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
-            page.classList.add('nv-leaf-page');
-            page.style.left = (-i * w) + 'px';
-            page.style.width = pw + 'px';
-            front.appendChild(page);
+            var fp = copyPage(frontSnap);
+            fp.style.left = (-i * w) + 'px';
+            fp.style.width = pw + 'px';
+            front.appendChild(fp);
             var back = document.createElement('div');
             back.className = 'nv-face nv-face-back';
-            back.style.backgroundPosition = (i * w) + 'px 0';
+            var bp = copyPage(backSnap);
+            bp.style.left = (-(pw - (i + 1) * w)) + 'px';
+            bp.style.width = pw + 'px';
+            back.appendChild(bp);
             strip.appendChild(front);
             strip.appendChild(back);
             parent.appendChild(strip);
@@ -313,14 +398,21 @@
 
         var leaf = null;
         if (animate) {
+            var pw = right.offsetWidth, frontSnap, backSnap;
             if (forward) {
-                leaf = makeLeaf(right);
-                showChapter(n);
+                // the leaf carries the old right page; the new right page is
+                // already underneath, and the old left stays until it lands
+                frontSnap = copyPage(right);
+                showLeft(n); backSnap = copyPage(left); showLeft(prev);
+                showRight(n);
             } else {
-                showChapter(n);
-                leaf = makeLeaf(right);
-                showChapter(prev);
+                // the leaf carries the new right page and lands on the old
+                // right; the new left page is revealed as it lifts away
+                showRight(n); frontSnap = copyPage(right); showRight(prev);
+                backSnap = copyPage(left);
+                showLeft(n);
             }
+            leaf = makeLeaf(frontSnap, backSnap, pw);
             leaf.classList.add(forward ? 'is-forward' : 'is-backward');
             book.appendChild(leaf);
         } else {
@@ -338,7 +430,7 @@
         function finish() {
             if (done) return;
             done = true;
-            if (!forward) showChapter(n);
+            if (forward) showLeft(n); else showRight(n);
             leaf.remove();
             turning = false;
         }
@@ -423,11 +515,55 @@
         if (typing) finishTyping(); else advance();
     });
 
+    // red string threaded through the pins of the inspiration board
+    var stringEl = document.getElementById('nvString');
+    function drawString() {
+        var board = document.getElementById('nvPins');
+        var pins = board.querySelectorAll('.nv-pin');
+        var b = board.getBoundingClientRect();
+        if (!b.width) return;
+        var pts = [];
+        pins.forEach(function (p) {
+            var r = p.getBoundingClientRect();
+            pts.push(Math.round(r.left - b.left + r.width / 2) + ',' + Math.round(r.top - b.top + r.height / 2));
+        });
+        stringEl.setAttribute('width', b.width);
+        stringEl.setAttribute('height', b.height);
+        stringEl.firstElementChild.setAttribute('points', pts.join(' '));
+    }
+    window.addEventListener('resize', function () { if (idx === 1) drawString(); });
+
+    // framed viewer shows whichever pinned photo is selected
+    var viewer = document.getElementById('nvViewer');
+    var viewerArt = document.getElementById('nvViewerArt');
+    var viewerTitle = document.getElementById('nvViewerTitle');
+
+    // month calendar (this month, with today marked)
+    (function buildCalendar() {
+        var el = document.getElementById('nvCal');
+        var now = new Date(), y = now.getFullYear(), m = now.getMonth();
+        var names = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+        var lead = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate();
+        var html = '<div class="nv-cal-head"><i></i><b>' + names[m] + '</b><i></i></div><div class="nv-cal-grid">';
+        'SMTWTFS'.split('').forEach(function (d) { html += '<span class="nv-dow">' + d + '</span>'; });
+        for (var i = 0; i < lead; i++) html += '<span class="nv-day is-blank"></span>';
+        for (var d = 1; d <= total; d++) {
+            var wk = (lead + d - 1) % 7;
+            if (d === now.getDate()) html += '<span class="nv-day is-today"><b>' + d + '</b><canvas data-cat width="16" height="16"></canvas></span>';
+            else html += '<span class="nv-day' + (wk === 0 || wk === 6 ? ' is-weekend' : '') + '"><b>' + d + '</b></span>';
+        }
+        el.innerHTML = html + '</div>';
+    })();
+
     // inspiration frames talk through the dialogue box
     var frames = document.querySelectorAll('.nv-frame');
     frames.forEach(function (f) {
         f.addEventListener('click', function () {
             frames.forEach(function (o) { o.classList.toggle('is-selected', o === f); });
+            viewer.dataset.i = f.dataset.i;
+            viewerArt.innerHTML = f.querySelector('.nv-frame-photo').innerHTML;
+            viewerTitle.textContent = f.dataset.title;
+            document.getElementById('nvViewerNote').textContent = f.dataset.note;
             lineIdx = 0;
             say(f.dataset.title + ' \u2014 ' + f.dataset.note);
             mood('happy', 700);
@@ -446,7 +582,7 @@
 
     // ── the cat: dialogue portrait + sticker on the left page ──
     var portraitFrame = 'idleA', moodTimer = null, blinkTick = 0;
-    var canvases = [document.getElementById('nvPortraitCanvas'), document.getElementById('nvChibiCanvas')];
+    var canvases = document.querySelectorAll('canvas[data-cat]');
     function paint(name) {
         var api = window.shimeji;
         if (!api) return false;
