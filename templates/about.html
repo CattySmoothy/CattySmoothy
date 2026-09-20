@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 {% endblock %}
 
-{% block content_class %}ab-wrap{% endblock %}
+{% block content_class %}nv-wrap{% endblock %}
 
 {% block content %}
 {# ─────────────────────────────────────────────────────────────────────────
@@ -33,234 +33,328 @@
     {'emoji': '🖼', 'label': 'Wallpapers'},
     {'emoji': '✏️', 'label': 'Sketches & studies'}
 ] %}
+{% set tabs = [
+    {'key': 'prologue', 'label': 'Prologue'},
+    {'key': 'inspo', 'label': 'Inspiration'},
+    {'key': 'works', 'label': 'Works'},
+    {'key': 'contact', 'label': 'Contact'},
+    {'key': 'commissions', 'label': 'Commissions'}
+] %}
 
-<div class="ab-spread">
+<div class="nv-stage">
 
+    <!-- ══ the open book ══ -->
+    <div class="nv-book" style="--d:0s">
+        <span class="nv-ribbon" aria-hidden="true"></span>
 
-    <!-- ══ left: classified file ══ -->
-    <div class="ab-col ab-col-1">
-        <article class="ab-file" style="--d:0.15s">
-            <span class="ab-hazard" aria-hidden="true"></span>
-            <div class="ab-photo-pin">
-                <span class="ab-clip" aria-hidden="true"></span>
-                <div class="ab-photo">
+        <!-- index tabs -->
+        <div class="nv-tabs" role="tablist" aria-label="Chapters">
+            {% for tb in tabs %}
+            <button type="button" class="nv-tab{{ ' is-active' if loop.first }}" role="tab" data-chapter="{{ loop.index0 }}" style="--tab:{{ loop.index0 + 1 }}">{{ tb.label }}</button>
+            {% endfor %}
+        </div>
+
+        <!-- left page: character sheet -->
+        <section class="nv-page nv-left" aria-label="Profile">
+            <div class="nv-datetag"><small>BORN</small><b>3/01/2011</b></div>
+
+            <figure class="nv-polaroid">
+                <span class="nv-tape nv-tape-1" aria-hidden="true"></span>
+                <span class="nv-clip" aria-hidden="true"></span>
+                <span class="nv-label">PROFILE</span>
+                <div class="nv-photo">
                     {% if my_photo %}<img src="{{ url_for('static', filename='images/about/' ~ my_photo) }}" alt="Raichuu">
-                    {% else %}<span>🐱</span>{% endif %}
+                    {% else %}<span>🌙</span>{% endif %}
                 </div>
-                <small>photo coming soon</small>
-            </div>
-            <div class="ab-file-head"><span aria-hidden="true">⚖</span> PERSONAL FILE</div>
-            <h2 class="ab-file-name">Raichuu</h2>
-            <dl class="ab-file-rows">
-                <div><dt>Born</dt><dd>3/01/2011</dd></div>
-                <div><dt>Handle</dt><dd>@Raichuu</dd></div>
-                <div><dt>Class</dt><dd>Digital artist</dd></div>
-            </dl>
-            <div class="ab-prints">
-                <div><i aria-hidden="true"></i><span>Fingerprint (L)</span></div>
-                <div><i aria-hidden="true"></i><span>Fingerprint (R)</span></div>
-            </div>
-        </article>
+            </figure>
 
-    </div>
-
-    <!-- ══ center: Win98 profile window ══ -->
-    <div class="ab-col ab-col-2">
-        <section class="w98 ab-profile" aria-label="Raichuu profile" style="--d:0.3s">
-            <div class="w98-title">
-                <span>Raichuu.exe</span>
-                <span class="w98-ctl" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span>
-            </div>
-            <div class="w98-menu" aria-hidden="true">
-                <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>V</u>iew</span><span><u>O</u>ptions</span><span><u>H</u>elp</span>
+            <div class="nv-film" aria-hidden="true">
+                <div style="--i:0"><span>{{ inspirations[0].emoji }}</span></div>
+                <div style="--i:1"><span>{{ inspirations[1].emoji }}</span></div>
             </div>
 
-            <div class="w98-body">
-                <div class="ab-top">
-                    <div class="ab-avatar">
-                        {% if my_photo %}<img src="{{ url_for('static', filename='images/about/' ~ my_photo) }}" alt="Raichuu">
-                        {% else %}<span>🌙</span>{% endif %}
-                    </div>
-                    <div class="ab-top-right">
-                        <div class="ab-name">raichuu</div>
-                        <div class="ab-stats">
-                            <div><b>{{ creates|length }}</b><span>makes</span></div>
-                            <div><b>{{ inspirations|length }}</b><span>inspirations</span></div>
-                            <div><b>{{ socials|length }}</b><span>channels</span></div>
-                        </div>
-                        <a class="w98-btn ab-follow" href="{{ socials[0].url }}" target="_blank" rel="noopener">+ Follow</a>
-                    </div>
+            <div class="nv-sheet">
+                <span class="nv-tape nv-tape-2" aria-hidden="true"></span>
+                <h1 class="nv-script">Raichuu</h1>
+                <dl>
+                    <div><dt>Handle</dt><dd>@Raichuu</dd></div>
+                    <div><dt>Class</dt><dd>Digital artist</dd></div>
+                </dl>
+            </div>
+
+            <button type="button" class="nv-chibi" id="nvChibi" aria-label="Pet the cat"><canvas id="nvChibiCanvas" width="16" height="16"></canvas></button>
+            <span class="nv-bubble" aria-hidden="true">♥</span>
+            <span class="nv-spark nv-spark-1" aria-hidden="true">✦</span>
+            <span class="nv-spark nv-spark-2" aria-hidden="true">✦</span>
+        </section>
+
+        <!-- right page: chapter content -->
+        <section class="nv-page nv-right" id="nvRight" aria-live="polite">
+            <div class="nv-chaptag"><b id="nvChapNum">1</b><span id="nvChapName">PROLOGUE</span></div>
+
+            <div class="nv-pane is-active" data-pane="0">
+                <h2 class="nv-hello">hello, i'm <span>Raichuu</span></h2>
+                <p class="nv-lead">a self-taught digital artist. paintings, process videos, tutorials &amp; wallpapers.</p>
+                <div class="nv-stickers">
+                    <a class="nv-pill" href="{{ url_for('collections') }}">🖼 collections</a>
+                    <a class="nv-pill" href="{{ url_for('shop') }}">✦ shop</a>
+                    <a class="nv-pill" href="{{ url_for('organization') }}">🌙 lunar bloom</a>
                 </div>
+            </div>
 
-                <p class="ab-bio">
-                    <span class="ab-typing">raichuu ★ self-taught digital artist</span>
-                    born 3/01/2011 · @Raichuu<br>
-                    paintings, process videos, wallpapers<br>
-                    <a href="{{ url_for('collections') }}">collections</a>, <a href="{{ url_for('shop') }}">shop</a>, <a href="{{ url_for('organization') }}">lunar bloom</a>
-                </p>
-
-                <div class="ab-tabs" role="tablist">
-                    <button type="button" class="w98-btn is-active" role="tab" data-tab="inspo" aria-label="Inspiration">▦</button>
-                    <button type="button" class="w98-btn" role="tab" data-tab="makes" aria-label="What I make">☰</button>
-                    <button type="button" class="w98-btn" role="tab" data-tab="channels" aria-label="Contact channels">◎</button>
-                    <button type="button" class="w98-btn" role="tab" data-tab="commissions" aria-label="Commissions">✉</button>
-                </div>
-
-                <div class="ab-pane is-active" data-pane="inspo">
-                    <div class="ab-grid">
-                        {% for i in inspirations %}
-                        <button type="button" class="ab-thumb{{ ' is-selected' if loop.first }}" data-title="{{ i.title }}" data-note="{{ i.note }}">
+            <div class="nv-pane" data-pane="1">
+                <div class="nv-frames">
+                    {% for i in inspirations %}
+                    <button type="button" class="nv-frame{{ ' is-selected' if loop.first }}" style="--i:{{ loop.index0 }}" data-title="{{ i.title }}" data-note="{{ i.note }}">
+                        <span class="nv-frame-photo">
                             {% if i.photo %}<img src="{{ url_for('static', filename='images/about/' ~ i.photo) }}" alt="{{ i.title }}">
-                            {% else %}<span>{{ i.emoji }}</span>{% endif %}
-                        </button>
-                        {% endfor %}
-                    </div>
-                    <div class="ab-caption"><b id="abCapTitle">{{ inspirations[0].title }}</b><span id="abCapNote">{{ inspirations[0].note }}</span></div>
+                            {% else %}<em>{{ i.emoji }}</em>{% endif %}
+                        </span>
+                        <span class="nv-frame-cap">{{ i.title }}</span>
+                    </button>
+                    {% endfor %}
                 </div>
+            </div>
 
-                <div class="ab-pane" data-pane="makes">
-                    <ul class="ab-list">
-                        {% for c in creates %}<li><span>{{ c.emoji }}</span>{{ c.label }}</li>{% endfor %}
+            <div class="nv-pane" data-pane="2">
+                <div class="nv-todo">
+                    <span class="nv-hole" aria-hidden="true"></span>
+                    <small>TO DO LIST</small>
+                    <ul>
+                        {% for c in creates %}
+                        <li style="--i:{{ loop.index0 }}"><i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9.5 L10.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>{{ c.emoji }}</span>{{ c.label }}</li>
+                        {% endfor %}
                     </ul>
+                    <span class="nv-flag" aria-hidden="true">AMAZING</span>
                 </div>
+            </div>
 
-                <div class="ab-pane" data-pane="channels">
-                    <div class="ab-links">
-                        {% for s in socials %}
-                        <a class="w98-btn ab-link" href="{{ s.url }}" target="_blank" rel="noopener">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{ s.path }}"/></svg>
-                            {{ s.name }}
-                        </a>
-                        {% endfor %}
-                    </div>
-                    <p class="ab-mail-label">or write to me:</p>
-                    <div class="ab-mail">
-                        <span class="ab-mail-address">raichuuxxofficial@gmail.com</span>
-                        <button type="button" class="w98-btn" id="abCopy">Copy</button>
-                    </div>
-                    <div class="ab-copy-feedback" id="abCopyFeedback" aria-live="polite"></div>
+            <div class="nv-pane" data-pane="3">
+                <div class="nv-stickers">
+                    {% for s in socials %}
+                    <a class="nv-social" href="{{ s.url }}" target="_blank" rel="noopener" style="--i:{{ loop.index0 }}">
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{ s.path }}"/></svg>
+                        <span>{{ s.name }}</span>
+                    </a>
+                    {% endfor %}
                 </div>
+                <div class="nv-mail">
+                    <small>OR WRITE TO ME</small>
+                    <div><span id="nvMailAddress">raichuuxxofficial@gmail.com</span><button type="button" id="nvCopy">copy</button></div>
+                    <em id="nvCopyFeedback" aria-live="polite"></em>
+                </div>
+            </div>
 
-                <div class="ab-pane" data-pane="commissions">
-                    <p id="commissionText" class="ab-text">
+            <div class="nv-pane" data-pane="4">
+                <div class="nv-todo nv-todo-small">
+                    <span class="nv-hole" aria-hidden="true"></span>
+                    <small>COMMISSIONS</small>
+                    <p id="commissionText" class="nv-note-text">
                         I'm currently accepting commission requests for digital paintings, character art, and illustrations.
                     </p>
-                    <ul class="ab-list ab-list-small">
+                    <ul class="nv-plain">
                         <li>▸ Character illustrations</li>
                         <li>▸ Portrait art</li>
                         <li>▸ Concept art</li>
                         <li>▸ Custom wallpapers</li>
                     </ul>
-                    <div class="ab-status" id="commissionStatus">
+                    <div class="nv-status" id="commissionStatus">
                         <span class="status-dot"></span>
                         <span id="statusLabel">Commissions are currently closed</span>
                         <span class="status-moon">Full Moon</span>
                     </div>
                 </div>
             </div>
-
-            <div class="w98-status"><span id="abStatus">Total: {{ inspirations|length }} inspirations</span><span>Raichuu.exe</span></div>
         </section>
-
     </div>
 
-    <!-- ══ right: journal page + pet ══ -->
-    <div class="ab-col ab-col-3">
-        <section class="ab-journal" style="--d:0.45s">
-            <span class="ab-rings" aria-hidden="true"></span>
-            <span class="ab-tape ab-tape-b" aria-hidden="true"></span>
-            <span class="ab-tape ab-tape-c" aria-hidden="true"></span>
-            <div class="ab-chips">
-                {% for c in creates %}<span class="ab-chip" style="--rot:{{ ['-3deg','2deg','-1.5deg','3deg','-2.5deg'][loop.index0] }}; --i:{{ loop.index0 }}"><b>{{ c.emoji }}</b>{{ c.label }}</span>{% endfor %}
+    <!-- ══ visual-novel dialogue box ══ -->
+    <div class="nv-talk" style="--d:0.2s">
+        <button type="button" class="nv-portrait" id="nvPortrait" aria-label="Pet the cat"><canvas id="nvPortraitCanvas" width="16" height="16"></canvas></button>
+        <div class="nv-dialogue" id="nvDialogue" role="button" tabindex="0" aria-label="Advance dialogue">
+            <span class="nv-nameplate">Raichuu</span>
+            <div class="nv-controls">
+                <button type="button" id="nvAuto">AUTO</button>
+                <button type="button" id="nvSkip">SKIP</button>
+                <span id="nvCount">1 / 5</span>
             </div>
-            <span class="ab-sticker ab-sticker-1" aria-hidden="true">✦</span>
-            <span class="ab-sticker ab-sticker-2" aria-hidden="true">🌙</span>
-            <span class="ab-sticker ab-sticker-3" aria-hidden="true">♡</span>
-        </section>
-
-        <section class="w98 ab-pet" aria-label="pet.exe" style="--d:0.6s">
-            <div class="w98-title"><span>pet.exe</span><span class="w98-ctl" aria-hidden="true"><i>_</i><i>▢</i><i>✕</i></span></div>
-            <div class="w98-body ab-pet-body">
-                <div class="ab-pet-screen"><canvas id="abPetCanvas" width="16" height="16" aria-label="The site's pixel cat"></canvas></div>
-                <div class="ab-pet-btns">
-                    <button type="button" class="w98-btn" id="abPetPet">pet</button>
-                    <button type="button" class="w98-btn" id="abPetHop">hop</button>
-                </div>
-            </div>
-            <div class="w98-status"><span id="abPetMood">Mood: sleepy</span><span>the site's cat</span></div>
-        </section>
+            <p class="nv-text" id="nvText"></p>
+            <span class="nv-next" id="nvNext" aria-hidden="true">▼</span>
+        </div>
     </div>
 
 </div>
 
 <script>
 (function () {
-    var tabs = document.querySelectorAll('.ab-tabs [data-tab]');
-    var panes = document.querySelectorAll('.ab-pane');
-    var status = document.getElementById('abStatus');
-    var labels = { inspo: 'Total: {{ inspirations|length }} inspirations', makes: 'Total: {{ creates|length }} makes', channels: 'Total: {{ socials|length }} channels', commissions: 'Commissions' };
+    var chapters = [
+        { name: 'PROLOGUE', lines: [
+            "Hello! I'm Raichuu, a self-taught digital artist.",
+            "Welcome to my little journal. Flip through the tabs to see what inspires me, what I make, and where to find me."
+        ] },
+        { name: 'INSPIRATION', lines: [
+            "These are the things that inspire me. Tap a photo to hear more about it."
+        ] },
+        { name: 'WORKS', lines: [
+            "Here's what I like to make: paintings, process videos, tutorials, wallpapers, and lots of sketches."
+        ] },
+        { name: 'CONTACT', lines: [
+            "Want to chat? You can find me on Instagram and YouTube, or send me an email."
+        ] },
+        { name: 'COMMISSIONS', dynamic: function () {
+            var el = document.getElementById('commissionText');
+            return el ? el.textContent.replace(/\s+/g, ' ').trim() : 'Ask me about commissions!';
+        } }
+    ];
+
+    var right = document.getElementById('nvRight');
+    var panes = right.querySelectorAll('.nv-pane');
+    var tabs = document.querySelectorAll('.nv-tab');
+    var textEl = document.getElementById('nvText');
+    var nextEl = document.getElementById('nvNext');
+    var countEl = document.getElementById('nvCount');
+    var chapNum = document.getElementById('nvChapNum');
+    var chapName = document.getElementById('nvChapName');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var idx = 0, lineIdx = 0, typing = null, current = '', auto = false, autoTimer = null, turning = false;
+
+    function lineText() {
+        var ch = chapters[idx];
+        return ch.dynamic ? ch.dynamic() : ch.lines[lineIdx];
+    }
+    function lineCount() { var ch = chapters[idx]; return ch.dynamic ? 1 : ch.lines.length; }
+
+    function finishTyping() {
+        clearInterval(typing); typing = null;
+        textEl.textContent = current;
+        nextEl.classList.add('show');
+        scheduleAuto();
+    }
+    function say(text) {
+        clearInterval(typing); clearTimeout(autoTimer);
+        current = text;
+        nextEl.classList.remove('show');
+        if (reduce) { finishTyping(); return; }
+        var i = 0;
+        textEl.textContent = '';
+        typing = setInterval(function () {
+            i++;
+            textEl.textContent = text.slice(0, i);
+            if (i >= text.length) finishTyping();
+        }, 22);
+    }
+    function scheduleAuto() {
+        clearTimeout(autoTimer);
+        if (auto) autoTimer = setTimeout(advance, 3600);
+    }
+
+    function setChapter(n) {
+        if (turning || n === idx) return;
+        turning = true;
+        right.classList.add('is-turning-out');
+        setTimeout(function () {
+            idx = n; lineIdx = 0;
+            panes.forEach(function (p, k) { p.classList.toggle('is-active', k === n); });
+            tabs.forEach(function (t, k) { t.classList.toggle('is-active', k === n); t.setAttribute('aria-selected', k === n); });
+            chapNum.textContent = n + 1;
+            chapName.textContent = chapters[n].name;
+            countEl.textContent = (n + 1) + ' / ' + chapters.length;
+            right.classList.remove('is-turning-out');
+            right.classList.add('is-turning-in');
+            setTimeout(function () { right.classList.remove('is-turning-in'); turning = false; }, 320);
+            say(lineText());
+            mood('happy', 700);
+        }, reduce ? 0 : 220);
+    }
+
+    function advance() {
+        if (typing) { finishTyping(); return; }
+        if (lineIdx < lineCount() - 1) { lineIdx++; say(lineText()); }
+        else setChapter((idx + 1) % chapters.length);
+    }
+
     tabs.forEach(function (t) {
-        t.addEventListener('click', function () {
-            var key = t.dataset.tab;
-            tabs.forEach(function (b) { b.classList.toggle('is-active', b === t); });
-            panes.forEach(function (p) { p.classList.toggle('is-active', p.dataset.pane === key); });
-            status.textContent = labels[key];
+        t.addEventListener('click', function (e) { e.stopPropagation(); setChapter(parseInt(t.dataset.chapter, 10)); });
+    });
+    var dlg = document.getElementById('nvDialogue');
+    dlg.addEventListener('click', function (e) { if (!e.target.closest('.nv-controls')) advance(); });
+    dlg.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance(); } });
+    document.getElementById('nvAuto').addEventListener('click', function (e) {
+        e.stopPropagation();
+        auto = !auto;
+        this.classList.toggle('is-on', auto);
+        if (auto && !typing) scheduleAuto(); else clearTimeout(autoTimer);
+    });
+    document.getElementById('nvSkip').addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (typing) finishTyping(); else advance();
+    });
+
+    // inspiration frames talk through the dialogue box
+    var frames = document.querySelectorAll('.nv-frame');
+    frames.forEach(function (f) {
+        f.addEventListener('click', function () {
+            frames.forEach(function (o) { o.classList.toggle('is-selected', o === f); });
+            lineIdx = 0;
+            say(f.dataset.title + ' \u2014 ' + f.dataset.note);
+            mood('happy', 700);
         });
     });
 
-    var thumbs = document.querySelectorAll('.ab-thumb');
-    thumbs.forEach(function (th) {
-        th.addEventListener('click', function () {
-            thumbs.forEach(function (o) { o.classList.toggle('is-selected', o === th); });
-            document.getElementById('abCapTitle').textContent = th.dataset.title;
-            document.getElementById('abCapNote').textContent = th.dataset.note;
-        });
-    });
-
-    document.getElementById('abCopy').addEventListener('click', function () {
-        var fb = document.getElementById('abCopyFeedback');
+    // copy email
+    document.getElementById('nvCopy').addEventListener('click', function () {
+        var fb = document.getElementById('nvCopyFeedback');
         navigator.clipboard.writeText('raichuuxxofficial@gmail.com').then(function () {
-            fb.textContent = 'Copied to clipboard.';
+            fb.textContent = 'copied \u2713';
             fb.classList.add('show');
             setTimeout(function () { fb.classList.remove('show'); }, 2000);
         });
     });
 
-    // pet.exe: draw the site's cat and let the buttons drive it
-    function drawPet() {
+    // ── the cat: dialogue portrait + sticker on the left page ──
+    var portraitFrame = 'idleA', moodTimer = null, blinkTick = 0;
+    var canvases = [document.getElementById('nvPortraitCanvas'), document.getElementById('nvChibiCanvas')];
+    function paint(name) {
         var api = window.shimeji;
-        var canvas = document.getElementById('abPetCanvas');
-        if (!api || !canvas) return false;
-        var ctx = canvas.getContext('2d'), sp = api.sprites, frames = ['idleA', 'idleB'], f = 0;
-        canvas.width = canvas.height = sp.N;
-        function paint(name) {
-            var rows = sp.frames[name];
+        if (!api) return false;
+        var sp = api.sprites, rows = sp.frames[name];
+        canvases.forEach(function (c) {
+            var ctx = c.getContext('2d');
+            c.width = c.height = sp.N;
             ctx.clearRect(0, 0, sp.N, sp.N);
             for (var y = 0; y < sp.N; y++) for (var x = 0; x < sp.N; x++) {
                 var ch = rows[y].charAt(x);
                 if (ch !== '.') { ctx.fillStyle = sp.palette[ch]; ctx.fillRect(x, y, 1, 1); }
             }
-        }
-        paint('idleA');
-        setInterval(function () { f = 1 - f; paint(frames[f]); }, 700);
+        });
         return true;
     }
-    var tries = 0;
-    (function wait() { if (!drawPet() && tries++ < 40) setTimeout(wait, 100); })();
+    function mood(name, ms) {
+        portraitFrame = name;
+        paint(name);
+        clearTimeout(moodTimer);
+        moodTimer = setTimeout(function () { portraitFrame = 'idleA'; paint('idleA'); }, ms);
+    }
+    setInterval(function () {
+        blinkTick++;
+        if (portraitFrame !== 'idleA' && portraitFrame !== 'idleB') return;
+        paint(blinkTick % 6 === 5 ? 'blink' : (blinkTick % 2 ? 'idleB' : 'idleA'));
+    }, 700);
+    ['nvPortrait', 'nvChibi'].forEach(function (id) {
+        document.getElementById(id).addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (window.shimeji) window.shimeji.pet();
+            mood('happy', 1100);
+        });
+    });
 
-    var mood = document.getElementById('abPetMood');
-    var screen = document.querySelector('.ab-pet-screen canvas');
-    function boing() { screen.classList.remove('is-boing'); void screen.offsetWidth; screen.classList.add('is-boing'); }
-    document.getElementById('abPetPet').addEventListener('click', function () {
-        if (window.shimeji) window.shimeji.pet();
-        mood.textContent = 'Mood: happy';
-        boing();
-    });
-    document.getElementById('abPetHop').addEventListener('click', function () {
-        if (window.shimeji) window.shimeji.hop();
-        mood.textContent = 'Mood: bouncy';
-        boing();
-    });
+    // kick things off once the cat sprites are available
+    var tries = 0;
+    (function boot() {
+        if (paint('idleA') || tries++ > 40) { say(lineText()); return; }
+        setTimeout(boot, 100);
+    })();
 })();
 </script>
 {% endblock %}

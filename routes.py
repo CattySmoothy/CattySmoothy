@@ -93,7 +93,8 @@ def register_routes(app):
 
     @app.route('/collections')
     def collections():
-        return render_template('collections.html', title="Collections")
+        return render_template('collections.html', title="Collections",
+                               guest_view_only=not current_user.is_authenticated)
 
     @app.route('/updates')
     def updates():
