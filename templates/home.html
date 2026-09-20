@@ -133,91 +133,6 @@
                 <!-- 3-Column Window Grid -->
                 <div class="os-grid">
 
-                    <!-- LEFT COLUMN -->
-                    <div class="os-col os-col-left">
-
-                        <!-- Window: Collections -->
-                        <div class="os-window os-window-collections">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-collections" aria-hidden="true">🖼</span>
-                                <span class="os-titlebar-text">Collections</span>
-                                <div class="os-titlebar-ornament">~</div>
-                            </div>
-                            <div class="os-window-body">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <p style="margin-bottom:12px;">Process videos, sketches, and the full community collection.</p>
-                                <div class="os-chip-row">
-                                    <span class="os-chip">🎬 Process Videos</span>
-                                    <span class="os-chip">✏️ Sketches</span>
-                                    <span class="os-chip">👥 Community</span>
-                                </div>
-                                <a href="{{ url_for('collections') }}" class="os-window-link">View Full Page →</a>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">collections.exe</span>
-                                <span class="os-footer-badge">3 sets</span>
-                            </div>
-                        </div>
-
-                        <!-- Window: Support -->
-                        <div class="os-window os-window-support">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-support" aria-hidden="true">✦</span>
-                                <span class="os-titlebar-text">Support</span>
-                                <div class="os-titlebar-ornament">~</div>
-                            </div>
-                            <div class="os-window-body">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <p style="margin-bottom:12px;">Send stardust, or pick a monthly plan to support the art.</p>
-                                <div class="os-chip-row">
-                                    <span class="os-chip">$1.99/mo Basic</span>
-                                    <span class="os-chip">$49.99/mo Premium</span>
-                                </div>
-                                {% if current_user.is_authenticated and current_user.active_membership %}
-                                <div class="os-achievement-badge">🏅 {{ current_user.active_membership.plan_name }} Supporter</div>
-                                {% endif %}
-                                <a href="{{ url_for('support') }}" class="os-window-link">View Full Page →</a>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">support.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- CENTER COLUMN -->
-                    <div class="os-col os-col-center">
-
-                        <!-- Window: Shop -->
-                        <div class="os-window os-window-shop">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-shop" aria-hidden="true">✦</span>
-                                <span class="os-titlebar-text">Shop</span>
-                                <div class="os-titlebar-ornament">~</div>
-                            </div>
-                            <div class="os-window-body">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <p style="margin-bottom:12px;">Redeem stardust for wallpapers, stickers, and more.</p>
-                                <div class="os-chip-row">
-                                    <span class="os-chip">🛍 {{ shop_item_count }} Items</span>
-                                    {% if current_user.is_authenticated %}
-                                    <span class="os-chip">✦ {{ current_user.stardust_balance }} Balance</span>
-                                    {% endif %}
-                                </div>
-                                <a href="{{ url_for('shop') }}" class="os-window-link">View Full Page →</a>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">shop.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-
-                    </div>
-
                     <!-- RIGHT COLUMN -->
                     <div class="os-col os-col-right">
 
@@ -258,30 +173,6 @@
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
-
-                        {% if not current_user.is_authenticated %}
-                        <!-- Window: Eclipsogate Welcome -->
-                        <div class="os-window os-window-eclipsogate">
-                            <div class="os-titlebar">
-                                <span class="os-titlebar-icon os-titlebar-icon-eclipsogate" aria-hidden="true">✦</span>
-                                <span class="os-titlebar-text">Eclipsogate</span>
-                                <div class="os-titlebar-ornament">~</div>
-                            </div>
-                            <div class="os-window-body">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <p style="margin-bottom:14px;">Log in for full access, or look around as a guest.</p>
-                                <div class="cs-welcome-actions">
-                                    <a href="{{ url_for('login', next='/') }}" class="support-btn support-btn-primary">Log In</a>
-                                    <button type="button" class="support-btn" id="csGuestBtn">Continue as Guest</button>
-                                </div>
-                            </div>
-                            <div class="os-window-footer">
-                                <span class="os-footer-dec">✧</span>
-                                <span class="os-footer-text">eclipsogate.exe</span>
-                                <span class="os-footer-dec">✧</span>
-                            </div>
-                        </div>
-                        {% endif %}
 
                     </div>
 
@@ -581,24 +472,17 @@
           // Heights are per-window (not uniform) so content that needs more room
           // gets it, and columns stack cumulatively off each window's actual
           // assigned height so windows never default-overlap.
+          // Single full-width window: fills the page width, stacked
+          // vertically if more windows are ever added back.
           var cw = osGrid.clientWidth || 1200;
-          var rightX = Math.max(cw - 340, 720);
-          var defaultHeights = {
-            collections: 260,
-            support: 300,
-            shop: 260,
-            org: 300,
-            eclipsogate: 200
-          };
+          var defaultHeights = { org: 560 };
           var gap = 24;
-          var colX = [0, 360, rightX];
-          var colY = [0, 0, 0];
-          windows.forEach(function(win, i) {
+          var nextY = 0;
+          windows.forEach(function(win) {
             var id = win.dataset.windowId || getWindowId(win);
-            var col = i < 2 ? 0 : (i < 3 ? 1 : 2);
-            var h = defaultHeights[id] || 220;
-            var d = { x: colX[col], y: colY[col], w: 340, h: h };
-            colY[col] += h + gap;
+            var h = defaultHeights[id] || 260;
+            var d = { x: 0, y: nextY, w: cw, h: h };
+            nextY += h + gap;
             d.el = win;
             d.id = id;
             windowData.push(d);

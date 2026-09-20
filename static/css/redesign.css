@@ -3320,7 +3320,9 @@ button, input, textarea, select {
 .home-active .realm-explorer {
     height: auto;
     min-height: 100vh;
+    overflow-x: clip; /* vertical scroll only, never sideways */
 }
+.home-active .main-area { min-width: 0; }
 
 .home-active .realm-canvas {
     padding: 0;
@@ -8269,6 +8271,23 @@ body.os-hud-hidden .realm-canvas {
     text-decoration: underline;
     text-underline-offset: 2px;
 }
+
+/* Organization is the only window on the home page, so it fills the page:
+   scale the folder and newspaper up to match. */
+.os-window-org .org-folder { min-height: 380px; }
+.os-window-org .org-folder-icon { font-size: 96px; }
+.os-window-org .org-folder-tab-label { font-size: 24px; }
+.os-window-org .org-folder-hint { font-size: 14px; }
+.os-window-org .org-paper {
+    padding: 32px clamp(20px, 6vw, 64px);
+    gap: 18px;
+    justify-content: center;
+}
+.os-window-org .org-paper-title { font-size: clamp(16px, 2.4vw, 28px); }
+.os-window-org .org-paper-rule { height: 3px; }
+.os-window-org .org-paper-body { font-size: clamp(14px, 1.6vw, 20px); line-height: 1.7; max-width: 900px; }
+.os-window-org .org-paper-tag { font-size: 13px; padding: 5px 12px; }
+.os-window-org .org-paper-link { font-size: 16px; }
 
 /* ── Home Page: player rank/XP HUD (menu bar) ── */
 
