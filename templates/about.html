@@ -15,23 +15,23 @@
    ───────────────────────────────────────────────────────────────────────── #}
 {% set my_photo = None %}
 {% set inspirations = [
-    {'emoji': '🎮', 'title': 'Vintage games', 'note': 'pixel sprites, chunky menus & character-select screens', 'photo': None},
-    {'emoji': '📺', 'title': 'Old TVs', 'note': 'scanlines, static & that warm CRT glow', 'photo': None},
-    {'emoji': '⚡', 'title': 'Zenless Zone Zero', 'note': 'neon street-culture UI & comic-panel energy', 'photo': None},
-    {'emoji': '📔', 'title': 'Journals & stickers', 'note': 'diaries stuffed with tape, doodles & scraps', 'photo': None},
-    {'emoji': '🌙', 'title': 'The moon & stars', 'note': 'Eclipsogate, Lunar Bloom & every bit of stardust', 'photo': None},
-    {'emoji': '🐈', 'title': 'Cats', 'note': 'and a tiny pixel cat who wanders around this site. go find it', 'photo': None}
+    {'icon': 'gamepad', 'title': 'Vintage games', 'note': 'pixel sprites, chunky menus & character-select screens', 'photo': None},
+    {'icon': 'tv', 'title': 'Old TVs', 'note': 'scanlines, static & that warm CRT glow', 'photo': None},
+    {'icon': 'bolt', 'title': 'Zenless Zone Zero', 'note': 'neon street-culture UI & comic-panel energy', 'photo': None},
+    {'icon': 'journal', 'title': 'Journals & stickers', 'note': 'diaries stuffed with tape, doodles & scraps', 'photo': None},
+    {'icon': 'moon', 'title': 'The moon & stars', 'note': 'Eclipsogate, Lunar Bloom & every bit of stardust', 'photo': None},
+    {'icon': 'cat', 'title': 'Cats', 'note': 'and a tiny pixel cat who wanders around this site. go find it', 'photo': None}
 ] %}
 {% set socials = [
     {'name': 'Instagram', 'url': 'https://www.instagram.com/kenmrai?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', 'path': 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z'},
     {'name': 'YouTube', 'url': 'https://www.youtube.com/@cattysmoothy', 'path': 'M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'}
 ] %}
 {% set creates = [
-    {'emoji': '🎨', 'label': 'Digital paintings'},
-    {'emoji': '🎬', 'label': 'Process videos'},
-    {'emoji': '📚', 'label': 'Tutorials'},
-    {'emoji': '🖼', 'label': 'Wallpapers'},
-    {'emoji': '✏️', 'label': 'Sketches & studies'}
+    {'icon': 'palette', 'label': 'Digital paintings'},
+    {'icon': 'clapper', 'label': 'Process videos'},
+    {'icon': 'books', 'label': 'Tutorials'},
+    {'icon': 'frame', 'label': 'Wallpapers'},
+    {'icon': 'pencil', 'label': 'Sketches & studies'}
 ] %}
 {% set tabs = [
     {'key': 'prologue', 'label': 'Prologue'},
@@ -51,9 +51,18 @@
         <i class="nv-under nv-under-2" aria-hidden="true"></i>
         <i class="nv-cast" aria-hidden="true"></i>
         <div class="nv-cover">
+            <!-- loose bits tucked between the pages and sticking out -->
+            <div class="nv-poke nv-postit nv-postit-a" aria-hidden="true"><i></i><i></i></div>
+            <div class="nv-poke nv-postit nv-postit-b" aria-hidden="true"><i></i></div>
+            <div class="nv-poke nv-postit nv-postit-c" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-a" aria-hidden="true"><span>{{ ico('moon') }}</span></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-b" aria-hidden="true"><span>{{ ico('frame') }}</span></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-c" aria-hidden="true"><span>{{ ico('cat') }}</span></div>
+            <div class="nv-poke nv-strip-paper" aria-hidden="true"></div>
     <div class="nv-book" style="--d:0s">
-        <span class="nv-ribbon" aria-hidden="true"></span>
-        <span class="nv-ribbon nv-ribbon-2" aria-hidden="true"></span>
+        <i class="nv-stack nv-stack-l" aria-hidden="true"></i>
+        <i class="nv-stack nv-stack-r" aria-hidden="true"></i>
+        <i class="nv-stack nv-stack-b" aria-hidden="true"></i>
         <button type="button" class="nv-corner nv-corner-prev" id="nvPrev" aria-label="Previous page" title="Previous page"></button>
         <button type="button" class="nv-corner nv-corner-next" id="nvTurnNext" aria-label="Next page" title="Next page"></button>
 
@@ -76,13 +85,13 @@
                 <span class="nv-label">PROFILE</span>
                 <div class="nv-photo">
                     {% if my_photo %}<img src="{{ url_for('static', filename='images/about/' ~ my_photo) }}" alt="Raichuu">
-                    {% else %}<span>🌙</span>{% endif %}
+                    {% else %}<span>{{ ico('moon') }}</span>{% endif %}
                 </div>
             </figure>
 
             <div class="nv-film" aria-hidden="true">
-                <div style="--i:0"><span>{{ inspirations[0].emoji }}</span></div>
-                <div style="--i:1"><span>{{ inspirations[1].emoji }}</span></div>
+                <div style="--i:0"><span>{{ ico(inspirations[0].icon) }}</span></div>
+                <div style="--i:1"><span>{{ ico(inspirations[1].icon) }}</span></div>
             </div>
 
             <div class="nv-sheet">
@@ -117,7 +126,7 @@
                     <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
                     <div class="nv-viewer-art" id="nvViewerArt">
                         {% if inspirations[0].photo %}<img src="{{ url_for('static', filename='images/about/' ~ inspirations[0].photo) }}" alt="{{ inspirations[0].title }}">
-                        {% else %}<em>{{ inspirations[0].emoji }}</em>{% endif %}
+                        {% else %}<em>{{ ico(inspirations[0].icon) }}</em>{% endif %}
                     </div>
                     <div class="nv-viewer-cap"><i></i><span id="nvViewerTitle">{{ inspirations[0].title }}</span><i></i></div>
                 </div>
@@ -132,7 +141,7 @@
                     <small>TO DO LIST</small>
                     <ul>
                         {% for c in creates %}
-                        <li style="--i:{{ loop.index0 }}"><i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9.5 L10.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>{{ c.emoji }}</span>{{ c.label }}</li>
+                        <li style="--i:{{ loop.index0 }}"><i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9.5 L10.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>{{ ico(c.icon) }}</span>{{ c.label }}</li>
                         {% endfor %}
                     </ul>
                     <span class="nv-flag" aria-hidden="true">AMAZING</span>
@@ -175,6 +184,7 @@
         <!-- right page: one panel per chapter -->
         <section class="nv-page nv-right" id="nvRight" aria-live="polite">
             <div class="nv-chaptag"><b id="nvChapNum">1</b><span id="nvChapName">PROLOGUE</span></div>
+            <i class="hy-rule nv-rule" aria-hidden="true"></i>
 
             <div class="nv-pane is-active" data-pane="0">
                 <h2 class="nv-hello">hello, i'm <span>Raichuu</span></h2>
@@ -195,7 +205,7 @@
                             <span class="nv-pin" aria-hidden="true"></span>
                             <span class="nv-frame-photo">
                                 {% if i.photo %}<img src="{{ url_for('static', filename='images/about/' ~ i.photo) }}" alt="{{ i.title }}">
-                                {% else %}<em>{{ i.emoji }}</em>{% endif %}
+                                {% else %}<em>{{ ico(i.icon) }}</em>{% endif %}
                             </span>
                             <span class="nv-frame-cap">{{ i.title }}</span>
                         </button>
@@ -207,13 +217,13 @@
             <div class="nv-pane" data-pane="2">
                 <a class="nv-viewer nv-reel" href="{{ url_for('collections') }}" data-i="2">
                     <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
-                    <div class="nv-viewer-art"><em>🎬</em><i class="nv-play" aria-hidden="true"></i></div>
+                    <div class="nv-viewer-art"><em>{{ ico('clapper') }}</em><i class="nv-play" aria-hidden="true"></i></div>
                     <div class="nv-viewer-cap"><i></i><span>Process videos</span><i></i></div>
                 </a>
                 <div class="nv-stickers nv-links">
-                    <a class="nv-pill" href="{{ url_for('collections') }}">🖼 collections</a>
-                    <a class="nv-pill" href="{{ url_for('shop') }}">✦ shop</a>
-                    <a class="nv-pill" href="{{ url_for('organization') }}">🌙 lunar bloom</a>
+                    <a class="nv-pill" href="{{ url_for('collections') }}">{{ ico('frame') }} collections</a>
+                    <a class="nv-pill" href="{{ url_for('shop') }}">{{ ico('sparkle') }} shop</a>
+                    <a class="nv-pill" href="{{ url_for('organization') }}">{{ ico('moon') }} lunar bloom</a>
                 </div>
             </div>
 

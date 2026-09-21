@@ -3835,7 +3835,7 @@ button, input, textarea, select {
 }
 
 .star-msg-story::before {
-    content: '📖 ';
+    content: '◆ ';
     font-size: 12px;
 }
 
@@ -9658,7 +9658,7 @@ body.os-hud-hidden .realm-canvas {
     --nv-kraft: color-mix(in srgb, var(--nv-lamp) 62%, var(--color-surface));
     --nv-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
     --nv-halftone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23000' fill-opacity='.16'/%3E%3C/svg%3E");
-    max-width: 1260px;
+    max-width: 910px;
     margin: 0 auto;
     padding: 84px 64px 96px;
     overflow-x: clip;
@@ -9695,7 +9695,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-cover {
     position: relative;
     z-index: 1;
-    padding: 14px 14px 26px;
+    padding: 14px 28px 30px;
     border-radius: 14px;
     background:
         radial-gradient(ellipse at 14% 0%, rgba(255, 255, 255, 0.26), transparent 55%),
@@ -9706,14 +9706,6 @@ body.os-hud-hidden .realm-canvas {
     animation-delay: var(--d, 0s);
 }
 .nv-cover::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background-image: var(--nv-grain); background-size: 220px 220px; mix-blend-mode: multiply; opacity: 0.5; pointer-events: none; }
-.nv-cover::after {                          /* stitching */
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border-radius: 10px;
-    border: 2px dashed color-mix(in srgb, var(--color-on-dark) 38%, transparent);
-    pointer-events: none;
-}
 .nv-book {
     position: relative;
     display: grid;
@@ -9750,20 +9742,6 @@ body.os-hud-hidden .realm-canvas {
     z-index: 2;
     pointer-events: none;
 }
-.nv-ribbon {
-    position: absolute;
-    left: 50%;
-    bottom: -60px;
-    width: 16px;
-    height: 78px;
-    margin-left: 44px;
-    background: var(--nv-b);
-    transform-origin: 50% 0;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
-    animation: nv-sway 4.2s ease-in-out infinite;
-    z-index: 4;
-}
-.nv-ribbon-2 { margin-left: 70px; height: 98px; background: var(--nv-a); animation-delay: -1.6s; }
 
 .nv-page {
     position: relative;
@@ -9875,7 +9853,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-pane { display: none; }
 .nv-pane.is-active { display: block; }
 
-.nv-hello { margin: 0 0 14px; font-family: var(--font-dos); font-size: clamp(30px, 3.6vw, 46px); font-weight: 700; line-height: 1.08; letter-spacing: -1px; text-transform: uppercase; text-shadow: 3px 3px 0 var(--nv-a); }
+.nv-hello { margin: 0 0 14px; font-family: var(--font-dos); font-size: 40px; font-weight: 700; line-height: 1.08; letter-spacing: -1px; text-transform: uppercase; text-shadow: 3px 3px 0 var(--nv-a); }
 .nv-hello span { display: inline-block; padding: 0 0.2em; color: var(--nv-on-a); background: var(--nv-a); text-shadow: none; transform: skewX(-8deg); }
 .nv-lead { max-width: 32ch; margin: 0 0 22px; font-family: var(--font-dos); font-size: 15px; line-height: 1.7; }
 .nv-stickers { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -9901,7 +9879,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-frame:nth-child(4) .nv-frame-photo { --tint: color-mix(in srgb, var(--nv-d) 45%, var(--color-surface)); }
 .nv-frame:nth-child(5) .nv-frame-photo { --tint: color-mix(in srgb, var(--nv-e) 45%, var(--color-surface)); }
 .nv-frame:nth-child(6) .nv-frame-photo { --tint: color-mix(in srgb, var(--nv-b) 30%, var(--color-card-light)); }
-.nv-frame-photo em { font-style: normal; font-size: clamp(30px, 4vw, 46px); filter: drop-shadow(3px 3px 0 rgba(0,0,0,.28)); transition: transform 0.15s ease; }
+.nv-frame-photo em { font-style: normal; font-size: 44px; filter: drop-shadow(3px 3px 0 rgba(0,0,0,.28)); transition: transform 0.15s ease; }
 .nv-frame:hover .nv-frame-photo em { transform: scale(1.15) rotate(-6deg); }
 .nv-frame-photo img { width: 100%; height: 100%; object-fit: cover; }
 .nv-frame-cap { display: block; margin-top: 5px; font-family: var(--font-dos); font-size: 12px; font-weight: 700; line-height: 1.2; text-align: center; text-transform: uppercase; }
@@ -9964,18 +9942,16 @@ body.os-hud-hidden .realm-canvas {
 @supports not (transform: rotateY(calc(sin(1deg) * 1deg))) { .nv-leaf { display: none; } }
 
 /* dog-eared corners: click to turn the page */
-.nv-corner { position: absolute; bottom: 0; z-index: 4; width: 40px; height: 40px; padding: 0; background: var(--nv-a); border: 0; cursor: pointer; transition: width 0.18s cubic-bezier(.3,1.5,.5,1), height 0.18s cubic-bezier(.3,1.5,.5,1); }
-.nv-corner-next { right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
-.nv-corner-prev { left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
-.nv-corner::after { content: ''; position: absolute; inset: 0; background: var(--nv-edge); clip-path: polygon(100% 0, 100% 3px, 3px 100%, 0 100%); }
-.nv-corner-prev::after { clip-path: polygon(0 0, 3px 0, 100% 100%, calc(100% - 3px) 100%, 0 3px); }
-.nv-corner:hover, .nv-corner:focus-visible { width: 62px; height: 62px; outline: none; }
+.nv-corner { position: absolute; bottom: 0; z-index: 4; width: 46px; height: 46px; padding: 0; border: 0; cursor: pointer; transition: width 0.22s cubic-bezier(.3,1.4,.5,1), height 0.22s cubic-bezier(.3,1.4,.5,1); }
+.nv-corner-next { right: 0; background: linear-gradient(315deg, transparent 50%, rgba(0, 0, 0, 0.34) 50%, var(--nv-paper-2) 58%, var(--nv-paper)); box-shadow: -4px -4px 9px rgba(0, 0, 0, 0.18); }
+.nv-corner-prev { left: 0; background: linear-gradient(45deg, transparent 50%, rgba(0, 0, 0, 0.34) 50%, var(--nv-paper-2) 58%, var(--nv-paper)); box-shadow: 4px -4px 9px rgba(0, 0, 0, 0.18); }
+.nv-corner:hover, .nv-corner:focus-visible { width: 72px; height: 72px; outline: none; }
 .nv-right { cursor: e-resize; }
 .nv-left { cursor: w-resize; }
 .nv-book :where(button, a, .nv-frame) { cursor: pointer; }
 
 /* ── visual-novel dialogue ── */
-.nv-talk { position: relative; margin-top: 44px; filter: drop-shadow(8px 8px 0 var(--nv-shadow)); animation: nv-drop 0.6s cubic-bezier(0.2, 1.1, 0.4, 1) both; animation-delay: var(--d, 0.15s); }
+.nv-talk { position: relative; margin-top: 92px; filter: drop-shadow(8px 8px 0 var(--nv-shadow)); animation: nv-drop 0.6s cubic-bezier(0.2, 1.1, 0.4, 1) both; animation-delay: var(--d, 0.15s); }
 .nv-portrait { position: absolute; left: 14px; bottom: 6px; z-index: 3; isolation: isolate; width: 170px; height: 170px; padding: 0; background: none; border: none; cursor: pointer; }
 .nv-portrait::before { content: ''; position: absolute; z-index: -1; left: 4px; right: 4px; bottom: 0; height: 62%; background: var(--nv-b); border: 3px solid var(--nv-edge); transform: skewX(-10deg); }
 .nv-portrait canvas { width: 100%; height: 100%; image-rendering: pixelated; filter: drop-shadow(3px 0 0 var(--nv-edge)) drop-shadow(-3px 0 0 var(--nv-edge)) drop-shadow(0 3px 0 var(--nv-edge)); animation: nv-bob 3s ease-in-out infinite; }
@@ -10142,7 +10118,6 @@ body.os-hud-hidden .realm-canvas {
     --nv-lamp: color-mix(in srgb, var(--color-accent) 26%, #ffc98a);
     --nv-kraft-ink: color-mix(in srgb, var(--color-header-start) 38%, #000);
     --nv-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .18 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    --nv-scribble: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 150'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='.16' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M8 20 q10 -12 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0'/%3E%3Cpath d='M8 46 q9 -10 18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0 t18 0'/%3E%3Cpath d='M8 72 q11 -13 22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0 t22 0'/%3E%3Cpath d='M8 98 q8 -9 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0'/%3E%3Cpath d='M8 124 q10 -11 20 0 t20 0 t20 0 t20 0 t20 0 t20 0'/%3E%3C/g%3E%3C/svg%3E");
 }
 .nv-stage::before {
     content: '';
@@ -10171,12 +10146,11 @@ body.os-hud-hidden .realm-canvas {
     pointer-events: none;
     mix-blend-mode: multiply;
     background-image:
-        var(--nv-scribble),
         var(--nv-grain),
         radial-gradient(ellipse 85% 65% at 22% 0%, color-mix(in srgb, var(--nv-lamp) 80%, transparent), transparent 72%);
-    background-size: 330px 138px, 220px 220px, auto;
-    background-position: 30px 100%, 0 0, 0 0;
-    background-repeat: no-repeat, repeat, no-repeat;
+    background-size: 220px 220px, auto;
+    background-position: 0 0, 0 0;
+    background-repeat: repeat, no-repeat;
 }
 .nv-left::after, .nv-right::after { content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 0; pointer-events: none; mix-blend-mode: multiply; }
 .nv-left::after { right: 0; background: linear-gradient(90deg, transparent, rgba(60, 35, 10, 0.26)); }
@@ -10268,7 +10242,7 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 .nv-pane[data-pane="1"] .nv-pins { margin-top: 8px; padding: 30px 22px 20px; }
 .nv-pane[data-pane="1"] .nv-pins .nv-frames { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 24px; }
 .nv-pane[data-pane="1"] .nv-frame-photo { aspect-ratio: 3 / 2; }
-.nv-pane[data-pane="1"] .nv-frame-photo em { font-size: clamp(34px, 4.4vw, 52px); }
+.nv-pane[data-pane="1"] .nv-frame-photo em { font-size: 48px; }
 .nv-pane[data-pane="1"] .nv-frame-cap { font-size: 13px; padding-bottom: 4px; }
 
 /* prologue: room to breathe */
@@ -10290,6 +10264,102 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
     .nv-lpane[data-pane="2"] .nv-todo li { font-size: 24px; }
     .nv-pane[data-pane="3"] .nv-mail span { font-size: 18px; }
     .nv-postcard { grid-template-columns: 1fr 70px; }
+}
+
+/* ══ HoYoverse-inspired design language ═════════════════════════════════════
+   Studied from Genshin Impact, Honkai: Star Rail and Zenless Zone Zero UI:
+   - warm ivory paper with fine gold hairlines and double-line frames
+   - a diamond as the one ornament (bullets, markers, dividers, selection)
+   - line icons drawn on one grid instead of colour emoji
+   - angular cut corners and HUD brackets for game panels (ZZZ / HSR)
+   - wide-tracked small caps for labels, generous, even spacing
+   Colours stay tied to the theme; gold is the accent nudged toward warm gold. */
+
+:root {
+    --hy-gold: color-mix(in srgb, var(--color-accent-text, var(--color-accent)) 32%, #e0c68c);
+    --hy-gold-soft: color-mix(in srgb, var(--hy-gold) 62%, transparent);
+    --hy-gold-faint: color-mix(in srgb, var(--hy-gold) 34%, transparent);
+}
+
+/* line icons (replace colour emoji) */
+.ico { display: inline-block; width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.14em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.nv-viewer-art .ico, .nv-frame-photo .ico, .nv-photo .ico, .nv-film .ico, .char-select-slide-icon .ico, .org-folder-icon .ico { stroke-width: 1.2; }
+.nv-pill .ico { margin-right: 6px; vertical-align: -0.16em; }
+.nv-viewer-art .ico, .nv-frame-photo .ico, .nv-photo .ico { width: 1.3em; height: 1.3em; }
+.nv-viewer-art em, .nv-frame-photo em, .nv-photo span, .nv-film span { color: var(--nv-ink); }
+.shop-item-image .ico { width: 1em; height: 1em; }
+
+/* gold hairline with a centre diamond and two small satellites */
+.hy-rule { position: relative; display: block; height: 11px; margin: 0 auto; background: linear-gradient(90deg, var(--hy-gold-soft) 0, var(--hy-gold-soft) calc(50% - 26px), transparent calc(50% - 26px), transparent calc(50% + 26px), var(--hy-gold-soft) calc(50% + 26px), var(--hy-gold-soft) 100%) center / 100% 1px no-repeat; }
+.hy-rule::before, .hy-rule::after { content: ''; position: absolute; top: 50%; left: 50%; background: var(--hy-gold); transform: translate(-50%, -50%) rotate(45deg); }
+.hy-rule::before { width: 7px; height: 7px; }
+.hy-rule::after { width: 3px; height: 3px; box-shadow: -17px 0 0 0 var(--hy-gold), 17px 0 0 0 var(--hy-gold); }
+
+/* sidebar: diamond bullets on section titles, a marker on the current page */
+.sidebar-section-header { border-bottom-color: var(--hy-gold-soft); }
+.sidebar-section-title::before { content: ''; display: inline-block; width: 5px; height: 5px; margin: 0 8px 1px 0; background: var(--hy-gold); transform: rotate(45deg); vertical-align: middle; }
+.sidebar-nav-item { padding-left: 26px; }
+.sidebar-nav-item::before { content: ''; position: absolute; left: 12px; top: 50%; width: 6px; height: 6px; background: var(--hy-gold); transform: translateY(-50%) rotate(45deg) scale(0); transition: transform 0.2s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.sidebar-nav-item:hover::before { transform: translateY(-50%) rotate(45deg) scale(0.7); }
+.sidebar-nav-item[aria-current="page"]::before { transform: translateY(-50%) rotate(45deg) scale(1); }
+.sidebar-nav-item[aria-current="page"] { color: var(--color-accent-text, var(--primary-warm)); }
+
+/* home: the path selector gets the gold rule and a diamond on the open tab */
+.char-select .hy-rule { width: min(360px, 70%); margin: -4px auto 18px; }
+.char-select .char-select-slide { outline: 1px solid var(--hy-gold-soft); outline-offset: -7px; }
+.char-select-tab { position: relative; }
+.char-select-tab.active::before { content: ''; position: absolute; top: 6px; left: 50%; width: 5px; height: 5px; background: var(--hy-gold); transform: translateX(-50%) rotate(45deg); }
+
+/* about: fine gold double-lines and corner ticks inside the paper cards */
+.nv-todo, .nv-sheet, .nv-mail, .nv-note-card, .nv-cal, .nv-postcard, .nv-pins {
+    outline: 1px solid var(--hy-gold-soft);
+    outline-offset: -8px;
+    background-image:
+        linear-gradient(var(--hy-gold), var(--hy-gold)), linear-gradient(var(--hy-gold), var(--hy-gold)),
+        linear-gradient(var(--hy-gold), var(--hy-gold)), linear-gradient(var(--hy-gold), var(--hy-gold)),
+        linear-gradient(var(--hy-gold), var(--hy-gold)), linear-gradient(var(--hy-gold), var(--hy-gold)),
+        linear-gradient(var(--hy-gold), var(--hy-gold)), linear-gradient(var(--hy-gold), var(--hy-gold));
+    background-size: 14px 2px, 2px 14px, 14px 2px, 2px 14px, 14px 2px, 2px 14px, 14px 2px, 2px 14px;
+    background-position: 5px 5px, 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) 5px, 5px calc(100% - 5px), 5px calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) calc(100% - 5px);
+    background-repeat: no-repeat;
+}
+.nv-rule { margin: -6px 0 22px; width: 100%; }
+.nv-todo small::before, .nv-mail small::before, .nv-note-card small::before { content: ''; display: inline-block; width: 6px; height: 6px; margin: 0 9px 1px 0; background: currentColor; transform: rotate(45deg); }
+.nv-tab.is-active::after { content: ''; position: absolute; top: 5px; left: 50%; width: 5px; height: 5px; background: var(--hy-gold); transform: translateX(-50%) rotate(45deg); }
+.nv-nameplate::before { content: ''; display: inline-block; width: 6px; height: 6px; margin: 0 9px 1px 0; background: currentColor; transform: rotate(45deg); }
+.nv-dialogue::after { content: ''; position: absolute; z-index: -1; inset: 9px; border: 1px solid var(--hy-gold-soft); clip-path: polygon(11px 0, 100% 0, 100% calc(100% - 11px), calc(100% - 11px) 100%, 0 100%, 0 11px); pointer-events: none; }
+
+.hy-link { color: var(--color-accent-text, var(--color-accent)); text-decoration: underline; text-decoration-color: var(--hy-gold); text-underline-offset: 3px; }
+
+/* ── About: a messy, many-paged book ──
+   Visible stacks of page edges on three sides, and loose post-its and
+   polaroids tucked between the pages and sticking out past the edges. */
+.nv-book { z-index: 1; }
+.nv-stack { position: absolute; z-index: 0; pointer-events: none; }
+.nv-stack-l { right: 100%; top: 3px; bottom: -3px; width: 20px; margin-right: 1px; background: repeating-linear-gradient(90deg, var(--nv-paper-2) 0 2px, color-mix(in srgb, var(--nv-edge) 60%, transparent) 2px 3px); border: 2px solid var(--nv-edge); border-right: 0; border-radius: 3px 0 0 3px; transform: skewY(-0.6deg); }
+.nv-stack-r { left: 100%; top: 3px; bottom: -3px; width: 20px; margin-left: 1px; background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--nv-edge) 60%, transparent) 0 1px, var(--nv-paper-2) 1px 3px); border: 2px solid var(--nv-edge); border-left: 0; border-radius: 0 3px 3px 0; transform: skewY(0.6deg); }
+.nv-stack-b { left: 4px; right: 4px; top: 100%; height: 20px; margin-top: 1px; background: repeating-linear-gradient(180deg, var(--nv-paper-2) 0 2px, color-mix(in srgb, var(--nv-edge) 60%, transparent) 2px 3px); border: 2px solid var(--nv-edge); border-top: 0; border-radius: 0 0 4px 4px; }
+
+.nv-poke { position: absolute; z-index: 0; pointer-events: none; }
+.nv-postit { display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 22px 10px 10px; background: var(--pi, var(--nv-kraft)); border: 2px solid var(--nv-edge); box-shadow: 0 8px 12px rgba(0, 0, 0, 0.28); }
+.nv-postit::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 12px; background: color-mix(in srgb, var(--nv-edge) 14%, transparent); }
+.nv-postit i { display: block; height: 3px; background: var(--nv-edge); opacity: 0.45; }
+.nv-postit i:nth-child(2) { width: 68%; }
+.nv-postit i:nth-child(3) { width: 42%; }
+.nv-postit-a { --pi: color-mix(in srgb, var(--nv-lamp) 78%, #fff); left: 58%; top: -46px; width: 74px; height: 84px; transform: rotate(-6deg); }
+.nv-postit-b { --pi: color-mix(in srgb, var(--nv-a) 46%, var(--color-surface)); left: 73%; top: -34px; width: 64px; height: 72px; transform: rotate(5deg); }
+.nv-postit-c { --pi: color-mix(in srgb, var(--nv-b) 46%, var(--color-surface)); left: -42px; top: 34%; width: 80px; height: 78px; transform: rotate(-9deg); }
+
+.nv-snapshot { display: flex; align-items: flex-start; justify-content: center; padding: 9px 9px 0; background: var(--color-surface); border: 2px solid var(--nv-edge); box-shadow: 0 9px 14px rgba(0, 0, 0, 0.3); }
+.nv-snapshot span { display: flex; align-items: center; justify-content: center; width: 100%; height: 76px; font-size: 40px; color: var(--nv-ink); background-color: var(--sn, var(--nv-paper)); background-image: var(--nv-halftone); border: 2px solid var(--nv-edge); }
+.nv-snapshot-a { --sn: color-mix(in srgb, var(--nv-b) 52%, var(--color-surface)); left: 12%; bottom: -66px; width: 116px; height: 124px; transform: rotate(-5deg); }
+.nv-snapshot-b { --sn: color-mix(in srgb, var(--nv-a) 46%, var(--color-surface)); left: 37%; bottom: -50px; width: 104px; height: 112px; transform: rotate(3deg); }
+.nv-snapshot-c { --sn: color-mix(in srgb, var(--nv-c) 46%, var(--color-surface)); right: -44px; top: 46%; width: 108px; height: 116px; transform: rotate(9deg); }
+.nv-strip-paper { right: -30px; top: 14%; width: 76px; height: 96px; background: var(--nv-kraft); border: 2px solid var(--nv-edge); box-shadow: 0 7px 11px rgba(0, 0, 0, 0.26); transform: rotate(6deg); }
+
+@media (max-width: 1000px) {
+    .nv-poke, .nv-stack { display: none; }
+    .nv-talk { margin-top: 44px; }
 }
 
 /* ── Collections: the draggable folder desk (moved here from the home page) ── */

@@ -20,7 +20,7 @@
         </div>
         {% else %}
         <div class="shop-balance shop-balance-guest">
-            <a href="{{ url_for('login', next='/shop') }}">Log in</a> to see your stardust balance
+            <a href="{{ url_for('login', next='/shop') }}" class="hy-link">Log in</a> to see your stardust balance
         </div>
         {% endif %}
 
@@ -42,7 +42,7 @@
         <div class="shop-item" data-category="{{ item.category }}">
             {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <span class="shop-item-title">{{ item.name }}</span>
-            <div class="shop-item-image">{{ item.emoji }}</div>
+            <div class="shop-item-image">{{ ico(item.icon) }}</div>
             <p class="shop-item-desc">{{ item.description }}</p>
             <div class="shop-item-footer">
                 <span class="shop-item-price">✦ {{ item.cost }}</span>

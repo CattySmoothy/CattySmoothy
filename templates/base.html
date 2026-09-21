@@ -35,6 +35,7 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body class="{% if request.endpoint == 'donors_page' %}donors-active{% elif request.endpoint == 'home' %}home-active{% endif %}">
+    {{ icon_sprite }}
     <div class="layout-wrap">
     <aside class="site-sidebar" id="siteSidebar">
         <button class="sidebar-toggle" id="sidebarToggle" title="Toggle navigation" aria-label="Toggle navigation">
@@ -49,16 +50,16 @@
                 <span class="sidebar-section-title">Menu</span>
                 <span class="sidebar-section-count">(4)</span>
             </div>
-            <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Home">
+            <a href="{{ url_for('home') }}" class="sidebar-nav-item" title="Home"{% if request.endpoint == 'home' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Home</span>
             </a>
-            <a href="{{ url_for('support') }}" class="sidebar-nav-item" title="Support">
+            <a href="{{ url_for('support') }}" class="sidebar-nav-item" title="Support"{% if request.endpoint == 'support' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Support</span>
             </a>
-            <a href="{{ url_for('shop') }}" class="sidebar-nav-item" title="Shop">
+            <a href="{{ url_for('shop') }}" class="sidebar-nav-item" title="Shop"{% if request.endpoint == 'shop' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Shop</span>
             </a>
-            <a href="{{ url_for('about') }}" class="sidebar-nav-item" title="About Me">
+            <a href="{{ url_for('about') }}" class="sidebar-nav-item" title="About Me"{% if request.endpoint == 'about' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">About Me</span>
             </a>
 
@@ -66,7 +67,7 @@
                 <span class="sidebar-section-title">Portfolio</span>
                 <span class="sidebar-section-count">(2)</span>
             </div>
-            <a href="{{ url_for('collections') }}" class="sidebar-nav-item" title="Collections">
+            <a href="{{ url_for('collections') }}" class="sidebar-nav-item" title="Collections"{% if request.endpoint == 'collections' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Collections</span>
             </a>
             <div class="sidebar-nav-item-wrapper" id="orgWrapper">

@@ -10,6 +10,7 @@ from routes import register_routes
 from auth import register_auth_routes
 from shop import register_shop_routes
 from guestbook import register_guestbook_routes
+from icons import register_icons
 
 load_dotenv()
 
@@ -28,6 +29,7 @@ migrate = Migrate(app, db)
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 csrf.init_app(app)
+register_icons(app)
 
 
 @login_manager.user_loader
