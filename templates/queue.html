@@ -56,10 +56,7 @@
             {% for q in questions %}
             <article class="question-card{{ ' is-answered' if q.answered }}" data-id="{{ q.id }}">
                 <div class="question-top">
-                    <div>
-                        <span class="question-name">{{ q.name }}</span>
-                        {% if q.email %}<a class="question-email" href="mailto:{{ q.email }}">{{ q.email }}</a>{% endif %}
-                    </div>
+                    <span class="question-name">{{ q.name }}</span>
                     <span class="question-date">{{ q.created_at }}</span>
                 </div>
                 <p class="question-message">{{ q.message }}</p>

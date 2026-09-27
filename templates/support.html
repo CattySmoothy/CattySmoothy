@@ -68,27 +68,35 @@
         <div class="support-card support-card-ask">
             {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
             <div class="support-card-inner">
-                <h3 class="support-card-title"><span class="support-cursor">▶</span>Ask a Question</h3>
-                <p class="support-ask-sub">Have something you're curious about? Send it over — no account needed.</p>
-                <form id="askForm" class="support-ask-form">
-                    <div class="support-ask-row">
-                        <label class="support-ask-field">
-                            <span>Name <em>(optional)</em></span>
-                            <input type="text" id="askName" maxlength="80" placeholder="what should I call you?">
-                        </label>
-                        <label class="support-ask-field">
-                            <span>Email <em>(optional, if you want a reply)</em></span>
-                            <input type="email" id="askEmail" maxlength="255" placeholder="you@example.com">
-                        </label>
+                <h3 class="support-card-title"><span class="support-cursor">▶</span>Comments</h3>
+
+                {% if current_user.is_authenticated %}
+                <p class="support-ask-sub">Ask something, or see what others have asked.</p>
+                <form id="askForm" class="comment-form">
+                    <textarea id="askMessage" class="comment-input" maxlength="2000" rows="3" required placeholder="ask away..."></textarea>
+                    <div class="comment-form-foot">
+                        <p class="support-ask-error" id="askError" hidden></p>
+                        <button type="submit" class="support-btn support-btn-primary" id="askSubmit">Post</button>
                     </div>
-                    <label class="support-ask-field">
-                        <span>Your question</span>
-                        <textarea id="askMessage" maxlength="2000" rows="4" required placeholder="ask away..."></textarea>
-                    </label>
-                    <p class="support-ask-error" id="askError" hidden></p>
-                    <button type="submit" class="support-btn support-btn-primary" id="askSubmit">Send Question</button>
-                    <p class="support-ask-success" id="askSuccess" hidden>Sent! Thanks for asking — I'll get back to you. &#10003;</p>
                 </form>
+
+                <div class="comment-thread" id="commentThread">
+                    {% for q in questions %}
+                    <article class="comment-item">
+                        <div class="comment-item-head">
+                            <span class="comment-author">{{ q.name }}</span>
+                            <span class="comment-date">{{ q.created_at }}</span>
+                        </div>
+                        <p class="comment-text">{{ q.message }}</p>
+                    </article>
+                    {% else %}
+                    <p class="comment-empty" id="commentEmpty">No comments yet — be the first to ask something.</p>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="support-ask-sub">Log in to see and post comments.</p>
+                <a href="{{ url_for('login', next=request.path) }}" class="support-btn support-btn-primary support-ask-login">Log In</a>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -145,54 +153,66 @@ function subscribe(amount, planName) {
     });
 }
 
-document.getElementById('askForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var errorEl = document.getElementById('askError');
-    var successEl = document.getElementById('askSuccess');
-    var submitBtn = document.getElementById('askSubmit');
-    var message = document.getElementById('askMessage').value.trim();
-    errorEl.hidden = true;
-    successEl.hidden = true;
+var askForm = document.getElementById('askForm');
+if (askForm) {
+    askForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var errorEl = document.getElementById('askError');
+        var submitBtn = document.getElementById('askSubmit');
+        var messageEl = document.getElementById('askMessage');
+        var message = messageEl.value.trim();
+        errorEl.hidden = true;
 
-    if (!message) {
-        errorEl.textContent = 'Enter your question first.';
-        errorEl.hidden = false;
-        return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-
-    fetch('/support/ask', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            name: document.getElementById('askName').value.trim(),
-            email: document.getElementById('askEmail').value.trim(),
-            message: message
-        })
-    })
-    .then(function (r) { return r.json().then(function (data) { return { status: r.status, data: data }; }); })
-    .then(function (res) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Question';
-        if (res.status === 201) {
-            document.getElementById('askForm').reset();
-            successEl.hidden = false;
-        } else {
-            errorEl.textContent = res.data.error || 'Something went wrong.';
+        if (!message) {
+            errorEl.textContent = 'Enter your question first.';
             errorEl.hidden = false;
+            return;
         }
-    })
-    .catch(function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Question';
-        errorEl.textContent = 'Could not connect. Try again in a moment.';
-        errorEl.hidden = false;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Posting...';
+
+        fetch('/support/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ message: message })
+        })
+        .then(function (r) { return r.json().then(function (data) { return { status: r.status, data: data }; }); })
+        .then(function (res) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Post';
+            if (res.status === 201) {
+                messageEl.value = '';
+                var thread = document.getElementById('commentThread');
+                var empty = document.getElementById('commentEmpty');
+                if (empty) empty.remove();
+                var q = res.data.question;
+                var item = document.createElement('article');
+                item.className = 'comment-item';
+                item.innerHTML =
+                    '<div class="comment-item-head"><span class="comment-author"></span><span class="comment-date"></span></div>' +
+                    '<p class="comment-text"></p>';
+                item.querySelector('.comment-author').textContent = q.name;
+                item.querySelector('.comment-date').textContent = q.created_at;
+                item.querySelector('.comment-text').textContent = q.message;
+                thread.insertBefore(item, thread.firstChild);
+            } else if (res.status === 401 && res.data.login_url) {
+                window.location.href = res.data.login_url;
+            } else {
+                errorEl.textContent = res.data.error || 'Something went wrong.';
+                errorEl.hidden = false;
+            }
+        })
+        .catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Post';
+            errorEl.textContent = 'Could not connect. Try again in a moment.';
+            errorEl.hidden = false;
+        });
     });
-});
+}
 </script>
 {% endblock %}

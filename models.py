@@ -151,23 +151,28 @@ class EarningsGoal(db.Model):
 
 
 class Question(db.Model):
-    """A question asked from the Support page's "Ask a Question" card.
-    Open to anyone, logged in or not — answering happens off-site (email),
-    this just collects them for the owner."""
+    """A comment/question posted from the Support page's comment section.
+    Signed-in visitors only — the poster is a real account, not a typed-in
+    name, so there's no name/email fields to fill in or fake."""
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=True)
-    email = db.Column(db.String(255), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
     message = db.Column(db.Text, nullable=False)
     answered = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
 
+    user = db.relationship('User')
+
     def to_dict(self):
+        # Never expose the poster's email — just a display name, the same
+        # way the home page turns an account into one.
+        name = 'Someone'
+        if self.user:
+            name = self.user.email.split('@')[0].replace('.', ' ').replace('_', ' ').title()
         return {
             'id': self.id,
-            'name': self.name or 'Anonymous',
-            'email': self.email or '',
+            'name': name,
             'message': self.message,
             'answered': self.answered,
             'created_at': self.created_at.strftime('%b %d, %Y'),

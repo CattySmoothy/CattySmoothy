@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 import stripe
 
 from extensions import db, csrf
-from models import Purchase, GuestbookEntry
+from models import Purchase, GuestbookEntry, Question
 from shop import SHOP_ITEMS
 
 RANK_TITLES = ['Newcomer', 'Apprentice', 'Artisan', 'Luminary', 'Legend']
@@ -72,7 +72,12 @@ def register_routes(app):
 
     @app.route('/support')
     def support():
-        return render_template('support.html', title="Support", publishable_key=PUBLISHABLE_KEY)
+        questions = []
+        if current_user.is_authenticated:
+            items = Question.query.order_by(Question.created_at.desc()).all()
+            questions = [q.to_dict() for q in items]
+        return render_template('support.html', title="Support", publishable_key=PUBLISHABLE_KEY,
+                               questions=questions)
 
     @app.route('/donate')
     @login_required
