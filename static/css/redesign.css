@@ -473,6 +473,50 @@ button, input, textarea, select {
     margin-left: 190px;
 }
 
+/* ── Portfolio (Collections) page: tuck the sidebar away by default ──
+   The entrance screen takes over the whole viewport, so having the normal
+   190px sidebar snap back the moment it closes felt like a step down from
+   full-screen. Here the sidebar rests as a slim 44px rail — just the
+   toggle button — and only opens out to its full width on hover or when
+   toggled open, exactly like it already does everywhere else. */
+body.collections-active .site-sidebar {
+    width: 44px;
+}
+body.collections-active .site-sidebar .sidebar-nav,
+body.collections-active .site-sidebar .sidebar-bottom {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+body.collections-active .site-sidebar:hover,
+body.collections-active .site-sidebar.expanded {
+    width: 190px;
+}
+body.collections-active .site-sidebar:hover .sidebar-nav,
+body.collections-active .site-sidebar:hover .sidebar-bottom,
+body.collections-active .site-sidebar.expanded .sidebar-nav,
+body.collections-active .site-sidebar.expanded .sidebar-bottom {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.2s ease 0.1s;
+}
+body.collections-active .main-area {
+    margin-left: 44px;
+}
+body.collections-active .site-sidebar:hover ~ .main-area,
+body.collections-active .site-sidebar.expanded ~ .main-area {
+    margin-left: 190px;
+}
+@media (max-width: 860px) {
+    /* below this width there's no hover to reveal the collapsed rail, and
+       every other page keeps the sidebar full-width regardless of screen
+       size — stay consistent with that here too rather than collapsing */
+    body.collections-active .site-sidebar { width: 190px; }
+    body.collections-active .site-sidebar .sidebar-nav,
+    body.collections-active .site-sidebar .sidebar-bottom { opacity: 1; pointer-events: auto; }
+    body.collections-active .main-area { margin-left: 190px; }
+}
+
 .settings-overlay {
     position: fixed;
     inset: 0;

@@ -34,7 +34,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
-<body class="{% if request.endpoint == 'donors_page' %}donors-active{% elif request.endpoint == 'home' %}home-active{% endif %}">
+<body class="{% if request.endpoint == 'donors_page' %}donors-active{% elif request.endpoint == 'home' %}home-active{% elif request.endpoint == 'collections' %}collections-active{% endif %}">
     {{ icon_sprite }}
     <div class="layout-wrap">
     <aside class="site-sidebar" id="siteSidebar">
