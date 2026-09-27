@@ -11426,3 +11426,72 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     .wish-banner-inner { padding: 36px 16px 28px; }
     .wish-corner { width: 36px; height: 36px; }
 }
+
+/* ══ Home: "Select Your Path" character art, lightly rigged ══
+   A flat illustration cut into a few overlapping copies of itself — the
+   two ears and the hanging tassel each get their own clip-path "piece"
+   sitting exactly on top of the full picture, then a tiny idle rotation
+   around the piece's real attachment point (ear base, tassel knot). It's
+   not a real mesh rig, just enough motion to read as alive rather than
+   a flat cutout, and it only works because the area each piece sweeps
+   into is plain sky/fabric in the source art, so there's no seam to see. */
+.char-select-art {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(46%, 460px);
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.cs-art-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/home/select-path-fox.webp");
+    background-size: cover;
+    background-position: 60% 30%;
+}
+.cs-art-base { opacity: 0.9; }
+.cs-art-ear-l {
+    transform-origin: 42% 44%;
+    clip-path: polygon(8% 0%, 46% 0%, 50% 20%, 46% 38%, 34% 46%, 20% 40%, 10% 24%);
+    animation: cs-sway-l 4.4s ease-in-out infinite;
+}
+.cs-art-ear-r {
+    transform-origin: 63% 47%;
+    clip-path: polygon(46% 0%, 88% 0%, 92% 22%, 82% 42%, 68% 48%, 56% 40%, 50% 18%);
+    animation: cs-sway-r 3.8s ease-in-out infinite;
+    animation-delay: -1.6s;
+}
+.cs-art-tassel {
+    transform-origin: 50% 80%;
+    clip-path: polygon(38% 74%, 62% 74%, 66% 88%, 58% 100%, 42% 100%, 34% 88%);
+    animation: cs-sway-tassel 3.2s ease-in-out infinite;
+    animation-delay: -0.6s;
+}
+@keyframes cs-sway-l {
+    0%, 100% { transform: rotate(-2.2deg); }
+    50% { transform: rotate(2deg); }
+}
+@keyframes cs-sway-r {
+    0%, 100% { transform: rotate(2.4deg); }
+    50% { transform: rotate(-1.8deg); }
+}
+@keyframes cs-sway-tassel {
+    0%, 100% { transform: rotate(-3deg) translateX(-1px); }
+    50% { transform: rotate(3.5deg) translateX(1px); }
+}
+.cs-art-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--color-header-start, #1a140d) 0%, transparent 38%, transparent 70%, color-mix(in srgb, var(--color-header-start, #1a140d) 35%, transparent) 100%);
+}
+@media (max-width: 900px) {
+    .char-select-art { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .cs-art-ear-l, .cs-art-ear-r, .cs-art-tassel { animation: none; }
+}
