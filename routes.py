@@ -66,7 +66,9 @@ def register_routes(app):
 
     @app.route('/about')
     def about():
-        return render_template('about.html', title="About")
+        # About Me now lives as the first chapter of the Collections story
+        # page rather than its own tab — redirect old links/bookmarks there.
+        return redirect(url_for('collections') + '#ch-about')
 
     @app.route('/support')
     def support():
