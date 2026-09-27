@@ -5,11 +5,20 @@
 {% block content %}
 <div class="shop-page">
     <div class="support-scanlines" aria-hidden="true"></div>
-    <div class="shop-filmstrip" aria-hidden="true">
-        <div class="shop-filmstrip-track">
-            {% for i in range(20) %}<div class="shop-filmstrip-frame"></div>{% endfor %}
-        </div>
+
+    <!-- featured art: the rigged fox illustration from Home's "Select Your
+         Path", ears/lanterns/fan/eyes lightly animated -->
+    <div class="shop-art-banner" aria-hidden="true">
+        <div class="cs-art-layer cs-art-base"></div>
+        <div class="cs-art-layer cs-art-lantern-l"></div>
+        <div class="cs-art-layer cs-art-lantern-r"></div>
+        <div class="cs-art-layer cs-art-ear-l"></div>
+        <div class="cs-art-layer cs-art-ear-r"></div>
+        <div class="cs-art-layer cs-art-charm"></div>
+        <div class="cs-art-layer cs-art-fan"></div>
+        <div class="cs-art-layer cs-art-eyes"></div>
     </div>
+
 
     <div class="shop-intro">
         {% if current_user.is_authenticated %}

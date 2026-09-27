@@ -7612,20 +7612,88 @@ body.os-hud-hidden .realm-canvas {
     position: relative;
 }
 
-/* Full-bleed filmstrip: breaks out of .shop-wrap's centered max-width */
-.shop-filmstrip {
+/* Full-bleed featured-art banner: the rigged fox illustration, full width
+   at its own aspect ratio so none of its animated pieces get cropped off. */
+.shop-art-banner {
     position: relative;
     width: 100vw;
     margin-left: calc(-50vw + 50%);
+    aspect-ratio: 2000 / 1377;
+    max-height: 560px;
+    overflow: hidden;
+    background: #1a140d;
+}
+
+/* same graded, duotone-ish wash as the home hero, for a matching
+   "rendered game key art" punch on this banner too */
+.shop-art-banner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(125deg,
+        color-mix(in srgb, var(--color-accent) 55%, transparent) 0%,
+        transparent 32%,
+        transparent 68%,
+        color-mix(in srgb, var(--color-accent) 45%, #000) 100%);
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+}
+
+.pond-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(1.3) contrast(1.15) brightness(1.03);
+}
+
+.pond-day { background-image: url("../images/shop/pond-day.jpg"); animation: pond-day-cycle 26s ease-in-out infinite; }
+.pond-dusk { background-image: url("../images/shop/pond-dusk.jpg"); animation: pond-dusk-cycle 26s ease-in-out infinite; }
+.pond-night { background-image: url("../images/shop/pond-night.jpg"); animation: pond-night-cycle 26s ease-in-out infinite; }
+
+@keyframes pond-day-cycle {
+    0%, 5% { opacity: 1; }
+    28%, 80% { opacity: 0; }
+    100% { opacity: 1; }
+}
+@keyframes pond-dusk-cycle {
+    0%, 5% { opacity: 0; }
+    28%, 33% { opacity: 1; }
+    56%, 100% { opacity: 0; }
+}
+@keyframes pond-night-cycle {
+    0%, 33% { opacity: 0; }
+    56%, 80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .pond-day, .pond-dusk, .pond-night { animation: none; }
+    .pond-day { opacity: 1; }
+    .pond-dusk, .pond-night { opacity: 0; }
+}
+
+/* Filmstrip: a row of scrolling frames. Contained by default (fits the
+   column it's dropped into); add .art-filmstrip--bleed to break it out to
+   full viewport width the way the shop page uses it. */
+.art-filmstrip {
+    position: relative;
+    width: 100%;
+    height: 134px;
     overflow: hidden;
     background: var(--color-header-start, #1c1c1c);
-    padding: 22px 0;
     margin-bottom: 40px;
     box-sizing: border-box;
 }
 
-.shop-filmstrip::before,
-.shop-filmstrip::after {
+.art-filmstrip--bleed {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
+
+.art-filmstrip::before,
+.art-filmstrip::after {
     content: '';
     position: absolute;
     left: 0;
@@ -7637,19 +7705,27 @@ body.os-hud-hidden .realm-canvas {
     background-position: 10px center;
 }
 
-.shop-filmstrip::before { top: 0; }
-.shop-filmstrip::after { bottom: 0; }
+.art-filmstrip::before { top: 0; }
+.art-filmstrip::after { bottom: 0; }
 
-.shop-filmstrip-track {
+.art-filmstrip-track {
+    /* absolutely positioned so its max-content width (wide enough to hold
+       the marquee's frames unwrapped) never leaks into an ancestor that
+       shrink-wraps its children — an in-flow max-content child would
+       otherwise inflate the whole page's layout width */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
     display: flex;
     align-items: center;
     gap: 10px;
     width: max-content;
     padding: 0 10px;
-    animation: shop-filmstrip-scroll 22s linear infinite;
+    animation: art-filmstrip-scroll 22s linear infinite;
 }
 
-.shop-filmstrip-frame {
+.art-filmstrip-frame {
     width: 130px;
     height: 90px;
     background: var(--color-surface);
@@ -7658,7 +7734,7 @@ body.os-hud-hidden .realm-canvas {
     flex-shrink: 0;
 }
 
-@keyframes shop-filmstrip-scroll {
+@keyframes art-filmstrip-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
@@ -8389,16 +8465,42 @@ body.os-hud-hidden .realm-canvas {
 
 /* ── Home Page: Character Select Carousel ── */
 
+/* Sharp, single-diagonal corners (top-left / bottom-right) rather than the
+   softer 4-corner octagon cut used elsewhere — a tactical-shooter agent-
+   select panel shape, with thin HUD corner brackets marking the other two. */
 .char-select {
     position: relative;
     margin: 0 0 28px;
     padding: 22px 24px 26px;
     background: var(--color-header-start, #1a140d);
     border: 2px solid var(--color-accent);
-    clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+    clip-path: polygon(26px 0, 100% 0, 100% calc(100% - 26px), calc(100% - 26px) 100%, 0 100%, 0 26px);
     overflow: hidden;
     animation: os-badge-pulse 3s ease-in-out infinite;
     outline: none;
+}
+
+.char-select::before,
+.char-select::after {
+    content: '';
+    position: absolute;
+    z-index: 3;
+    width: 22px;
+    height: 22px;
+    pointer-events: none;
+    border-color: var(--cs-1, var(--color-accent-text, var(--color-accent)));
+    border-style: solid;
+    opacity: 0.85;
+}
+.char-select::before {
+    top: 8px;
+    right: 8px;
+    border-width: 2px 2px 0 0;
+}
+.char-select::after {
+    bottom: 8px;
+    left: 8px;
+    border-width: 0 0 2px 2px;
 }
 
 .char-select-header {
@@ -8419,232 +8521,60 @@ body.os-hud-hidden .realm-canvas {
     color: var(--color-accent-text, var(--color-accent));
 }
 
-.char-select-stage {
+/* The whole art piece, edge to edge — its own native aspect ratio so the
+   full picture always shows with no cropping, at any section width. */
+.char-select-hero {
     position: relative;
     z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 18px;
-}
-
-.char-select-arrow {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    font-family: var(--font-dos);
-    font-size: 18px;
-    color: var(--color-accent-text, var(--color-accent));
-    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-    border: 2px solid var(--color-accent);
-    clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+    display: block;
+    width: 100%;
+    aspect-ratio: 1800 / 941;
+    overflow: hidden;
+    text-decoration: none;
     cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease;
+    border: 1px solid var(--cs-1, var(--color-accent));
+    clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+    transition: filter 0.2s ease;
 }
 
-.char-select-arrow:hover {
-    background: var(--color-accent);
-    color: var(--color-on-accent, #fff);
-}
+.char-select-hero:hover { filter: brightness(1.06); }
 
-.char-select-arrow:active {
-    transform: scale(0.9);
-}
-
-.char-select-slides {
-    position: relative;
-    width: min(520px, 78vw);
-    height: 220px;
-}
-
-.char-select-slide {
-    display: flex;
+/* a graded, duotone-ish wash across the art for a more "rendered game key
+   art" punch — boosted color/contrast rather than a flat photo drop-in */
+.char-select-hero::after {
+    content: '';
     position: absolute;
     inset: 0;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    text-align: center;
-    text-decoration: none;
-    padding: 18px 24px;
-    background: color-mix(in srgb, var(--color-surface) 12%, transparent);
-    border: 1px solid var(--window-icon-border, var(--color-accent));
-    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.95);
+    z-index: 1;
     pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
+    background: linear-gradient(125deg,
+        color-mix(in srgb, var(--cs-1, var(--color-accent)) 55%, transparent) 0%,
+        transparent 32%,
+        transparent 68%,
+        color-mix(in srgb, var(--cs-1, var(--color-accent)) 45%, #000) 100%);
+    mix-blend-mode: overlay;
+    opacity: 0.55;
 }
 
-.char-select-slide.active {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-    pointer-events: auto;
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0s;
-}
-
-.char-select-slide .support-corner {
-    opacity: 1;
-    border-color: var(--window-icon-border, var(--color-accent)) !important;
-}
-
-.char-select-slide-icon {
-    font-size: 44px;
-    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 70%, transparent));
-    margin-bottom: 4px;
-}
-
-.char-select-slide-class {
-    font-family: var(--font-dos);
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--window-icon-main, var(--color-accent-text, var(--color-accent)));
-}
-
-.char-select-slide-name {
-    font-family: var(--font-dos);
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--color-on-dark, #f2ead9);
-    letter-spacing: 0.5px;
-}
-
-.char-select-slide-tagline {
-    font-family: var(--font-dos);
-    font-size: 12px;
-    line-height: 1.5;
-    color: color-mix(in srgb, var(--color-on-dark, #f2ead9) 70%, transparent);
-    max-width: 360px;
-}
-
-.char-select-slide-enter {
-    margin-top: 10px;
+.char-select-hero-cta {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
     font-family: var(--font-dos);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--color-on-dark, #1a140d);
-    background: var(--window-icon-border, var(--color-accent));
-    padding: 6px 16px;
-    transition: transform 0.1s ease, filter 0.15s ease;
+    background: var(--cs-1, var(--color-accent));
+    padding: 8px 20px;
+    transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.char-select-slide:hover .char-select-slide-enter {
+.char-select-hero:hover .char-select-hero-cta {
     filter: brightness(1.15);
-    transform: translateY(-1px);
-}
-
-/* File-folder treatment: index tabs on top, the selected one is "open" —
-   its folder body joins the tab and the front flap swings away. */
-.char-select-folder {
-    position: relative;
-    width: min(560px, 78vw);
-}
-
-.char-select-tabs {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
-    margin-bottom: -1px;
-    padding-left: 10px;
-}
-
-.char-select-tab {
-    --folder-bg: color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 32%, var(--color-header-start, #1a140d));
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    height: 32px;
-    padding: 0 22px;
-    font-family: var(--font-dos);
-    font-size: 12px;
-    color: color-mix(in srgb, var(--color-on-dark, #f2ead9) 65%, transparent);
-    background: color-mix(in srgb, var(--folder-bg) 55%, var(--color-header-start, #1a140d));
-    border: 1px solid color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 50%, transparent);
-    border-bottom: none;
-    clip-path: polygon(0 100%, 10px 0, calc(100% - 10px) 0, 100% 100%);
-    cursor: pointer;
-    transition: height 0.15s ease, background 0.15s ease, color 0.15s ease;
-}
-
-.char-select-tab:hover {
-    color: var(--color-on-dark, #f2ead9);
-    height: 36px;
-}
-
-.char-select-tab.active {
-    height: 40px;
-    color: var(--color-on-dark, #f2ead9);
-    background: var(--folder-bg);
-    border-color: var(--window-icon-border, var(--color-accent));
-}
-
-.char-select-tab-icon { font-size: 15px; }
-
-.char-select .char-select-slides {
-    width: 100%;
-    height: 230px;
-    perspective: 700px;
-}
-
-.char-select .char-select-slide {
-    --folder-bg: color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 32%, var(--color-header-start, #1a140d));
-    background: var(--folder-bg);
-    border: 1px solid var(--window-icon-border, var(--color-accent));
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
-}
-
-/* Front cover of the folder: covers the page while closed, swings open
-   (transition, not animation, so it replays every time a tab is chosen). */
-.char-select .char-select-slide::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    background: linear-gradient(180deg,
-        color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 55%, #000),
-        color-mix(in srgb, var(--window-icon-border, var(--color-accent)) 35%, #000));
-    transform-origin: bottom center;
-    transform: rotateX(0deg);
-    opacity: 1;
-    pointer-events: none;
-    transition: transform 0.45s cubic-bezier(0.3, 0.7, 0.2, 1), opacity 0.2s ease 0.3s;
-}
-
-.char-select .char-select-slide.active::after {
-    transform: rotateX(-96deg);
-    opacity: 0;
-}
-
-/* Paper edges peeking out of the folder */
-.char-select .char-select-slide::before {
-    content: '';
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    top: 10px;
-    height: 4px;
-    background: color-mix(in srgb, var(--color-on-dark, #f2ead9) 35%, transparent);
-    box-shadow: 0 5px 0 color-mix(in srgb, var(--color-on-dark, #f2ead9) 20%, transparent);
-    pointer-events: none;
-}
-
-@media (max-width: 700px) {
-    .char-select-folder { width: min(320px, 68vw); }
-    .char-select .char-select-slides { height: 270px; }
-    .char-select-tab { padding: 0 14px; }
-    .char-select-tab-label { display: none; }
-    .char-select-arrow {
-        width: 38px;
-        height: 38px;
-        font-size: 14px;
-    }
+    transform: translateX(-50%) translateY(-2px);
 }
 
 /* ── Home Page: theme-driven colours (readable in light and dark mode) ──
@@ -8668,30 +8598,8 @@ body.os-hud-hidden .realm-canvas {
         --cs-3: oklch(from var(--color-accent) 0.86 max(c, 0.07) calc(h - 60));
     }
 }
-.char-select .os-titlebar-icon-shop        { --window-icon-border: var(--cs-1); --window-icon-main: var(--cs-1); }
-.char-select .os-titlebar-icon-collections { --window-icon-border: var(--cs-2); --window-icon-main: var(--cs-2); }
-.char-select .os-titlebar-icon-org         { --window-icon-border: var(--cs-3); --window-icon-main: var(--cs-3); }
-
 .char-select { background: color-mix(in srgb, var(--cs-base) 88%, #000); border-color: var(--cs-1); }
 .char-select-header-bracket { color: var(--cs-1); }
-.char-select-arrow { color: var(--cs-1); border-color: var(--cs-1); background: color-mix(in srgb, var(--cs-1) 14%, transparent); }
-.char-select-arrow:hover { background: var(--cs-1); color: var(--cs-base); }
-
-.char-select-tab {
-    --folder-bg: color-mix(in srgb, var(--window-icon-border) 17%, var(--cs-base));
-    color: color-mix(in srgb, var(--cs-ink) 82%, transparent);
-    background: color-mix(in srgb, var(--window-icon-border) 16%, var(--cs-base));
-    border-color: color-mix(in srgb, var(--window-icon-border) 65%, transparent);
-    font-size: 13px;
-}
-.char-select-tab:hover { color: var(--cs-ink); background: color-mix(in srgb, var(--window-icon-border) 26%, var(--cs-base)); }
-.char-select-tab.active { color: var(--cs-ink); background: var(--folder-bg); border-color: var(--window-icon-border); }
-
-.char-select .char-select-slide { --folder-bg: color-mix(in srgb, var(--window-icon-border) 17%, var(--cs-base)); }
-.char-select-slide-class { color: color-mix(in srgb, var(--window-icon-border) 45%, var(--cs-ink)); font-size: 12px; }
-.char-select-slide-name { color: var(--cs-ink); }
-.char-select-slide-tagline { color: color-mix(in srgb, var(--cs-ink) 88%, transparent); font-size: 13px; }
-.char-select-slide-enter { color: var(--cs-base); background: var(--window-icon-border); }
 
 /* Lunar Bloom window */
 .os-window-org {
@@ -10346,7 +10254,7 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 
 /* line icons (replace colour emoji) */
 .ico { display: inline-block; width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.14em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
-.nv-viewer-art .ico, .nv-frame-photo .ico, .nv-photo .ico, .nv-film .ico, .char-select-slide-icon .ico, .org-folder-icon .ico { stroke-width: 1.2; }
+.nv-viewer-art .ico, .nv-frame-photo .ico, .nv-photo .ico, .nv-film .ico, .org-folder-icon .ico { stroke-width: 1.2; }
 .nv-pill .ico { margin-right: 6px; vertical-align: -0.16em; }
 .nv-viewer-art .ico, .nv-frame-photo .ico, .nv-photo .ico { width: 1.3em; height: 1.3em; }
 .nv-viewer-art em, .nv-frame-photo em, .nv-photo span, .nv-film span { color: var(--nv-ink); }
@@ -10369,9 +10277,6 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 
 /* home: the path selector gets the gold rule and a diamond on the open tab */
 .char-select .hy-rule { width: min(360px, 70%); margin: -4px auto 18px; }
-.char-select .char-select-slide { outline: 1px solid var(--hy-gold-soft); outline-offset: -7px; }
-.char-select-tab { position: relative; }
-.char-select-tab.active::before { content: ''; position: absolute; top: 6px; left: 50%; width: 5px; height: 5px; background: var(--hy-gold); transform: translateX(-50%) rotate(45deg); }
 
 /* about: fine gold double-lines and corner ticks inside the paper cards */
 .nv-todo, .nv-sheet, .nv-mail, .nv-note-card, .nv-cal, .nv-postcard, .nv-pins {
@@ -10450,11 +10355,6 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 .zoom-level { color: var(--color-text-muted); }
 .commission-status.closed { opacity: 0.92; }
 .commission-status.closed .status-label { color: var(--color-text-secondary); }
-.char-select-tab { color: color-mix(in srgb, var(--cs-ink) 92%, transparent); }
-.char-select-slide-tagline { color: color-mix(in srgb, var(--cs-ink) 96%, transparent); }
-.char-select .char-select-slide, .char-select-tab { --folder-bg: color-mix(in srgb, var(--window-icon-border) 12%, var(--color-header-start)); }
-.char-select-slide-class { color: color-mix(in srgb, var(--window-icon-border) 30%, var(--cs-ink)); }
-.char-select .char-select-slide, .char-select-tab { --folder-bg: color-mix(in srgb, var(--window-icon-border) 12%, var(--cs-base)); }
 .email-display .email-address { color: var(--color-on-dark, #fff); }
 .email-display .copy-btn { color: var(--color-on-dark, #fff); background: color-mix(in srgb, var(--color-on-dark, #fff) 14%, transparent); border-color: color-mix(in srgb, var(--color-on-dark, #fff) 40%, transparent); }
 .status-moon { color: var(--color-accent-text, var(--color-accent)); }
@@ -11428,33 +11328,30 @@ body:has(.queue-wrap) { overflow-x: hidden; }
 }
 
 /* ══ Home: "Select Your Path" character art, lightly rigged ══
-   A flat illustration cut into a few overlapping copies of itself — the
-   two ears and the hanging tassel each get their own clip-path "piece"
-   sitting exactly on top of the full picture, then a tiny idle rotation
-   around the piece's real attachment point (ear base, tassel knot). It's
-   not a real mesh rig, just enough motion to read as alive rather than
-   a flat cutout, and it only works because the area each piece sweeps
-   into is plain sky/fabric in the source art, so there's no seam to see. */
-.char-select-art {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(46%, 460px);
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
+   A flat illustration cut into several overlapping copies of itself — each
+   distinct object in the picture (the two ears, the two lanterns, the
+   pleated fan charm, the hand fan, the eyes) gets its own clip-path piece
+   traced to its actual silhouette, sitting exactly on top of the full
+   picture, then a tiny idle motion around that piece's real attachment
+   point (ear base, lantern string, fan tassel). It's not a real mesh rig,
+   just enough independent motion per-object to read as alive rather than
+   a couple of blobs — pieces against the flat sky (ears, lanterns) get a
+   full swing since there's no seam to see; pieces sitting against hair or
+   skin (the fan, its charm, the eyes) stay subtle since a seam WOULD show. */
 .cs-art-layer {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    z-index: 0;
+    pointer-events: none;
     background-image: url("../images/home/select-path-fox.webp");
     background-size: cover;
-    background-position: 60% 30%;
+    background-position: 50% 50%;
+    filter: saturate(1.3) contrast(1.15) brightness(1.03);
 }
 .cs-art-base { opacity: 0.9; }
+
 .cs-art-ear-l {
     transform-origin: 42% 44%;
     clip-path: polygon(8% 0%, 46% 0%, 50% 20%, 46% 38%, 34% 46%, 20% 40%, 10% 24%);
@@ -11466,12 +11363,52 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     animation: cs-sway-r 3.8s ease-in-out infinite;
     animation-delay: -1.6s;
 }
-.cs-art-tassel {
-    transform-origin: 50% 80%;
-    clip-path: polygon(38% 74%, 62% 74%, 66% 88%, 58% 100%, 42% 100%, 34% 88%);
-    animation: cs-sway-tassel 3.2s ease-in-out infinite;
-    animation-delay: -0.6s;
+
+/* the two hanging paper lanterns, each pivoting from its string like a
+   little pendulum — plenty of flat orange sky around both to sweep into.
+   Traced point-by-point against the actual lantern + tassel silhouette
+   (not a rough box) so the piece reads as "the lantern", not a blob. */
+.cs-art-lantern-l {
+    transform-origin: 16.75% 6.2%;
+    clip-path: polygon(15% 6.54%, 16.75% 5.96%, 17.75% 6.39%, 19.5% 7.99%, 20.25% 10.53%, 19% 12.35%, 18% 13.94%, 22.5% 14.89%, 25.25% 16.7%, 26.75% 22.51%, 26.25% 28.32%, 24.5% 34.13%, 21.5% 38.12%, 20% 41.76%, 25.25% 50.83%, 23% 55.19%, 17.5% 47.21%, 12% 55.19%, 9.75% 50.83%, 15.75% 42.12%, 13.5% 38.12%, 10.5% 34.13%, 8.75% 22.51%, 10% 16.7%, 11.5% 14.89%, 13.5% 12.71%, 12.75% 10.53%, 13.5% 7.99%);
+    animation: cs-sway-lantern-l 5.2s ease-in-out infinite;
+    animation-delay: -3s;
 }
+.cs-art-lantern-r {
+    transform-origin: 90% 1%;
+    clip-path: polygon(80.25% 0%, 100% 0%, 100% 30.5%, 98.5% 33.4%, 96.5% 37.8%, 95.5% 43.6%, 91.5% 47.2%, 88% 50.8%, 89.5% 56.6%, 88% 61.7%, 85.5% 57.4%, 84.5% 49.4%, 80% 47.2%, 78% 40.7%, 80% 33.4%, 81.25% 30.5%, 79.5% 21.8%, 79.75% 10.9%);
+    animation: cs-sway-lantern-r 4.6s ease-in-out infinite;
+    animation-delay: -1.2s;
+}
+
+/* the small pleated tassel-fan charm hanging off the right ear, traced to
+   its knot + pleats rather than a loose hexagon */
+.cs-art-charm {
+    transform-origin: 66.5% 33%;
+    clip-path: polygon(65% 32.3%, 68.25% 33.8%, 67.25% 36.7%, 68.5% 38.5%, 70% 43.6%, 71.5% 50.8%, 72.5% 58.1%, 74% 66.1%, 72% 68.3%, 69% 69.4%, 66% 70.1%, 63.5% 69%, 61.25% 67.5%, 59.75% 61%, 58.75% 53%, 59.25% 45%, 61.25% 39.2%, 64% 35.6%);
+    animation: cs-sway-charm 3.6s ease-in-out infinite;
+    animation-delay: -2.1s;
+}
+
+/* the hand fan held up over the mouth — sits against hair, not flat sky,
+   so it's traced tightly to the fan's own wedge silhouette (not a soft
+   generic oval, which just reads as a blurry blob) and kept to a small
+   rotation so the traced edge never has far to travel. */
+.cs-art-fan {
+    transform-origin: 36% 88%;
+    clip-path: polygon(28.25% 64.6%, 32.5% 63.5%, 37.5% 64.3%, 42% 66.4%, 44% 68.3%, 43.75% 74.1%, 42.5% 80.6%, 40% 86.4%, 37.25% 89.7%, 35.25% 87.9%, 31% 86.4%, 28.5% 79.2%, 27.75% 71.2%);
+    animation: cs-sway-fan 4.8s ease-in-out infinite;
+    animation-delay: -0.9s;
+}
+
+/* a slow, occasional blink instead of a sway — traced to the eyelid +
+   under-eye mark so the squash reads as closing an eye, not a smudge */
+.cs-art-eyes {
+    transform-origin: 40% 60%;
+    clip-path: polygon(32.25% 56.3%, 36.5% 51.6%, 41% 52.1%, 45.5% 54.8%, 46.5% 59.2%, 45.25% 62.5%, 46.25% 65.4%, 46.75% 68.6%, 44.75% 69.4%, 42.5% 66.8%, 40.25% 65%, 36.25% 63.2%);
+    animation: cs-blink 5.5s ease-in-out infinite;
+}
+
 @keyframes cs-sway-l {
     0%, 100% { transform: rotate(-2.2deg); }
     50% { transform: rotate(2deg); }
@@ -11480,18 +11417,38 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     0%, 100% { transform: rotate(2.4deg); }
     50% { transform: rotate(-1.8deg); }
 }
-@keyframes cs-sway-tassel {
-    0%, 100% { transform: rotate(-3deg) translateX(-1px); }
-    50% { transform: rotate(3.5deg) translateX(1px); }
+@keyframes cs-sway-lantern-l {
+    0%, 100% { transform: rotate(-2.8deg); }
+    50% { transform: rotate(2.6deg); }
 }
-.cs-art-fade {
+@keyframes cs-sway-lantern-r {
+    0%, 100% { transform: rotate(2.2deg); }
+    50% { transform: rotate(-2.5deg); }
+}
+@keyframes cs-sway-charm {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2.2deg); }
+}
+@keyframes cs-sway-fan {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1.1deg); }
+}
+@keyframes cs-blink {
+    0%, 88%, 100% { transform: scaleY(1); }
+    92% { transform: scaleY(0.15); }
+    96% { transform: scaleY(1); }
+}
+
+/* bottom vignette so the "Enter the Collection" label stays readable
+   over the art no matter how light the source image is there */
+.cs-art-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, var(--color-header-start, #1a140d) 0%, transparent 38%, transparent 70%, color-mix(in srgb, var(--color-header-start, #1a140d) 35%, transparent) 100%);
-}
-@media (max-width: 900px) {
-    .char-select-art { display: none; }
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--color-header-start, #1a140d) 85%, #000) 100%);
 }
 @media (prefers-reduced-motion: reduce) {
-    .cs-art-ear-l, .cs-art-ear-r, .cs-art-tassel { animation: none; }
+    .cs-art-ear-l, .cs-art-ear-r, .cs-art-lantern-l, .cs-art-lantern-r,
+    .cs-art-charm, .cs-art-fan, .cs-art-eyes { animation: none; }
 }

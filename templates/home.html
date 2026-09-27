@@ -72,20 +72,9 @@
                     <div class="cs-boot-progress"><div class="cs-boot-progress-fill" id="csBootFill"></div></div>
                 </div>
 
-                <!-- Character Select Carousel -->
-                <div class="char-select" id="charSelect" tabindex="0">
+                <!-- Character Select -->
+                <div class="char-select" id="charSelect">
                     <div class="support-scanlines" aria-hidden="true"></div>
-
-                    <!-- decorative art, flanking the folder — a few pieces (ears, the
-                         hanging tassel) are cut from the same picture and given a
-                         small idle sway, like a cheap Live2D rig -->
-                    <div class="char-select-art" id="charSelectArt" aria-hidden="true">
-                        <div class="cs-art-layer cs-art-base"></div>
-                        <div class="cs-art-layer cs-art-ear-l"></div>
-                        <div class="cs-art-layer cs-art-ear-r"></div>
-                        <div class="cs-art-layer cs-art-tassel"></div>
-                        <i class="cs-art-fade" aria-hidden="true"></i>
-                    </div>
 
                     <div class="char-select-header">
                         <span class="char-select-header-bracket">[</span>
@@ -95,44 +84,20 @@
                     </div>
                     <i class="hy-rule" aria-hidden="true"></i>
 
-                    <div class="char-select-stage">
-                        <button type="button" class="char-select-arrow char-select-arrow-prev" aria-label="Previous">◀</button>
+                    <!-- the same pond scene painted at three times of day,
+                         cross-fading day → dusk → night on a slow loop -->
+                    <a href="{{ url_for('collections') }}#ch-desk" class="char-select-hero" id="charSelectHero">
+                        <div class="pond-layer pond-day"></div>
+                        <div class="pond-layer pond-dusk"></div>
+                        <div class="pond-layer pond-night"></div>
+                        <i class="cs-art-shade" aria-hidden="true"></i>
+                        <span class="char-select-hero-cta">▶ Enter the Collection</span>
+                    </a>
+                </div>
 
-                        <div class="char-select-folder">
-                            <div class="char-select-tabs" role="tablist">
-                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-shop active" data-index="0" role="tab" aria-label="Process Videos"><span class="char-select-tab-icon">{{ ico('clapper') }}</span><span class="char-select-tab-label">Process Videos</span></button>
-                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-collections" data-index="1" role="tab" aria-label="Sketches"><span class="char-select-tab-icon">{{ ico('pencil') }}</span><span class="char-select-tab-label">Sketches</span></button>
-                            <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-org" data-index="2" role="tab" aria-label="Community"><span class="char-select-tab-icon">{{ ico('people') }}</span><span class="char-select-tab-label">Community</span></button>
-                            </div>
-                            <div class="char-select-slides">
-                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-shop active" data-index="0">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">{{ ico('clapper') }}</span>
-                                <span class="char-select-slide-class">Collection 01</span>
-                                <span class="char-select-slide-name">Process Videos</span>
-                                <span class="char-select-slide-tagline">Watch the creative process behind my digital art pieces.</span>
-                                <span class="char-select-slide-enter">▶ Open</span>
-                            </a>
-                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-collections" data-index="1">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">{{ ico('pencil') }}</span>
-                                <span class="char-select-slide-class">Collection 02</span>
-                                <span class="char-select-slide-name">Sketches</span>
-                                <span class="char-select-slide-tagline">Quick sketches and studies that showcase my artistic process.</span>
-                                <span class="char-select-slide-enter">▶ Open</span>
-                            </a>
-                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-org" data-index="2">
-                                {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
-                                <span class="char-select-slide-icon">{{ ico('people') }}</span>
-                                <span class="char-select-slide-class">Collection 03</span>
-                                <span class="char-select-slide-name">Community</span>
-                                <span class="char-select-slide-tagline">Complete collection of my best work in one place.</span>
-                                <span class="char-select-slide-enter">▶ Open</span>
-                            </a>
-                            </div>
-                        </div>
-
-                        <button type="button" class="char-select-arrow char-select-arrow-next" aria-label="Next">▶</button>
+                <div class="art-filmstrip" aria-hidden="true">
+                    <div class="art-filmstrip-track">
+                        {% for i in range(20) %}<div class="art-filmstrip-frame"></div>{% endfor %}
                     </div>
                 </div>
 
@@ -233,54 +198,6 @@
             var win = document.querySelector('.os-window-eclipsogate');
             if (win) win.style.display = 'none';
         });
-    })();
-
-    // ── Character Select Carousel ──
-    (function initCharSelect() {
-        var root = document.getElementById('charSelect');
-        if (!root) return;
-        var slides = Array.prototype.slice.call(root.querySelectorAll('.char-select-slide'));
-        var thumbs = Array.prototype.slice.call(root.querySelectorAll('.char-select-thumb'));
-        var prevBtn = root.querySelector('.char-select-arrow-prev');
-        var nextBtn = root.querySelector('.char-select-arrow-next');
-        if (!slides.length) return;
-        var idx = 0;
-        var autoTimer = null;
-
-        function show(i) {
-            idx = (i + slides.length) % slides.length;
-            slides.forEach(function(s, si) { s.classList.toggle('active', si === idx); });
-            thumbs.forEach(function(t, ti) { t.classList.toggle('active', ti === idx); });
-        }
-
-        function stopAuto() {
-            if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-        }
-
-        function startAuto() {
-            stopAuto();
-            autoTimer = setInterval(function() { show(idx + 1); }, 5000);
-        }
-
-        if (prevBtn) prevBtn.addEventListener('click', function() { stopAuto(); show(idx - 1); });
-        if (nextBtn) nextBtn.addEventListener('click', function() { stopAuto(); show(idx + 1); });
-        thumbs.forEach(function(t, ti) {
-            t.addEventListener('click', function() { stopAuto(); show(ti); });
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-            var hovered = false;
-            try { hovered = root.matches(':hover'); } catch (err) {}
-            var focused = document.activeElement && root.contains(document.activeElement);
-            if (!hovered && !focused) return;
-            e.preventDefault();
-            stopAuto();
-            show(idx + (e.key === 'ArrowRight' ? 1 : -1));
-        });
-
-        show(0);
-        startAuto();
     })();
 
     // ── Profile Editor ──
