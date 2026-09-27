@@ -11,6 +11,7 @@ from auth import register_auth_routes
 from shop import register_shop_routes
 from guestbook import register_guestbook_routes
 from commission_board import register_commission_board_routes
+from questions import register_question_routes
 from icons import register_icons
 
 load_dotenv()
@@ -57,6 +58,7 @@ register_auth_routes(app)
 register_shop_routes(app)
 register_guestbook_routes(app)
 register_commission_board_routes(app)
+register_question_routes(app)
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5001)

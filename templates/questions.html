@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content_class %}questions-wrap{% endblock %}
+
+{% block content %}
+<div class="questions-page">
+    <header class="questions-head">
+        <div>
+            <h1 class="questions-title">Questions</h1>
+            <p class="questions-subtitle">Everything asked from the Support page.</p>
+        </div>
+    </header>
+
+    <div class="questions-list" id="questionsList">
+        {% for q in questions %}
+        <article class="question-card{{ ' is-answered' if q.answered }}" data-id="{{ q.id }}">
+            <div class="question-top">
+                <div>
+                    <span class="question-name">{{ q.name }}</span>
+                    {% if q.email %}<a class="question-email" href="mailto:{{ q.email }}">{{ q.email }}</a>{% endif %}
+                </div>
+                <span class="question-date">{{ q.created_at }}</span>
+            </div>
+            <p class="question-message">{{ q.message }}</p>
+            <div class="question-actions">
+                <button type="button" class="question-toggle" data-toggle="{{ q.id }}">{{ 'mark unanswered' if q.answered else 'mark answered' }}</button>
+                <button type="button" class="question-delete" data-delete="{{ q.id }}">delete</button>
+            </div>
+        </article>
+        {% else %}
+        <p class="questions-empty" id="questionsEmpty">No questions yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+(function () {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    var list = document.getElementById('questionsList');
+
+    function api(url, opts) {
+        opts = opts || {};
+        opts.headers = Object.assign({ 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken }, opts.headers || {});
+        return fetch(url, opts).then(function (r) {
+            return r.json().then(function (data) {
+                if (!r.ok) throw new Error(data.error || 'Something went wrong.');
+                return data;
+            });
+        });
+    }
+
+    list.addEventListener('click', function (e) {
+        var toggleId = e.target.closest('[data-toggle]');
+        if (toggleId) {
+            var card = toggleId.closest('.question-card');
+            var nextAnswered = !card.classList.contains('is-answered');
+            api('/questions/' + toggleId.dataset.toggle, { method: 'PATCH', body: JSON.stringify({ answered: nextAnswered }) })
+                .then(function () {
+                    card.classList.toggle('is-answered', nextAnswered);
+                    toggleId.textContent = nextAnswered ? 'mark unanswered' : 'mark answered';
+                });
+            return;
+        }
+        var delId = e.target.closest('[data-delete]');
+        if (delId) {
+            if (!confirm('Delete this question?')) return;
+            api('/questions/' + delId.dataset.delete, { method: 'DELETE' })
+                .then(function () {
+                    var card = delId.closest('.question-card');
+                    card.remove();
+                    if (!list.querySelector('.question-card')) {
+                        list.innerHTML = '<p class="questions-empty">No questions yet.</p>';
+                    }
+                });
+        }
+    });
+})();
+</script>
+{% endblock %}

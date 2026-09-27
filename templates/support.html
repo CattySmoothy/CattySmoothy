@@ -64,6 +64,35 @@
         </div>
     </section>
 
+    <section class="support-ask-section">
+        <div class="support-card support-card-ask">
+            {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
+            <div class="support-card-inner">
+                <h3 class="support-card-title"><span class="support-cursor">▶</span>Ask a Question</h3>
+                <p class="support-ask-sub">Have something you're curious about? Send it over — no account needed.</p>
+                <form id="askForm" class="support-ask-form">
+                    <div class="support-ask-row">
+                        <label class="support-ask-field">
+                            <span>Name <em>(optional)</em></span>
+                            <input type="text" id="askName" maxlength="80" placeholder="what should I call you?">
+                        </label>
+                        <label class="support-ask-field">
+                            <span>Email <em>(optional, if you want a reply)</em></span>
+                            <input type="email" id="askEmail" maxlength="255" placeholder="you@example.com">
+                        </label>
+                    </div>
+                    <label class="support-ask-field">
+                        <span>Your question</span>
+                        <textarea id="askMessage" maxlength="2000" rows="4" required placeholder="ask away..."></textarea>
+                    </label>
+                    <p class="support-ask-error" id="askError" hidden></p>
+                    <button type="submit" class="support-btn support-btn-primary" id="askSubmit">Send Question</button>
+                    <p class="support-ask-success" id="askSuccess" hidden>Sent! Thanks for asking — I'll get back to you. &#10003;</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <footer class="support-footnote">
         <p>Questions? Reach out anytime.</p>
     </footer>
@@ -115,5 +144,55 @@ function subscribe(amount, planName) {
         btn.disabled = false;
     });
 }
+
+document.getElementById('askForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var errorEl = document.getElementById('askError');
+    var successEl = document.getElementById('askSuccess');
+    var submitBtn = document.getElementById('askSubmit');
+    var message = document.getElementById('askMessage').value.trim();
+    errorEl.hidden = true;
+    successEl.hidden = true;
+
+    if (!message) {
+        errorEl.textContent = 'Enter your question first.';
+        errorEl.hidden = false;
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    fetch('/support/ask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            name: document.getElementById('askName').value.trim(),
+            email: document.getElementById('askEmail').value.trim(),
+            message: message
+        })
+    })
+    .then(function (r) { return r.json().then(function (data) { return { status: r.status, data: data }; }); })
+    .then(function (res) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Question';
+        if (res.status === 201) {
+            document.getElementById('askForm').reset();
+            successEl.hidden = false;
+        } else {
+            errorEl.textContent = res.data.error || 'Something went wrong.';
+            errorEl.hidden = false;
+        }
+    })
+    .catch(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Question';
+        errorEl.textContent = 'Could not connect. Try again in a moment.';
+        errorEl.hidden = false;
+    });
+});
 </script>
 {% endblock %}

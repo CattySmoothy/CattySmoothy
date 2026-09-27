@@ -150,6 +150,30 @@ class EarningsGoal(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
+class Question(db.Model):
+    """A question asked from the Support page's "Ask a Question" card.
+    Open to anyone, logged in or not — answering happens off-site (email),
+    this just collects them for the owner."""
+    __tablename__ = 'questions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=True)
+    email = db.Column(db.String(255), nullable=True)
+    message = db.Column(db.Text, nullable=False)
+    answered = db.Column(db.Boolean, nullable=False, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name or 'Anonymous',
+            'email': self.email or '',
+            'message': self.message,
+            'answered': self.answered,
+            'created_at': self.created_at.strftime('%b %d, %Y'),
+        }
+
+
 class GuestbookEntry(db.Model):
     __tablename__ = 'guestbook_entries'
 
