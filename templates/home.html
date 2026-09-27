@@ -3,6 +3,10 @@
 {% block content_class %}realm-explorer-wrap{% endblock %}
 
 {% block content %}
+{# Lunar Bloom's hover-to-open folder window (below the carousel) is
+   switched off for now — flip this back to true to bring it back, the
+   markup/CSS/JS behind it is untouched. #}
+{% set show_org_window = false %}
 <div class="realm-explorer">
     <div class="realm-canvas">
         <div class="realm-canvas-bg"></div>
@@ -128,6 +132,7 @@
                     <!-- RIGHT COLUMN -->
                     <div class="os-col os-col-right">
 
+                        {% if show_org_window %}
                         <!-- Window: Organization -->
                         <div class="os-window os-window-org">
                             <div class="os-window-body">
@@ -160,6 +165,7 @@
                                 <span class="os-footer-dec">✧</span>
                             </div>
                         </div>
+                        {% endif %}
 
                     </div>
 
