@@ -752,6 +752,27 @@ button, input, textarea, select {
     margin-bottom: 18px;
 }
 
+.settings-account-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.settings-account-link {
+    padding: 9px 18px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    background: var(--color-surface-alt);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    border-radius: var(--radius-sm);
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+.settings-account-link:hover { background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-alt)); border-color: var(--color-accent); }
+.settings-account-link-danger { color: #c9553f; }
+.settings-account-link-danger:hover { background: color-mix(in srgb, #c9553f 10%, var(--color-surface-alt)); border-color: #c9553f; }
+
 .form-field:last-child {
     margin-bottom: 0;
 }
