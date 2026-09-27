@@ -11210,3 +11210,175 @@ body:has(.queue-wrap) { overflow-x: hidden; }
 }
 .question-toggle:hover { color: var(--color-accent-text, var(--color-accent)); }
 .question-delete:hover { color: #c9553f; }
+
+/* ══ Shop: Wish (gacha pull banner) ══
+   Studied from otome/gacha main-menu screens: a near-black ornate card,
+   thin gold filigree curling out of each corner, a formal display title,
+   and a reveal that bursts and glows in a fixed rarity colour — rarity
+   colour-coding is such a strong genre convention that it stays fixed
+   (blue/purple/gold) rather than following the site theme, the same way
+   the pixel cat keeps its own palette. */
+.wish-banner {
+    --wish-gold: #d9b872;
+    position: relative;
+    margin: 28px 0;
+    padding: 3px;
+    background: radial-gradient(ellipse 90% 140% at 50% -10%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 65%), #14110d;
+    border: 1px solid color-mix(in srgb, var(--wish-gold) 55%, transparent);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+.wish-banner-inner {
+    position: relative;
+    z-index: 1;
+    padding: 44px 24px 34px;
+    text-align: center;
+    background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px);
+}
+/* a bracket plus a trailing curl and a small diamond, like a filigree
+   corner flourish rather than a plain right-angle bracket */
+.wish-corner { position: absolute; z-index: 2; width: 46px; height: 46px; pointer-events: none; }
+.wish-corner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-top: 1.5px solid var(--wish-gold);
+    border-left: 1.5px solid var(--wish-gold);
+    border-radius: 3px 0 0 0;
+    -webkit-mask-image: linear-gradient(135deg, #000 45%, transparent 46%);
+    mask-image: linear-gradient(135deg, #000 45%, transparent 46%);
+}
+.wish-corner::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 5px;
+    height: 5px;
+    background: var(--wish-gold);
+    transform: rotate(45deg);
+}
+.wish-corner-tl { top: 10px; left: 10px; }
+.wish-corner-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+.wish-corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+.wish-corner-br { bottom: 10px; right: 10px; transform: scale(-1, -1); }
+
+.wish-kicker { margin: 0 0 6px; font-family: var(--font-dos); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: color-mix(in srgb, var(--wish-gold) 80%, #fff); }
+.wish-title { margin: 0; font-family: var(--font-display, var(--font-dos)); font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: 4px; color: #f3ead4; text-shadow: 0 0 24px color-mix(in srgb, var(--wish-gold) 60%, transparent); }
+.wish-rule { width: 200px; margin: 18px auto 14px; }
+.wish-banner .wish-rule::before, .wish-banner .wish-rule::after { background: var(--wish-gold); }
+.wish-banner .wish-rule { background: linear-gradient(90deg, color-mix(in srgb, var(--wish-gold) 55%, transparent) 0, color-mix(in srgb, var(--wish-gold) 55%, transparent) calc(50% - 26px), transparent calc(50% - 26px), transparent calc(50% + 26px), color-mix(in srgb, var(--wish-gold) 55%, transparent) calc(50% + 26px), color-mix(in srgb, var(--wish-gold) 55%, transparent) 100%) center / 100% 1px no-repeat; }
+.wish-odds { margin: 0 0 24px; font-family: var(--font-sub); font-size: 12px; color: color-mix(in srgb, #f3ead4 55%, transparent); }
+
+.wish-pull-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    font-family: var(--font-dos);
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #14110d;
+    text-decoration: none;
+    background: linear-gradient(180deg, #efd9a0, var(--wish-gold));
+    border: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+.wish-pull-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.06); }
+.wish-pull-btn:disabled { opacity: 0.45; cursor: default; }
+.wish-pull-btn.is-pulling { animation: wish-pull-shake 0.5s ease-in-out infinite; }
+@keyframes wish-pull-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+.wish-pull-cost { opacity: 0.75; font-size: 12px; }
+.wish-error { margin: 12px 0 0; font-family: var(--font-sub); font-size: 12.5px; color: #e08a6f; }
+.wish-error[hidden] { display: none; }
+
+.wish-history { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; }
+.wish-chip { padding: 4px 12px; font-family: var(--font-dos); font-size: 11px; border-radius: 100px; border: 1px solid; }
+.wish-chip-common { color: #b7c3d6; border-color: color-mix(in srgb, #b7c3d6 50%, transparent); background: color-mix(in srgb, #b7c3d6 8%, transparent); }
+.wish-chip-rare { color: #c8a6f0; border-color: color-mix(in srgb, #c8a6f0 55%, transparent); background: color-mix(in srgb, #c8a6f0 10%, transparent); }
+.wish-chip-legendary { color: #f3cd6a; border-color: color-mix(in srgb, #f3cd6a 60%, transparent); background: color-mix(in srgb, #f3cd6a 12%, transparent); }
+
+/* ── shop item: gift button ── */
+.shop-item-actions { display: flex; gap: 8px; }
+.shop-gift-btn {
+    font-family: var(--font-ticket);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border: 1px dashed color-mix(in srgb, var(--color-text-muted) 45%, transparent);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+.shop-gift-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--color-accent) 10%, transparent); color: var(--color-accent-text, var(--color-accent)); border-color: var(--color-accent); }
+.shop-gift-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* ── gift modal ── */
+.shop-modal { position: fixed; inset: 0; z-index: 1200; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.shop-modal[hidden] { display: none; }
+.shop-modal-card { position: relative; width: min(400px, 100%); padding: 28px; background: var(--color-surface); border-radius: var(--radius-md); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35); }
+.shop-modal-close { position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; padding: 0; color: var(--color-text-muted); background: none; border: none; cursor: pointer; }
+.shop-modal-close:hover { color: var(--color-text-primary); }
+.shop-modal-title { margin: 0 0 6px; font-family: var(--font-dos); font-size: 18px; color: var(--color-text-primary); }
+.shop-modal-sub { margin: 0 0 18px; font-family: var(--font-sub); font-size: 13px; color: var(--color-text-secondary); }
+.shop-modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; font-family: var(--font-sub); font-size: 12.5px; color: var(--color-text-secondary); }
+.shop-modal-field input {
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-text-primary);
+    background: var(--color-surface-alt);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 25%, transparent);
+    border-radius: var(--radius-sm);
+}
+.shop-modal-field input:focus { outline: none; border-color: var(--color-accent); }
+.shop-modal-error { margin: -8px 0 14px; font-family: var(--font-sub); font-size: 12.5px; color: #c9553f; }
+.shop-modal-success { margin: -8px 0 14px; font-family: var(--font-sub); font-size: 13px; color: var(--color-accent-text, var(--color-accent)); }
+.shop-modal-error[hidden], .shop-modal-success[hidden] { display: none; }
+.shop-modal-send { width: 100%; justify-content: center; color: var(--color-on-accent, #fff); background: var(--color-accent); }
+
+/* ══ Wish reveal ══ */
+.wish-reveal { position: fixed; inset: 0; z-index: 2100; display: flex; align-items: center; justify-content: center; background: rgba(4, 3, 2, 0); transition: background 0.3s ease; }
+.wish-reveal[hidden] { display: none; }
+.wish-reveal.is-open { background: rgba(4, 3, 2, 0.78); }
+.wish-reveal-card {
+    --rc: #b7c3d6;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: min(320px, 84vw);
+    padding: 46px 26px 34px;
+    background: #14110d;
+    border: 1px solid color-mix(in srgb, var(--rc) 55%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--rc) 25%, transparent), 0 30px 70px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transform: scale(0.85) translateY(14px);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1), opacity 0.3s ease;
+}
+.wish-reveal.is-open .wish-reveal-card { transform: scale(1) translateY(0); opacity: 1; }
+.wish-reveal-rare { --rc: #c8a6f0; }
+.wish-reveal-legendary { --rc: #f3cd6a; }
+.wish-reveal-burst {
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--rc) 45%, transparent), transparent 65%);
+    opacity: 0;
+    pointer-events: none;
+}
+.wish-reveal.is-open .wish-reveal-burst { animation: wish-burst 0.7s ease-out; }
+@keyframes wish-burst { 0% { opacity: 0; transform: scale(0.6); } 40% { opacity: 1; } 100% { opacity: 0; transform: scale(1.6); } }
+.wish-reveal-rarity { font-family: var(--font-dos); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rc); }
+.wish-reveal-icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: 6px 0; color: var(--rc); filter: drop-shadow(0 0 14px var(--rc)); }
+.wish-reveal-icon .ico { width: 100%; height: 100%; }
+.wish-reveal-label { font-family: var(--font-dos); font-size: 16px; color: #f3ead4; }
+.wish-reveal-close { margin-top: 18px; color: #14110d; background: linear-gradient(180deg, #efd9a0, #d9b872); }
+
+@media (max-width: 640px) {
+    .wish-banner-inner { padding: 36px 16px 28px; }
+    .wish-corner { width: 36px; height: 36px; }
+}

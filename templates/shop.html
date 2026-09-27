@@ -25,15 +25,45 @@
         {% endif %}
 
         <p class="shop-earn-note">Earn 1 stardust for every $1 you <a href="{{ url_for('donate') }}">donate</a>.</p>
+    </div>
 
-        <div class="shop-filter">
-            <span class="shop-filter-label">Filter</span>
-            <div class="shop-filter-options">
-                <button type="button" class="shop-filter-btn active" data-filter="all">Shop All</button>
-                <button type="button" class="shop-filter-btn" data-filter="Digital">Digital</button>
-                <button type="button" class="shop-filter-btn" data-filter="Flair">Flair</button>
-                <button type="button" class="shop-filter-btn" data-filter="Commissions">Commissions</button>
+    <!-- ══ Wish: a gacha-style pull banner ══ -->
+    <section class="wish-banner" id="wishBanner">
+        <i class="wish-corner wish-corner-tl" aria-hidden="true"></i>
+        <i class="wish-corner wish-corner-tr" aria-hidden="true"></i>
+        <i class="wish-corner wish-corner-bl" aria-hidden="true"></i>
+        <i class="wish-corner wish-corner-br" aria-hidden="true"></i>
+        <div class="wish-banner-inner">
+            <p class="wish-kicker">Limited Banner</p>
+            <h2 class="wish-title">Wish</h2>
+            <i class="hy-rule wish-rule"></i>
+            <p class="wish-odds">75% stardust &middot; 20% rare item &middot; 5% legendary item</p>
+
+            {% if current_user.is_authenticated %}
+            <button type="button" class="wish-pull-btn" id="wishPullBtn" data-cost="{{ wish_cost }}"
+                    {% if current_user.stardust_balance < wish_cost %}disabled{% endif %}>
+                Wish <span class="wish-pull-cost">✦ {{ wish_cost }}</span>
+            </button>
+            <p class="wish-error" id="wishError" hidden></p>
+
+            <div class="wish-history" id="wishHistory">
+                {% for w in recent_wishes %}
+                <span class="wish-chip wish-chip-{{ w.rarity }}" title="{{ w.created_at }}">{{ w.label }}</span>
+                {% endfor %}
             </div>
+            {% else %}
+            <a href="{{ url_for('login', next='/shop') }}" class="wish-pull-btn wish-pull-link">Log in to Wish</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <div class="shop-filter">
+        <span class="shop-filter-label">Filter</span>
+        <div class="shop-filter-options">
+            <button type="button" class="shop-filter-btn active" data-filter="all">Shop All</button>
+            <button type="button" class="shop-filter-btn" data-filter="Digital">Digital</button>
+            <button type="button" class="shop-filter-btn" data-filter="Flair">Flair</button>
+            <button type="button" class="shop-filter-btn" data-filter="Commissions">Commissions</button>
         </div>
     </div>
 
@@ -47,13 +77,17 @@
             <div class="shop-item-footer">
                 <span class="shop-item-price">✦ {{ item.cost }}</span>
                 {% if current_user.is_authenticated %}
-                <button type="button"
-                        class="shop-redeem-btn"
-                        data-slug="{{ item.slug }}"
-                        data-cost="{{ item.cost }}"
-                        {% if current_user.stardust_balance < item.cost %}disabled{% endif %}>
-                    Redeem
-                </button>
+                <div class="shop-item-actions">
+                    <button type="button"
+                            class="shop-redeem-btn"
+                            data-slug="{{ item.slug }}"
+                            data-cost="{{ item.cost }}"
+                            {% if current_user.stardust_balance < item.cost %}disabled{% endif %}>
+                        Redeem
+                    </button>
+                    <button type="button" class="shop-gift-btn" data-slug="{{ item.slug }}"
+                            data-name="{{ item.name }}" data-cost="{{ item.cost }}" title="Send as a gift">Gift</button>
+                </div>
                 {% else %}
                 <a href="{{ url_for('login', next='/shop') }}" class="shop-redeem-btn shop-redeem-link">Log in to redeem</a>
                 {% endif %}
@@ -63,8 +97,37 @@
     </div>
 </div>
 
+<!-- ══ Gift modal ══ -->
+<div class="shop-modal" id="giftModal" hidden>
+    <div class="shop-modal-card">
+        <button type="button" class="shop-modal-close" id="giftModalClose" aria-label="Close">{{ ico('close') }}</button>
+        <h3 class="shop-modal-title">Send a Gift</h3>
+        <p class="shop-modal-sub" id="giftModalItem"></p>
+        <label class="shop-modal-field">
+            <span>Recipient's email</span>
+            <input type="email" id="giftEmail" placeholder="they need an account here already">
+        </label>
+        <p class="shop-modal-error" id="giftError" hidden></p>
+        <p class="shop-modal-success" id="giftSuccess" hidden></p>
+        <button type="button" class="wish-pull-btn shop-modal-send" id="giftSend">Send Gift</button>
+    </div>
+</div>
+
+<!-- ══ Wish reveal modal ══ -->
+<div class="wish-reveal" id="wishReveal" hidden>
+    <div class="wish-reveal-card" id="wishRevealCard">
+        <i class="wish-reveal-burst" aria-hidden="true"></i>
+        <span class="wish-reveal-rarity" id="wishRevealRarity"></span>
+        <span class="wish-reveal-icon" id="wishRevealIcon"></span>
+        <span class="wish-reveal-label" id="wishRevealLabel"></span>
+        <button type="button" class="wish-pull-btn wish-reveal-close" id="wishRevealClose">Nice!</button>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
     var filterBtns = document.querySelectorAll('.shop-filter-btn');
     var items = document.querySelectorAll('.shop-item');
 
@@ -79,6 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    function setBalance(balance) {
+        var balanceEl = document.querySelector('.shop-balance-amount');
+        if (balanceEl) balanceEl.textContent = balance;
+        document.querySelectorAll('.shop-redeem-btn[data-slug], .shop-gift-btn[data-cost]').forEach(function(b) {
+            if (parseInt(b.dataset.cost, 10) > balance) b.disabled = true; else b.disabled = false;
+        });
+        var wishBtn = document.getElementById('wishPullBtn');
+        if (wishBtn) wishBtn.disabled = parseInt(wishBtn.dataset.cost, 10) > balance;
+    }
+
+    // ── redeem ──
     document.querySelectorAll('.shop-redeem-btn[data-slug]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             if (btn.disabled) return;
@@ -89,21 +163,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             fetch('/redeem', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
-                },
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
                 body: JSON.stringify({ slug: slug })
             })
             .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
             .then(function(res) {
                 if (res.status === 200) {
                     btn.textContent = 'Redeemed ✦';
-                    var balanceEl = document.querySelector('.shop-balance-amount');
-                    if (balanceEl) balanceEl.textContent = res.data.balance;
-                    document.querySelectorAll('.shop-redeem-btn[data-slug]').forEach(function(b) {
-                        if (parseInt(b.dataset.cost, 10) > res.data.balance) b.disabled = true;
-                    });
+                    setBalance(res.data.balance);
                 } else {
                     alert('Error: ' + (res.data.error || 'Something went wrong'));
                     btn.textContent = originalText;
@@ -117,6 +184,131 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // ── gift ──
+    var giftModal = document.getElementById('giftModal');
+    var giftEmail = document.getElementById('giftEmail');
+    var giftError = document.getElementById('giftError');
+    var giftSuccess = document.getElementById('giftSuccess');
+    var giftSend = document.getElementById('giftSend');
+    var giftSlug = null;
+
+    function openGiftModal(slug, name, cost) {
+        giftSlug = slug;
+        document.getElementById('giftModalItem').textContent = name + ' — ✦ ' + cost;
+        giftEmail.value = '';
+        giftError.hidden = true;
+        giftSuccess.hidden = true;
+        giftSend.hidden = false;
+        giftModal.hidden = false;
+        giftEmail.focus();
+    }
+    function closeGiftModal() { giftModal.hidden = true; }
+
+    document.querySelectorAll('.shop-gift-btn[data-slug]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (btn.disabled) return;
+            openGiftModal(btn.dataset.slug, btn.dataset.name, btn.dataset.cost);
+        });
+    });
+    document.getElementById('giftModalClose').addEventListener('click', closeGiftModal);
+    giftModal.addEventListener('click', function(e) { if (e.target === giftModal) closeGiftModal(); });
+
+    giftSend.addEventListener('click', function() {
+        var email = giftEmail.value.trim();
+        giftError.hidden = true;
+        if (!email) { giftError.textContent = "Enter the recipient's email."; giftError.hidden = false; return; }
+
+        giftSend.disabled = true;
+        giftSend.textContent = 'Sending...';
+
+        fetch('/shop/gift', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+            body: JSON.stringify({ slug: giftSlug, email: email })
+        })
+        .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+        .then(function(res) {
+            giftSend.disabled = false;
+            giftSend.textContent = 'Send Gift';
+            if (res.status === 200) {
+                setBalance(res.data.balance);
+                giftSuccess.textContent = 'Sent to ' + res.data.recipient_name + '! ✓';
+                giftSuccess.hidden = false;
+                giftSend.hidden = true;
+            } else {
+                giftError.textContent = res.data.error || 'Something went wrong.';
+                giftError.hidden = false;
+            }
+        })
+        .catch(function() {
+            giftSend.disabled = false;
+            giftSend.textContent = 'Send Gift';
+            giftError.textContent = 'Could not connect. Try again in a moment.';
+            giftError.hidden = false;
+        });
+    });
+
+    // ── wish ──
+    var wishBtn = document.getElementById('wishPullBtn');
+    var wishError = document.getElementById('wishError');
+    var wishReveal = document.getElementById('wishReveal');
+    var wishRevealCard = document.getElementById('wishRevealCard');
+
+    if (wishBtn) {
+        wishBtn.addEventListener('click', function() {
+            if (wishBtn.disabled) return;
+            wishError.hidden = true;
+            wishBtn.disabled = true;
+            wishBtn.classList.add('is-pulling');
+
+            fetch('/shop/wish', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken }
+            })
+            .then(function(r) { return r.json().then(function(data) { return {status: r.status, data: data}; }); })
+            .then(function(res) {
+                wishBtn.classList.remove('is-pulling');
+                if (res.status === 200) {
+                    setBalance(res.data.balance);
+                    showReveal(res.data.reward);
+                    var history = document.getElementById('wishHistory');
+                    var chip = document.createElement('span');
+                    chip.className = 'wish-chip wish-chip-' + res.data.reward.rarity;
+                    chip.textContent = res.data.reward.label;
+                    history.insertBefore(chip, history.firstChild);
+                } else {
+                    wishError.textContent = res.data.error || 'Something went wrong.';
+                    wishError.hidden = false;
+                    wishBtn.disabled = false;
+                }
+            })
+            .catch(function() {
+                wishBtn.classList.remove('is-pulling');
+                wishBtn.disabled = false;
+                wishError.textContent = 'Could not connect. Try again in a moment.';
+                wishError.hidden = false;
+            });
+        });
+    }
+
+    function showReveal(reward) {
+        wishRevealCard.className = 'wish-reveal-card wish-reveal-' + reward.rarity;
+        document.getElementById('wishRevealRarity').textContent = reward.rarity;
+        document.getElementById('wishRevealIcon').innerHTML = reward.rarity === 'legendary' ? '{{ ico("sparkle") }}' : (reward.rarity === 'rare' ? '{{ ico("medal") }}' : '{{ ico("coin") }}');
+        document.getElementById('wishRevealLabel').textContent = reward.label;
+        wishReveal.hidden = false;
+        requestAnimationFrame(function () { wishReveal.classList.add('is-open'); });
+    }
+    function closeReveal() {
+        wishReveal.classList.remove('is-open');
+        setTimeout(function () {
+            wishReveal.hidden = true;
+            if (wishBtn) wishBtn.disabled = parseInt(wishBtn.dataset.cost, 10) > parseInt(document.querySelector('.shop-balance-amount').textContent, 10);
+        }, 250);
+    }
+    document.getElementById('wishRevealClose').addEventListener('click', closeReveal);
+    wishReveal.addEventListener('click', function(e) { if (e.target === wishReveal) closeReveal(); });
 });
 </script>
 {% endblock %}

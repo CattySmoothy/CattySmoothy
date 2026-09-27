@@ -45,7 +45,11 @@
                 <div class="donate-field" style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
                     <div>
                         <div class="donate-label" style="margin-bottom:2px;">{{ r.item_name }}</div>
-                        <div class="donate-note">{{ r.created_at.strftime('%b %d, %Y') }}</div>
+                        <div class="donate-note">
+                            {{ r.created_at.strftime('%b %d, %Y') }}
+                            {% if r.gifted_by %} &middot; gifted by {{ r.gifted_by.email.split('@')[0].replace('.', ' ').replace('_', ' ').title() }}{% endif %}
+                            {% if r.note %} &middot; {{ r.note }}{% endif %}
+                        </div>
                     </div>
                     <div style="text-align:right;">
                         <div class="donate-label" style="margin-bottom:2px;">✦ {{ r.cost }}</div>
@@ -57,10 +61,6 @@
                 <p class="donate-note">Nothing redeemed yet. Visit the <a href="{{ url_for('shop') }}">shop</a> to spend your stardust.</p>
             {% endif %}
         </div>
-
-        <p class="donate-note" style="margin-top:14px; text-align:center;">
-            <a href="{{ url_for('logout') }}">Log Out</a>
-        </p>
     </div>
 </div>
 {% endblock %}

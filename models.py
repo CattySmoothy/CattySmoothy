@@ -24,7 +24,7 @@ class User(UserMixin, db.Model):
     last_login_date = db.Column(db.Date, nullable=True)
 
     purchases = db.relationship('Purchase', backref='user', lazy='dynamic')
-    redemptions = db.relationship('Redemption', backref='user', lazy='dynamic')
+    redemptions = db.relationship('Redemption', foreign_keys='Redemption.user_id', backref='user', lazy='dynamic')
     guestbook_entries = db.relationship('GuestbookEntry', backref='user', lazy='dynamic')
 
     def set_password(self, password):
@@ -80,6 +80,33 @@ class Redemption(db.Model):
     cost = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')  # pending|fulfilled
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    # set when this redemption was a gift — the sender paid the cost, this
+    # row belongs to the recipient (user_id above)
+    gifted_by_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True, index=True)
+    note = db.Column(db.String(200), nullable=True)  # e.g. "a Wish reward" or a gift message
+
+    gifted_by = db.relationship('User', foreign_keys=[gifted_by_id])
+
+
+class WishPull(db.Model):
+    """One pull from the Shop's Wish (gacha) banner."""
+    __tablename__ = 'wish_pulls'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
+    rarity = db.Column(db.String(20), nullable=False)  # common | rare | legendary
+    label = db.Column(db.String(100), nullable=False)
+    reward_type = db.Column(db.String(20), nullable=False)  # stardust | item
+    reward_value = db.Column(db.String(50), nullable=False)  # amount, or an item slug
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False, index=True)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'rarity': self.rarity,
+            'label': self.label,
+            'created_at': self.created_at.strftime('%b %d, %Y'),
+        }
 
 
 class Commission(db.Model):
