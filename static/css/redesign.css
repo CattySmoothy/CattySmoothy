@@ -10489,8 +10489,48 @@ body:has(.queue-wrap) { overflow-x: hidden; }
 .queue-goal-nums b { color: var(--color-text-primary); }
 .queue-goal-edit { font-family: var(--font-dos); font-size: 10.5px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--color-text-muted); background: none; border: none; cursor: pointer; }
 .queue-goal-edit:hover { color: var(--color-accent); }
-.queue-goal-bar { height: 8px; margin-top: 10px; background: color-mix(in srgb, var(--color-text-muted) 18%, transparent); border-radius: 100px; overflow: hidden; }
-.queue-goal-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--q-in_progress, var(--color-accent)), var(--q-done, #5fa876)); border-radius: inherit; transition: width 0.3s ease; }
+/* a chunky, segmented "HP bar" rather than a smooth gradient track */
+.queue-goal-bar {
+    --hp-edge: color-mix(in srgb, var(--color-text-primary) 55%, #000);
+    --hp-seg: 10px;
+    position: relative;
+    height: 18px;
+    margin-top: 12px;
+    padding: 3px;
+    background: color-mix(in srgb, var(--color-text-muted) 22%, var(--color-surface));
+    border: 2px solid var(--hp-edge);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hp-edge) 40%, transparent), 0 2px 0 var(--hp-edge);
+    image-rendering: pixelated;
+}
+.queue-goal-fill {
+    position: relative;
+    height: 100%;
+    width: 0%;
+    background: var(--q-in_progress, var(--color-accent));
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4), inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+    transition: width 0.5s steps(16);
+    overflow: hidden;
+}
+.queue-goal-fill::before {                       /* the block dividers */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(90deg, transparent 0 calc(var(--hp-seg) - 2px), var(--hp-edge) calc(var(--hp-seg) - 2px) var(--hp-seg));
+    opacity: 0.55;
+}
+.queue-goal-fill::after {                        /* a bright leading edge, like the last HP block */
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 3px;
+    background: #fff;
+    opacity: 0.6;
+}
+@media (prefers-reduced-motion: reduce) {
+    .queue-goal-fill { transition: none; }
+}
 .queue-goal-form[hidden] { display: none; }
 .queue-goal-form { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
 .queue-goal-form span { font-family: var(--font-dos); font-size: 13px; color: var(--color-text-muted); }

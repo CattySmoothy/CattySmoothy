@@ -225,7 +225,11 @@
         }
         var pct = Math.min(100, Math.round((earned / goalAmount) * 100));
         goalNumsEl.innerHTML = '<b>' + money(earned) + '</b> of <b>' + money(goalAmount) + '</b> &middot; ' + pct + '%';
-        goalFillEl.style.width = pct + '%';
+        // snap the bar to whole HP-bar blocks (rounding up, so any progress
+        // at all lights at least one block) rather than a smooth fill
+        var SEGMENTS = 20;
+        var segPct = pct === 0 ? 0 : Math.max(1, Math.ceil(pct / (100 / SEGMENTS))) * (100 / SEGMENTS);
+        goalFillEl.style.width = Math.min(100, segPct) + '%';
     }
 
     var goalForm = document.getElementById('queueGoalForm');
