@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, abort
+from flask import request, jsonify, abort, redirect, url_for
 
 from extensions import db
 from models import Question
@@ -27,9 +27,9 @@ def register_question_routes(app):
     @app.route('/questions')
     @owner_required
     def questions_inbox():
-        items = Question.query.order_by(Question.answered, Question.created_at.desc()).all()
-        return render_template('questions.html', title="Questions",
-                                questions=[q.to_dict() for q in items])
+        # Questions now live on the Commissions (queue) page rather than
+        # their own tab — keep the URL alive as a redirect.
+        return redirect(url_for('commission_queue') + '#questions')
 
     @app.route('/questions/<int:question_id>', methods=['PATCH'])
     @owner_required

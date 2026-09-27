@@ -11171,13 +11171,12 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     .support-ask-row { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ══ Questions inbox (owner-only) ══ */
-.questions-wrap { max-width: 760px; margin: 0 auto; padding: 48px 32px 80px; }
-.questions-head { margin-bottom: 26px; }
-.questions-title { margin: 0; font-family: var(--font-dos); font-size: clamp(24px, 3vw, 30px); color: var(--color-text-primary); }
-.questions-subtitle { margin: 6px 0 0; font-size: 14px; color: var(--color-text-muted); }
+/* ══ Questions — now a section on the Commissions (queue) page ══ */
+.questions-section { margin-top: 56px; padding-top: 40px; border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 22%, transparent); }
+.questions-section-head { margin-bottom: 20px; }
+.questions-section-title { font-size: clamp(20px, 2.6vw, 26px); }
 
-.questions-list { display: flex; flex-direction: column; gap: 14px; }
+.questions-list { max-width: 760px; display: flex; flex-direction: column; gap: 14px; }
 .questions-empty { text-align: center; margin: 60px 0; font-family: var(--font-dos); font-size: 14px; color: var(--color-text-muted); }
 
 .question-card {

@@ -5,7 +5,7 @@ from flask import render_template, request, jsonify, abort
 from flask_login import current_user
 
 from extensions import db
-from models import Commission, CommissionTask, EarningsGoal, OWNER_EMAIL
+from models import Commission, CommissionTask, EarningsGoal, Question, OWNER_EMAIL
 
 MAX_NAME = 100
 MAX_TITLE = 150
@@ -59,13 +59,15 @@ def register_commission_board_routes(app):
     def commission_queue():
         commissions = Commission.query.order_by(Commission.position, Commission.created_at).all()
         goal = EarningsGoal.query.order_by(EarningsGoal.id.desc()).first()
+        questions = Question.query.order_by(Question.answered, Question.created_at.desc()).all()
         return render_template(
             'queue.html',
-            title="Commission Queue",
+            title="Commissions",
             statuses=Commission.STATUSES,
             commissions=[c.to_dict() for c in commissions],
             goal_amount=float(goal.amount) if goal else None,
             today=date.today().isoformat(),
+            questions=[q.to_dict() for q in questions],
         )
 
     @app.route('/queue/goal', methods=['PATCH'])

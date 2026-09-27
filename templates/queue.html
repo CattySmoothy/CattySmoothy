@@ -7,7 +7,7 @@
 
     <header class="queue-head">
         <div>
-            <h1 class="queue-title">Commission Queue</h1>
+            <h1 class="queue-title">Commissions</h1>
             <p class="queue-subtitle">Everything you're working on, in one board.</p>
         </div>
         <button type="button" class="queue-new-btn" id="queueNewBtn">{{ ico('plus') }} New Commission</button>
@@ -44,6 +44,35 @@
     </div>
 
     <p class="queue-empty-all" id="queueEmptyAll" hidden>Nothing in the queue yet. Add your first commission above.</p>
+
+    <section class="questions-section" id="questions">
+        <div class="queue-head questions-section-head">
+            <div>
+                <h2 class="queue-title questions-section-title">Questions</h2>
+                <p class="queue-subtitle">Everything asked from the Support page.</p>
+            </div>
+        </div>
+        <div class="questions-list" id="questionsList">
+            {% for q in questions %}
+            <article class="question-card{{ ' is-answered' if q.answered }}" data-id="{{ q.id }}">
+                <div class="question-top">
+                    <div>
+                        <span class="question-name">{{ q.name }}</span>
+                        {% if q.email %}<a class="question-email" href="mailto:{{ q.email }}">{{ q.email }}</a>{% endif %}
+                    </div>
+                    <span class="question-date">{{ q.created_at }}</span>
+                </div>
+                <p class="question-message">{{ q.message }}</p>
+                <div class="question-actions">
+                    <button type="button" class="question-toggle" data-toggle="{{ q.id }}">{{ 'mark unanswered' if q.answered else 'mark answered' }}</button>
+                    <button type="button" class="question-delete" data-delete="{{ q.id }}">delete</button>
+                </div>
+            </article>
+            {% else %}
+            <p class="questions-empty" id="questionsEmpty">No questions yet.</p>
+            {% endfor %}
+        </div>
+    </section>
 
 </div>
 
@@ -377,6 +406,35 @@
                 .then(function (data) { upsertCommission(data.commission); });
         });
     });
+
+    // ── questions (from the Support page's Ask a Question card) ──
+    var questionsList = document.getElementById('questionsList');
+    if (questionsList) {
+        questionsList.addEventListener('click', function (e) {
+            var toggleBtn = e.target.closest('[data-toggle]');
+            if (toggleBtn) {
+                var card = toggleBtn.closest('.question-card');
+                var nextAnswered = !card.classList.contains('is-answered');
+                api('/questions/' + toggleBtn.dataset.toggle, { method: 'PATCH', body: JSON.stringify({ answered: nextAnswered }) })
+                    .then(function () {
+                        card.classList.toggle('is-answered', nextAnswered);
+                        toggleBtn.textContent = nextAnswered ? 'mark unanswered' : 'mark answered';
+                    });
+                return;
+            }
+            var delBtn = e.target.closest('[data-delete]');
+            if (delBtn) {
+                if (!confirm('Delete this question?')) return;
+                api('/questions/' + delBtn.dataset.delete, { method: 'DELETE' })
+                    .then(function () {
+                        delBtn.closest('.question-card').remove();
+                        if (!questionsList.querySelector('.question-card')) {
+                            questionsList.innerHTML = '<p class="questions-empty">No questions yet.</p>';
+                        }
+                    });
+            }
+        });
+    }
 
     render();
 })();

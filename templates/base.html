@@ -59,7 +59,7 @@
 
             <div class="sidebar-section-header">
                 <span class="sidebar-section-title">Studio</span>
-                <span class="sidebar-section-count">({{ 4 if is_owner else 2 }})</span>
+                <span class="sidebar-section-count">({{ 3 if is_owner else 2 }})</span>
             </div>
             <a href="{{ url_for('collections') }}" class="sidebar-nav-item" title="Portfolio"{% if request.endpoint == 'collections' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Portfolio</span>
@@ -68,11 +68,8 @@
                 <span class="sidebar-nav-label">Shop</span>
             </a>
             {% if is_owner %}
-            <a href="{{ url_for('commission_queue') }}" class="sidebar-nav-item" title="Commission Queue"{% if request.endpoint == 'commission_queue' %} aria-current="page"{% endif %}>
-                <span class="sidebar-nav-label">Queue</span>
-            </a>
-            <a href="{{ url_for('questions_inbox') }}" class="sidebar-nav-item" title="Questions"{% if request.endpoint == 'questions_inbox' %} aria-current="page"{% endif %}>
-                <span class="sidebar-nav-label">Questions</span>
+            <a href="{{ url_for('commission_queue') }}" class="sidebar-nav-item" title="Commissions"{% if request.endpoint == 'commission_queue' %} aria-current="page"{% endif %}>
+                <span class="sidebar-nav-label">Commissions</span>
             </a>
             {% endif %}
         </nav>
