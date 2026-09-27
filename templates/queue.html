@@ -1,0 +1,380 @@
+{% extends "base.html" %}
+
+{% block content_class %}queue-wrap{% endblock %}
+
+{% block content %}
+<div class="queue-page">
+
+    <header class="queue-head">
+        <div>
+            <h1 class="queue-title">Commission Queue</h1>
+            <p class="queue-subtitle">Everything you're working on, in one board.</p>
+        </div>
+        <button type="button" class="queue-new-btn" id="queueNewBtn">{{ ico('plus') }} New Commission</button>
+    </header>
+
+    <div class="queue-stats" id="queueStats" aria-live="polite"></div>
+
+    <div class="queue-goal" id="queueGoal">
+        <div class="queue-goal-row">
+            <span class="queue-goal-label">Goal</span>
+            <span class="queue-goal-nums" id="queueGoalNums">no goal set</span>
+            <button type="button" class="queue-goal-edit" id="queueGoalEdit">edit</button>
+        </div>
+        <div class="queue-goal-bar"><div class="queue-goal-fill" id="queueGoalFill"></div></div>
+        <form class="queue-goal-form" id="queueGoalForm" hidden>
+            <span>$</span>
+            <input type="number" id="qgAmount" min="0" step="1" placeholder="amount">
+            <button type="submit" class="queue-btn-primary">Save</button>
+            <button type="button" id="qgCancel" class="queue-card-edit">cancel</button>
+        </form>
+    </div>
+
+    <div class="queue-board" id="queueBoard">
+        {% for s in statuses %}
+        <section class="queue-col" data-status="{{ s }}">
+            <div class="queue-col-head">
+                <span class="queue-col-dot"></span>
+                <span class="queue-col-label"></span>
+                <span class="queue-col-count">0</span>
+            </div>
+            <div class="queue-col-body" data-status="{{ s }}"></div>
+        </section>
+        {% endfor %}
+    </div>
+
+    <p class="queue-empty-all" id="queueEmptyAll" hidden>Nothing in the queue yet. Add your first commission above.</p>
+
+</div>
+
+<!-- ══ new / edit commission ══ -->
+<div class="queue-modal" id="queueModal" hidden>
+    <div class="queue-modal-card">
+        <button type="button" class="queue-modal-close" id="queueModalClose" aria-label="Close">{{ ico('close') }}</button>
+        <h2 class="queue-modal-title" id="queueModalTitle">New Commission</h2>
+        <form id="queueForm">
+            <input type="hidden" id="qfId">
+            <div class="queue-field-row">
+                <label class="queue-field">
+                    <span>Client</span>
+                    <input type="text" id="qfClient" maxlength="100" required placeholder="who it's for">
+                </label>
+                <label class="queue-field">
+                    <span>Status</span>
+                    <select id="qfStatus">
+                        {% for s in statuses %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+                    </select>
+                </label>
+            </div>
+            <label class="queue-field">
+                <span>Piece</span>
+                <input type="text" id="qfTitle" maxlength="150" required placeholder="what you're making">
+            </label>
+            <div class="queue-field-row">
+                <label class="queue-field">
+                    <span>Price</span>
+                    <input type="number" id="qfPrice" min="0" step="0.01" placeholder="0.00">
+                </label>
+                <label class="queue-field">
+                    <span>Deadline</span>
+                    <input type="date" id="qfDeadline">
+                </label>
+            </div>
+            <label class="queue-field">
+                <span>Description</span>
+                <textarea id="qfDescription" maxlength="4000" rows="2" placeholder="pose, outfit, reference links…"></textarea>
+            </label>
+            <label class="queue-field">
+                <span>Notes</span>
+                <textarea id="qfNotes" maxlength="4000" rows="2" placeholder="payment status, anything private"></textarea>
+            </label>
+            <p class="queue-form-error" id="queueFormError" hidden></p>
+            <div class="queue-form-actions">
+                <button type="button" class="queue-btn-ghost" id="queueDeleteBtn" hidden>{{ ico('trash') }} Delete</button>
+                <button type="submit" class="queue-btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script id="queueData" type="application/json">{{ commissions | tojson }}</script>
+<script>
+(function () {
+    var STATUSES = {{ statuses | tojson }};
+    var LABELS = { queued: 'Queue', in_progress: 'In Progress', review: 'Awaiting Approval', done: 'Completed' };
+    var TODAY = '{{ today }}';
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    var state = JSON.parse(document.getElementById('queueData').textContent);
+    var goalAmount = {{ goal_amount | tojson }};
+    var board = document.getElementById('queueBoard');
+    var statsEl = document.getElementById('queueStats');
+    var emptyAll = document.getElementById('queueEmptyAll');
+
+    function money(n) {
+        return n == null ? null : '$' + n.toFixed(2).replace(/\.00$/, '');
+    }
+    function fmtDate(iso) {
+        if (!iso) return null;
+        var d = new Date(iso + 'T00:00:00');
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    }
+    function esc(s) {
+        return (s || '').replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+
+    function api(url, opts) {
+        opts = opts || {};
+        opts.headers = Object.assign({ 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken }, opts.headers || {});
+        return fetch(url, opts).then(function (r) {
+            return r.json().then(function (data) {
+                if (!r.ok) throw new Error(data.error || 'Something went wrong.');
+                return data;
+            });
+        });
+    }
+
+    function upsertCommission(c) {
+        var i = state.findIndex(function (x) { return x.id === c.id; });
+        if (i === -1) state.push(c); else state[i] = c;
+        render();
+    }
+    function removeCommission(id) {
+        state = state.filter(function (x) { return x.id !== id; });
+        render();
+    }
+
+    function cardHtml(c) {
+        var overdue = c.deadline && c.deadline < TODAY && c.status !== 'done';
+        var progress = c.task_total ? Math.round((c.task_done / c.task_total) * 100) : 0;
+        var idx = STATUSES.indexOf(c.status);
+        var tasksHtml = c.tasks.map(function (t) {
+            return '<li class="queue-task' + (t.done ? ' is-done' : '') + '" data-task-id="' + t.id + '">' +
+                '<button type="button" class="queue-task-check" data-toggle-task="' + t.id + '" aria-label="Toggle task"></button>' +
+                '<span class="queue-task-label">' + esc(t.label) + '</span>' +
+                '<button type="button" class="queue-task-del" data-del-task="' + t.id + '" aria-label="Remove task">' + '{{ ico("close") }}' + '</button>' +
+                '</li>';
+        }).join('');
+
+        return '' +
+        '<article class="queue-card' + (overdue ? ' is-overdue' : '') + '" data-id="' + c.id + '" draggable="true">' +
+            '<div class="queue-card-grip" aria-hidden="true">' + '{{ ico("grip") }}' + '</div>' +
+            '<div class="queue-card-body" data-open="' + c.id + '">' +
+                '<div class="queue-card-top">' +
+                    '<span class="queue-card-client">' + esc(c.client_name) + '</span>' +
+                    (c.price != null ? '<span class="queue-card-price">' + money(c.price) + '</span>' : '') +
+                '</div>' +
+                '<h3 class="queue-card-title">' + esc(c.title) + '</h3>' +
+                (c.deadline ? '<span class="queue-card-due' + (overdue ? ' is-overdue' : '') + '">' + fmtDate(c.deadline) + (overdue ? ' · overdue' : '') + '</span>' : '') +
+            '</div>' +
+            (c.task_total ? '<div class="queue-progress"><div class="queue-progress-fill" style="width:' + progress + '%"></div></div>' : '') +
+            '<ul class="queue-tasks">' + tasksHtml + '</ul>' +
+            '<form class="queue-task-add" data-add-task="' + c.id + '">' +
+                '<input type="text" maxlength="150" placeholder="add a task…">' +
+                '<button type="submit" aria-label="Add task">' + '{{ ico("plus") }}' + '</button>' +
+            '</form>' +
+            '<div class="queue-card-foot">' +
+                '<button type="button" class="queue-card-move" data-move="' + c.id + ':-1"' + (idx <= 0 ? ' disabled' : '') + '>' + '{{ ico("chevron-left") }}' + '</button>' +
+                '<button type="button" class="queue-card-edit" data-open="' + c.id + '">edit</button>' +
+                '<button type="button" class="queue-card-move" data-move="' + c.id + ':1"' + (idx >= STATUSES.length - 1 ? ' disabled' : '') + '>' + '{{ ico("chevron-right") }}' + '</button>' +
+            '</div>' +
+        '</article>';
+    }
+
+    function render() {
+        state.sort(function (a, b) { return a.position - b.position; });
+        var active = 0, activeValue = 0, overdueCount = 0, earned = 0;
+
+        STATUSES.forEach(function (s) {
+            var col = board.querySelector('.queue-col[data-status="' + s + '"]');
+            col.querySelector('.queue-col-label').textContent = LABELS[s] || s;
+            var items = state.filter(function (c) { return c.status === s; });
+            col.querySelector('.queue-col-count').textContent = items.length;
+            var body = col.querySelector('.queue-col-body');
+            body.innerHTML = items.length ? items.map(cardHtml).join('') : '<p class="queue-col-empty">nothing here</p>';
+
+            if (s === 'done') {
+                items.forEach(function (c) { if (c.price != null) earned += c.price; });
+            } else {
+                active += items.length;
+                items.forEach(function (c) {
+                    if (c.price != null) activeValue += c.price;
+                    if (c.deadline && c.deadline < TODAY) overdueCount++;
+                });
+            }
+        });
+
+        emptyAll.hidden = state.length !== 0;
+        statsEl.innerHTML =
+            '<span class="queue-stat"><b>' + active + '</b> active</span>' +
+            '<span class="queue-stat"><b>' + money(activeValue) + '</b> in progress</span>' +
+            (overdueCount ? '<span class="queue-stat is-overdue"><b>' + overdueCount + '</b> overdue</span>' : '');
+        renderGoal(earned);
+    }
+
+    // ── earnings goal: progress = completed commissions' prices ──
+    var goalNumsEl = document.getElementById('queueGoalNums');
+    var goalFillEl = document.getElementById('queueGoalFill');
+    function renderGoal(earned) {
+        if (!goalAmount) {
+            goalNumsEl.textContent = 'no goal set';
+            goalFillEl.style.width = '0%';
+            return;
+        }
+        var pct = Math.min(100, Math.round((earned / goalAmount) * 100));
+        goalNumsEl.innerHTML = '<b>' + money(earned) + '</b> of <b>' + money(goalAmount) + '</b> &middot; ' + pct + '%';
+        goalFillEl.style.width = pct + '%';
+    }
+
+    var goalForm = document.getElementById('queueGoalForm');
+    document.getElementById('queueGoalEdit').addEventListener('click', function () {
+        document.getElementById('qgAmount').value = goalAmount || '';
+        goalForm.hidden = false;
+        document.getElementById('qgAmount').focus();
+    });
+    document.getElementById('qgCancel').addEventListener('click', function () { goalForm.hidden = true; });
+    goalForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var amount = document.getElementById('qgAmount').value;
+        api('/queue/goal', { method: 'PATCH', body: JSON.stringify({ amount: amount }) }).then(function (data) {
+            goalAmount = data.amount;
+            goalForm.hidden = true;
+            render();
+        });
+    });
+
+    // ── new / edit modal ──
+    var modal = document.getElementById('queueModal');
+    var form = document.getElementById('queueForm');
+    var formError = document.getElementById('queueFormError');
+    var deleteBtn = document.getElementById('queueDeleteBtn');
+
+    function openModal(commission) {
+        formError.hidden = true;
+        document.getElementById('qfId').value = commission ? commission.id : '';
+        document.getElementById('qfClient').value = commission ? commission.client_name : '';
+        document.getElementById('qfTitle').value = commission ? commission.title : '';
+        document.getElementById('qfStatus').value = commission ? commission.status : 'queued';
+        document.getElementById('qfPrice').value = commission && commission.price != null ? commission.price : '';
+        document.getElementById('qfDeadline').value = commission ? (commission.deadline || '') : '';
+        document.getElementById('qfDescription').value = commission ? commission.description : '';
+        document.getElementById('qfNotes').value = commission ? commission.notes : '';
+        document.getElementById('queueModalTitle').textContent = commission ? 'Edit Commission' : 'New Commission';
+        deleteBtn.hidden = !commission;
+        modal.hidden = false;
+        document.getElementById('qfClient').focus();
+    }
+    function closeModal() { modal.hidden = true; }
+
+    document.getElementById('queueNewBtn').addEventListener('click', function () { openModal(null); });
+    document.getElementById('queueModalClose').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var id = document.getElementById('qfId').value;
+        var payload = {
+            client_name: document.getElementById('qfClient').value,
+            title: document.getElementById('qfTitle').value,
+            status: document.getElementById('qfStatus').value,
+            price: document.getElementById('qfPrice').value || null,
+            deadline: document.getElementById('qfDeadline').value || null,
+            description: document.getElementById('qfDescription').value,
+            notes: document.getElementById('qfNotes').value,
+        };
+        var req = id ? api('/queue/commissions/' + id, { method: 'PATCH', body: JSON.stringify(payload) })
+                     : api('/queue/commissions', { method: 'POST', body: JSON.stringify(payload) });
+        req.then(function (data) {
+            upsertCommission(data.commission);
+            closeModal();
+        }).catch(function (err) {
+            formError.textContent = err.message;
+            formError.hidden = false;
+        });
+    });
+
+    deleteBtn.addEventListener('click', function () {
+        var id = document.getElementById('qfId').value;
+        if (!id || !confirm('Delete this commission and its tasks?')) return;
+        api('/queue/commissions/' + id, { method: 'DELETE' }).then(function () {
+            removeCommission(parseInt(id, 10));
+            closeModal();
+        }).catch(function (err) { formError.textContent = err.message; formError.hidden = false; });
+    });
+
+    // ── board interactions (delegated) ──
+    board.addEventListener('click', function (e) {
+        var openId = e.target.closest('[data-open]');
+        if (openId && !e.target.closest('.queue-task, .queue-task-add')) {
+            var c = state.find(function (x) { return x.id === parseInt(openId.dataset.open, 10); });
+            if (c) openModal(c);
+            return;
+        }
+        var moveBtn = e.target.closest('[data-move]');
+        if (moveBtn) {
+            var parts = moveBtn.dataset.move.split(':');
+            var id = parseInt(parts[0], 10), dir = parseInt(parts[1], 10);
+            var c2 = state.find(function (x) { return x.id === id; });
+            var next = STATUSES[STATUSES.indexOf(c2.status) + dir];
+            if (next) api('/queue/commissions/' + id, { method: 'PATCH', body: JSON.stringify({ status: next }) })
+                .then(function (data) { upsertCommission(data.commission); });
+            return;
+        }
+        var toggle = e.target.closest('[data-toggle-task]');
+        if (toggle) {
+            var taskId = toggle.dataset.toggleTask;
+            var li = toggle.closest('.queue-task');
+            var done = !li.classList.contains('is-done');
+            api('/queue/tasks/' + taskId, { method: 'PATCH', body: JSON.stringify({ done: done }) })
+                .then(function (data) { upsertCommission(data.commission); });
+            return;
+        }
+        var delTask = e.target.closest('[data-del-task]');
+        if (delTask) {
+            api('/queue/tasks/' + delTask.dataset.delTask, { method: 'DELETE' })
+                .then(function (data) { upsertCommission(data.commission); });
+        }
+    });
+
+    board.addEventListener('submit', function (e) {
+        var addForm = e.target.closest('[data-add-task]');
+        if (!addForm) return;
+        e.preventDefault();
+        var input = addForm.querySelector('input');
+        var label = input.value.trim();
+        if (!label) return;
+        api('/queue/commissions/' + addForm.dataset.addTask + '/tasks', { method: 'POST', body: JSON.stringify({ label: label }) })
+            .then(function (data) { upsertCommission(data.commission); });
+    });
+
+    // drag a card between columns
+    var dragId = null;
+    board.addEventListener('dragstart', function (e) {
+        var card = e.target.closest('.queue-card');
+        if (!card) return;
+        dragId = parseInt(card.dataset.id, 10);
+        e.dataTransfer.effectAllowed = 'move';
+    });
+    board.querySelectorAll('.queue-col-body').forEach(function (body) {
+        body.addEventListener('dragover', function (e) { e.preventDefault(); body.classList.add('is-drag-over'); });
+        body.addEventListener('dragleave', function () { body.classList.remove('is-drag-over'); });
+        body.addEventListener('drop', function (e) {
+            e.preventDefault();
+            body.classList.remove('is-drag-over');
+            if (dragId == null) return;
+            var status = body.dataset.status;
+            var c = state.find(function (x) { return x.id === dragId; });
+            dragId = null;
+            if (!c || c.status === status) return;
+            api('/queue/commissions/' + c.id, { method: 'PATCH', body: JSON.stringify({ status: status }) })
+                .then(function (data) { upsertCommission(data.commission); });
+        });
+    });
+
+    render();
+})();
+</script>
+{% endblock %}

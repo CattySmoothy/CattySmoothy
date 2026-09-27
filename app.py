@@ -5,11 +5,12 @@ from flask_migrate import Migrate
 import stripe
 
 from extensions import db, login_manager, csrf
-from models import User
+from models import User, OWNER_EMAIL
 from routes import register_routes
 from auth import register_auth_routes
 from shop import register_shop_routes
 from guestbook import register_guestbook_routes
+from commission_board import register_commission_board_routes
 from icons import register_icons
 
 load_dotenv()
@@ -45,10 +46,17 @@ def unauthorized():
     return redirect(login_url)
 
 
+@app.context_processor
+def inject_is_owner():
+    from flask_login import current_user
+    return {'is_owner': current_user.is_authenticated and current_user.email == OWNER_EMAIL}
+
+
 register_routes(app)
 register_auth_routes(app)
 register_shop_routes(app)
 register_guestbook_routes(app)
+register_commission_board_routes(app)
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5001)

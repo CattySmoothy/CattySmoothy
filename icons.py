@@ -29,6 +29,16 @@ ICONS = {
     'folder': '<path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4l2 2.5h8A1.5 1.5 0 0 1 20.5 9v9a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 18z"/>',
     'sparkle': '<path d="M12 2.5c.6 4.8 2.7 7 7.5 9.5-4.8 2.5-6.9 4.7-7.5 9.5-.6-4.8-2.7-7-7.5-9.5 4.8-2.5 6.9-4.7 7.5-9.5z" fill="currentColor" stroke="none"/>',
     'mail': '<rect x="3.5" y="6" width="17" height="12"/><path d="m3.5 7 8.5 6.5L20.5 7"/>',
+    # commission-queue set
+    'plus': '<path d="M12 5v14M5 12h14"/>',
+    'trash': '<path d="M5 7h14"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="m7 7 1 13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/>',
+    'close': '<path d="M6 6l12 12M18 6 6 18"/>',
+    'coin': '<circle cx="12" cy="12" r="8.5"/><path d="M9.3 14.5c.4 1 1.3 1.6 2.7 1.6 1.7 0 2.7-.8 2.7-2 0-1.1-.9-1.6-2.7-2-1.8-.4-2.7-.9-2.7-2 0-1.2 1-2 2.7-2 1.4 0 2.3.6 2.7 1.6" stroke-width="1.4"/><path d="M12 7.2v1.3M12 15.5v1.3" stroke-width="1.4"/>',
+    'calendar': '<rect x="3.5" y="5.5" width="17" height="15" rx="1"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4"/>',
+    'grip': '<circle cx="9" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.2" fill="currentColor" stroke="none"/>',
+    'chevron-left': '<path d="M14.5 5.5 8 12l6.5 6.5"/>',
+    'chevron-right': '<path d="M9.5 5.5 16 12l-6.5 6.5"/>',
+    'clock': '<circle cx="12" cy="12.5" r="8.5"/><path d="M12 7.5V13l4 2"/>',
 }
 
 
@@ -46,6 +56,23 @@ SPRITE = Markup(
 )
 
 
+# ── small full-colour pixel-art graphics (fixed retro palette, not tied to
+# the theme — same idea as the shimeji cat's own fixed palette) ──
+_PIXEL_TV_INNER = (
+    "<rect x=\"11\" y=\"0\" width=\"3\" height=\"1\" fill=\"#2b2018\"/><rect x=\"10\" y=\"1\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"11\" y=\"1\" width=\"1\" height=\"1\" fill=\"#fff3c4\"/><rect x=\"12\" y=\"1\" width=\"2\" height=\"1\" fill=\"#f0c34d\"/><rect x=\"14\" y=\"1\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"10\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"11\" y=\"2\" width=\"1\" height=\"1\" fill=\"#fff3c4\"/><rect x=\"12\" y=\"2\" width=\"2\" height=\"1\" fill=\"#c78d2c\"/><rect x=\"14\" y=\"2\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"10\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"11\" y=\"3\" width=\"1\" height=\"1\" fill=\"#f0c34d\"/><rect x=\"12\" y=\"3\" width=\"2\" height=\"1\" fill=\"#c78d2c\"/><rect x=\"14\" y=\"3\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"11\" y=\"4\" width=\"3\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"5\" width=\"14\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"6\" width=\"7\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"9\" y=\"6\" width=\"7\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"6\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"7\" width=\"2\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"4\" y=\"7\" width=\"8\" height=\"1\" fill=\"#4a3826\"/><rect x=\"12\" y=\"7\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"13\" y=\"7\" width=\"3\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"7\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"8\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"3\" y=\"8\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"4\" y=\"8\" width=\"1\" height=\"1\" fill=\"#183a30\"/><rect x=\"5\" y=\"8\" width=\"1\" height=\"1\" fill=\"#eafff5\"/><rect x=\"6\" y=\"8\" width=\"6\" height=\"1\" fill=\"#183a30\"/><rect x=\"12\" y=\"8\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"13\" y=\"8\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"14\" y=\"8\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"15\" y=\"8\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"8\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"9\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"9\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"3\" y=\"9\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"4\" y=\"9\" width=\"2\" height=\"1\" fill=\"#183a30\"/><rect x=\"6\" y=\"9\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"7\" y=\"9\" width=\"3\" height=\"1\" fill=\"#183a30\"/><rect x=\"10\" y=\"9\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"11\" y=\"9\" width=\"1\" height=\"1\" fill=\"#183a30\"/><rect x=\"12\" y=\"9\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"13\" y=\"9\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"14\" y=\"9\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"15\" y=\"9\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"9\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"10\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"10\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"3\" y=\"10\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"4\" y=\"10\" width=\"2\" height=\"1\" fill=\"#183a30\"/><rect x=\"6\" y=\"10\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"7\" y=\"10\" width=\"3\" height=\"1\" fill=\"#183a30\"/><rect x=\"10\" y=\"10\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"11\" y=\"10\" width=\"1\" height=\"1\" fill=\"#183a30\"/><rect x=\"12\" y=\"10\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"13\" y=\"10\" width=\"3\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"10\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"11\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"11\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"3\" y=\"11\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"4\" y=\"11\" width=\"2\" height=\"1\" fill=\"#183a30\"/><rect x=\"6\" y=\"11\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"7\" y=\"11\" width=\"3\" height=\"1\" fill=\"#183a30\"/><rect x=\"10\" y=\"11\" width=\"1\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"11\" y=\"11\" width=\"1\" height=\"1\" fill=\"#183a30\"/><rect x=\"12\" y=\"11\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"13\" y=\"11\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"14\" y=\"11\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"15\" y=\"11\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"11\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"12\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"12\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"3\" y=\"12\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"4\" y=\"12\" width=\"3\" height=\"1\" fill=\"#183a30\"/><rect x=\"7\" y=\"12\" width=\"3\" height=\"1\" fill=\"#8ff0c8\"/><rect x=\"10\" y=\"12\" width=\"2\" height=\"1\" fill=\"#183a30\"/><rect x=\"12\" y=\"12\" width=\"1\" height=\"1\" fill=\"#4a3826\"/><rect x=\"13\" y=\"12\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"14\" y=\"12\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"15\" y=\"12\" width=\"1\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"12\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"13\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"13\" width=\"2\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"4\" y=\"13\" width=\"8\" height=\"1\" fill=\"#4a3826\"/><rect x=\"12\" y=\"13\" width=\"1\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"13\" y=\"13\" width=\"3\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"13\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"1\" y=\"14\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"14\" width=\"7\" height=\"1\" fill=\"#ecdcb8\"/><rect x=\"9\" y=\"14\" width=\"7\" height=\"1\" fill=\"#d3bd8c\"/><rect x=\"16\" y=\"14\" width=\"1\" height=\"1\" fill=\"#2b2018\"/><rect x=\"2\" y=\"15\" width=\"14\" height=\"1\" fill=\"#2b2018\"/><rect x=\"4\" y=\"16\" width=\"2\" height=\"1\" fill=\"#2b2018\"/><rect x=\"12\" y=\"16\" width=\"2\" height=\"1\" fill=\"#2b2018\"/><rect x=\"4\" y=\"17\" width=\"2\" height=\"1\" fill=\"#2b2018\"/><rect x=\"12\" y=\"17\" width=\"2\" height=\"1\" fill=\"#2b2018\"/>"
+)
+
+
+def pixel_tv(cls=''):
+    """A chunky pixel-art CRT TV with a cute glowing face and a small coin
+    balanced on top — used as the Support page's icon."""
+    extra = f' {cls}' if cls else ''
+    return Markup(
+        f'<svg class="pixel-tv{extra}" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" '
+        f'shape-rendering="crispEdges" aria-hidden="true" focusable="false">{_PIXEL_TV_INNER}</svg>'
+    )
+
+
 def ico(name, cls=''):
     """Inline reference to an icon from the sprite."""
     if name not in ICONS:
@@ -59,6 +86,7 @@ def ico(name, cls=''):
 
 def register_icons(app):
     app.jinja_env.globals['ico'] = ico
+    app.jinja_env.globals['pixel_tv'] = pixel_tv
 
     @app.context_processor
     def _inject_icon_sprite():

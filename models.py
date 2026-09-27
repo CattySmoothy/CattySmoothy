@@ -5,6 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from extensions import db
 
+# The one account allowed to see/manage the commission queue (models.py, not
+# a role column, since there is exactly one artist running this site).
+OWNER_EMAIL = 'raichuuxxofficial@gmail.com'
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -75,6 +79,74 @@ class Redemption(db.Model):
     item_name = db.Column(db.String(100), nullable=False)
     cost = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(20), nullable=False, default='pending')  # pending|fulfilled
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+
+class Commission(db.Model):
+    """A single commission moving through the queue — client, price and
+    deadline, plus a checklist of production tasks."""
+    __tablename__ = 'commissions'
+
+    STATUSES = ('queued', 'in_progress', 'review', 'done')
+
+    id = db.Column(db.Integer, primary_key=True)
+    client_name = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    price = db.Column(db.Numeric(8, 2), nullable=True)
+    status = db.Column(db.String(20), nullable=False, default='queued', index=True)
+    deadline = db.Column(db.Date, nullable=True)
+    notes = db.Column(db.Text, nullable=True)
+    position = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    tasks = db.relationship(
+        'CommissionTask', backref='commission', lazy='dynamic',
+        order_by='CommissionTask.position', cascade='all, delete-orphan',
+    )
+
+    def to_dict(self):
+        tasks = self.tasks.all()
+        return {
+            'id': self.id,
+            'client_name': self.client_name,
+            'title': self.title,
+            'description': self.description or '',
+            'price': float(self.price) if self.price is not None else None,
+            'status': self.status,
+            'deadline': self.deadline.isoformat() if self.deadline else None,
+            'notes': self.notes or '',
+            'position': self.position,
+            'tasks': [t.to_dict() for t in tasks],
+            'task_total': len(tasks),
+            'task_done': sum(1 for t in tasks if t.done),
+        }
+
+
+class CommissionTask(db.Model):
+    """One checklist item on a commission (e.g. "sketch", "lineart")."""
+    __tablename__ = 'commission_tasks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    commission_id = db.Column(db.Integer, db.ForeignKey('commissions.id'), nullable=False, index=True)
+    label = db.Column(db.String(150), nullable=False)
+    done = db.Column(db.Boolean, nullable=False, default=False)
+    position = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    def to_dict(self):
+        return {'id': self.id, 'label': self.label, 'done': self.done}
+
+
+class EarningsGoal(db.Model):
+    """A single row: the artist's current earnings target for the queue's
+    progress bar. Always read/written as 'the latest row' rather than a
+    fixed id, so updating it is a plain insert-and-move-on."""
+    __tablename__ = 'earnings_goals'
+
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Numeric(10, 2), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
 
