@@ -10765,3 +10765,186 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     .queue-board { grid-template-columns: minmax(0, 1fr); }
     .queue-field-row { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ══ Collections: one interactive story page (was Collections + Organization) ══
+   A single scroll — hero, a sticky chapter rail, the portfolio teaser cards,
+   the interactive folder desk, the Lunar Bloom chapter and a join CTA —
+   instead of two separate tabs. */
+
+.story-wrap {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 32px 0;
+}
+
+/* sticky chapter rail */
+.story-toc {
+    position: sticky;
+    top: 24px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin: 0 0 8px;
+    padding: 8px;
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 16%, transparent);
+    border-radius: 100px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+.story-toc a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: 100px;
+    transition: color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+}
+.story-toc-num { font-size: 10px; opacity: 0.7; }
+.story-toc a:hover { color: var(--color-text-primary); }
+.story-toc a.active { color: var(--color-accent-text, var(--color-accent)); background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+
+/* hero */
+.story-hero {
+    padding: 70px 0 60px;
+    text-align: center;
+}
+.story-kicker {
+    margin: 0 0 10px;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+}
+.story-title {
+    margin: 0 auto;
+    max-width: 18ch;
+    font-family: var(--font-display, var(--font-dos));
+    font-size: clamp(28px, 4.2vw, 44px);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-text-primary);
+}
+.story-hero .hy-rule { width: 220px; margin: 26px auto 24px; }
+.story-lead {
+    max-width: 62ch;
+    margin: 0 auto;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+}
+.story-lead-narrow { max-width: 58ch; margin-bottom: 30px; }
+.story-scroll-cue {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 40px;
+    font-family: var(--font-dos);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    text-decoration: none;
+}
+.story-scroll-cue span { font-size: 16px; animation: story-cue-bob 1.6s ease-in-out infinite; }
+.story-scroll-cue:hover { color: var(--color-accent-text, var(--color-accent)); }
+@keyframes story-cue-bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+/* chapters */
+.story-chapter { padding: 70px 0; scroll-margin-top: 84px; }
+.story-chapter-flush { padding-top: 60px; }
+.story-chapter-close { padding-bottom: 90px; }
+.story-chapter-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 8px;
+}
+.story-chapter-num {
+    font-family: var(--font-dos);
+    font-size: 34px;
+    font-weight: 700;
+    color: color-mix(in srgb, var(--color-accent) 55%, var(--color-text-muted));
+    opacity: 0.55;
+    line-height: 1;
+}
+.story-chapter-title {
+    margin: 0;
+    font-family: var(--font-dos);
+    font-size: 24px;
+    letter-spacing: 0.3px;
+    color: var(--color-text-primary);
+}
+.story-chapter-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+#ch-prologue ~ #ch-work { border-top: none; }
+.story-chapter + .story-chapter { border-top: 1px dashed color-mix(in srgb, var(--color-text-muted) 22%, transparent); }
+
+/* Lunar Bloom, told as cards instead of an FAQ accordion */
+.story-bloom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+.story-bloom-card {
+    padding: 22px 24px;
+    background: color-mix(in srgb, var(--color-surface-alt) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text-muted) 16%, transparent);
+    border-radius: var(--radius-md);
+}
+.story-bloom-card-wide { grid-column: 1 / -1; }
+.story-bloom-card h3 {
+    margin: 0 0 10px;
+    font-family: var(--font-dos);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: var(--color-accent-text, var(--color-accent));
+}
+.story-bloom-card p, .story-bloom-card li {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+}
+.story-bloom-card ul { margin: 0; padding: 0 0 0 18px; }
+.story-bloom-card li { margin-bottom: 4px; }
+.story-bloom-card li strong { color: var(--color-text-primary); }
+
+.story-end {
+    margin: 46px 0 0;
+    text-align: center;
+    font-family: var(--font-dos);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 860px) {
+    .story-toc { overflow-x: auto; justify-content: flex-start; border-radius: var(--radius-md); scrollbar-width: none; }
+    .story-toc::-webkit-scrollbar { display: none; }
+    .story-toc-num { display: none; }
+    .story-bloom-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+    .story-wrap { padding: 40px 18px 0; }
+    .story-hero { padding: 46px 0 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .story-scroll-cue span { animation: none; }
+}

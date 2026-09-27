@@ -62,20 +62,11 @@
 
             <div class="sidebar-section-header">
                 <span class="sidebar-section-title">Portfolio</span>
-                <span class="sidebar-section-count">(2)</span>
+                <span class="sidebar-section-count">(1)</span>
             </div>
             <a href="{{ url_for('collections') }}" class="sidebar-nav-item" title="Collections"{% if request.endpoint == 'collections' %} aria-current="page"{% endif %}>
                 <span class="sidebar-nav-label">Collections</span>
             </a>
-            <div class="sidebar-nav-item-wrapper" id="orgWrapper">
-                <a href="#" class="sidebar-nav-item" title="Organization" id="orgToggle">
-                    <span class="sidebar-nav-label">Organization</span>
-                </a>
-                <div class="sidebar-subnav" id="orgSubnav">
-                    <a href="{{ url_for('organization') }}" class="sidebar-subnav-item">Club Plan</a>
-                    <a href="{{ url_for('apply_and_join') }}" class="sidebar-subnav-item">Apply &amp; Join</a>
-                </div>
-            </div>
 
             <div class="sidebar-section-header">
                 <span class="sidebar-section-title">Studio</span>

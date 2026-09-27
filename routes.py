@@ -102,7 +102,10 @@ def register_routes(app):
 
     @app.route('/organization')
     def organization():
-        return render_template('organization.html', title="Organization")
+        # Lunar Bloom now lives as a chapter of the Collections story page
+        # rather than its own tab — keep this route alive as a redirect so
+        # old links and bookmarks still land somewhere.
+        return redirect(url_for('collections') + '#ch-bloom')
 
     @app.route('/apply-and-join')
     def apply_and_join():

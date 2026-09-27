@@ -89,7 +89,7 @@
                             <button type="button" class="char-select-thumb char-select-tab os-titlebar-icon-org" data-index="2" role="tab" aria-label="Community"><span class="char-select-tab-icon">{{ ico('people') }}</span><span class="char-select-tab-label">Community</span></button>
                             </div>
                             <div class="char-select-slides">
-                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-shop active" data-index="0">
+                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-shop active" data-index="0">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <span class="char-select-slide-icon">{{ ico('clapper') }}</span>
                                 <span class="char-select-slide-class">Collection 01</span>
@@ -97,7 +97,7 @@
                                 <span class="char-select-slide-tagline">Watch the creative process behind my digital art pieces.</span>
                                 <span class="char-select-slide-enter">▶ Open</span>
                             </a>
-                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-collections" data-index="1">
+                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-collections" data-index="1">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <span class="char-select-slide-icon">{{ ico('pencil') }}</span>
                                 <span class="char-select-slide-class">Collection 02</span>
@@ -105,7 +105,7 @@
                                 <span class="char-select-slide-tagline">Quick sketches and studies that showcase my artistic process.</span>
                                 <span class="char-select-slide-enter">▶ Open</span>
                             </a>
-                            <a href="{{ url_for('collections') }}" class="char-select-slide os-titlebar-icon-org" data-index="2">
+                            <a href="{{ url_for('collections') }}#ch-desk" class="char-select-slide os-titlebar-icon-org" data-index="2">
                                 {% for c in ['tl', 'tr', 'bl', 'br'] %}<span class="support-corner support-corner-{{ c }}"></span>{% endfor %}
                                 <span class="char-select-slide-icon">{{ ico('people') }}</span>
                                 <span class="char-select-slide-class">Collection 03</span>
@@ -150,7 +150,7 @@
                                             <span class="org-paper-tag">Art Swaps</span>
                                             <span class="org-paper-tag">Postcards</span>
                                         </div>
-                                        <a href="/organization" class="org-paper-link">Read Full Story →</a>
+                                        <a href="{{ url_for('collections') }}#ch-bloom" class="org-paper-link">Read Full Story →</a>
                                     </div>
                                 </div>
                             </div>

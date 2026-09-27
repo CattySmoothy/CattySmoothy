@@ -1,74 +1,189 @@
 {% extends "base.html" %}
 
+{% block content_class %}story-wrap{% endblock %}
+
 {% block content %}
-<section class="portfolio-index-section slide-up">
-    <div class="portfolio-panel-grid">
-        <a href="#" class="portfolio-panel portfolio-panel-1" data-panel>
-            <div class="portfolio-panel-info">
-                <p class="portfolio-panel-num">01</p>
-                <hr class="portfolio-panel-rule">
-                <h3 class="portfolio-panel-title">Process Videos</h3>
-                <p class="portfolio-panel-author">Raichuu</p>
-                <p class="portfolio-panel-tag">Watch the creative process behind my digital art pieces.</p>
-            </div>
-        </a>
-        <a href="#" class="portfolio-panel portfolio-panel-2" data-panel>
-            <div class="portfolio-panel-info">
-                <p class="portfolio-panel-num">02</p>
-                <hr class="portfolio-panel-rule">
-                <h3 class="portfolio-panel-title">Sketches</h3>
-                <p class="portfolio-panel-author">Raichuu</p>
-                <p class="portfolio-panel-tag">Quick sketches and studies that showcase my artistic process.</p>
-            </div>
-        </a>
-        <a href="#" class="portfolio-panel portfolio-panel-3" data-panel>
-            <div class="portfolio-panel-info">
-                <p class="portfolio-panel-num">03</p>
-                <hr class="portfolio-panel-rule">
-                <h3 class="portfolio-panel-title">Community</h3>
-                <p class="portfolio-panel-author">Raichuu</p>
-                <p class="portfolio-panel-tag">Complete collection of my best work in one place.</p>
-            </div>
-        </a>
-    </div>
-</section>
+<div class="story-page">
 
-<section class="collections-desk-section">
-    <div class="collections-desk-head">
-        <span>MY FOLDERS</span>
-        <small>drag folders around &middot; double-click a folder to open it</small>
-    </div>
-    <div class="os-grid collections-desk" id="collectionsDesk">
-        <!-- Desktop ejected folders container -->
-        <div id="galleryDesktopFolders"></div>
+    <nav class="story-toc" id="storyToc" aria-label="Chapters">
+        <a href="#ch-prologue" data-ch="ch-prologue"><span class="story-toc-num">01</span>Prologue</a>
+        <a href="#ch-work" data-ch="ch-work"><span class="story-toc-num">02</span>The Work</a>
+        <a href="#ch-desk" data-ch="ch-desk"><span class="story-toc-num">03</span>The Desk</a>
+        <a href="#ch-bloom" data-ch="ch-bloom"><span class="story-toc-num">04</span>Lunar Bloom</a>
+        <a href="#ch-join" data-ch="ch-join"><span class="story-toc-num">05</span>Join</a>
+    </nav>
 
-        <!-- Desktop dropped photo files -->
-        <div id="osDesktopPhotos"></div>
+    <header class="story-hero" id="ch-prologue">
+        <p class="story-kicker">My Portfolio</p>
+        <h1 class="story-title">a story told in sketches, screens &amp; stardust</h1>
+        <i class="hy-rule"></i>
+        <p class="story-lead">
+            I've always found it easier to say things through a page than out loud. What started as doodles in
+            class turned into sketchbooks, then into finished pieces, then into a whole process I actually enjoy
+            sharing — the messy first lines just as much as the final render. This page is that process laid out:
+            the work itself, the desk it comes from, and the community that grew up around it.
+        </p>
+        <a href="#ch-work" class="story-scroll-cue" aria-label="Scroll to begin">keep scrolling<span>▾</span></a>
+    </header>
 
-        <!-- Gallery (folder view, no window frame) -->
-        <div class="gallery-folder-view" id="galleryFolderView">
-            <div class="gallery-folder-head" id="galleryDragHandle">
-                <div class="gallery-folder-tabs" id="galleryFolders"></div>
-                <button type="button" class="gallery-close-btn" id="galleryCloseBtn" title="Close folder">&times;</button>
+    <section class="story-chapter" id="ch-work">
+        <div class="story-chapter-head">
+            <span class="story-chapter-num">02</span>
+            <div>
+                <h2 class="story-chapter-title">The Work</h2>
+                <p class="story-chapter-sub">three ways into the collection</p>
             </div>
-            <div class="gallery-folder-body">
-                <div class="gallery-folder-contents">
-                    <div class="gallery-grid" id="galleryGrid"></div>
-                </div>
-                {% if guest_view_only %}<fieldset disabled>{% endif %}
-                <div class="gallery-folder-actions">
-                    <button type="button" class="gallery-tool-btn" id="galleryAddFolder">+ Folder</button>
-                    <label class="gallery-tool-btn">
-                        + Photos
-                        <input type="file" id="galleryUpload" accept="image/*" multiple class="gallery-upload-input">
-                    </label>
-                </div>
-                {% if guest_view_only %}</fieldset>{% endif %}
-            </div>
-            <div class="gallery-resize-handle" id="galleryResizeHandle"></div>
         </div>
-    </div>
-</section>
+
+        <section class="portfolio-index-section slide-up">
+            <div class="portfolio-panel-grid">
+                <a href="#ch-desk" class="portfolio-panel portfolio-panel-1" data-panel>
+                    <div class="portfolio-panel-info">
+                        <p class="portfolio-panel-num">01</p>
+                        <hr class="portfolio-panel-rule">
+                        <h3 class="portfolio-panel-title">Process Videos</h3>
+                        <p class="portfolio-panel-author">Raichuu</p>
+                        <p class="portfolio-panel-tag">Watch the creative process behind my digital art pieces.</p>
+                    </div>
+                </a>
+                <a href="#ch-desk" class="portfolio-panel portfolio-panel-2" data-panel>
+                    <div class="portfolio-panel-info">
+                        <p class="portfolio-panel-num">02</p>
+                        <hr class="portfolio-panel-rule">
+                        <h3 class="portfolio-panel-title">Sketches</h3>
+                        <p class="portfolio-panel-author">Raichuu</p>
+                        <p class="portfolio-panel-tag">Quick sketches and studies that showcase my artistic process.</p>
+                    </div>
+                </a>
+                <a href="#ch-desk" class="portfolio-panel portfolio-panel-3" data-panel>
+                    <div class="portfolio-panel-info">
+                        <p class="portfolio-panel-num">03</p>
+                        <hr class="portfolio-panel-rule">
+                        <h3 class="portfolio-panel-title">Community</h3>
+                        <p class="portfolio-panel-author">Raichuu</p>
+                        <p class="portfolio-panel-tag">Complete collection of my best work in one place.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </section>
+
+    <section class="story-chapter story-chapter-flush" id="ch-desk">
+        <div class="story-chapter-head">
+            <span class="story-chapter-num">03</span>
+            <div>
+                <h2 class="story-chapter-title">The Desk</h2>
+                <p class="story-chapter-sub">where the collection actually lives — drag a folder open</p>
+            </div>
+        </div>
+
+        <section class="collections-desk-section">
+            <div class="collections-desk-head">
+                <span>MY FOLDERS</span>
+                <small>drag folders around &middot; double-click a folder to open it</small>
+            </div>
+            <div class="os-grid collections-desk" id="collectionsDesk">
+                <!-- Desktop ejected folders container -->
+                <div id="galleryDesktopFolders"></div>
+
+                <!-- Desktop dropped photo files -->
+                <div id="osDesktopPhotos"></div>
+
+                <!-- Gallery (folder view, no window frame) -->
+                <div class="gallery-folder-view" id="galleryFolderView">
+                    <div class="gallery-folder-head" id="galleryDragHandle">
+                        <div class="gallery-folder-tabs" id="galleryFolders"></div>
+                        <button type="button" class="gallery-close-btn" id="galleryCloseBtn" title="Close folder">&times;</button>
+                    </div>
+                    <div class="gallery-folder-body">
+                        <div class="gallery-folder-contents">
+                            <div class="gallery-grid" id="galleryGrid"></div>
+                        </div>
+                        {% if guest_view_only %}<fieldset disabled>{% endif %}
+                        <div class="gallery-folder-actions">
+                            <button type="button" class="gallery-tool-btn" id="galleryAddFolder">+ Folder</button>
+                            <label class="gallery-tool-btn">
+                                + Photos
+                                <input type="file" id="galleryUpload" accept="image/*" multiple class="gallery-upload-input">
+                            </label>
+                        </div>
+                        {% if guest_view_only %}</fieldset>{% endif %}
+                    </div>
+                    <div class="gallery-resize-handle" id="galleryResizeHandle"></div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section class="story-chapter" id="ch-bloom">
+        <div class="story-chapter-head">
+            <span class="story-chapter-num">04</span>
+            <div>
+                <h2 class="story-chapter-title">Lunar Bloom</h2>
+                <p class="story-chapter-sub">the organization behind the art</p>
+            </div>
+        </div>
+        <i class="hy-rule"></i>
+        <p class="story-lead story-lead-narrow">
+            Bridging the gap between creative expression and psychological healing globally. Lunar Bloom is the
+            reason a lot of this work exists in the first place — a space where the art is allowed to just be a
+            process, not a product.
+        </p>
+
+        <div class="story-bloom-grid">
+            <div class="story-bloom-card">
+                <h3>About the Club</h3>
+                <p>Providing new meanings to personal challenges &middot; Creating belonging and community &middot; Encouraging safe space creation (all kinds of art allowed)</p>
+            </div>
+            <div class="story-bloom-card">
+                <h3>Activities</h3>
+                <ul>
+                    <li>Digital Memory Archive</li>
+                    <li>Art Swaps</li>
+                    <li>Prompts</li>
+                    <li>"Traveling Sketchbook"</li>
+                    <li>Postcards</li>
+                </ul>
+            </div>
+            <div class="story-bloom-card">
+                <h3>Monthly Prompt Playlist</h3>
+                <p>Each month's prompt comes with a curated community playlist. Members submit one song that helped them through a specific emotion, creating a collaborative sonic environment for the art session. Visual art is always better with good music &gt;&lt;</p>
+            </div>
+            <div class="story-bloom-card story-bloom-card-wide">
+                <h3>Club Plan</h3>
+                <ul>
+                    <li><strong>Member Code of Care:</strong> A commitment to non-judgment, confidentiality, and "process over product"</li>
+                    <li><strong>Digital Archive:</strong> A dedicated platform where members can upload high-quality scans of their contributions</li>
+                    <li><strong>Monthly Events:</strong> Planned on Canva and posted on social media</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="story-chapter story-chapter-close" id="ch-join">
+        <div class="story-chapter-head">
+            <span class="story-chapter-num">05</span>
+            <div>
+                <h2 class="story-chapter-title">Join the Story</h2>
+                <p class="story-chapter-sub">the next chapter could have you in it</p>
+            </div>
+        </div>
+        <div class="club-cta">
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Sign Up to Join Lunar Bloom</h2>
+                <p class="club-cta-text">Becoming a member and gaining volunteer hours as well as experience.</p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMGHncxT6ZqT5BdbCZpv2N0CEwapPL007bw0tqFcP4IHFhjg/viewform?usp=publish-editor" target="_blank" rel="noopener" class="club-join-btn">Sign Up</a>
+            </div>
+            <div class="club-cta-card">
+                <h2 class="club-cta-title">Join Community</h2>
+                <p class="club-cta-text">Become part of a global family of creatives supporting each other through art.</p>
+                <a href="{{ url_for('join') }}" class="club-join-btn">Join Now</a>
+            </div>
+        </div>
+        <p class="story-end">&mdash; end of chapter, not the story &mdash;</p>
+    </section>
+
+</div>
 
 <!-- Photo Viewer -->
 <div class="gallery-photo-viewer" id="galleryPhotoViewer">
@@ -93,6 +208,30 @@
         });
     }, { threshold: 0.2, rootMargin: '0px 0px -60px 0px' });
     panels.forEach(function(p) { observer.observe(p); });
+})();
+</script>
+<script>
+(function() {
+    // ── chapter scrollspy: highlight the current chapter in the TOC ──
+    var toc = document.getElementById('storyToc');
+    if (!toc) return;
+    var links = toc.querySelectorAll('a[data-ch]');
+    var sections = Array.prototype.map.call(links, function(l) {
+        return document.getElementById(l.dataset.ch);
+    }).filter(Boolean);
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+
+    function setActive(id) {
+        links.forEach(function(l) { l.classList.toggle('active', l.dataset.ch === id); });
+    }
+    var current = sections[0].id;
+    setActive(current);
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) { current = entry.target.id; setActive(current); }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s) { observer.observe(s); });
 })();
 </script>
 <script>
