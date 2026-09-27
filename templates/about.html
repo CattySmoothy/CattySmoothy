@@ -55,9 +55,9 @@
             <div class="nv-poke nv-postit nv-postit-a" aria-hidden="true"><i></i><i></i></div>
             <div class="nv-poke nv-postit nv-postit-b" aria-hidden="true"><i></i></div>
             <div class="nv-poke nv-postit nv-postit-c" aria-hidden="true"><i></i><i></i><i></i></div>
-            <div class="nv-poke nv-snapshot nv-snapshot-a" aria-hidden="true"><span>{{ ico('moon') }}</span></div>
-            <div class="nv-poke nv-snapshot nv-snapshot-b" aria-hidden="true"><span>{{ ico('frame') }}</span></div>
-            <div class="nv-poke nv-snapshot nv-snapshot-c" aria-hidden="true"><span>{{ ico('cat') }}</span></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-a" aria-hidden="true"><span></span></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-b" aria-hidden="true"><span></span></div>
+            <div class="nv-poke nv-snapshot nv-snapshot-c" aria-hidden="true"><span></span></div>
             <div class="nv-poke nv-strip-paper" aria-hidden="true"></div>
     <div class="nv-book" style="--d:0s">
         <i class="nv-stack nv-stack-l" aria-hidden="true"></i>
@@ -85,13 +85,13 @@
                 <span class="nv-label">PROFILE</span>
                 <div class="nv-photo">
                     {% if my_photo %}<img src="{{ url_for('static', filename='images/about/' ~ my_photo) }}" alt="Raichuu">
-                    {% else %}<span>{{ ico('moon') }}</span>{% endif %}
+                    {% else %}<span></span>{% endif %}
                 </div>
             </figure>
 
             <div class="nv-film" aria-hidden="true">
-                <div style="--i:0"><span>{{ ico(inspirations[0].icon) }}</span></div>
-                <div style="--i:1"><span>{{ ico(inspirations[1].icon) }}</span></div>
+                <div style="--i:0"><span></span></div>
+                <div style="--i:1"><span></span></div>
             </div>
 
             <div class="nv-sheet">
@@ -126,7 +126,7 @@
                     <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
                     <div class="nv-viewer-art" id="nvViewerArt">
                         {% if inspirations[0].photo %}<img src="{{ url_for('static', filename='images/about/' ~ inspirations[0].photo) }}" alt="{{ inspirations[0].title }}">
-                        {% else %}<em>{{ ico(inspirations[0].icon) }}</em>{% endif %}
+                        {% else %}<em></em>{% endif %}
                     </div>
                     <div class="nv-viewer-cap"><i></i><span id="nvViewerTitle">{{ inspirations[0].title }}</span><i></i></div>
                 </div>
@@ -141,7 +141,7 @@
                     <small>TO DO LIST</small>
                     <ul>
                         {% for c in creates %}
-                        <li style="--i:{{ loop.index0 }}"><i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9.5 L10.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span>{{ ico(c.icon) }}</span>{{ c.label }}</li>
+                        <li style="--i:{{ loop.index0 }}"><i aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.5 L5 9.5 L10.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>{{ c.label }}</li>
                         {% endfor %}
                     </ul>
                     <span class="nv-flag" aria-hidden="true">AMAZING</span>
@@ -152,9 +152,7 @@
                 <div class="nv-socials">
                     {% for s in socials %}
                     <a class="nv-social" href="{{ s.url }}" target="_blank" rel="noopener" style="--i:{{ loop.index0 }}">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="{{ s.path }}"/></svg>
                         <span>{{ s.name }}</span>
-                        <em aria-hidden="true">↗</em>
                     </a>
                     {% endfor %}
                 </div>
@@ -205,7 +203,7 @@
                             <span class="nv-pin" aria-hidden="true"></span>
                             <span class="nv-frame-photo">
                                 {% if i.photo %}<img src="{{ url_for('static', filename='images/about/' ~ i.photo) }}" alt="{{ i.title }}">
-                                {% else %}<em>{{ ico(i.icon) }}</em>{% endif %}
+                                {% else %}<em></em>{% endif %}
                             </span>
                             <span class="nv-frame-cap">{{ i.title }}</span>
                         </button>
@@ -217,13 +215,13 @@
             <div class="nv-pane" data-pane="2">
                 <a class="nv-viewer nv-reel" href="{{ url_for('collections') }}" data-i="2">
                     <span class="nv-brk nv-brk-tl"></span><span class="nv-brk nv-brk-tr"></span><span class="nv-brk nv-brk-bl"></span><span class="nv-brk nv-brk-br"></span>
-                    <div class="nv-viewer-art"><em>{{ ico('clapper') }}</em><i class="nv-play" aria-hidden="true"></i></div>
+                    <div class="nv-viewer-art"><em></em></div>
                     <div class="nv-viewer-cap"><i></i><span>Process videos</span><i></i></div>
                 </a>
                 <div class="nv-stickers nv-links">
-                    <a class="nv-pill" href="{{ url_for('collections') }}">{{ ico('frame') }} collections</a>
-                    <a class="nv-pill" href="{{ url_for('shop') }}">{{ ico('sparkle') }} shop</a>
-                    <a class="nv-pill" href="{{ url_for('organization') }}">{{ ico('moon') }} lunar bloom</a>
+                    <a class="nv-pill" href="{{ url_for('collections') }}">collections</a>
+                    <a class="nv-pill" href="{{ url_for('shop') }}">shop</a>
+                    <a class="nv-pill" href="{{ url_for('organization') }}">lunar bloom</a>
                 </div>
             </div>
 
@@ -469,8 +467,8 @@
             var r = stage.getBoundingClientRect();
             var nx = (e.clientX - r.left) / r.width - 0.5;
             var ny = (e.clientY - r.top) / r.height - 0.5;
-            tilt.style.setProperty('--ry', (-7 + nx * 4) + 'deg');
-            tilt.style.setProperty('--rx', (10 - ny * 3) + 'deg');
+            tilt.style.setProperty('--ry', (nx * 5) + 'deg');
+            tilt.style.setProperty('--rx', (14 - ny * 3) + 'deg');
         });
         stage.addEventListener('pointerleave', function () {
             tilt.style.removeProperty('--ry');

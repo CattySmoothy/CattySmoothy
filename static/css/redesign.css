@@ -9658,7 +9658,8 @@ body.os-hud-hidden .realm-canvas {
     --nv-kraft: color-mix(in srgb, var(--nv-lamp) 62%, var(--color-surface));
     --nv-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;
     --nv-halftone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23000' fill-opacity='.16'/%3E%3C/svg%3E");
-    max-width: 910px;
+    --nv-book-h: 660px;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 84px 64px 96px;
     overflow-x: clip;
@@ -9682,16 +9683,16 @@ body.os-hud-hidden .realm-canvas {
 /* ── cover + book ── */
 /* the book sits tilted on the desk, with real thickness (stacked hard shadows)
    and a flat cast shadow pushed back behind it for depth */
-.nv-desk { perspective: 2400px; perspective-origin: 50% 30%; }
+.nv-desk { perspective: 2200px; perspective-origin: 50% 20%; }
 .nv-tilt {
-    --rx: 10deg;
-    --ry: -7deg;
+    --rx: 14deg;
+    --ry: 0deg;
     position: relative;
     transform-style: preserve-3d;
-    transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(-1.6deg);
+    transform: rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(-1deg);
     transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
-.nv-cast { position: absolute; inset: 34px -10px -44px 34px; background: rgba(0, 0, 0, 0.62); filter: blur(20px); opacity: 0.5; transform: translateZ(-46px); pointer-events: none; }
+.nv-cast { position: absolute; inset: 40px 4px -30px 4px; background: rgba(0, 0, 0, 0.62); filter: blur(20px); opacity: 0.5; transform: translateZ(-46px); pointer-events: none; }
 .nv-cover {
     position: relative;
     z-index: 1;
@@ -9701,7 +9702,7 @@ body.os-hud-hidden .realm-canvas {
         radial-gradient(ellipse at 14% 0%, rgba(255, 255, 255, 0.26), transparent 55%),
         linear-gradient(165deg, color-mix(in srgb, var(--color-header-start) 84%, #fff), var(--color-header-start) 52%, color-mix(in srgb, var(--color-header-start) 70%, #000));
     border: 2px solid var(--nv-edge);
-    box-shadow: 1px 1px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 2px 2px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 3px 3px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 4px 4px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 5px 5px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 6px 6px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 7px 7px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 8px 8px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 9px 9px 0 color-mix(in srgb, var(--color-header-start) 55%, #000), 0 22px 30px rgba(0, 0, 0, 0.38);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--color-header-start) 69%, #000), 0 2px 0 color-mix(in srgb, var(--color-header-start) 66%, #000), 0 3px 0 color-mix(in srgb, var(--color-header-start) 63%, #000), 0 4px 0 color-mix(in srgb, var(--color-header-start) 60%, #000), 0 5px 0 color-mix(in srgb, var(--color-header-start) 57%, #000), 0 6px 0 color-mix(in srgb, var(--color-header-start) 54%, #000), 0 7px 0 color-mix(in srgb, var(--color-header-start) 51%, #000), 0 8px 0 color-mix(in srgb, var(--color-header-start) 48%, #000), 0 9px 0 color-mix(in srgb, var(--color-header-start) 45%, #000), 0 10px 0 color-mix(in srgb, var(--color-header-start) 42%, #000), 0 11px 0 color-mix(in srgb, var(--color-header-start) 39%, #000), 0 12px 0 color-mix(in srgb, var(--color-header-start) 36%, #000), 0 26px 34px rgba(0, 0, 0, 0.4);
     animation: nv-drop 0.6s cubic-bezier(0.2, 1.1, 0.4, 1) both;
     animation-delay: var(--d, 0s);
 }
@@ -9710,7 +9711,7 @@ body.os-hud-hidden .realm-canvas {
     position: relative;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    min-height: 720px;
+    min-height: var(--nv-book-h);
     color: var(--nv-ink);
     background: var(--nv-paper);
     border: 2px solid var(--nv-edge);
@@ -9780,7 +9781,9 @@ body.os-hud-hidden .realm-canvas {
 /* ── left page: character sheet collage ── */
 .nv-lpane { display: none; min-width: 0; }
 .nv-lpane.is-active { display: block; }
-.nv-lpane[data-pane="0"].is-active { display: grid; grid-template-columns: 1.05fr 1fr; gap: 20px 18px; align-content: start; }
+.nv-lpane[data-pane="0"].is-active { display: grid; grid-template-columns: 1.05fr 1fr; gap: 16px 18px; align-content: start; }
+.nv-lpane[data-pane="0"] .nv-film { align-self: stretch; }
+.nv-lpane[data-pane="0"] .nv-film div { aspect-ratio: auto; flex: 1; }
 .nv-datetag { grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: baseline; gap: 12px; padding: 5px 18px 5px 14px; background: var(--color-surface); border: 2px solid var(--nv-edge); border-left-width: 10px; border-left-color: var(--nv-a); box-shadow: 0 7px 16px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.25); }
 .nv-datetag small { font-family: var(--font-dos); font-size: 11px; letter-spacing: 3px; color: var(--nv-soft); }
 .nv-datetag b { font-family: var(--font-dos); font-size: 21px; letter-spacing: 1px; }
@@ -9834,7 +9837,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-film span { font-size: 32px; animation: nv-bob 3s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -1.2s); }
 
 .nv-sheet { position: relative; grid-column: 1 / -1; padding: 16px 24px 14px; background: var(--nv-kraft); border: 2px solid var(--nv-edge); box-shadow: 0 9px 20px rgba(0, 0, 0, 0.30), 0 1px 2px rgba(0, 0, 0, 0.25); transform: rotate(0.8deg); }
-.nv-script { margin: 0 0 8px; font-family: var(--font-dos); font-size: 44px; font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -1px; text-shadow: 3px 3px 0 var(--nv-a); }
+.nv-script { margin: 0 0 8px; font-family: var(--font-dos); font-size: 38px; font-weight: 700; line-height: 1; text-transform: uppercase; letter-spacing: -1px; text-shadow: 3px 3px 0 var(--nv-a); }
 .nv-sheet dl { margin: 0; font-family: var(--font-dos); font-size: 14px; }
 .nv-sheet dl > div { display: flex; gap: 12px; padding: 4px 0; border-bottom: 2px dashed color-mix(in srgb, var(--nv-ink) 35%, transparent); }
 .nv-sheet dt { width: 64px; flex-shrink: 0; color: inherit; opacity: 0.95; }
@@ -10163,7 +10166,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-tape { opacity: 0.86; background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.34) 0 5px, transparent 5px 10px); box-shadow: 0 2px 3px rgba(0, 0, 0, 0.22); }
 
 /* hand-drawn sketch sheet (left page) */
-.nv-sketch { position: relative; grid-column: 1 / -1; height: 158px; margin: 6px 26px 0 4px; padding: 8px 10px; background: var(--color-surface); border: 2px solid var(--nv-edge); box-shadow: 0 7px 14px rgba(0, 0, 0, 0.28); transform: rotate(-2deg); }
+.nv-sketch { position: relative; grid-column: 1 / -1; height: 118px; margin: 6px 26px 0 4px; padding: 8px 10px; background: var(--color-surface); border: 2px solid var(--nv-edge); box-shadow: 0 7px 14px rgba(0, 0, 0, 0.28); transform: rotate(-2deg); }
 .nv-sketch::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(var(--nv-line) 1px, transparent 1px), linear-gradient(90deg, var(--nv-line) 1px, transparent 1px); background-size: 16px 16px; pointer-events: none; }
 .nv-sketch svg { position: relative; display: block; width: 100%; height: 100%; }
 .nv-sketch .nv-pen { fill: none; stroke: var(--nv-ink); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
@@ -10197,7 +10200,7 @@ body.os-hud-hidden .realm-canvas {
 .nv-cover { border-width: 3px; }
 
 /* left page panels */
-.nv-lpane[data-pane="1"] .nv-viewer-art, .nv-reel .nv-viewer-art { height: 250px; }
+.nv-lpane[data-pane="1"] .nv-viewer-art, .nv-reel .nv-viewer-art { height: 210px; }
 .nv-lpane[data-pane="1"] .nv-viewer-art em, .nv-reel .nv-viewer-art em { font-size: 96px; }
 .nv-note-card { position: relative; margin-top: 30px; padding: 18px 20px 16px; background: var(--nv-kraft); color: var(--nv-kraft-ink); border: 3px solid var(--nv-edge); transform: rotate(-1deg); }
 .nv-note-card small { display: block; margin-bottom: 8px; font-family: var(--font-dos); font-size: 11px; letter-spacing: 3px; opacity: 0.95; }
@@ -10239,9 +10242,9 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 .nv-pane[data-pane="4"] .nv-dow { font-size: 12px; }
 
 /* inspiration: the board gets the whole right page */
-.nv-pane[data-pane="1"] .nv-pins { margin-top: 8px; padding: 30px 22px 20px; }
-.nv-pane[data-pane="1"] .nv-pins .nv-frames { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 24px; }
-.nv-pane[data-pane="1"] .nv-frame-photo { aspect-ratio: 3 / 2; }
+.nv-pane[data-pane="1"] .nv-pins { margin-top: 8px; padding: 34px 22px 22px; }
+.nv-pane[data-pane="1"] .nv-pins .nv-frames { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 18px; }
+.nv-pane[data-pane="1"] .nv-frame-photo { aspect-ratio: 4 / 3; }
 .nv-pane[data-pane="1"] .nv-frame-photo em { font-size: 48px; }
 .nv-pane[data-pane="1"] .nv-frame-cap { font-size: 13px; padding-bottom: 4px; }
 
@@ -10249,10 +10252,10 @@ a.nv-reel { display: block; color: inherit; text-decoration: none; }
 .nv-pane[data-pane="0"] .nv-lead { font-size: 17px; max-width: 30ch; }
 
 /* spreads with less content sit centred on the page instead of hugging the top */
-.nv-lpane[data-pane="3"].is-active, .nv-lpane[data-pane="4"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: 650px; }
-.nv-pane[data-pane="3"].is-active, .nv-pane[data-pane="4"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: 560px; }
-.nv-pane[data-pane="2"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: 560px; }
-.nv-lpane[data-pane="2"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: 650px; }
+.nv-lpane[data-pane="3"].is-active, .nv-lpane[data-pane="4"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: calc(var(--nv-book-h) - 74px); }
+.nv-pane[data-pane="3"].is-active, .nv-pane[data-pane="4"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: calc(var(--nv-book-h) - 146px); }
+.nv-pane[data-pane="2"].is-active, .nv-pane[data-pane="1"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: calc(var(--nv-book-h) - 146px); }
+.nv-lpane[data-pane="2"].is-active, .nv-lpane[data-pane="1"].is-active { display: flex; flex-direction: column; justify-content: center; min-height: calc(var(--nv-book-h) - 74px); }
 
 @media (max-width: 520px) {
     .nv-socials .nv-social { height: 84px; padding: 0 14px; gap: 10px; min-width: 0; }
