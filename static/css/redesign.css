@@ -7615,13 +7615,24 @@ body.os-hud-hidden .realm-canvas {
 /* Full-bleed featured-art banner: the rigged fox illustration, full width
    at its own aspect ratio so none of its animated pieces get cropped off. */
 .shop-art-banner {
+    /* full-bleed but always at the art's exact aspect ratio — every rigged
+       piece is positioned by percentage, so if this box is ever forced off
+       that ratio (the old max-height cap did that on wide screens),
+       object-fit:cover has to crop the base image while the percentage-
+       positioned pieces don't, and everything drifts out of place. Capping
+       width instead of height keeps the ratio intact at every viewport
+       size, so there's never a mismatch to fix. */
     position: relative;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    aspect-ratio: 2000 / 1377;
-    max-height: 560px;
+    max-width: 2400px;
+    aspect-ratio: 2400 / 1652;
     overflow: hidden;
     background: #1a140d;
+    /* graded once here rather than per-piece, so the base image and every
+       rigged cutout share one consistent "rendered key art" punch */
+    filter: saturate(1.3) contrast(1.15) brightness(1.03);
 }
 
 /* same graded, duotone-ish wash as the home hero, for a matching
@@ -11162,86 +11173,149 @@ body:has(.queue-wrap) { overflow-x: hidden; }
    colour-coding is such a strong genre convention that it stays fixed
    (blue/purple/gold) rather than following the site theme, the same way
    the pixel cat keeps its own palette. */
+/* ══ Wish banner: Cookie Run Kingdom-inspired gacha screen ══
+   CRK's summon UI trades this site's usual dark HoYo-glass look for
+   something warm and tactile: cream/frosting pastels instead of black
+   glass, big soft rounded shapes instead of sharp corner brackets, a
+   chunky drop-shadowed "candy button" instead of a flat gold pill, and
+   scattered twinkling sparkles instead of a filigree corner flourish.
+   Scoped fixed palette (not theme-derived) on purpose — a gacha screen
+   reads as its own little event, the same way the dark version did. */
 .wish-banner {
-    --wish-gold: #d9b872;
+    --wish-cream: #fff6e6;
+    --wish-cream-2: #ffe7bf;
+    --wish-pink: #ff6f91;
+    --wish-pink-dark: #d94268;
+    --wish-choc: #6b4226;
+    --wish-choc-soft: #a9764f;
+    --wish-gold: #ffc94a;
+    --wish-gold-dark: #e8a71f;
     position: relative;
     margin: 28px 0;
     padding: 3px;
-    background: radial-gradient(ellipse 90% 140% at 50% -10%, color-mix(in srgb, var(--color-accent) 30%, transparent), transparent 65%), #14110d;
-    border: 1px solid color-mix(in srgb, var(--wish-gold) 55%, transparent);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    border-radius: 36px;
+    background: linear-gradient(180deg, var(--wish-gold), var(--wish-gold-dark));
+    box-shadow: 0 16px 34px rgba(140, 80, 30, 0.28);
 }
 .wish-banner-inner {
     position: relative;
     z-index: 1;
     padding: 44px 24px 34px;
     text-align: center;
-    background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px);
+    border-radius: 33px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 12% 18%, color-mix(in srgb, #fff 70%, transparent) 0 3px, transparent 4px),
+        radial-gradient(circle at 85% 12%, color-mix(in srgb, #fff 70%, transparent) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 92% 70%, color-mix(in srgb, #fff 70%, transparent) 0 2px, transparent 3px),
+        radial-gradient(circle at 8% 78%, color-mix(in srgb, #fff 70%, transparent) 0 2.5px, transparent 3.5px),
+        radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--wish-pink) 25%, transparent), transparent 60%),
+        linear-gradient(160deg, var(--wish-cream) 0%, var(--wish-cream-2) 100%);
 }
-/* a bracket plus a trailing curl and a small diamond, like a filigree
-   corner flourish rather than a plain right-angle bracket */
-.wish-corner { position: absolute; z-index: 2; width: 46px; height: 46px; pointer-events: none; }
+/* a little twinkling sparkle in each corner instead of a gold bracket */
+.wish-corner { position: absolute; z-index: 2; width: 22px; height: 22px; pointer-events: none; animation: wish-twinkle 2.6s ease-in-out infinite; }
 .wish-corner::before {
     content: '';
     position: absolute;
     inset: 0;
-    border-top: 1.5px solid var(--wish-gold);
-    border-left: 1.5px solid var(--wish-gold);
-    border-radius: 3px 0 0 0;
-    -webkit-mask-image: linear-gradient(135deg, #000 45%, transparent 46%);
-    mask-image: linear-gradient(135deg, #000 45%, transparent 46%);
-}
-.wish-corner::after {
-    content: '';
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 5px;
-    height: 5px;
     background: var(--wish-gold);
-    transform: rotate(45deg);
+    clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0% 50%, 39% 39%);
+    filter: drop-shadow(0 1px 2px rgba(140, 80, 30, 0.35));
 }
-.wish-corner-tl { top: 10px; left: 10px; }
-.wish-corner-tr { top: 10px; right: 10px; transform: scaleX(-1); }
-.wish-corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
-.wish-corner-br { bottom: 10px; right: 10px; transform: scale(-1, -1); }
+.wish-corner-tl { top: 14px; left: 14px; animation-delay: 0s; }
+.wish-corner-tr { top: 14px; right: 14px; width: 14px; height: 14px; animation-delay: 0.6s; }
+.wish-corner-bl { bottom: 14px; left: 14px; width: 14px; height: 14px; animation-delay: 1.2s; }
+.wish-corner-br { bottom: 14px; right: 14px; animation-delay: 1.8s; }
+@keyframes wish-twinkle {
+    0%, 100% { transform: scale(0.85) rotate(0deg); opacity: 0.7; }
+    50% { transform: scale(1.15) rotate(12deg); opacity: 1; }
+}
 
-.wish-kicker { margin: 0 0 6px; font-family: var(--font-dos); font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: color-mix(in srgb, var(--wish-gold) 80%, #fff); }
-.wish-title { margin: 0; font-family: var(--font-display, var(--font-dos)); font-size: clamp(30px, 4vw, 44px); font-weight: 600; letter-spacing: 4px; color: #f3ead4; text-shadow: 0 0 24px color-mix(in srgb, var(--wish-gold) 60%, transparent); }
-.wish-rule { width: 200px; margin: 18px auto 14px; }
-.wish-banner .wish-rule::before, .wish-banner .wish-rule::after { background: var(--wish-gold); }
-.wish-banner .wish-rule { background: linear-gradient(90deg, color-mix(in srgb, var(--wish-gold) 55%, transparent) 0, color-mix(in srgb, var(--wish-gold) 55%, transparent) calc(50% - 26px), transparent calc(50% - 26px), transparent calc(50% + 26px), color-mix(in srgb, var(--wish-gold) 55%, transparent) calc(50% + 26px), color-mix(in srgb, var(--wish-gold) 55%, transparent) 100%) center / 100% 1px no-repeat; }
-.wish-odds { margin: 0 0 24px; font-family: var(--font-sub); font-size: 12px; color: color-mix(in srgb, #f3ead4 55%, transparent); }
+.wish-kicker {
+    display: inline-block;
+    margin: 0 0 12px;
+    padding: 5px 16px;
+    font-family: var(--font-dos);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(180deg, var(--wish-pink), var(--wish-pink-dark));
+    border-radius: 100px;
+    box-shadow: 0 3px 0 color-mix(in srgb, var(--wish-pink-dark) 70%, #000 15%);
+}
+.wish-title {
+    margin: 0;
+    font-family: var(--font-display, var(--font-dos));
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--wish-choc);
+    text-shadow: 0 2px 0 #fff, 0 4px 0 color-mix(in srgb, var(--wish-gold) 70%, transparent);
+}
+.wish-rule { position: relative; width: auto; height: auto; margin: 16px auto 14px; background: none; }
+.wish-banner .wish-rule::before { content: none; }
+.wish-banner .wish-rule::after {
+    content: '✦ ✦ ✦';
+    position: static;
+    display: block;
+    width: auto;
+    height: auto;
+    font-size: 10px;
+    letter-spacing: 10px;
+    color: color-mix(in srgb, var(--wish-gold-dark) 80%, transparent);
+    background: none;
+    box-shadow: none;
+    transform: none;
+}
+.wish-odds { margin: 0 0 24px; font-family: var(--font-sub); font-size: 12px; color: var(--wish-choc-soft); }
 
+/* the chunky "candy button" — a flat-colored top face over a darker
+   same-shape shadow layer, so it reads as pressable, plus a gentle idle
+   bounce so it invites the tap the way CRK's summon button does */
 .wish-pull-btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 30px;
+    padding: 14px 34px;
     font-family: var(--font-dos);
     font-size: 14px;
+    font-weight: 700;
     letter-spacing: 1px;
-    color: #14110d;
+    color: #fff;
     text-decoration: none;
-    background: linear-gradient(180deg, #efd9a0, var(--wish-gold));
+    background: linear-gradient(180deg, var(--wish-pink), var(--wish-pink-dark));
     border: none;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    border-radius: 100px;
+    box-shadow: 0 5px 0 color-mix(in srgb, var(--wish-pink-dark) 75%, #000 20%), 0 10px 20px rgba(140, 40, 70, 0.3);
     cursor: pointer;
-    transition: transform 0.15s ease, filter 0.15s ease;
+    animation: wish-btn-bounce 2.4s ease-in-out infinite;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
 }
-.wish-pull-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.06); }
-.wish-pull-btn:disabled { opacity: 0.45; cursor: default; }
+.wish-pull-btn:hover:not(:disabled) { filter: brightness(1.06); }
+.wish-pull-btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--wish-pink-dark) 75%, #000 20%), 0 4px 10px rgba(140, 40, 70, 0.25);
+    animation-play-state: paused;
+}
+.wish-pull-btn:disabled { opacity: 0.45; cursor: default; animation: none; }
 .wish-pull-btn.is-pulling { animation: wish-pull-shake 0.5s ease-in-out infinite; }
+@keyframes wish-btn-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
 @keyframes wish-pull-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
-.wish-pull-cost { opacity: 0.75; font-size: 12px; }
-.wish-error { margin: 12px 0 0; font-family: var(--font-sub); font-size: 12.5px; color: #e08a6f; }
+.wish-pull-cost { opacity: 0.9; font-size: 12px; }
+.wish-error { margin: 12px 0 0; font-family: var(--font-sub); font-size: 12.5px; color: #c94f3f; }
 .wish-error[hidden] { display: none; }
 
 .wish-history { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 22px; }
-.wish-chip { padding: 4px 12px; font-family: var(--font-dos); font-size: 11px; border-radius: 100px; border: 1px solid; }
-.wish-chip-common { color: #b7c3d6; border-color: color-mix(in srgb, #b7c3d6 50%, transparent); background: color-mix(in srgb, #b7c3d6 8%, transparent); }
-.wish-chip-rare { color: #c8a6f0; border-color: color-mix(in srgb, #c8a6f0 55%, transparent); background: color-mix(in srgb, #c8a6f0 10%, transparent); }
-.wish-chip-legendary { color: #f3cd6a; border-color: color-mix(in srgb, #f3cd6a 60%, transparent); background: color-mix(in srgb, #f3cd6a 12%, transparent); }
+.wish-chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 14px; font-family: var(--font-dos); font-size: 11px; font-weight: 700; border-radius: 100px; border: none; }
+.wish-chip::before { content: '✦'; font-size: 9px; }
+.wish-chip-common { color: #55606e; background: #e4e9f0; }
+.wish-chip-rare { color: #6a3f96; background: #ecdcfb; }
+.wish-chip-legendary { color: #8a5a12; background: linear-gradient(180deg, #ffe9a8, #ffd876); }
 
 /* ── shop item: gift button ── */
 .shop-item-actions { display: flex; gap: 8px; }
@@ -11283,12 +11357,21 @@ body:has(.queue-wrap) { overflow-x: hidden; }
 .shop-modal-error[hidden], .shop-modal-success[hidden] { display: none; }
 .shop-modal-send { width: 100%; justify-content: center; color: var(--color-on-accent, #fff); background: var(--color-accent); }
 
-/* ══ Wish reveal ══ */
-.wish-reveal { position: fixed; inset: 0; z-index: 2100; display: flex; align-items: center; justify-content: center; background: rgba(4, 3, 2, 0); transition: background 0.3s ease; }
+/* ══ Wish reveal: same CRK candy-gacha treatment as the banner — a cream
+   card instead of a dark glass one, and a spinning ray "starburst" behind
+   the pulled item instead of a soft glow, since this is the actual payoff
+   moment a gacha screen builds up to. Re-declares the palette locally
+   since this overlay renders outside .wish-banner in the DOM. ══ */
+.wish-reveal { position: fixed; inset: 0; z-index: 2100; display: flex; align-items: center; justify-content: center; background: rgba(107, 66, 38, 0); transition: background 0.3s ease; }
 .wish-reveal[hidden] { display: none; }
-.wish-reveal.is-open { background: rgba(4, 3, 2, 0.78); }
+.wish-reveal.is-open { background: rgba(60, 36, 20, 0.6); }
 .wish-reveal-card {
-    --rc: #b7c3d6;
+    --rc: #8fa0b8;
+    --wish-cream: #fff6e6;
+    --wish-choc: #6b4226;
+    --wish-choc-soft: #a9764f;
+    --wish-pink: #ff6f91;
+    --wish-pink-dark: #d94268;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -11296,117 +11379,146 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     gap: 10px;
     width: min(320px, 84vw);
     padding: 46px 26px 34px;
-    background: #14110d;
-    border: 1px solid color-mix(in srgb, var(--rc) 55%, transparent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--rc) 25%, transparent), 0 30px 70px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(160deg, var(--wish-cream), #ffe7bf);
+    border: none;
+    border-radius: 32px;
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--rc) 45%, transparent), 0 30px 70px rgba(80, 40, 20, 0.4);
     text-align: center;
+    overflow: hidden;
     transform: scale(0.85) translateY(14px);
     opacity: 0;
     transition: transform 0.35s cubic-bezier(0.2, 1.4, 0.4, 1), opacity 0.3s ease;
 }
 .wish-reveal.is-open .wish-reveal-card { transform: scale(1) translateY(0); opacity: 1; }
-.wish-reveal-rare { --rc: #c8a6f0; }
-.wish-reveal-legendary { --rc: #f3cd6a; }
+.wish-reveal-rare { --rc: #b487e0; }
+.wish-reveal-legendary { --rc: #ffb833; }
 .wish-reveal-burst {
     position: absolute;
     inset: -1px;
-    background: radial-gradient(circle at 50% 30%, color-mix(in srgb, var(--rc) 45%, transparent), transparent 65%);
+    background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--rc) 55%, transparent) 0deg 6deg, transparent 6deg 18deg);
     opacity: 0;
     pointer-events: none;
 }
-.wish-reveal.is-open .wish-reveal-burst { animation: wish-burst 0.7s ease-out; }
-@keyframes wish-burst { 0% { opacity: 0; transform: scale(0.6); } 40% { opacity: 1; } 100% { opacity: 0; transform: scale(1.6); } }
-.wish-reveal-rarity { font-family: var(--font-dos); font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--rc); }
-.wish-reveal-icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: 6px 0; color: var(--rc); filter: drop-shadow(0 0 14px var(--rc)); }
+.wish-reveal.is-open .wish-reveal-burst { animation: wish-burst 0.9s ease-out; }
+@keyframes wish-burst {
+    0% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+    35% { opacity: 0.55; }
+    100% { opacity: 0; transform: scale(1.8) rotate(35deg); }
+}
+.wish-reveal-rarity {
+    display: inline-block;
+    padding: 4px 14px;
+    font-family: var(--font-dos);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--rc);
+    border-radius: 100px;
+}
+.wish-reveal-icon { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: 10px 0; color: var(--rc); filter: drop-shadow(0 4px 8px color-mix(in srgb, var(--rc) 50%, transparent)); animation: wish-icon-pop 0.5s cubic-bezier(0.3, 1.6, 0.4, 1); }
 .wish-reveal-icon .ico { width: 100%; height: 100%; }
-.wish-reveal-label { font-family: var(--font-dos); font-size: 16px; color: #f3ead4; }
-.wish-reveal-close { margin-top: 18px; color: #14110d; background: linear-gradient(180deg, #efd9a0, #d9b872); }
+@keyframes wish-icon-pop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.wish-reveal-label { font-family: var(--font-dos); font-size: 16px; font-weight: 700; color: var(--wish-choc); }
+.wish-reveal-close { margin-top: 18px; }
 
 @media (max-width: 640px) {
     .wish-banner-inner { padding: 36px 16px 28px; }
-    .wish-corner { width: 36px; height: 36px; }
 }
 
-/* ══ Home: "Select Your Path" character art, lightly rigged ══
-   A flat illustration cut into several overlapping copies of itself — each
-   distinct object in the picture (the two ears, the two lanterns, the
-   pleated fan charm, the hand fan, the eyes) gets its own clip-path piece
-   traced to its actual silhouette, sitting exactly on top of the full
-   picture, then a tiny idle motion around that piece's real attachment
-   point (ear base, lantern string, fan tassel). It's not a real mesh rig,
-   just enough independent motion per-object to read as alive rather than
-   a couple of blobs — pieces against the flat sky (ears, lanterns) get a
-   full swing since there's no seam to see; pieces sitting against hair or
-   skin (the fan, its charm, the eyes) stay subtle since a seam WOULD show. */
-.cs-art-layer {
+/* ══ Shop: featured fox art, rigged from the artist's real separated
+   layers ══ Each moving piece (both ears, three lanterns, the hand fan,
+   its hair charm, both eyes) was exported by the artist as its own
+   cutout PNG, with the base image left with a clean gap where it goes.
+   Every piece is dropped back on top of the base at its exact original
+   position — percentages of the shared source canvas they were all cut
+   from, so nothing has to be eyeballed — then given a tiny idle motion
+   around its real attachment point (a lantern swings from its string, an
+   ear pivots from where it meets the head). Because these are real
+   cutout pixels rather than a clip-path guess over one flat image, there
+   is never a seam to hide, so the motion can be as generous as looks
+   natural. */
+.cs-art-base {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    background-image: url("../images/home/select-path-fox.webp");
-    background-size: cover;
-    background-position: 50% 50%;
-    filter: saturate(1.3) contrast(1.15) brightness(1.03);
+    object-fit: cover;
 }
-.cs-art-base { opacity: 0.9; }
+.cs-part {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+}
 
-.cs-art-ear-l {
-    transform-origin: 42% 44%;
-    clip-path: polygon(8% 0%, 46% 0%, 50% 20%, 46% 38%, 34% 46%, 20% 40%, 10% 24%);
+.cs-part-ear-left {
+    left: 24.4941%; top: 0%; width: 20.3059%; height: 44.5489%;
+    transform-origin: 52% 97%;
     animation: cs-sway-l 4.4s ease-in-out infinite;
 }
-.cs-art-ear-r {
-    transform-origin: 63% 47%;
-    clip-path: polygon(46% 0%, 88% 0%, 92% 22%, 82% 42%, 68% 48%, 56% 40%, 50% 18%);
+.cs-part-ear-right {
+    left: 45.7765%; top: 2.7854%; width: 14.1059%; height: 56.2372%;
+    transform-origin: 15% 95%;
     animation: cs-sway-r 3.8s ease-in-out infinite;
     animation-delay: -1.6s;
 }
 
-/* the two hanging paper lanterns, each pivoting from its string like a
-   little pendulum — plenty of flat orange sky around both to sweep into.
-   Traced point-by-point against the actual lantern + tassel silhouette
-   (not a rough box) so the piece reads as "the lantern", not a blob. */
-.cs-art-lantern-l {
-    transform-origin: 16.75% 6.2%;
-    clip-path: polygon(15% 6.54%, 16.75% 5.96%, 17.75% 6.39%, 19.5% 7.99%, 20.25% 10.53%, 19% 12.35%, 18% 13.94%, 22.5% 14.89%, 25.25% 16.7%, 26.75% 22.51%, 26.25% 28.32%, 24.5% 34.13%, 21.5% 38.12%, 20% 41.76%, 25.25% 50.83%, 23% 55.19%, 17.5% 47.21%, 12% 55.19%, 9.75% 50.83%, 15.75% 42.12%, 13.5% 38.12%, 10.5% 34.13%, 8.75% 22.51%, 10% 16.7%, 11.5% 14.89%, 13.5% 12.71%, 12.75% 10.53%, 13.5% 7.99%);
+/* three hanging paper lanterns, each pivoting from its string like a
+   little pendulum */
+.cs-part-lantern-tl {
+    left: 0%; top: 6.6815%; width: 27.4941%; height: 54.272%;
+    transform-origin: 45% 3%;
     animation: cs-sway-lantern-l 5.2s ease-in-out infinite;
     animation-delay: -3s;
 }
-.cs-art-lantern-r {
-    transform-origin: 90% 1%;
-    clip-path: polygon(80.25% 0%, 100% 0%, 100% 30.5%, 98.5% 33.4%, 96.5% 37.8%, 95.5% 43.6%, 91.5% 47.2%, 88% 50.8%, 89.5% 56.6%, 88% 61.7%, 85.5% 57.4%, 84.5% 49.4%, 80% 47.2%, 78% 40.7%, 80% 33.4%, 81.25% 30.5%, 79.5% 21.8%, 79.75% 10.9%);
+.cs-part-lantern-bl {
+    left: 0%; top: 46.0868%; width: 18.5176%; height: 53.9132%;
+    transform-origin: 60% 0%;
+    animation: cs-sway-lantern-bl 4.9s ease-in-out infinite;
+    animation-delay: -2.4s;
+}
+.cs-part-lantern-r {
+    left: 77.5529%; top: 0%; width: 22.4471%; height: 78.3493%;
+    transform-origin: 70% 0%;
     animation: cs-sway-lantern-r 4.6s ease-in-out infinite;
     animation-delay: -1.2s;
 }
 
-/* the small pleated tassel-fan charm hanging off the right ear, traced to
-   its knot + pleats rather than a loose hexagon */
-.cs-art-charm {
-    transform-origin: 66.5% 33%;
-    clip-path: polygon(65% 32.3%, 68.25% 33.8%, 67.25% 36.7%, 68.5% 38.5%, 70% 43.6%, 71.5% 50.8%, 72.5% 58.1%, 74% 66.1%, 72% 68.3%, 69% 69.4%, 66% 70.1%, 63.5% 69%, 61.25% 67.5%, 59.75% 61%, 58.75% 53%, 59.25% 45%, 61.25% 39.2%, 64% 35.6%);
+/* the small pleated tassel-fan charm hanging off the right ear */
+.cs-part-charm {
+    left: 47.4471%; top: 69.2584%; width: 6.4%; height: 20.2837%;
+    transform-origin: 50% 3%;
     animation: cs-sway-charm 3.6s ease-in-out infinite;
     animation-delay: -2.1s;
 }
 
-/* the hand fan held up over the mouth — sits against hair, not flat sky,
-   so it's traced tightly to the fan's own wedge silhouette (not a soft
-   generic oval, which just reads as a blurry blob) and kept to a small
-   rotation so the traced edge never has far to travel. */
-.cs-art-fan {
-    transform-origin: 36% 88%;
-    clip-path: polygon(28.25% 64.6%, 32.5% 63.5%, 37.5% 64.3%, 42% 66.4%, 44% 68.3%, 43.75% 74.1%, 42.5% 80.6%, 40% 86.4%, 37.25% 89.7%, 35.25% 87.9%, 31% 86.4%, 28.5% 79.2%, 27.75% 71.2%);
+/* the hand fan held up over the mouth — a small flutter, since it's held
+   rather than hanging free */
+.cs-part-fan {
+    left: 27.5529%; top: 65.9604%; width: 16.6588%; height: 34.0396%;
+    transform-origin: 55% 95%;
     animation: cs-sway-fan 4.8s ease-in-out infinite;
     animation-delay: -0.9s;
 }
 
-/* a slow, occasional blink instead of a sway — traced to the eyelid +
-   under-eye mark so the squash reads as closing an eye, not a smudge */
-.cs-art-eyes {
-    transform-origin: 40% 60%;
-    clip-path: polygon(32.25% 56.3%, 36.5% 51.6%, 41% 52.1%, 45.5% 54.8%, 46.5% 59.2%, 45.25% 62.5%, 46.25% 65.4%, 46.75% 68.6%, 44.75% 69.4%, 42.5% 66.8%, 40.25% 65%, 36.25% 63.2%);
-    animation: cs-blink 5.5s ease-in-out infinite;
+/* both irises slowly "well up" — a gentle scale pulse from each eye's own
+   centre, with a touch of extra brightness/saturation at the peak, like
+   light catching on welling moisture, rather than a blink */
+.cs-part-eye-main {
+    left: 41.2941%; top: 59.9795%; width: 4.2941%; height: 5.9809%;
+    transform-origin: 50% 50%;
+    animation: cs-eye-watery 5s ease-in-out infinite;
+}
+.cs-part-eye-small {
+    left: 33.3294%; top: 51.6405%; width: 1.7176%; height: 4.9043%;
+    transform-origin: 50% 50%;
+    animation: cs-eye-watery 5s ease-in-out infinite;
+    animation-delay: -2.3s;
 }
 
 @keyframes cs-sway-l {
@@ -11421,6 +11533,10 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     0%, 100% { transform: rotate(-2.8deg); }
     50% { transform: rotate(2.6deg); }
 }
+@keyframes cs-sway-lantern-bl {
+    0%, 100% { transform: rotate(2.3deg); }
+    50% { transform: rotate(-2.6deg); }
+}
 @keyframes cs-sway-lantern-r {
     0%, 100% { transform: rotate(2.2deg); }
     50% { transform: rotate(-2.5deg); }
@@ -11433,10 +11549,9 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     0%, 100% { transform: rotate(-1deg); }
     50% { transform: rotate(1.1deg); }
 }
-@keyframes cs-blink {
-    0%, 88%, 100% { transform: scaleY(1); }
-    92% { transform: scaleY(0.15); }
-    96% { transform: scaleY(1); }
+@keyframes cs-eye-watery {
+    0%, 100% { transform: scale(1); filter: brightness(1) saturate(1); }
+    50% { transform: scale(1.06); filter: brightness(1.1) saturate(1.2); }
 }
 
 /* bottom vignette so the "Enter the Collection" label stays readable
@@ -11449,6 +11564,5 @@ body:has(.queue-wrap) { overflow-x: hidden; }
     background: linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--color-header-start, #1a140d) 85%, #000) 100%);
 }
 @media (prefers-reduced-motion: reduce) {
-    .cs-art-ear-l, .cs-art-ear-r, .cs-art-lantern-l, .cs-art-lantern-r,
-    .cs-art-charm, .cs-art-fan, .cs-art-eyes { animation: none; }
+    .cs-part { animation: none; }
 }

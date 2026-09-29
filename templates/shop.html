@@ -6,19 +6,23 @@
 <div class="shop-page">
     <div class="support-scanlines" aria-hidden="true"></div>
 
-    <!-- featured art: the rigged fox illustration from Home's "Select Your
-         Path", ears/lanterns/fan/eyes lightly animated -->
+    <!-- featured art: the fox illustration, rigged from the artist's own
+         separated layers (real cutouts, not a clip-path guess) — three
+         lanterns swing from their strings, both ears sway, the fan and its
+         hair charm flutter, and both irises get a slow, glistening
+         "welling up" pulse -->
     <div class="shop-art-banner" aria-hidden="true">
-        <div class="cs-art-layer cs-art-base"></div>
-        <div class="cs-art-layer cs-art-lantern-l"></div>
-        <div class="cs-art-layer cs-art-lantern-r"></div>
-        <div class="cs-art-layer cs-art-ear-l"></div>
-        <div class="cs-art-layer cs-art-ear-r"></div>
-        <div class="cs-art-layer cs-art-charm"></div>
-        <div class="cs-art-layer cs-art-fan"></div>
-        <div class="cs-art-layer cs-art-eyes"></div>
+        <img class="cs-art-base" src="{{ url_for('static', filename='images/home/fox/fox-base.jpg') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-lantern-tl" src="{{ url_for('static', filename='images/home/fox/fox-lantern-tl.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-lantern-bl" src="{{ url_for('static', filename='images/home/fox/fox-lantern-bl.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-lantern-r" src="{{ url_for('static', filename='images/home/fox/fox-lantern-r.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-ear-left" src="{{ url_for('static', filename='images/home/fox/fox-ear-left.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-ear-right" src="{{ url_for('static', filename='images/home/fox/fox-ear-right.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-charm" src="{{ url_for('static', filename='images/home/fox/fox-charm.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-fan" src="{{ url_for('static', filename='images/home/fox/fox-fan.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-eye-main" src="{{ url_for('static', filename='images/home/fox/fox-eye-main.png') }}" alt="" draggable="false">
+        <img class="cs-part cs-part-eye-small" src="{{ url_for('static', filename='images/home/fox/fox-eye-small.png') }}" alt="" draggable="false">
     </div>
-
 
     <div class="shop-intro">
         {% if current_user.is_authenticated %}
